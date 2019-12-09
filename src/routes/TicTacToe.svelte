@@ -5,10 +5,12 @@
   $: columns = 10;
   $: size = 24;
   $: gutter = 0;
-
+  $: player = "ONE";
+  $: movesPerTurn = 3;
+  $: movesRemaining = 0;
+  $: turn = 0;
 
   onMount(() => {
-
     renderGameBoard(rows, columns, size, gutter);
   });
 
@@ -22,8 +24,10 @@
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
-        let gameboard = document.getElementById("game-board");
-    gameboard.innerHTML = ''
+    let gameboard = document.getElementById("game-board");
+    while (gameboard.firstChild) {
+      gameboard.removeChild(gameboard.firstChild);
+    }
     console.log(`rows: ${rows} columns: ${columns}`);
     for (let i = 0; i < rows; i++) {
       let row = document.createElement("div");
@@ -37,9 +41,18 @@
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
+        square.id = `R${i}C${x}`
+        
         row.appendChild(square);
+        square.addEventListener('click', () => doSomething(event))
       }
     }
+  }
+
+  function doSomething(e) {
+    e.target.style.background = "#fff";
+    console.log('doSomething call from square click')
+    console.log(e.target)
   }
 
   function setWidthByChars(e) {
@@ -128,12 +141,23 @@
       background: rgba(150, 150, 255, 1);
     }
   }
+
+  .player-indicator {
+    padding: 0.25rem;
+    background: rgba(0, 255, 155, 0.5);
+    border-radius: 5px;
+    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
+  }
 </style>
 
-<h1>Tic Tac Toe</h1>
+<h1>
+  Tic Tac Toe: Player
+  <span class="player-indicator">{player}</span>
+</h1>
 <div class="main">
 
   <div class="form-wrap">
+    <h2>LAYOUT</h2>
     <label for="rows">
       Rows:
       <input
@@ -180,6 +204,21 @@
         style="width: 1.5ch;" />
     </label>
 
+  </div>
+
+  <div class="form-wrap">
+    <h2>GAME OPTIONS</h2>
+    <label for="movesPerTurn">
+      Moves Per Turn:
+      <input
+        id="movesPerTurn"
+        name="movesPerTurn"
+        type="number"
+        placeholder={movesPerTurn}
+        value={movesPerTurn}
+        on:input={triggerGameBoardUpdate}
+        style="width: 1.5ch;" />
+    </label>
   </div>
 
   <div id="game-board" class="game-board" />
