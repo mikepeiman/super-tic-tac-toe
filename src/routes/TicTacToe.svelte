@@ -5,13 +5,14 @@
   $: columns = 10;
   $: size = 24;
   $: gutter = 0;
-  $: player = "ONE";
+  $: currentPlayer = 0;
   $: movesPerTurn = 3;
   $: movesRemaining = 0;
   $: turn = 0;
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
+    movesRemaining = movesPerTurn;
   });
 
   function triggerGameBoardUpdate(e) {
@@ -41,18 +42,42 @@
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
-        square.id = `R${i}C${x}`
-        
+        square.id = `R${i + 1}C${x + 1}`;
+        square.setAttribute("data-ticked", false);
         row.appendChild(square);
-        square.addEventListener('click', () => doSomething(event))
+        square.addEventListener("click", () => playMove(event));
       }
     }
   }
 
-  function doSomething(e) {
-    e.target.style.background = "#fff";
-    console.log('doSomething call from square click')
-    console.log(e.target)
+  function playMove(e) {
+    let square = e.target;
+    movesRemaining--;
+    checkWhichPlayer();
+    let ticked = square.dataset.ticked == "true";
+    ticked ? (square.dataset.ticked = false) : (square.dataset.ticked = true);
+    ticked = square.dataset.ticked == "true";
+    if (ticked) {
+      console.log(`ticked`)
+      if (currentPlayer == 0) {
+        console.log(`currentPlayer == 0`)
+        square.style.background = "#fff";
+      } else {
+        square.style.background = "#0af";
+      }
+    }
+    // ticked
+    //   ? (square.style.background = "#fff")
+    //   : (square.style.background = "#0af");
+    console.log("playMove call from square click");
+    console.log(square);
+  }
+
+  function checkWhichPlayer() {
+    if (movesRemaining < 1) {
+      currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+      movesRemaining = movesPerTurn;
+    }
   }
 
   function setWidthByChars(e) {
@@ -152,8 +177,9 @@
 
 <h1>
   Tic Tac Toe: Player
-  <span class="player-indicator">{player}</span>
+  <span class="player-indicator">{currentPlayer}</span>
 </h1>
+<h2>Moves remaining: {movesRemaining}</h2>
 <div class="main">
 
   <div class="form-wrap">
