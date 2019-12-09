@@ -1,8 +1,11 @@
 <script>
+
+// import tictactoe from '../components/TicTacToe.svelte'
+
 	export let segment;
 </script>
 
-<style>
+<style lang="scss">
 	nav {
 		border-bottom: 1px solid rgba(255,62,0,0.1);
 		font-weight: 300;
@@ -52,6 +55,7 @@
 	<ul>
 		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
 		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
+    <li><a class:selected='{segment === "tictactoe"}' href='TicTacToe'>tictactoe</a></li>
 
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
