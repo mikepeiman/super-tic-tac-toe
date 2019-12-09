@@ -1,23 +1,29 @@
 <script>
   import { onMount } from "svelte";
 
-  $: rows = 5
-  $: columns = 5
-  $: size = 24
-  $: gutter = 1
+  $: rows = 10;
+  $: columns = 10;
+  $: size = 24;
+  $: gutter = 0;
+
 
   onMount(() => {
-
-    // let columns = document.getElementById("columns").value;
-    // let rows = document.getElementById("rows").value;
-    // let size = document.getElementById("size").value;
-    // let gutter = document.getElementById("gutter").value;
 
     renderGameBoard(rows, columns, size, gutter);
   });
 
+  function triggerGameBoardUpdate(e) {
+    columns = document.getElementById("columns").value;
+    rows = document.getElementById("rows").value;
+    size = document.getElementById("size").value;
+    gutter = document.getElementById("gutter").value;
+    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
+    renderGameBoard(rows, columns, size, gutter);
+  }
+
   function renderGameBoard(rows, columns, size, gutter) {
         let gameboard = document.getElementById("game-board");
+    gameboard.innerHTML = ''
     console.log(`rows: ${rows} columns: ${columns}`);
     for (let i = 0; i < rows; i++) {
       let row = document.createElement("div");
@@ -29,6 +35,8 @@
         let square = document.createElement("div");
         square.classList = "game-square";
         square.style.margin = gutter + "px";
+        square.style.width = size + "px";
+        square.style.height = size + "px";
         row.appendChild(square);
       }
     }
@@ -40,7 +48,6 @@
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(e.target.style.width);
   }
-
 </script>
 
 <style lang="scss" global>
@@ -135,8 +142,8 @@
         type="number"
         placeholder={rows}
         value={rows}
-        on:input={setWidthByChars}
-        style="width: 1.5ch;" />
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
     </label>
     <label for="columns">
       Columns:
@@ -146,8 +153,8 @@
         type="number"
         placeholder={columns}
         value={columns}
-        on:input={setWidthByChars}
-        style="width: 1.5ch;" />
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
     </label>
     <label for="size">
       Square size (px):
@@ -157,8 +164,8 @@
         type="number"
         placeholder="24"
         value={size}
-        step={size}
-        on:input={setWidthByChars}
+        step="4"
+        on:input={triggerGameBoardUpdate}
         style="width: 2.5ch;" />
     </label>
     <label for="gutter">
@@ -169,7 +176,7 @@
         type="number"
         placeholder={gutter}
         value={gutter}
-        on:input={setWidthByChars}
+        on:input={triggerGameBoardUpdate}
         style="width: 1.5ch;" />
     </label>
 
