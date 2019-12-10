@@ -6,7 +6,7 @@
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = 0;
-  $: movesPerTurn = 5;
+  $: movesPerTurn = 3;
   $: movesRemaining = 0;
   $: turn = 0;
 
@@ -22,6 +22,10 @@
     gutter = document.getElementById("gutter").value;
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     renderGameBoard(rows, columns, size, gutter);
+  }
+
+  function updateGameSettings() {
+    movesRemaining = movesPerTurn
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
@@ -356,6 +360,7 @@
         type="number"
         placeholder={movesPerTurn}
         bind:value="{movesPerTurn}"
+        on:input={updateGameSettings}
         style="width: 1.5ch;" />
     </label>
 
