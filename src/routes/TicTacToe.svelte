@@ -46,7 +46,7 @@
         square.id = `R${i + 1}C${x + 1}`;
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
-        
+
         row.appendChild(square);
         square.addEventListener("click", () => playMove(event));
       }
@@ -63,28 +63,23 @@
     if (ticked) {
       untickThis(square);
     } else {
-      if (movesRemaining < 1) {
-        currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
-        movesRemaining = movesPerTurn;
+      if (movesRemaining == 1) {
+        tickThis(square);
+        playerChange();
+        return;
       }
       tickThis(square);
+      movesRemaining--;
     }
-
-    // ticked ? (square.dataset.ticked = false) : (square.dataset.ticked = true);
-    // ticked = square.dataset.ticked == "true";
-
-    // ticked
-    //   ? (square.style.background = "#fff")
-    //   : (square.style.background = "#0af");
-    console.log("playMove call from square click");
-    console.log(square);
+    // console.log("playMove call from square click");
+    // console.log(square);
   }
 
   function tickThis(square) {
     console.log("tickThis(square)");
     square.classList.add("ticked");
     square.dataset.ticked = true;
-    movesRemaining--;
+
     if (currentPlayer == 0) {
       console.log(`currentPlayer == 0`);
       square.setAttribute("data-marker", "X");
@@ -106,13 +101,20 @@
     movesRemaining++;
   }
 
-  function checkWhichPlayer() {
-    if (movesRemaining < 1) {
-      currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
-      movesRemaining = movesPerTurn;
-    } else {
-      movesRemaining--;
-    }
+  function playerChange() {
+    let gameboard = document.getElementById("game-board");
+    gameboard.classList.add("player-change");
+    setTimeout(() => {
+      gameboard.classList.remove("player-change");
+    }, 250);
+    let playerIndicator = document.querySelector('.player-indicator')
+    playerIndicator.classList.remove(`player-${currentPlayer}`)
+
+    currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+    movesRemaining = movesPerTurn;
+
+    console.log(`playerIndicator`, playerIndicator)
+    playerIndicator.classList.add(`player-${currentPlayer}`)
   }
 
   function setWidthByChars(e) {
@@ -133,6 +135,35 @@
     align-items: start;
     height: 90vh;
     overflow: hidden;
+  }
+
+  .player-status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(155, 55, 255, 0.75);
+  }
+
+  $title-margin: 1rem;
+  $title-padding-horizontal: 1rem;
+  $title-padding-vertical: 0.5rem;
+  $calc-padding: 2 * $title-padding-horizontal;
+
+  .player-indicator {
+    width: calc(100% - (2 * #{$title-padding-horizontal}));
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: $title-padding-vertical $title-padding-horizontal;
+    border-radius: 5px;
+    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
+
+    &.player-0 {
+      background: rgba(0, 255, 155, 0.5);
+    }
+    &.player-1 {
+      background: rgba(255, 0, 155, 0.5);
+    }
   }
 
   .form-wrap {
@@ -186,6 +217,7 @@
     display: flex;
     flex-direction: column;
     align-self: center;
+    border: 0px solid none;
   }
 
   .game-row {
@@ -217,20 +249,56 @@
     }
   }
 
-  .player-indicator {
-    padding: 0.25rem;
-    background: rgba(0, 255, 155, 0.5);
-    border-radius: 5px;
-    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
+  .player-change {
+    transition: all 0.25s;
+    border: 50px solid red;
+  }
+
+  button {
+    padding: 1rem;
+    border-radius: 3px;
+    border: none;
+    color: white;
+  }
+
+  #next-turn-button {
+    background: rgba(55, 255, 155, 0.5);
+    &:hover {
+      background: rgba(55, 255, 155, 0.75);
+    }
+  }
+  #restart-game-button {
+    background: rgba(255, 55, 155, 0.5);
+    &:hover {
+      background: rgba(255, 55, 155, 0.75);
+    }
+  }
+  #save-game-button {
+    background: rgba(155, 55, 255, 0.5);
+    &:hover {
+      background: rgba(155, 55, 255, 0.75);
+    }
+  }
+
+  .buttons-wrapper button {
+    // display: none;
+    // visibility: hidden;
   }
 </style>
 
-<h1>
-  Tic Tac Toe: Player
-  <span class="player-indicator">{currentPlayer}</span>
-</h1>
-<h2>Moves remaining: {movesRemaining}</h2>
+<h1>Tic Tac Toe</h1>
+
 <div class="main">
+  <div class="player-indicator player-0">
+    <h2>Player {currentPlayer}</h2>
+    <h2>Moves: {movesRemaining}</h2>
+
+      <div class="buttons-wrapper">
+    <button id="next-turn-button">End turn</button>
+    <button id="restart-game-button">Restart game</button>
+    <button id="save-game-button">Save game</button>
+  </div>
+  </div>
 
   <div class="form-wrap">
     <h2>LAYOUT</h2>
@@ -291,11 +359,11 @@
         name="movesPerTurn"
         type="number"
         placeholder={movesPerTurn}
-        value={movesPerTurn}
-        on:input={triggerGameBoardUpdate}
+        bind:value={movesPerTurn}
         style="width: 1.5ch;" />
     </label>
   </div>
+
 
   <div id="game-board" class="game-board" />
 </div>
