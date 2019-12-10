@@ -39,11 +39,14 @@
         console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
         let square = document.createElement("div");
         square.classList = "game-square";
+        square.style = "--custom-bg: rgba(150, 150, 255, 0.75)"; // ("data-background-color", "#fff");
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
         square.id = `R${i + 1}C${x + 1}`;
         square.setAttribute("data-ticked", false);
+        square.setAttribute("data-marker", "X");
+        
         row.appendChild(square);
         square.addEventListener("click", () => playMove(event));
       }
@@ -52,20 +55,24 @@
 
   function playMove(e) {
     let square = e.target;
-    movesRemaining--;
-    checkWhichPlayer();
     let ticked = square.dataset.ticked == "true";
-    ticked ? (square.dataset.ticked = false) : (square.dataset.ticked = true);
-    ticked = square.dataset.ticked == "true";
+    console.log(
+      `ticked status ::: ${ticked} ::: movesRemaining ||| ${movesRemaining} |||`
+    );
+
     if (ticked) {
-      console.log(`ticked`)
-      if (currentPlayer == 0) {
-        console.log(`currentPlayer == 0`)
-        square.style.background = "#fff";
-      } else {
-        square.style.background = "#0af";
+      untickThis(square);
+    } else {
+      if (movesRemaining < 1) {
+        currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+        movesRemaining = movesPerTurn;
       }
+      tickThis(square);
     }
+
+    // ticked ? (square.dataset.ticked = false) : (square.dataset.ticked = true);
+    // ticked = square.dataset.ticked == "true";
+
     // ticked
     //   ? (square.style.background = "#fff")
     //   : (square.style.background = "#0af");
@@ -73,10 +80,38 @@
     console.log(square);
   }
 
+  function tickThis(square) {
+    console.log("tickThis(square)");
+    square.classList.add("ticked");
+    square.dataset.ticked = true;
+    movesRemaining--;
+    if (currentPlayer == 0) {
+      console.log(`currentPlayer == 0`);
+      square.setAttribute("data-marker", "X");
+      square.style = "--custom-bg: #abf";
+      // square.setAttribute("data-background-color", "rgba(255, 150, 150, 0.75)");
+    } else {
+      square.setAttribute("data-marker", "O");
+      square.style = "--custom-bg: #fab";
+      // square.setAttribute("data-background-color", "rgba(150, 255, 150, 0.75)");
+    }
+    //  square.style.background = "rgba(150, 150, 255, 0.75)"
+  }
+
+  function untickThis(square) {
+    console.log(`------------untickThis(square)`);
+    square.classList.remove("ticked");
+    square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
+    square.dataset.ticked = false;
+    movesRemaining++;
+  }
+
   function checkWhichPlayer() {
     if (movesRemaining < 1) {
       currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
       movesRemaining = movesPerTurn;
+    } else {
+      movesRemaining--;
     }
   }
 
@@ -160,10 +195,25 @@
   .game-square {
     width: 24px;
     height: 24px;
-    background: rgba(150, 150, 255, 0.75);
+    background: var(--custom-bg); // rgba(150, 150, 255, 0.75);
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
-      background: rgba(150, 150, 255, 1);
+      background: rgba(150, 150, 255, 0.5);
+    }
+  }
+  .ticked {
+    border: 1px solid red;
+    &:hover {
+      background: rgba(150, 150, 255, 0.5);
+    }
+    &::after {
+      content: attr(data-marker);
+      justify-self: center;
+      align-self: center;
+      background: attr(data-background-color);
     }
   }
 
