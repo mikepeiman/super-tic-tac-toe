@@ -6,7 +6,7 @@
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = 0;
-  $: movesPerTurn = 3;
+  $: movesPerTurn = 5;
   $: movesRemaining = 0;
   $: turn = 0;
 
@@ -107,14 +107,14 @@
     setTimeout(() => {
       gameboard.classList.remove("player-change");
     }, 250);
-    let playerIndicator = document.querySelector('.player-indicator')
-    playerIndicator.classList.remove(`player-${currentPlayer}`)
+    let playerIndicator = document.querySelector(".player-indicator");
+    playerIndicator.classList.remove(`player-${currentPlayer}`);
 
     currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
     movesRemaining = movesPerTurn;
 
-    console.log(`playerIndicator`, playerIndicator)
-    playerIndicator.classList.add(`player-${currentPlayer}`)
+    console.log(`playerIndicator`, playerIndicator);
+    playerIndicator.classList.add(`player-${currentPlayer}`);
   }
 
   function setWidthByChars(e) {
@@ -293,15 +293,16 @@
     <h2>Player {currentPlayer}</h2>
     <h2>Moves: {movesRemaining}</h2>
 
-      <div class="buttons-wrapper">
-    <button id="next-turn-button">End turn</button>
-    <button id="restart-game-button">Restart game</button>
-    <button id="save-game-button">Save game</button>
-  </div>
+    <div class="buttons-wrapper">
+      <button id="next-turn-button">End turn</button>
+      <button id="restart-game-button">Restart game</button>
+      <button id="save-game-button">Save game</button>
+    </div>
   </div>
 
+    <h2>Layout and Game Options</h2>
   <div class="form-wrap">
-    <h2>LAYOUT</h2>
+
     <label for="rows">
       Rows:
       <input
@@ -347,11 +348,6 @@
         on:input={triggerGameBoardUpdate}
         style="width: 1.5ch;" />
     </label>
-
-  </div>
-
-  <div class="form-wrap">
-    <h2>GAME OPTIONS</h2>
     <label for="movesPerTurn">
       Moves Per Turn:
       <input
@@ -359,11 +355,16 @@
         name="movesPerTurn"
         type="number"
         placeholder={movesPerTurn}
-        bind:value={movesPerTurn}
+        bind:value="{movesPerTurn}"
         style="width: 1.5ch;" />
     </label>
-  </div>
 
+  </div>
+  <!-- 
+  <div class="form-wrap">
+    <h2>GAME OPTIONS</h2>
+
+  </div> -->
 
   <div id="game-board" class="game-board" />
 </div>
