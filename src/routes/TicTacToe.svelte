@@ -9,6 +9,9 @@
   $: movesPerTurn = 3;
   $: movesRemaining = 0;
   $: turn = 0;
+  $: gameHistory = [];
+  $: gameHistoryId = 0;
+  $: moveNumber = 0;
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
@@ -25,7 +28,7 @@
   }
 
   function updateGameSettings() {
-    movesRemaining = movesPerTurn
+    movesRemaining = movesPerTurn;
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
@@ -57,6 +60,16 @@
     }
   }
 
+  function setGameHistory(square) {
+    let move = {}
+    move["moveNumber"] = moveNumber
+    move["id"] = square.id
+    console.log(`setGameHistory, square object: `, move)
+    let id = square.id
+    gameHistory = [...gameHistory, move];
+    localStorage.setItem('gameHistory', JSON.stringify(gameHistory))
+  }
+
   function playMove(e) {
     let square = e.target;
     let ticked = square.dataset.ticked == "true";
@@ -65,14 +78,21 @@
     );
 
     if (ticked) {
+      moveNumber--;
+      setGameHistory(square);
       untickThis(square);
     } else {
       if (movesRemaining == 1) {
+        moveNumber++;
+        setGameHistory(square);
         tickThis(square);
         playerChange();
         return;
       }
+      moveNumber++;
+      setGameHistory(square);
       tickThis(square);
+
       movesRemaining--;
     }
     // console.log("playMove call from square click");
@@ -132,6 +152,7 @@
 <style lang="scss" global>
   .main {
     background: #1a1a1a;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     color: #eee;
@@ -155,8 +176,10 @@
 
   .player-indicator {
     width: calc(100% - (2 * #{$title-padding-horizontal}));
+    transition: all 0.5s;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
     padding: $title-padding-vertical $title-padding-horizontal;
     border-radius: 5px;
@@ -168,7 +191,15 @@
     &.player-1 {
       background: rgba(255, 0, 155, 0.5);
     }
+    & h2 {
+      margin: 0;
+    }
   }
+
+  // .player-indicator-heading {
+  //   background: #1a1a1a;
+  //   transition: all .5s;
+  // }
 
   .form-wrap {
     display: flex;
@@ -215,9 +246,6 @@
 
   .game-board {
     margin: 2rem;
-    // width: 240px;
-    // height: 240px;
-    // background: white;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -294,8 +322,9 @@
 
 <div class="main">
   <div class="player-indicator player-0">
-    <h2>Player {currentPlayer}</h2>
-    <h2>Moves: {movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Player {currentPlayer}</h2>
+    <h2 class="player-indicator-heading">Turn Moves: {movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
 
     <div class="buttons-wrapper">
       <button id="next-turn-button">End turn</button>
@@ -304,7 +333,7 @@
     </div>
   </div>
 
-    <h2>Layout and Game Options</h2>
+  <h2>Layout and Game Options</h2>
   <div class="form-wrap">
 
     <label for="rows">
@@ -359,7 +388,7 @@
         name="movesPerTurn"
         type="number"
         placeholder={movesPerTurn}
-        bind:value="{movesPerTurn}"
+        bind:value={movesPerTurn}
         on:input={updateGameSettings}
         style="width: 1.5ch;" />
     </label>
