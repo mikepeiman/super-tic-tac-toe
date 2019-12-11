@@ -85,10 +85,15 @@
 
   function setGameHistory(square) {
     gameHistory = [...gameHistory, turnHistory];
-    turnHistory.forEach(turn => {
+    turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.squareId}`);
+      let thisMoveNum = moveNumber - movesPerTurn + index + 1
+      console.log(`############### setGameHistory, locking moves ${turn.squareId}`)
       move.setAttribute("locked", true);
+      console.log(`moveNumber ${moveNumber} - movesPerTurn ${movesPerTurn} + index ${index} + 1 = ${moveNumber - movesPerTurn + index + 1}`)
+      turn.move = thisMoveNum
       move.classList.add("locked");
+      move.style.border = "1px solid rgba(0,0,0,0.5)"
     });
     turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
@@ -132,6 +137,7 @@
   function tickThis(square) {
     console.log("tickThis(square)");
     square.classList.add("ticked");
+    
     square.dataset.ticked = true;
 
     if (currentPlayer == 0) {
@@ -144,6 +150,7 @@
       square.style = "--custom-bg: #fab";
       // square.setAttribute("data-background-color", "rgba(150, 255, 150, 0.75)");
     }
+    square.style.border = "1px solid rgba(255,100,155,1)"
     //  square.style.background = "rgba(150, 150, 255, 0.75)"
   }
 
@@ -299,7 +306,9 @@
     }
   }
   .ticked {
-    border: 1px solid red;
+    &.unlocked {
+      border: 1px solid red;
+    }
     &:hover {
       background: rgba(150, 150, 255, 0.5);
     }
@@ -313,7 +322,8 @@
 
   .player-change {
     transition: all 0.25s;
-    border: 50px solid red;
+    // border: 50px solid red;
+    background: rgba(155,255,155,1);
   }
 
   button {
@@ -343,14 +353,18 @@
   }
 
   .locked {
-    width: 100%;
-    height: 100%;
-    min-width: 100%;
-    min-height: 100%;
-    position: relative;
-    &:before {
-      background-size: cover;
-      background-image: rgba(0, 0, 0, 0.5);
+    opacity: 0.75;
+    border: 1px solid rgba(0,0,0,0.5);
+    &::before {
+      background: #000;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 1;
     }
   }
   .buttons-wrapper button {
