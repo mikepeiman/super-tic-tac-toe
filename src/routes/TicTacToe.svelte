@@ -10,12 +10,14 @@
   $: movesRemaining = 0;
   $: turn = 0;
   $: gameHistory = [];
+  $: turnHistory = [];
   $: gameHistoryId = 0;
   $: moveNumber = 0;
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
+    localStorage.setItem("gameHistory", []);
   });
 
   function triggerGameBoardUpdate(e) {
@@ -60,14 +62,63 @@
     }
   }
 
-  function setGameHistory(square) {
-    let move = {}
-    move["moveNumber"] = moveNumber
-    move["id"] = square.id
-    console.log(`setGameHistory, square object: `, move)
+  function setTurnHistory(square) {
+    // let mappedTurn = new Map(turnHistory)
+    // for (let [turn, square] of mappedTurn) {
+    //   console.log(`mappedTurn: turn ${turn} square ${square}`)
+    // }
+    let move = {};
     let id = square.id
-    gameHistory = [...gameHistory, move];
-    localStorage.setItem('gameHistory', JSON.stringify(gameHistory))
+    move["move"] = moveNumber;
+    move["square"] = square.id;
+    console.log(`setTurnHistory, square object: `, move);
+    turnHistory = [...turnHistory, move];
+    let test = turnHistory.map(turn => {
+      return turn.square;
+    });
+    console.log(`list of IDs: ${test}`);
+    let turnIds = [...new Set(test)];
+    console.log(`and reduced by new Set(): ${turnIds}`);
+
+
+  }
+
+  function setGameHistory(square) {
+    // let turnHistorySet = [...new Set(turnHistory)]
+    let newArray = Array.from(new Set(turnHistory.map(JSON.stringify))).map(
+      JSON.parse
+    );
+
+    // turnHistory = turnHistory.filter((thing, index, self) => self.findIndex(t => t.id === thing.id && t.moveNumber === thing.moveNumber) === index)
+    console.log(
+      `setGameHistory between player change, last turn set: `,
+      newArray
+    );
+    
+    var counts = {};
+    let len = turnHistory.length
+    for (var i = 0; i < len; i++) {
+      var square = turnHistory[i].square;
+      console.log(`turnHistory[i].square: ${square}`)
+      counts[square] = counts[square] ? counts[square] + 1 : 1;
+    }
+
+    let turnHistoryCopy = turnHistory
+    for (var i = 0; i < len; i++) {
+      console.log(`loop i ${i} and turn `, turnHistory[i][square])
+      let turn = turnHistory[i]
+      let id = turn[square]
+      let count = counts[id]
+      if (count > 1) {
+        turnHistoryCopy.splice(i,1)
+      }
+    }
+
+    // console.log(`counts..................`, counts[id])
+
+    gameHistory = [...gameHistory, turnHistoryCopy];
+    turnHistory = [];
+    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
   }
 
   function playMove(e) {
@@ -79,18 +130,19 @@
 
     if (ticked) {
       moveNumber--;
-      setGameHistory(square);
+      setTurnHistory(square);
       untickThis(square);
     } else {
       if (movesRemaining == 1) {
         moveNumber++;
-        setGameHistory(square);
+        setTurnHistory(square);
+        setGameHistory();
         tickThis(square);
         playerChange();
         return;
       }
       moveNumber++;
-      setGameHistory(square);
+      setTurnHistory(square);
       tickThis(square);
 
       movesRemaining--;
