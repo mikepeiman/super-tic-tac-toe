@@ -1,3 +1,8 @@
+
+My daughter and I like playing Tic Tac Toe, but on bigger game boards and with some variations. It gets cumbersome to spot and tally the points on larger boards, so I'm making us an app for it.
+
+I'm using the default Sapper template with Rollup, and SCSS preprocessing.
+
 # sapper-template
 
 The default [Sapper](https://github.com/sveltejs/sapper) template, available for Rollup and webpack.
