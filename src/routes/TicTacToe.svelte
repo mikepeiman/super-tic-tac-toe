@@ -43,9 +43,9 @@
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
-      console.log(`inner rows loop ${i + 1}`);
+      // console.log(`inner rows loop ${i + 1}`);
       for (let x = 0; x < columns; x++) {
-        console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
+        // console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
         let square = document.createElement("div");
         square.classList = "game-square";
         square.style = "--custom-bg: rgba(150, 150, 255, 0.75)"; // ("data-background-color", "#fff");
@@ -68,19 +68,17 @@
     //   console.log(`mappedTurn: turn ${turn} square ${square}`)
     // }
     let move = {};
-    let id = square.id
+    let id = square.id;
     move["move"] = moveNumber;
-    move["square"] = square.id;
+    move["squareId"] = square.id;
     // console.log(`setTurnHistory, square object: `, move);
     turnHistory = [...turnHistory, move];
     let test = turnHistory.map(turn => {
-      return turn.square;
+      return turn.squareId;
     });
     console.log(`list of IDs: ${test}`);
     let turnIds = [...new Set(test)];
     console.log(`and reduced by new Set(): ${turnIds}`);
-
-
   }
 
   function setGameHistory(square) {
@@ -94,46 +92,58 @@
     //   `setGameHistory between player change, last turn set: `,
     //   newArray
     // );
-    
-    var counts = {};
-    let len = turnHistory.length
-    for (var i = 0; i < len; i++) {
-      var square = turnHistory[i].square;
-      console.log(`turnHistory[i].square: ${square}`)
-      counts[square] = counts[square] ? counts[square] + 1 : 1;
-    }
 
-    let turnHistoryCopy = turnHistory
-    for (var i = 0; i < turnHistoryCopy.length; i++) {
-      console.log(`loop i ${i} and turn `, turnHistory[i].square)
-      let squareId = turnHistory[i].square
-      // let id = turn.square
-      let count = counts[squareId]
+    var counts = {};
+    let len = turnHistory.length;
+    for (var i = 0; i < len; i++) {
+      var square = turnHistory[i].squareId;
+      console.log(`turnHistory[i].squareId: ${square}`);
+      counts[square] = counts[square] ? counts[square] + 1 : 1;
+      console.log(`counts{} loop: `, square, counts[square]);
+    }
+    console.log(`counts object after loop:`, counts);
+
+    let testArr = [{}];
+    for (var i = 0; i < turnHistory.length; i++) {
+      console.log(`loop i ${i} and evaluating move:`, turnHistory[i].squareId);
+      let squareId = turnHistory[i].squareId;
+      // let id = turn.squareId
+      let count = counts[squareId];
+
       if (count > 1) {
-        console.log(`count > 1!!! splicing: ${turnHistoryCopy[i].square}`)
-        turnHistoryCopy.splice(i,1)
-        i--
+        console.log(`test passed count > 1`);
+        if (count % 2 == 0) {
+          console.log(`test passed count % 2 == 0`);
+          console.log(
+            `count > 1: splicing out ${turnHistory[i].squareId} from position ${i}`
+          );
+          console.log(
+            `before splice, length of turnHistory is ${turnHistory.length}`
+          );
+          console.log(`before splice, turnHistory is`, turnHistory);
+          turnHistory.splice(i, 1);
+          i--;
+          console.log(
+            `after splice, length of turnHistory is ${turnHistory.length}`
+          );
+          console.log(`after splice, turnHistory is`, turnHistory);
+        } else {
+          console.log(`test failed count % 2 == 0`);
+          turnHistory.splice(i, 1);
+          i--;
+        }
+      } else {
+        console.log(`test failed count > 1`);
       }
     }
-    // turnHistoryCopy.forEach(turn => {
-    //   let count = counts[turn.square]
-    //   console.log(`forEach, count of turnHistoryCopy turn.square ${count}`)
-    //   if(count > 1) {
-    //     let index = turnHistoryCopy.indexOf(turn)
-    //     turnHistoryCopy.splice(index,1)
-    //   }
-      
-    // })
-    console.log(`turnHistoryCopy after processing: `, turnHistoryCopy)
-
-    // console.log(`counts..................`, counts[id])
-
-    gameHistory = [...gameHistory, turnHistoryCopy];
+    console.log(`turnHistory after processing: `, turnHistory);
+    gameHistory = [...gameHistory, turnHistory];
     turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
   }
 
   function playMove(e) {
+    clickCount++;
     let square = e.target;
     let ticked = square.dataset.ticked == "true";
     console.log(
