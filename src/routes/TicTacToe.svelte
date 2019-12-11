@@ -69,19 +69,27 @@
     move["squareId"] = square.id;
     move["clickCount"] = clickCount;
 
-    if(turnHistory.filter(turn => turn.squareId == id).length > 0) {
-      console.log(`turnHistory already contains this move - that means we should remove it!`)
-      turnHistory = turnHistory.filter(turn => turn.squareId !== id)
+    if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
+      console.log(
+        `turnHistory already contains this move - that means we should remove it!`
+      );
+      turnHistory = turnHistory.filter(turn => turn.squareId !== id);
     } else {
-      console.log(`apparently we have not made this move yet, let's add it to turnHistory`)
-    turnHistory = [...turnHistory, move];
+      console.log(
+        `apparently we have not made this move yet, let's add it to turnHistory`
+      );
+      turnHistory = [...turnHistory, move];
     }
-    console.log(turnHistory)
-
+    console.log(turnHistory);
   }
 
   function setGameHistory(square) {
     gameHistory = [...gameHistory, turnHistory];
+    turnHistory.forEach(turn => {
+      let move = document.getElementById(`${turn.squareId}`);
+      move.setAttribute("locked", true);
+      move.classList.add("locked");
+    });
     turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
   }
@@ -95,9 +103,13 @@
     );
 
     if (ticked) {
-      moveNumber--;
-      setTurnHistory(square);
-      untickThis(square);
+      if (!square.hasAttribute("locked")) {
+        setTurnHistory(square);
+        untickThis(square);
+        moveNumber--;
+      } else {
+        console.log(`It seems you tried to untick a locked move!`);
+      }
     } else {
       if (movesRemaining == 1) {
         moveNumber++;
@@ -330,6 +342,17 @@
     }
   }
 
+  .locked {
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    position: relative;
+    &:before {
+      background-size: cover;
+      background-image: rgba(0, 0, 0, 0.5);
+    }
+  }
   .buttons-wrapper button {
     // display: none;
     // visibility: hidden;
