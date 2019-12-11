@@ -63,80 +63,24 @@
   }
 
   function setTurnHistory(square) {
-    // let mappedTurn = new Map(turnHistory)
-    // for (let [turn, square] of mappedTurn) {
-    //   console.log(`mappedTurn: turn ${turn} square ${square}`)
-    // }
     let move = {};
     let id = square.id;
     move["move"] = moveNumber;
     move["squareId"] = square.id;
-    // console.log(`setTurnHistory, square object: `, move);
+    move["clickCount"] = clickCount;
+
+    if(turnHistory.filter(turn => turn.squareId == id).length > 0) {
+      console.log(`turnHistory already contains this move - that means we should remove it!`)
+      turnHistory = turnHistory.filter(turn => turn.squareId !== id)
+    } else {
+      console.log(`apparently we have not made this move yet, let's add it to turnHistory`)
     turnHistory = [...turnHistory, move];
-    let test = turnHistory.map(turn => {
-      return turn.squareId;
-    });
-    console.log(`list of IDs: ${test}`);
-    let turnIds = [...new Set(test)];
-    console.log(`and reduced by new Set(): ${turnIds}`);
+    }
+    console.log(turnHistory)
+
   }
 
   function setGameHistory(square) {
-    // let turnHistorySet = [...new Set(turnHistory)]
-    // let newArray = Array.from(new Set(turnHistory.map(JSON.stringify))).map(
-    //   JSON.parse
-    // );
-
-    // // turnHistory = turnHistory.filter((thing, index, self) => self.findIndex(t => t.id === thing.id && t.moveNumber === thing.moveNumber) === index)
-    // console.log(
-    //   `setGameHistory between player change, last turn set: `,
-    //   newArray
-    // );
-
-    var counts = {};
-    let len = turnHistory.length;
-    for (var i = 0; i < len; i++) {
-      var square = turnHistory[i].squareId;
-      console.log(`turnHistory[i].squareId: ${square}`);
-      counts[square] = counts[square] ? counts[square] + 1 : 1;
-      console.log(`counts{} loop: `, square, counts[square]);
-    }
-    console.log(`counts object after loop:`, counts);
-
-    let testArr = [{}];
-    for (var i = 0; i < turnHistory.length; i++) {
-      console.log(`loop i ${i} and evaluating move:`, turnHistory[i].squareId);
-      let squareId = turnHistory[i].squareId;
-      // let id = turn.squareId
-      let count = counts[squareId];
-
-      if (count > 1) {
-        console.log(`test passed count > 1`);
-        if (count % 2 == 0) {
-          console.log(`test passed count % 2 == 0`);
-          console.log(
-            `count > 1: splicing out ${turnHistory[i].squareId} from position ${i}`
-          );
-          console.log(
-            `before splice, length of turnHistory is ${turnHistory.length}`
-          );
-          console.log(`before splice, turnHistory is`, turnHistory);
-          turnHistory.splice(i, 1);
-          i--;
-          console.log(
-            `after splice, length of turnHistory is ${turnHistory.length}`
-          );
-          console.log(`after splice, turnHistory is`, turnHistory);
-        } else {
-          console.log(`test failed count % 2 == 0`);
-          turnHistory.splice(i, 1);
-          i--;
-        }
-      } else {
-        console.log(`test failed count > 1`);
-      }
-    }
-    console.log(`turnHistory after processing: `, turnHistory);
     gameHistory = [...gameHistory, turnHistory];
     turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
