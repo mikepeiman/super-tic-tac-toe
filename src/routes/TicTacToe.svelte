@@ -11,7 +11,7 @@
   $: turn = 0;
   $: gameHistory = [];
   $: turnHistory = [];
-  $: gameHistoryId = 0;
+  $: clickCount = 0;
   $: moveNumber = 0;
 
   onMount(() => {
@@ -71,7 +71,7 @@
     let id = square.id
     move["move"] = moveNumber;
     move["square"] = square.id;
-    console.log(`setTurnHistory, square object: `, move);
+    // console.log(`setTurnHistory, square object: `, move);
     turnHistory = [...turnHistory, move];
     let test = turnHistory.map(turn => {
       return turn.square;
@@ -85,15 +85,15 @@
 
   function setGameHistory(square) {
     // let turnHistorySet = [...new Set(turnHistory)]
-    let newArray = Array.from(new Set(turnHistory.map(JSON.stringify))).map(
-      JSON.parse
-    );
+    // let newArray = Array.from(new Set(turnHistory.map(JSON.stringify))).map(
+    //   JSON.parse
+    // );
 
-    // turnHistory = turnHistory.filter((thing, index, self) => self.findIndex(t => t.id === thing.id && t.moveNumber === thing.moveNumber) === index)
-    console.log(
-      `setGameHistory between player change, last turn set: `,
-      newArray
-    );
+    // // turnHistory = turnHistory.filter((thing, index, self) => self.findIndex(t => t.id === thing.id && t.moveNumber === thing.moveNumber) === index)
+    // console.log(
+    //   `setGameHistory between player change, last turn set: `,
+    //   newArray
+    // );
     
     var counts = {};
     let len = turnHistory.length
@@ -104,15 +104,27 @@
     }
 
     let turnHistoryCopy = turnHistory
-    for (var i = 0; i < len; i++) {
-      console.log(`loop i ${i} and turn `, turnHistory[i][square])
-      let turn = turnHistory[i]
-      let id = turn[square]
-      let count = counts[id]
+    for (var i = 0; i < turnHistoryCopy.length; i++) {
+      console.log(`loop i ${i} and turn `, turnHistory[i].square)
+      let squareId = turnHistory[i].square
+      // let id = turn.square
+      let count = counts[squareId]
       if (count > 1) {
+        console.log(`count > 1!!! splicing: ${turnHistoryCopy[i].square}`)
         turnHistoryCopy.splice(i,1)
+        i--
       }
     }
+    // turnHistoryCopy.forEach(turn => {
+    //   let count = counts[turn.square]
+    //   console.log(`forEach, count of turnHistoryCopy turn.square ${count}`)
+    //   if(count > 1) {
+    //     let index = turnHistoryCopy.indexOf(turn)
+    //     turnHistoryCopy.splice(index,1)
+    //   }
+      
+    // })
+    console.log(`turnHistoryCopy after processing: `, turnHistoryCopy)
 
     // console.log(`counts..................`, counts[id])
 
