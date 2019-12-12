@@ -1,12 +1,12 @@
 <script>
   import { onMount } from "svelte";
 
-  $: rows = 10;
-  $: columns = 10;
+  $: rows = 4;
+  $: columns = 4;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = 0;
-  $: movesPerTurn = 3;
+  $: movesPerTurn = 4;
   $: movesRemaining = 0;
   $: turn = 0;
   $: gameHistory = [];
@@ -17,7 +17,6 @@
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
-    localStorage.setItem("gameHistory", []);
   });
 
   function triggerGameBoardUpdate(e) {
@@ -27,11 +26,29 @@
     gutter = document.getElementById("gutter").value;
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     renderGameBoard(rows, columns, size, gutter);
+    localStorage.setItem("gameHistory", []);
   }
 
   function updateGameSettings() {
     movesRemaining = movesPerTurn;
   }
+
+function countPoints() {
+  gameHistory.forEach((turn, index) => {
+    console.log(`******* COUNT POINTS ******** turn: `, turn)
+    turn.forEach(move => {
+      console.log(`******* COUNT POINTS ******** move: `, move)
+      let square = document.getElementById(`${move.squareId}`)
+      console.log(`square element: `, square)
+      let player = square.getAttribute('player')
+      console.log(`square owned by player: ${player}`)
+    })
+  })
+}
+
+function realtimeCountPoints() {
+
+}
 
   function renderGameBoard(rows, columns, size, gutter) {
     let gameboard = document.getElementById("game-board");
@@ -68,6 +85,7 @@
     move["move"] = moveNumber;
     move["squareId"] = square.id;
     move["clickCount"] = clickCount;
+    move["player"] = currentPlayer;
 
     if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
       console.log(
@@ -90,7 +108,6 @@
       let thisMoveNum = moveNumber - movesPerTurn + index + 1
       console.log(`############### setGameHistory, locking moves ${turn.squareId}`)
       move.setAttribute("locked", true);
-      console.log(`moveNumber ${moveNumber} - movesPerTurn ${movesPerTurn} + index ${index} + 1 = ${moveNumber - movesPerTurn + index + 1}`)
       turn.move = thisMoveNum
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)"
@@ -143,14 +160,16 @@
     if (currentPlayer == 0) {
       console.log(`currentPlayer == 0`);
       square.setAttribute("data-marker", "X");
+      square.setAttribute("player", 0);
       square.style = "--custom-bg: #abf";
       // square.setAttribute("data-background-color", "rgba(255, 150, 150, 0.75)");
     } else {
       square.setAttribute("data-marker", "O");
+      square.setAttribute("player", 1);
       square.style = "--custom-bg: #fab";
       // square.setAttribute("data-background-color", "rgba(150, 255, 150, 0.75)");
     }
-    square.style.border = "1px solid rgba(255,100,155,1)"
+    // square.style.border = "1px solid rgba(255,100,155,1)"
     //  square.style.background = "rgba(150, 150, 255, 0.75)"
   }
 
@@ -383,6 +402,7 @@
 
     <div class="buttons-wrapper">
       <button id="next-turn-button">End turn</button>
+      <button id="restart-game-button" on:click={countPoints}>Tally points</button>
       <button id="restart-game-button">Restart game</button>
       <button id="save-game-button">Save game</button>
     </div>
