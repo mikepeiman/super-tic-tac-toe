@@ -1,18 +1,19 @@
 <script>
   import { onMount } from "svelte";
 
-  $: rows = 4;
-  $: columns = 4;
+  $: rows = 5;
+  $: columns = 5;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = 0;
-  $: movesPerTurn = 4;
+  $: movesPerTurn = 2;
   $: movesRemaining = 0;
   $: turn = 0;
   $: gameHistory = [];
   $: turnHistory = [];
   $: clickCount = 0;
   $: moveNumber = 0;
+  $: tallyArraysLeftToRight = [];
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
@@ -33,30 +34,75 @@
     movesRemaining = movesPerTurn;
   }
 
-function countPoints() {
-  gameHistory.forEach((turn, index) => {
-    console.log(`******* COUNT POINTS ******** turn: `, turn)
-    turn.forEach(move => {
-      console.log(`******* COUNT POINTS ******** move: `, move)
-      let square = document.getElementById(`${move.squareId}`)
-      console.log(`square element: `, square)
-      let player = square.getAttribute('player')
-      console.log(`square owned by player: ${player}`)
-    })
-    createGameArrays()
-  })
+  // I think my method for scoring will be this:
+  //  1. when generating gameboard, create an set of arrays indexed with the same IDs
+  //     these arrays cover the horizontal, vertical, and the two diagonal directions: 4 sets of lines
+  //  2. As moves are made, mark which player occupied each cell in the arrays
+  //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
+  //     a user-set minimum scoring length
+  function countPoints() {
+    gameHistory.forEach((turn, index) => {
+      console.log(`******* COUNT POINTS ******** turn: `, turn);
+      turn.forEach(move => {
+        console.log(`******* COUNT POINTS ******** move: `, move);
+        let square = document.getElementById(`${move.squareId}`);
+        console.log(`square element: `, square);
+        let player = square.getAttribute("player");
+        console.log(`square owned by player: ${player}`);
+      });
+      createGameArrays();
+      tallyTopToBottom()
+    });
 
-  // createGameArrays()
-  // countPoints()
-}
+    // createGameArrays()
+    // countPoints()
+  }
 
-function realtimeCountPoints() {
+  function realtimeCountPoints() {}
 
-}
+  function createGameArrays() {
+    console.log(`gameHistory length ${gameHistory.length}`);
 
-function createGameArrays() {
-  console.log(`gameHistory length ${gameHistory.length}`)
-}
+    let tallyArraysDiagonalDownLeft = [];
+    let tallyArraysDiagonalDownRight = [];
+  }
+
+  function tallyTopToBottom() {
+    let tallyArraysTopToBottom = [];
+    for (let i = 0; i < columns; i++) {
+      console.log(tallyArraysTopToBottom);
+      tallyArraysTopToBottom.push([]);
+
+      for (let x = 0; x < rows; x++) {
+        let cell = {};
+        cell["row"] = x;
+        cell["player"] = null;
+        tallyArraysTopToBottom[i] = [...tallyArraysTopToBottom[i], cell];
+      }
+    }
+    console.log('tallyTopToBottom', tallyArraysTopToBottom)
+  }
+
+    function tallyDiagonalDownLeft() {
+    let tallyArraysDiagonalDownLeft = [];
+    let len = columns.length
+    // we orient by rows and columns. The loop will be (row + count - 1)
+    // we choose a starting point, and then an algorithm to add adjacent cells in a line
+    // starting point: number of columns ( global var)
+    // algo next cell: row + 1, column + 1, while cell exists
+    // algo next start: column 0, row - 1, until row == 0, then row 0, column + 1 until row length reached
+    for (let i = 0; i < ((2 * columns) - 1); i++) {
+      console.log(tallyArraysLeftToRight);
+      tallyArraysDiagonalDownLeft.push([]);
+
+      for (let x = 0; x < rows; x++) {
+        let cell = {};
+        cell["row"] = x;
+        cell["player"] = null;
+        tallyArraysDiagonalDownLeft[i] = [...tallyArraysDiagonalDownLeft[i], cell];
+      }
+    }
+  }
 
   function renderGameBoard(rows, columns, size, gutter) {
     let gameboard = document.getElementById("game-board");
@@ -65,9 +111,12 @@ function createGameArrays() {
     }
     console.log(`rows: ${rows} columns: ${columns}`);
     for (let i = 0; i < rows; i++) {
+      console.log(tallyArraysLeftToRight);
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
+      tallyArraysLeftToRight.push([]);
+
       // console.log(`inner rows loop ${i + 1}`);
       for (let x = 0; x < columns; x++) {
         // console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
@@ -78,6 +127,11 @@ function createGameArrays() {
         square.style.width = size + "px";
         square.style.height = size + "px";
         square.id = `R${i + 1}C${x + 1}`;
+        let cell = {};
+        cell["col"] = x;
+        cell["player"] = null;
+        tallyArraysLeftToRight[i] = [...tallyArraysLeftToRight[i], cell];
+        // tallyArraysLeftToRight[i].push(`{"Col": ${x}, "player":}`)
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
 
@@ -113,12 +167,14 @@ function createGameArrays() {
     gameHistory = [...gameHistory, turnHistory];
     turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.squareId}`);
-      let thisMoveNum = moveNumber - movesPerTurn + index + 1
-      console.log(`############### setGameHistory, locking moves ${turn.squareId}`)
+      let thisMoveNum = moveNumber - movesPerTurn + index + 1;
+      console.log(
+        `############### setGameHistory, locking moves ${turn.squareId}`
+      );
       move.setAttribute("locked", true);
-      turn.move = thisMoveNum
+      turn.move = thisMoveNum;
       move.classList.add("locked");
-      move.style.border = "1px solid rgba(0,0,0,0.5)"
+      move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
     turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
@@ -162,7 +218,7 @@ function createGameArrays() {
   function tickThis(square) {
     console.log("tickThis(square)");
     square.classList.add("ticked");
-    
+
     square.dataset.ticked = true;
 
     if (currentPlayer == 0) {
@@ -350,7 +406,7 @@ function createGameArrays() {
   .player-change {
     transition: all 0.25s;
     // border: 50px solid red;
-    background: rgba(155,255,155,1);
+    background: rgba(155, 255, 155, 1);
   }
 
   button {
@@ -381,7 +437,7 @@ function createGameArrays() {
 
   .locked {
     opacity: 0.75;
-    border: 1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     &::before {
       background: #000;
       display: block;
@@ -410,7 +466,9 @@ function createGameArrays() {
 
     <div class="buttons-wrapper">
       <button id="next-turn-button">End turn</button>
-      <button id="restart-game-button" on:click={countPoints}>Tally points</button>
+      <button id="restart-game-button" on:click={countPoints}>
+        Tally points
+      </button>
       <button id="restart-game-button">Restart game</button>
       <button id="save-game-button">Save game</button>
     </div>
