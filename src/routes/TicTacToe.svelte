@@ -43,11 +43,19 @@ function countPoints() {
       let player = square.getAttribute('player')
       console.log(`square owned by player: ${player}`)
     })
+    createGameArrays()
   })
+
+  // createGameArrays()
+  // countPoints()
 }
 
 function realtimeCountPoints() {
 
+}
+
+function createGameArrays() {
+  console.log(`gameHistory length ${gameHistory.length}`)
 }
 
   function renderGameBoard(rows, columns, size, gutter) {
