@@ -15,11 +15,11 @@
   $: moveNumber = 0;
   $: gameboardMappedLeftToRight = [];
   $: lines = {
-    horizontalLeftToRight: [1,2,3],
-    verticalTopToBottom: ['a','b','c'],
-    diagonalDownLeft: ['x','y','z'],
-    diagonalDownRight: ['a1','a2','a3']
-  }
+    horizontalLeftToRight: [1, 2, 3],
+    verticalTopToBottom: ["a", "b", "c"],
+    diagonalDownLeft: ["x", "y", "z"],
+    diagonalDownRight: ["a1", "a2", "a3"]
+  };
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
@@ -47,12 +47,6 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
-    let startingPoint = {row: 0, column: 0}
-    let pattern = [0, +1]
-    let startPattern = [+1, 0]
-    let currentSquare = startingPoint
-    nextSquareFrom(currentSquare)
-
     gameHistory.forEach((turn, index) => {
       console.log(`******* COUNT POINTS ******** turn: `, turn);
       turn.forEach(move => {
@@ -62,114 +56,122 @@
         let player = square.getAttribute("player");
         console.log(`square owned by player: ${player}`);
       });
-
     });
-      createGameArrays();
-      // tallyTopToBottom();
-      // tallyDiagonalDownLeft();
+    createGameArrays();
+    // tallyTopToBottom();
+    // tallyDiagonalDownLeft();
     // createGameArrays()
     // countPoints()
   }
 
-// countPointsIn(line)
-// makeLineFrom(direction, row, column)
-// nextSquareFrom(row, column)
+  // countPointsIn(line)
+  // makeLineFrom(direction, row, column)
+  // nextSquareFrom(row, column)
 
-function countPointsIn(line) {
-  // let leftToRight = 1
-  // let topToBottom = 2
-  // let diagonalDownRight = 3
-  // let diagonalDownLeft = 4
-  // makeLinesFrom(diagonalDownRight, rows.length, 0);
-}
-
-// function makeLinesFor(direction)
-function makeLinesFrom(direction, row, column) {
-  //  let startingPoint = [0,0]
-  if(direction === 1){
-    startingPoint = {row: 0, column: 0}
-    pattern = {row: 0, column: +1}
-    startPattern = {row: +1, column: 0}
-    let currentSquare = startingPoint
-    makeLineFrom(startingPoint, pattern)
-    
+  function countPointsIn(line) {
+    // makeLinesFrom(diagonalDownRight, rows.length, 0);
   }
-  // if(direction === 2){}
-  // if(direction === 3){}
-  // if(direction === 4){}
-
-}
-
-function makeLineFrom(startingPoint, pattern) {
-  let row, column
-}
-
-function nextSquareFrom(currentSquare) {
-  console.log(`currentSquare`)
-  console.log(currentSquare)
-  // if() {}
-  console.log(`nextSquareFrom(row ${currentSquare.row}, column ${currentSquare.column})`)
-  // let nextSquare = {(currentSquare.row + pattern.row),(currentSquare.column + pattern.column)}
-  // while(nextSquare) { nextSquareFrom }
-}
-
-  function realtimeCountPoints() {}
 
   function createGameArrays() {
+    // these should be objects with starting point and pattern info contained within, pass a single argument to makeLinesFrom
+    let leftToRight = 1;
+    let topToBottom = 2;
+    let diagonalDownRight = {
+      id: 3,
+      startingPoint: { row: 0, column: 0 },
+      pattern: { row: 0, column: +1 },
+      startPattern: { row: +1, column: 0 }
+    };
+    let diagonalDownLeft = 4;
     console.log(`gameHistory length ${gameHistory.length}`);
-
-    // let tallyArraysDiagonalDownLeft = [];
-    // let tallyArraysDiagonalDownRight = [];
+    lines.diagonalDownRight = ["bbb", "ccc", "ddd"];
+    // console.log(`makeLinesFrom(diagonalDownRight): startingPoint ${diagonalDownRight.startingPoint}, pattern ${diagonalDownRight.pattern}`)
+    makeLinesFrom(diagonalDownRight);
   }
 
-  function tallyTopToBottom() {
-    let tallyArraysTopToBottom = [];
-    for (let i = 0; i < columns; i++) {
-      console.log(tallyArraysTopToBottom);
-      tallyArraysTopToBottom.push([]);
-
-      for (let x = 0; x < rows; x++) {
-        let cell = {};
-        cell["row"] = x;
-        cell["player"] = null;
-        tallyArraysTopToBottom[i] = [...tallyArraysTopToBottom[i], cell];
-      }
+  function makeLinesFrom(direction) {
+    console.log(
+      `makeLinesFrom(direction): startingPoint ${direction.startingPoint}, pattern ${direction.pattern}`
+    );
+    let theseLines = [];
+    let newLine;
+    //  let startingPoint = [0,0]
+    if (direction.id == 1) {
+      console.log(`direction.id == 1`);
     }
-    console.log('tallyTopToBottom', tallyArraysTopToBottom)
+    // if(direction === 2){}
+    if (direction.id == 3) {
+      console.log(`direction.id == 3`);
+      let count = 0;
+      let limit = rows + columns - 1;
+      // while (count < limit) {
+      console.log(
+        `makeLinesFrom(direction) calls makeLineFrom(direction.startingPoint, direction.pattern)`
+      );
+      newLine = makeLineFrom(direction.startingPoint, direction.pattern);
+      console.log(`newLine after makeLineFrom: `, newLine);
+      theseLines.push(newLine);
+      // count++;
+      // }
+      console.log(`theseLines after makeLineFrom: `, theseLines);
+    }
+    // if(direction === 4){}
   }
 
-    function tallyDiagonalDownLeft() {
-    let tallyArraysDiagonalDownLeft = [];
+  function makeLineFrom(startingPoint, pattern) {
+    console.log(`makeLineFrom(direction.startingPoint, direction.pattern) calls nextSquareFrom(
+      startingPoint.row,
+      startingPoint.column,
+      pattern.row,
+      pattern.column
+    )`);
+    let line = []
+    
+    let nextLine = nextSquareFrom(
+      startingPoint.row,
+      startingPoint.column,
+      pattern.row,
+      pattern.column,
+      line
+    );
+    // line.push(nextSquareFrom(
+    //   startingPoint.row,
+    //   startingPoint.column,
+    //   pattern.row,
+    //   pattern.column,
+    //   line
+    // ))
+    return nextLine
+    
+    //  nextLineFrom(startingPoint.row, startingPoint.column, pattern.row, pattern.column)
+    // return [];
+  }
 
-    // we orient by rows and columns. The loop will be (rows + columns - 1)
-    let counter = rows + columns - 1
-    // we choose a starting point, and then an algorithm to add adjacent cells in a line
-    // starting point: number of columns ( global var)
-    // algo next cell: row + 1, column + 1, while cell exists
-    // algo next start: column 0, row - 1, until row == 0, then row 0, column + 1 until row length reached
+  function nextSquareFrom(row, column, rowChange, columnChange, line) {
+    console.log(`nextSquareFrom opening, line array var ${line}`)
+    
+    
+    let nextRow = row + rowChange;
+    let nextColumn = column + columnChange;
+    let nextSquare = { row: nextRow, column: nextColumn };
 
-
-
-    for (let i = 0; i < ((2 * columns) - 1); i++) {
-      for(let r = rows; r > 0; r--) {
-        console.log(`c for columns: ${r}`)
-        // let nextSquareLocation = {}
-        // nextSquareLocation["column"] = 0
-        // nextSquareLocation["row"] = r
-      }
-      for(let c = 1; c <= columns; c++) {
-        console.log(`r for rows: ${c}`)
-      }
-      // console.log('YO', gameboardMappedLeftToRight);
-      tallyArraysDiagonalDownLeft.push([]);
-
-      for (let x = 0; x < rows; x++) {
-        let cell = {};
-        cell["row"] = x;
-        cell["player"] = null;
-        tallyArraysDiagonalDownLeft[i] = [...tallyArraysDiagonalDownLeft[i], cell];
-      }
+    if (nextRow >= rows) {
+      console.log(
+        `   ---   test nextRow ${nextRow} >= than gameboard rows ${rows}`
+      );
+      return line;
     }
+    if (nextColumn >= columns) {
+      console.log(
+        `   ---   test nextColumn ${nextColumn} >= than gameboard columns ${columns}`
+      );
+      return line;
+    }
+    console.log(`nextSquareFrom calls itself recursively with nextRow ${nextRow} nextColumn ${nextColumn}`);
+    line = [...line, {'row': row, 'column': column}]
+    console.log(`nextSquareFrom before recurse, line array var ${line}`)
+    nextSquare = nextSquareFrom(nextRow, nextColumn, rowChange, columnChange, line);
+    return nextSquare
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
@@ -199,8 +201,14 @@ function nextSquareFrom(currentSquare) {
         cell["row"] = rowNum;
         cell["col"] = colNum;
         cell["player"] = null;
-        gameboardMappedLeftToRight[rowNum] = [...gameboardMappedLeftToRight[rowNum], cell];
-        console.log(`gameboardMappedLeftToRight[rowNum]`, gameboardMappedLeftToRight[rowNum])
+        gameboardMappedLeftToRight[rowNum] = [
+          ...gameboardMappedLeftToRight[rowNum],
+          cell
+        ];
+        console.log(
+          `gameboardMappedLeftToRight[rowNum]`,
+          gameboardMappedLeftToRight[rowNum]
+        );
         // gameboardMappedLeftToRight[rowNum].push(`{"Col": ${x}, "player":}`)
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
@@ -527,10 +535,8 @@ function nextSquareFrom(currentSquare) {
 </style>
 
 <h1>Tic Tac Toe</h1>
-{ lines.horizontalLeftToRight }
-{ lines.verticalTopToBottom }
-{ lines.diagonalDownLeft }
-{ lines.diagonalDownRight }
+{lines.horizontalLeftToRight} {lines.verticalTopToBottom}
+{lines.diagonalDownLeft} {lines.diagonalDownRight}
 <div class="main">
   <div class="player-indicator player-0">
     <h2 class="player-indicator-heading">Player {currentPlayer}</h2>
