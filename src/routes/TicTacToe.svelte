@@ -50,13 +50,45 @@
         let player = square.getAttribute("player");
         console.log(`square owned by player: ${player}`);
       });
-      createGameArrays();
-      tallyTopToBottom()
-    });
 
+    });
+      createGameArrays();
+      tallyTopToBottom();
+      tallyDiagonalDownLeft();
     // createGameArrays()
     // countPoints()
   }
+
+// countPointsIn(line)
+// makeLineFrom(direction, row, column)
+// nextSquareFrom(row, column)
+
+function countPointsIn(line) {
+  // let leftToRight = 1
+  // let topToBottom = 2
+  // let diagonalDownRight = 3
+  // let diagonalDownLeft = 4
+  // makeLinesFrom(diagonalDownRight, rows.length, 0);
+}
+
+function makeLinesFrom(direction, row, column) {
+  //  let startingPoint = [0,0]
+  if(direction === 1){
+    startingPoint = [0,0]
+    linePattern = [0, +1]
+    startPattern = [+1, 0]
+  }
+  // if(direction === 2){}
+  // if(direction === 3){}
+  // if(direction === 4){}
+
+}
+
+function nextSquareFrom(row, column) {
+
+  // if() {}
+  console.log(`nextSquareFrom(row ${row}, column ${column})`)
+}
 
   function realtimeCountPoints() {}
 
@@ -85,14 +117,27 @@
 
     function tallyDiagonalDownLeft() {
     let tallyArraysDiagonalDownLeft = [];
-    let len = columns.length
-    // we orient by rows and columns. The loop will be (row + count - 1)
+
+    // we orient by rows and columns. The loop will be (rows + columns - 1)
+    let counter = rows + columns - 1
     // we choose a starting point, and then an algorithm to add adjacent cells in a line
     // starting point: number of columns ( global var)
     // algo next cell: row + 1, column + 1, while cell exists
     // algo next start: column 0, row - 1, until row == 0, then row 0, column + 1 until row length reached
+
+
+
     for (let i = 0; i < ((2 * columns) - 1); i++) {
-      console.log(tallyArraysLeftToRight);
+      for(let r = rows; r > 0; r--) {
+        console.log(`c for columns: ${r}`)
+        // let nextSquareLocation = {}
+        // nextSquareLocation["column"] = 0
+        // nextSquareLocation["row"] = r
+      }
+      for(let c = 1; c <= columns; c++) {
+        console.log(`r for rows: ${c}`)
+      }
+      console.log('YO', tallyArraysLeftToRight);
       tallyArraysDiagonalDownLeft.push([]);
 
       for (let x = 0; x < rows; x++) {
