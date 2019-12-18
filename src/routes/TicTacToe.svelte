@@ -13,7 +13,13 @@
   $: turnHistory = [];
   $: clickCount = 0;
   $: moveNumber = 0;
-  $: tallyArraysLeftToRight = [];
+  $: gameboardMappedLeftToRight = [];
+  $: lines = {
+    horizontalLeftToRight: [1,2,3],
+    verticalTopToBottom: ['a','b','c'],
+    diagonalDownLeft: ['x','y','z'],
+    diagonalDownRight: ['a1','a2','a3']
+  }
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
@@ -41,6 +47,12 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
+    let startingPoint = {row: 0, column: 0}
+    let pattern = [0, +1]
+    let startPattern = [+1, 0]
+    let currentSquare = startingPoint
+    nextSquareFrom(currentSquare)
+
     gameHistory.forEach((turn, index) => {
       console.log(`******* COUNT POINTS ******** turn: `, turn);
       turn.forEach(move => {
@@ -53,8 +65,8 @@
 
     });
       createGameArrays();
-      tallyTopToBottom();
-      tallyDiagonalDownLeft();
+      // tallyTopToBottom();
+      // tallyDiagonalDownLeft();
     // createGameArrays()
     // countPoints()
   }
@@ -71,12 +83,16 @@ function countPointsIn(line) {
   // makeLinesFrom(diagonalDownRight, rows.length, 0);
 }
 
+// function makeLinesFor(direction)
 function makeLinesFrom(direction, row, column) {
   //  let startingPoint = [0,0]
   if(direction === 1){
-    startingPoint = [0,0]
-    linePattern = [0, +1]
-    startPattern = [+1, 0]
+    startingPoint = {row: 0, column: 0}
+    pattern = {row: 0, column: +1}
+    startPattern = {row: +1, column: 0}
+    let currentSquare = startingPoint
+    makeLineFrom(startingPoint, pattern)
+    
   }
   // if(direction === 2){}
   // if(direction === 3){}
@@ -84,10 +100,17 @@ function makeLinesFrom(direction, row, column) {
 
 }
 
-function nextSquareFrom(row, column) {
+function makeLineFrom(startingPoint, pattern) {
+  let row, column
+}
 
+function nextSquareFrom(currentSquare) {
+  console.log(`currentSquare`)
+  console.log(currentSquare)
   // if() {}
-  console.log(`nextSquareFrom(row ${row}, column ${column})`)
+  console.log(`nextSquareFrom(row ${currentSquare.row}, column ${currentSquare.column})`)
+  // let nextSquare = {(currentSquare.row + pattern.row),(currentSquare.column + pattern.column)}
+  // while(nextSquare) { nextSquareFrom }
 }
 
   function realtimeCountPoints() {}
@@ -95,8 +118,8 @@ function nextSquareFrom(row, column) {
   function createGameArrays() {
     console.log(`gameHistory length ${gameHistory.length}`);
 
-    let tallyArraysDiagonalDownLeft = [];
-    let tallyArraysDiagonalDownRight = [];
+    // let tallyArraysDiagonalDownLeft = [];
+    // let tallyArraysDiagonalDownRight = [];
   }
 
   function tallyTopToBottom() {
@@ -137,7 +160,7 @@ function nextSquareFrom(row, column) {
       for(let c = 1; c <= columns; c++) {
         console.log(`r for rows: ${c}`)
       }
-      console.log('YO', tallyArraysLeftToRight);
+      // console.log('YO', gameboardMappedLeftToRight);
       tallyArraysDiagonalDownLeft.push([]);
 
       for (let x = 0; x < rows; x++) {
@@ -155,15 +178,15 @@ function nextSquareFrom(row, column) {
       gameboard.removeChild(gameboard.firstChild);
     }
     console.log(`rows: ${rows} columns: ${columns}`);
-    for (let i = 0; i < rows; i++) {
-      console.log(tallyArraysLeftToRight);
+    for (let rowNum = 0; rowNum < rows; rowNum++) {
+      console.log(gameboardMappedLeftToRight);
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
-      tallyArraysLeftToRight.push([]);
+      gameboardMappedLeftToRight.push([]);
 
       // console.log(`inner rows loop ${i + 1}`);
-      for (let x = 0; x < columns; x++) {
+      for (let colNum = 0; colNum < columns; colNum++) {
         // console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
         let square = document.createElement("div");
         square.classList = "game-square";
@@ -171,12 +194,14 @@ function nextSquareFrom(row, column) {
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
-        square.id = `R${i + 1}C${x + 1}`;
+        square.id = `R${rowNum + 1}C${colNum + 1}`;
         let cell = {};
-        cell["col"] = x;
+        cell["row"] = rowNum;
+        cell["col"] = colNum;
         cell["player"] = null;
-        tallyArraysLeftToRight[i] = [...tallyArraysLeftToRight[i], cell];
-        // tallyArraysLeftToRight[i].push(`{"Col": ${x}, "player":}`)
+        gameboardMappedLeftToRight[rowNum] = [...gameboardMappedLeftToRight[rowNum], cell];
+        console.log(`gameboardMappedLeftToRight[rowNum]`, gameboardMappedLeftToRight[rowNum])
+        // gameboardMappedLeftToRight[rowNum].push(`{"Col": ${x}, "player":}`)
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
 
@@ -502,7 +527,10 @@ function nextSquareFrom(row, column) {
 </style>
 
 <h1>Tic Tac Toe</h1>
-
+{ lines.horizontalLeftToRight }
+{ lines.verticalTopToBottom }
+{ lines.diagonalDownLeft }
+{ lines.diagonalDownRight }
 <div class="main">
   <div class="player-indicator player-0">
     <h2 class="player-indicator-heading">Player {currentPlayer}</h2>
