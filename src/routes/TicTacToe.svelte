@@ -232,11 +232,13 @@
     }
     console.log(`rows: ${rows} columns: ${columns}`);
     for (let rowNum = 0; rowNum < rows; rowNum++) {
-      console.log(gameboardMappedLeftToRight);
+      
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
       gameboardMappedLeftToRight.push([]);
+      console.log(`typeof gameboardMappedLeftToRight`, typeof gameboardMappedLeftToRight)
+      console.log(gameboardMappedLeftToRight);
 
       // console.log(`inner rows loop ${i + 1}`);
       for (let colNum = 0; colNum < columns; colNum++) {
@@ -256,10 +258,10 @@
           ...gameboardMappedLeftToRight[rowNum],
           cell
         ];
-        console.log(
-          `gameboardMappedLeftToRight[rowNum]`,
-          gameboardMappedLeftToRight[rowNum]
-        );
+        // console.log(
+        //   `gameboardMappedLeftToRight[rowNum]`,
+        //   gameboardMappedLeftToRight[rowNum]
+        // );
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
 
@@ -350,10 +352,15 @@
       console.log(`obj: `, obj)
       console.log(`row: `, row)
       console.log(`column: `, column)
-      console.log(`typeof obj: `,typeof obj)
-      console.log(`typeof  row: `,typeof row)
-      console.log(`typeof  column: `,typeof column)
-      return obj.row !== row && obj.column !== column
+      // console.log(`typeof obj: `,typeof obj)
+      // console.log(`typeof obj.row: `,typeof obj.row)
+      // console.log(`typeof row: `,typeof row)
+      // console.log(`typeof obj.column: `,typeof obj.column)
+      // console.log(`typeof column: `,typeof column)
+      console.log(`obj.row !== row`, obj.row !== row)
+      console.log(`obj.column !== column`, obj.column !== column)
+      console.log(`obj.row !== row && obj.column !== column`,obj.row !== row && obj.column !== column)
+      return !(obj.row !== row && obj.column !== column)
     })
   }
 
