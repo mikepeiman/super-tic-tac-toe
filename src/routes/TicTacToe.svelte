@@ -15,8 +15,8 @@
   $: moveNumber = 0;
   $: gameboardMappedLeftToRight = [];
   $: lines = {
-    horizontalLeftToRight: [1, 2, 3],
-    verticalTopToBottom: ["a", "b", "c"],
+    leftToRight: [1, 2, 3],
+    topToBottom: ["a", "b", "c"],
     diagonalDownLeft: ["x", "y", "z"],
     diagonalDownRight: ["a1", "a2", "a3"]
   };
@@ -94,12 +94,10 @@
       startingPoint: { row: rows, column: columns },
       pattern: { row: +1, column: -1 }
     };
-    console.log(`gameHistory length ${gameHistory.length}`);
-    lines.diagonalDownRight = ["bbb", "ccc", "ddd"];
-    // console.log(`makeLinesFrom(diagonalDownRight): startingPoint ${diagonalDownRight.startingPoint}, pattern ${diagonalDownRight.pattern}`)
-    makeLinesFrom(topToBottom);
-    // makeLinesFrom(diagonalDownRight);
-    // makeLinesFrom(diagonalDownLeft);
+    makeLinesFrom(leftToRight);
+    makeLinesFrom(topToBottom);  
+    makeLinesFrom(diagonalDownRight);
+    makeLinesFrom(diagonalDownLeft);
   }
 
   function makeLinesFrom(direction) {
@@ -110,8 +108,19 @@
     let theseLines = [];
 
     if (direction.id == 1) {
-      console.log(`direction.id == 1`);
+      console.log(" ************ LeftToRight ********************");
+
+      start = { row: 0, column: 0 };
+      pattern = { row: 0, column: +1 };
+
+      for (let i = 0; i < columns; i++) {
+        newLine = makeLineFrom(start, pattern);
+        start.row++;
+        theseLines.push(newLine);
+      }
+      lines.leftToRight = theseLines
     }
+
     if (direction.id == 2) {
       console.log(" ************ TopToBottom ********************");
 
@@ -121,11 +130,9 @@
       for (let i = 0; i < columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
-        console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-
-      console.log(`theseLines after makeLineFrom, top to bottom: `, theseLines);
+      lines.topToBottom = theseLines
     }
 
     // *********************************************
@@ -141,7 +148,6 @@
       for (let i = 0; i < rows; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
-        console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
 
@@ -151,13 +157,9 @@
       for (let i = 1; i < columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
-        console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-      console.log(
-        `theseLines after makeLineFrom, diagonal down left: `,
-        theseLines
-      );
+      lines.diagonalDownRight = theseLines
     }
 
     if (direction.id == 4) {
@@ -168,10 +170,6 @@
       for (let i = 0; i < columns; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
-        console.log(
-          `newLine after makeLineFrom: DownLeft first loop ###########`,
-          newLine
-        );
         theseLines.push(newLine);
       }
 
@@ -181,13 +179,9 @@
       for (let i = 1; i < columns; i++) {
         start.column--;
         newLine = makeLineFrom(start, pattern);
-        console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-      console.log(
-        `theseLines after makeLineFrom, diagonal down left: `,
-        theseLines
-      );
+      lines.diagonalDownLeft = theseLines
     }
   }
 
@@ -616,8 +610,15 @@
 </style>
 
 <h1>Tic Tac Toe</h1>
-{lines.horizontalLeftToRight} {lines.verticalTopToBottom}
-{lines.diagonalDownLeft} {lines.diagonalDownRight}
+<!-- {#each lines.diagonalDownRight as line, index}
+Line: {index + 1} | Squares: 
+{#each line as square}
+  {square.row},{square.column} --- <span></span>
+{/each}
+<br>
+{/each}
+{lines.leftToRight} {lines.topToBottom}
+{lines.diagonalDownLeft} {lines.diagonalDownRight} -->
 <div class="main">
   <div class="player-indicator player-0">
     <h2 class="player-indicator-heading">Player {currentPlayer}</h2>
