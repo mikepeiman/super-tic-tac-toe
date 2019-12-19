@@ -98,7 +98,7 @@
     lines.diagonalDownRight = ["bbb", "ccc", "ddd"];
     // console.log(`makeLinesFrom(diagonalDownRight): startingPoint ${diagonalDownRight.startingPoint}, pattern ${diagonalDownRight.pattern}`)
     makeLinesFrom(diagonalDownRight);
-    // makeLinesFrom(diagonalDownLeft);
+    makeLinesFrom(diagonalDownLeft);
   }
 
   function makeLinesFrom(direction) {
@@ -118,47 +118,59 @@
     //  ***********************************************
 
     if (direction.id == 3) {
+      console.log(" ************ diagonalDownRight ********************");
+
       start = { row: rows, column: 0 };
       pattern = { row: +1, column: +1 };
 
       for (let i = 0; i < rows; i++) {
-        direction.startingPoint.row = direction.startingPoint.row - 1;
         start.row--;
         newLine = makeLineFrom(start, pattern);
         console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-      // direction.startingPoint.row = 0;
-      // direction.startingPoint.column = 1;
+
       start = { row: 0, column: 1 };
       pattern = { row: +1, column: +1 };
+
       for (let i = 1; i < columns; i++) {
-        // newLine = makeLineFrom(direction.startingPoint, direction.pattern);
         newLine = makeLineFrom(start, pattern);
-        // direction.startingPoint.column = direction.startingPoint.column + 1;
         start.column++;
         console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-      console.log(`theseLines after makeLineFrom: `, theseLines);
+      console.log(
+        `theseLines after makeLineFrom, diagonal down left: `,
+        theseLines
+      );
     }
 
     if (direction.id == 4) {
-      for (let i = 0; i < rows; i++) {
-        direction.startingPoint.columns = direction.startingPoint.columns - 1;
-        newLine = makeLineFrom(direction.startingPoint, direction.pattern);
-        console.log(`newLine after makeLineFrom: `, newLine);
+      console.log(" ************ diagonalDownLeft ********************");
+      start = { row: rows, column: columns - 1 };
+      pattern = { row: +1, column: -1 };
+
+      for (let i = 0; i < columns; i++) {
+        start.row--;
+        newLine = makeLineFrom(start, pattern);
+        console.log(`newLine after makeLineFrom: DownLeft first loop ###########`, newLine);
         theseLines.push(newLine);
       }
-      direction.startingPoint.row = 0;
-      direction.startingPoint.column = columns - 1;
+
+      start = { row: 0, column: columns - 1 };
+      pattern = { row: +1, column: -1 };
+
       for (let i = 1; i < columns; i++) {
-        newLine = makeLineFrom(direction.startingPoint, direction.pattern);
-        direction.startingPoint.column = direction.startingPoint.column - 1;
+        start.column--;
+                newLine = makeLineFrom(start, pattern);
+
         console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
-      console.log(`theseLines after makeLineFrom: `, theseLines);
+      console.log(
+        `theseLines after makeLineFrom, diagonal down left: `,
+        theseLines
+      );
     }
   }
 
@@ -205,9 +217,9 @@
       );
       return line;
     }
-    if (nextColumn >= columns) {
+    if (nextColumn >= columns || nextColumn < 0) {
       console.log(
-        `   ---   test nextColumn ${nextColumn} >= than gameboard columns ${columns}`
+        `   ---   test nextColumn ${nextColumn} >= gameboard columns ${columns} OR || <= 0`
       );
       return line;
     }
