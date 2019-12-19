@@ -97,8 +97,9 @@
     console.log(`gameHistory length ${gameHistory.length}`);
     lines.diagonalDownRight = ["bbb", "ccc", "ddd"];
     // console.log(`makeLinesFrom(diagonalDownRight): startingPoint ${diagonalDownRight.startingPoint}, pattern ${diagonalDownRight.pattern}`)
-    makeLinesFrom(diagonalDownRight);
-    makeLinesFrom(diagonalDownLeft);
+    makeLinesFrom(topToBottom);
+    // makeLinesFrom(diagonalDownRight);
+    // makeLinesFrom(diagonalDownLeft);
   }
 
   function makeLinesFrom(direction) {
@@ -111,7 +112,21 @@
     if (direction.id == 1) {
       console.log(`direction.id == 1`);
     }
-    // if(direction === 2){}
+    if (direction.id == 2) {
+      console.log(" ************ TopToBottom ********************");
+
+      start = { row: 0, column: 0 };
+      pattern = { row: +1, column: 0 };
+
+      for (let i = 0; i < columns; i++) {
+        newLine = makeLineFrom(start, pattern);
+        start.column++;
+        console.log(`newLine after makeLineFrom: `, newLine);
+        theseLines.push(newLine);
+      }
+
+      console.log(`theseLines after makeLineFrom, top to bottom: `, theseLines);
+    }
 
     // *********************************************
     // ************ diagonalDownRight ********************
@@ -153,7 +168,10 @@
       for (let i = 0; i < columns; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
-        console.log(`newLine after makeLineFrom: DownLeft first loop ###########`, newLine);
+        console.log(
+          `newLine after makeLineFrom: DownLeft first loop ###########`,
+          newLine
+        );
         theseLines.push(newLine);
       }
 
@@ -162,8 +180,7 @@
 
       for (let i = 1; i < columns; i++) {
         start.column--;
-                newLine = makeLineFrom(start, pattern);
-
+        newLine = makeLineFrom(start, pattern);
         console.log(`newLine after makeLineFrom: `, newLine);
         theseLines.push(newLine);
       }
