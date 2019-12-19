@@ -1,12 +1,15 @@
 <script>
   import { onMount } from "svelte";
 
+  $: testValue = "test value";
+  $: lastClicked = {};
   $: rows = 5;
   $: columns = 5;
   $: size = 24;
   $: gutter = 0;
-  $: currentPlayer = 0;
+  $: currentPlayer = players[0];
   $: movesPerTurn = 2;
+  $: cellsToScore = 3;
   $: movesRemaining = 0;
   $: turn = 0;
   $: gameHistory = [];
@@ -14,16 +17,31 @@
   $: clickCount = 0;
   $: moveNumber = 0;
   $: gameboardMappedLeftToRight = [];
+  $: tickedArray = [];
   $: lines = {
-    leftToRight: [1, 2, 3],
-    topToBottom: ["a", "b", "c"],
-    diagonalDownLeft: ["x", "y", "z"],
-    diagonalDownRight: ["a1", "a2", "a3"]
+    'leftToRight': {},
+    'topToBottom': {},
+    'diagonalDownLeft': {},
+    'diagonalDownRight': {},
   };
+  $: numberOfPlayers = 2;
+  $: players = [
+    {
+      id: 0,
+      name: "Kaya",
+      moves: 0
+    },
+    {
+      id: 1,
+      name: "Mike",
+      moves: 0
+    }
+  ];
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
+    localStorage.setItem("gameboard", "");
   });
 
   function triggerGameBoardUpdate(e) {
@@ -58,54 +76,42 @@
       });
     });
     createGameArrays();
-    // tallyTopToBottom();
-    // tallyDiagonalDownLeft();
-    // createGameArrays()
-    // countPoints()
+    localStorage.setItem(
+      "gameboard",
+      JSON.stringify(gameboardMappedLeftToRight)
+    );
   }
 
-  // countPointsIn(line)
-  // makeLineFrom(direction, row, column)
-  // nextSquareFrom(row, column)
-
-  function countPointsIn(line) {
-    // makeLinesFrom(diagonalDownRight, rows.length, 0);
+  function test() {
+    // let button = document.getElementById('test-scoring-button')
+    console.log(
+      "TEST --------------------------------------------------------------------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    );
+    testValue = lastClicked;
   }
 
   function createGameArrays() {
-    // these should be objects with starting point and pattern info contained within, pass a single argument to makeLinesFrom
     let leftToRight = {
-      id: 1,
-      startingPoint: { row: rows, column: 0 },
-      pattern: { row: +1, column: +1 }
+      id: 1
     };
     let topToBottom = {
-      id: 2,
-      startingPoint: { row: rows, column: 0 },
-      pattern: { row: +1, column: +1 }
+      id: 2
     };
     let diagonalDownRight = {
-      id: 3,
-      startingPoint: { row: rows, column: 0 },
-      pattern: { row: +1, column: +1 }
+      id: 3
     };
     let diagonalDownLeft = {
-      id: 4,
-      startingPoint: { row: rows, column: columns },
-      pattern: { row: +1, column: -1 }
+      id: 4
     };
     makeLinesFrom(leftToRight);
-    makeLinesFrom(topToBottom);  
+    makeLinesFrom(topToBottom);
     makeLinesFrom(diagonalDownRight);
     makeLinesFrom(diagonalDownLeft);
   }
 
   function makeLinesFrom(direction) {
-    console.log(
-      `makeLinesFrom(direction): startingPoint ${direction.startingPoint}, pattern ${direction.pattern}`
-    );
-    let start, pattern, newLine;
-    let theseLines = [];
+    let start, pattern = {}
+    let theseLines = [], newLine = []
 
     if (direction.id == 1) {
       console.log(" ************ LeftToRight ********************");
@@ -118,7 +124,7 @@
         start.row++;
         theseLines.push(newLine);
       }
-      lines.leftToRight = theseLines
+      lines.leftToRight = theseLines;
     }
 
     if (direction.id == 2) {
@@ -132,12 +138,8 @@
         start.column++;
         theseLines.push(newLine);
       }
-      lines.topToBottom = theseLines
+      lines.topToBottom = theseLines;
     }
-
-    // *********************************************
-    // ************ diagonalDownRight ********************
-    //  ***********************************************
 
     if (direction.id == 3) {
       console.log(" ************ diagonalDownRight ********************");
@@ -159,7 +161,10 @@
         start.column++;
         theseLines.push(newLine);
       }
-      lines.diagonalDownRight = theseLines
+      console.log(`typeof theseLines structure 1`, typeof theseLines)
+      console.log(`typeof diagonalDownRight structure 1`, typeof lines.diagonalDownRight)
+      lines.diagonalDownRight.array = theseLines;
+      console.log(`typeof diagonalDownRight structure 2`, typeof lines.diagonalDownRight.array)
     }
 
     if (direction.id == 4) {
@@ -181,64 +186,35 @@
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
       }
-      lines.diagonalDownLeft = theseLines
+      lines.diagonalDownLeft = theseLines;
     }
   }
 
-  function makeLineFrom(startingPoint, pattern) {
-    console.log(`makeLineFrom(direction.startingPoint, direction.pattern) calls nextSquareFrom(
-      startingPoint.row,
-      startingPoint.column,
-      pattern.row,
-      pattern.column
-    )`);
+  function makeLineFrom(start, pattern) {
     let line = [];
-
     let nextLine = nextSquareFrom(
-      startingPoint.row,
-      startingPoint.column,
+      start.row,
+      start.column,
       pattern.row,
       pattern.column,
       line
     );
-    // line.push(nextSquareFrom(
-    //   startingPoint.row,
-    //   startingPoint.column,
-    //   pattern.row,
-    //   pattern.column,
-    //   line
-    // ))
     return nextLine;
-
-    //  nextLineFrom(startingPoint.row, startingPoint.column, pattern.row, pattern.column)
-    // return [];
   }
 
   function nextSquareFrom(row, column, rowChange, columnChange, line) {
     line = [...line, { row: row, column: column }];
-    console.log(`nextSquareFrom opening, line array var ${line}`);
-
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
     let nextSquare = { row: nextRow, column: nextColumn };
 
     if (nextRow >= rows) {
-      console.log(
-        `   ---   test nextRow ${nextRow} >= than gameboard rows ${rows}`
-      );
       return line;
     }
     if (nextColumn >= columns || nextColumn < 0) {
-      console.log(
-        `   ---   test nextColumn ${nextColumn} >= gameboard columns ${columns} OR || <= 0`
-      );
       return line;
     }
-    console.log(
-      `nextSquareFrom calls itself recursively with nextRow ${nextRow} nextColumn ${nextColumn}`
-    );
 
-    console.log(`nextSquareFrom before recurse, line array var ${line}`);
     nextSquare = nextSquareFrom(
       nextRow,
       nextColumn,
@@ -284,7 +260,6 @@
           `gameboardMappedLeftToRight[rowNum]`,
           gameboardMappedLeftToRight[rowNum]
         );
-        // gameboardMappedLeftToRight[rowNum].push(`{"Col": ${x}, "player":}`)
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
 
@@ -300,7 +275,7 @@
     move["move"] = moveNumber;
     move["squareId"] = square.id;
     move["clickCount"] = clickCount;
-    move["player"] = currentPlayer;
+    move["player"] = currentPlayer.id;
 
     if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
       console.log(
@@ -368,21 +343,66 @@
     // console.log(square);
   }
 
+  function removeFromScoringArray(square) {
+    let row = square.id[1]
+    let column = square.id[3]
+    tickedArray = tickedArray.filter(function(obj) {
+      console.log(`obj: `, obj)
+      console.log(`row: `, row)
+      console.log(`column: `, column)
+      console.log(`typeof obj: `,typeof obj)
+      console.log(`typeof  row: `,typeof row)
+      console.log(`typeof  column: `,typeof column)
+      return obj.row !== row && obj.column !== column
+    })
+  }
+
+  function addToScoringArray(square) {
+    let id = square.id;
+    let row = id[1];
+    let column = id[3];
+    console.log(`extracting coordinates of click: ${row} ${column}`);
+    lastClicked = {
+      row: row,
+      column: column,
+      playerId: currentPlayer.id,
+      playerName: currentPlayer.name
+    };
+    tickedArray.push(lastClicked)
+    console.log(`tickedArray `, tickedArray)
+    console.log(typeof tickedArray)
+    console.log(typeof lines)
+    console.log(typeof lines.diagonalDownRight)
+    tickedArray.forEach(cell => {
+      console.log(cell.row, cell.column, cell.playerName)
+    })
+    // lines.diagonalDownRight.forEach(line => {
+    //   console.log(typeof line)
+    //   console.dir(line)
+    //   let result = line.filter(cell => {
+    //   return (cell.row == row && cell.column == column)
+    // })
+    // })
+    // console.log(`filtered result: `, result)
+  }
+
   function tickThis(square) {
     console.log("tickThis(square)");
     square.classList.add("ticked");
-
+    addToScoringArray(square);
     square.dataset.ticked = true;
 
-    if (currentPlayer == 0) {
-      console.log(`currentPlayer == 0`);
+    if (currentPlayer.id == 0) {
+      console.log(`currentPlayer.id == 0`);
       square.setAttribute("data-marker", "X");
-      square.setAttribute("player", 0);
+      square.setAttribute("player-id", currentPlayer.id);
+      square.setAttribute("player-name", currentPlayer.name);
       square.style = "--custom-bg: #abf";
       // square.setAttribute("data-background-color", "rgba(255, 150, 150, 0.75)");
     } else {
       square.setAttribute("data-marker", "O");
-      square.setAttribute("player", 1);
+      square.setAttribute("player-id", currentPlayer.id);
+      square.setAttribute("player-name", currentPlayer.name);
       square.style = "--custom-bg: #fab";
       // square.setAttribute("data-background-color", "rgba(150, 255, 150, 0.75)");
     }
@@ -395,6 +415,9 @@
     square.classList.remove("ticked");
     square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
     square.dataset.ticked = false;
+    square.removeAttribute("player-id");
+    square.removeAttribute("player-name");
+    removeFromScoringArray(square)
     movesRemaining++;
   }
 
@@ -405,13 +428,15 @@
       gameboard.classList.remove("player-change");
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
-    playerIndicator.classList.remove(`player-${currentPlayer}`);
+    playerIndicator.classList.remove(`player-${currentPlayer.id}`);
 
-    currentPlayer == 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+    currentPlayer.id == 0
+      ? (currentPlayer = players[1])
+      : (currentPlayer = players[0]);
     movesRemaining = movesPerTurn;
 
     console.log(`playerIndicator`, playerIndicator);
-    playerIndicator.classList.add(`player-${currentPlayer}`);
+    playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
 
   function setWidthByChars(e) {
@@ -621,7 +646,7 @@ Line: {index + 1} | Squares:
 {lines.diagonalDownLeft} {lines.diagonalDownRight} -->
 <div class="main">
   <div class="player-indicator player-0">
-    <h2 class="player-indicator-heading">Player {currentPlayer}</h2>
+    <h2 class="player-indicator-heading">Player {currentPlayer.name}</h2>
     <h2 class="player-indicator-heading">Turn Moves: {movesRemaining}</h2>
     <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
 
@@ -630,6 +655,8 @@ Line: {index + 1} | Squares:
       <button id="restart-game-button" on:click={countPoints}>
         Tally points
       </button>
+      <button id="test-scoring-button" on:click={test}>TEST</button>
+      {lastClicked.row} {lastClicked.column} {currentPlayer.name}
       <button id="restart-game-button">Restart game</button>
       <button id="save-game-button">Save game</button>
     </div>
