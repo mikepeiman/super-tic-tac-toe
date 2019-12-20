@@ -41,16 +41,22 @@
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
-    localStorage.setItem("gameboard", "");
   });
 
-  function triggerGameBoardUpdate(e) {
+  function reset() {
+    localStorage.setItem("gameboard", "");
+    localStorage.setItem("gameHistory", "");
+    localStorage.setItem("gameboardMapped", "");
     columns = document.getElementById("columns").value;
     rows = document.getElementById("rows").value;
     size = document.getElementById("size").value;
     gutter = document.getElementById("gutter").value;
-    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     renderGameBoard(rows, columns, size, gutter);
+  }
+
+  function triggerGameBoardUpdate(e) {
+    reset();
+    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     localStorage.setItem("gameHistory", []);
   }
 
@@ -65,29 +71,27 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
-    gameHistory.forEach((turn, index) => {
-      console.log(`******* COUNT POINTS ******** turn: `, turn);
-      turn.forEach(move => {
-        console.log(`******* COUNT POINTS ******** move: `, move);
-        let square = document.getElementById(`${move.squareId}`);
-        console.log(`square element: `, square);
-        let player = square.getAttribute("player");
-        console.log(`square owned by player: ${player}`);
-      });
+          console.log(`******* COUNT POINTS ******** ******* ************ *********** ******* ************`);
+    gameboardMapped.forEach(move => {
+        move.player ? console.log(`square ${move.id} owned by player: ${move.player.name}`) : console.log(`no move here ${move.id}`)
+        console.log(`move: `, move)
+
     });
-    createGameArrays();
+            // let id = `R${row}C${column}`;
+    // let move = getPlayerFromCell(id)
+    // console.log(`move property id`, move.id)
+    // console.log(`nextSquareFrom, move `, move)
+
+    
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
   }
 
   function test() {
-    // let button = document.getElementById('test-scoring-button')
     console.log(
       "TEST --------------------------------------------------------------------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     );
 
-    let cellsToFilterOut = [`R${lastTicked.row}C${lastTicked.column}`];
     gameboardMapped.forEach(obj => {
-      // console.log(`row ${obj.row} column ${obj.column}`)
       console.log(`gameboardMapped.forEach: R${obj.row}C${obj.col}`);
       console.log(obj);
     });
@@ -109,7 +113,6 @@
 
   function setPlayerMove(squareId) {
     gameboardMapped.forEach(move => {
-      // console.log(`setPlayerMove mapped move`, move);
       if (move.id == squareId) {
         console.log(`if(move.id == squareId) ${squareId}`);
         move.player = {
@@ -118,14 +121,12 @@
         };
         move.move = moveNumber;
       }
-      console.log(`post-if loop setPlayerMove mapped move`, move);
     });
-    localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
+    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
   function removePlayerMove(squareId) {
     gameboardMapped.forEach(move => {
-      // console.log(`REMOVE removePlayerMove mapped move`, move);
       if (move.id == squareId) {
         console.log(`if(move.id == squareId) ${squareId}`);
         move.player = {
@@ -135,24 +136,22 @@
         move.move = null;
       }
       console.log(`post-if loop REMOVE removePlayerMove mapped move`, move);
-      localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
+      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     });
   }
 
   function getPlayerFromCell(id) {
-    let filtered = gameboardMapped;
-    gameHistory.forEach(turnSet => {
-      turnSet.forEach(cell => {
-        console.log(`cell.squareId: `, cell.squareId);
-        filtered = filtered.filter(square => {
-          console.log(`square.id: `, square.id);
-          return !(cell.squareId == square.id);
-        });
-      });
+    console.log(`getPlayerFromCell called for ${id}`)
+    gameboardMapped.forEach(move => {
+      // console.log(`getPlayerFromCell move, move.id ${move.id}`, move)
+      if (move.id == id) {
+        console.log(`getPlayerFromCell move, move.id ${move.id} MATCH MATCH MATCH MATCH MATCH MATCH MATCH`)
+        return move
+      }
     });
   }
 
-  function createGameArrays() {
+  function createDirectionArrays() {
     let leftToRight = {
       id: 1
     };
@@ -169,6 +168,10 @@
     makeLinesFrom(topToBottom);
     makeLinesFrom(diagonalDownRight);
     makeLinesFrom(diagonalDownLeft);
+    localStorage.setItem('diagonalDownLeft', JSON.stringify(lines.diagonalDownLeft))
+    localStorage.setItem('diagonalDownRight', JSON.stringify(lines.diagonalDownRight))
+    localStorage.setItem('topToBottom', JSON.stringify(lines.topToBottom))
+    localStorage.setItem('leftToRight', JSON.stringify(lines.leftToRight))
   }
 
   function makeLinesFrom(direction) {
@@ -260,9 +263,9 @@
     }
   }
 
-  function makeLineFrom(start, pattern) {
+  async function makeLineFrom(start, pattern) {
     let line = [];
-    let nextLine = nextSquareFrom(
+    let nextLine = await nextSquareFrom(
       start.row,
       start.column,
       pattern.row,
@@ -272,14 +275,14 @@
     return nextLine;
   }
 
-  function nextSquareFrom(row, column, rowChange, columnChange, line) {
+  async function nextSquareFrom(row, column, rowChange, columnChange, line) {
     // the following line is crucial to refactoring to use the gameboardMapped and gameHistory arrays to build our scoring arrays
     // I'll need to replace that de novo object with a copy of the object from gameboardMapped
 
     // also, need to add a function to complete turn (and execute associated functions) with fewer than assigned moves per turn,
     // if it is the last move of the game. Can check length of gameHistory against gameboardMapped.
-    let id = `R${row}C${column}`;
-    console.log(`nextSquareFrom R${row}C${column} ${id}`);
+
+    // console.log(`nextSquareFrom R${row}C${column} ${id}`);
 
     line = [...line, { row: row, column: column }];
     let nextRow = row + rowChange;
@@ -339,6 +342,7 @@
         square.addEventListener("click", () => playMove(event));
       }
     }
+    createDirectionArrays();
   }
 
   function setTurnHistory(square) {
@@ -412,62 +416,11 @@
       moveNumber++;
       setTurnHistory(square);
       tickThis(square);
-      setPlayerMove(square.id)
+      setPlayerMove(square.id);
       movesRemaining--;
     }
     // console.log("playMove call from square click");
     // console.log(square);
-  }
-
-  function removeFromScoringArray(square) {
-    let row = square.id[1];
-    let column = square.id[3];
-    tickedArray = tickedArray.filter(function(obj) {
-      console.log(`obj: `, obj);
-      console.log(`row: `, row);
-      console.log(`column: `, column);
-      // console.log(`typeof obj: `,typeof obj)
-      // console.log(`typeof obj.row: `,typeof obj.row)
-      // console.log(`typeof row: `,typeof row)
-      // console.log(`typeof obj.column: `,typeof obj.column)
-      // console.log(`typeof column: `,typeof column)
-      console.log(`obj.row !== row`, obj.row !== row);
-      console.log(`obj.column !== column`, obj.column !== column);
-      console.log(
-        `obj.row !== row && obj.column !== column`,
-        obj.row !== row && obj.column !== column
-      );
-      return !(obj.row !== row && obj.column !== column);
-    });
-  }
-
-  function addToScoringArray(square) {
-    let id = square.id;
-    let row = id[1];
-    let column = id[3];
-    console.log(`extracting coordinates of click: ${row} ${column}`);
-    lastTicked = {
-      row: row,
-      column: column,
-      playerId: currentPlayer.id,
-      playerName: currentPlayer.name
-    };
-    tickedArray.push(lastTicked);
-    console.log(`tickedArray `, tickedArray);
-    console.log(typeof tickedArray);
-    console.log(typeof lines);
-    console.log(typeof lines.diagonalDownRight);
-    tickedArray.forEach(cell => {
-      console.log(cell.row, cell.column, cell.playerName);
-    });
-    // lines.diagonalDownRight.forEach(line => {
-    //   console.log(typeof line)
-    //   console.dir(line)
-    //   let result = line.filter(cell => {
-    //   return (cell.row == row && cell.column == column)
-    // })
-    // })
-    // console.log(`filtered result: `, result)
   }
 
   function tickThis(square) {
@@ -745,12 +698,11 @@ Line: {index + 1} | Squares:
 
     <div class="buttons-wrapper">
       <button id="next-turn-button">End turn</button>
-      <button id="restart-game-button" on:click={countPoints}>
+      <button id="tally-game-button" on:click={countPoints}>
         Tally points
       </button>
       <button id="test-scoring-button" on:click={test}>TEST</button>
-      {lastTicked.row} {lastTicked.column} {currentPlayer.name}
-      <button id="restart-game-button">Restart game</button>
+      <button id="reset-game-button" on:click={reset}>Reset game</button>
       <button id="save-game-button">Save game</button>
     </div>
   </div>
