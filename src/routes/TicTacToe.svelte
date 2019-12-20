@@ -107,6 +107,51 @@
     console.log(`filtered `, gameHistory, filtered);
   }
 
+  function setPlayerMove(squareId) {
+    gameboardMapped.forEach(move => {
+      // console.log(`setPlayerMove mapped move`, move);
+      if (move.id == squareId) {
+        console.log(`if(move.id == squareId) ${squareId}`);
+        move.player = {
+          id: currentPlayer.id,
+          name: currentPlayer.name
+        };
+        move.move = moveNumber;
+      }
+      console.log(`post-if loop setPlayerMove mapped move`, move);
+    });
+    localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
+  }
+
+  function removePlayerMove(squareId) {
+    gameboardMapped.forEach(move => {
+      // console.log(`REMOVE removePlayerMove mapped move`, move);
+      if (move.id == squareId) {
+        console.log(`if(move.id == squareId) ${squareId}`);
+        move.player = {
+          id: null,
+          name: null
+        };
+        move.move = null;
+      }
+      console.log(`post-if loop REMOVE removePlayerMove mapped move`, move);
+      localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
+    });
+  }
+
+  function getPlayerFromCell(id) {
+    let filtered = gameboardMapped;
+    gameHistory.forEach(turnSet => {
+      turnSet.forEach(cell => {
+        console.log(`cell.squareId: `, cell.squareId);
+        filtered = filtered.filter(square => {
+          console.log(`square.id: `, square.id);
+          return !(cell.squareId == square.id);
+        });
+      });
+    });
+  }
+
   function createGameArrays() {
     let leftToRight = {
       id: 1
@@ -233,7 +278,9 @@
 
     // also, need to add a function to complete turn (and execute associated functions) with fewer than assigned moves per turn,
     // if it is the last move of the game. Can check length of gameHistory against gameboardMapped.
-    
+    let id = `R${row}C${column}`;
+    console.log(`nextSquareFrom R${row}C${column} ${id}`);
+
     line = [...line, { row: row, column: column }];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
@@ -300,8 +347,10 @@
     move["move"] = moveNumber;
     move["squareId"] = square.id;
     move["clickCount"] = clickCount;
-    move["player"] = currentPlayer.id;
-
+    move["player"] = {
+      id: currentPlayer.id,
+      name: currentPlayer.name
+    };
     if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
       console.log(
         `turnHistory already contains this move - that means we should remove it!`
@@ -345,6 +394,7 @@
       if (!square.hasAttribute("locked")) {
         setTurnHistory(square);
         untickThis(square);
+        removePlayerMove(square.id);
         moveNumber--;
       } else {
         console.log(`It seems you tried to untick a locked move!`);
@@ -355,13 +405,14 @@
         setTurnHistory(square);
         setGameHistory();
         tickThis(square);
+        setPlayerMove(square.id);
         playerChange();
         return;
       }
       moveNumber++;
       setTurnHistory(square);
       tickThis(square);
-
+      setPlayerMove(square.id)
       movesRemaining--;
     }
     // console.log("playMove call from square click");
