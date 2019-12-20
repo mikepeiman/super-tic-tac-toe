@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   $: testValue = "test value";
-  $: lastClicked = {};
+  $: lastTicked = {};
   $: rows = 5;
   $: columns = 5;
   $: size = 24;
@@ -16,13 +16,13 @@
   $: turnHistory = [];
   $: clickCount = 0;
   $: moveNumber = 0;
-  $: gameboardMappedLeftToRight = [];
+  $: gameboardMapped = [];
   $: tickedArray = [];
   $: lines = {
-    'leftToRight': {},
-    'topToBottom': {},
-    'diagonalDownLeft': {},
-    'diagonalDownRight': {},
+    leftToRight: {},
+    topToBottom: {},
+    diagonalDownLeft: {},
+    diagonalDownRight: {}
   };
   $: numberOfPlayers = 2;
   $: players = [
@@ -76,10 +76,7 @@
       });
     });
     createGameArrays();
-    localStorage.setItem(
-      "gameboard",
-      JSON.stringify(gameboardMappedLeftToRight)
-    );
+    localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
   }
 
   function test() {
@@ -87,7 +84,19 @@
     console.log(
       "TEST --------------------------------------------------------------------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     );
-    testValue = lastClicked;
+    
+    let testId = `R${lastTicked.row}C${lastTicked.column}`;
+    gameboardMapped.forEach(obj => {
+      // console.log(`row ${obj.row} column ${obj.column}`)
+      console.log(`gameboardMapped.forEach: R${obj.row}C${obj.col}`);
+      console.log(obj);
+    });
+    // console.log(`typeof gameboardMapped`,typeof gameboardMapped)
+    // console.log(`Object.prototype.toString.call(gameboardMapped) == '[object Array]';`, Object.prototype.toString.call(gameboardMapped) == '[object Array]')
+    let filtered = gameboardMapped.filter(obj => {
+      return !(testId == `R${obj.row}C${obj.col}`);
+    });
+    console.log(`filtered ${testId} `, filtered);
   }
 
   function createGameArrays() {
@@ -110,8 +119,10 @@
   }
 
   function makeLinesFrom(direction) {
-    let start, pattern = {}
-    let theseLines = [], newLine = []
+    let start,
+      pattern = {};
+    let theseLines = [],
+      newLine = [];
 
     if (direction.id == 1) {
       console.log(" ************ LeftToRight ********************");
@@ -161,10 +172,16 @@
         start.column++;
         theseLines.push(newLine);
       }
-      console.log(`typeof theseLines structure 1`, typeof theseLines)
-      console.log(`typeof diagonalDownRight structure 1`, typeof lines.diagonalDownRight)
+      console.log(`typeof theseLines structure 1`, typeof theseLines);
+      console.log(
+        `typeof diagonalDownRight structure 1`,
+        typeof lines.diagonalDownRight
+      );
       lines.diagonalDownRight.array = theseLines;
-      console.log(`typeof diagonalDownRight structure 2`, typeof lines.diagonalDownRight.array)
+      console.log(
+        `typeof diagonalDownRight structure 2`,
+        typeof lines.diagonalDownRight.array
+      );
     }
 
     if (direction.id == 4) {
@@ -226,42 +243,33 @@
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
+    gameboardMapped = []
     let gameboard = document.getElementById("game-board");
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
     console.log(`rows: ${rows} columns: ${columns}`);
     for (let rowNum = 0; rowNum < rows; rowNum++) {
-      
+      console.log(`row: ${rowNum}`);
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
-      gameboardMappedLeftToRight.push([]);
-      console.log(`typeof gameboardMappedLeftToRight`, typeof gameboardMappedLeftToRight)
-      console.log(gameboardMappedLeftToRight);
+      // gameboardMapped.push([]);
 
-      // console.log(`inner rows loop ${i + 1}`);
       for (let colNum = 0; colNum < columns; colNum++) {
-        // console.log(`inner columns loop ${x + 1}, gutter ${gutter}`);
+        console.log(`row: ${rowNum} column: ${colNum}`);
         let square = document.createElement("div");
         square.classList = "game-square";
-        square.style = "--custom-bg: rgba(150, 150, 255, 0.75)"; // ("data-background-color", "#fff");
+        square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
-        square.id = `R${rowNum + 1}C${colNum + 1}`;
+        square.id = `R${rowNum}C${colNum}`;
         let cell = {};
         cell["row"] = rowNum;
         cell["col"] = colNum;
         cell["player"] = null;
-        gameboardMappedLeftToRight[rowNum] = [
-          ...gameboardMappedLeftToRight[rowNum],
-          cell
-        ];
-        // console.log(
-        //   `gameboardMappedLeftToRight[rowNum]`,
-        //   gameboardMappedLeftToRight[rowNum]
-        // );
+        gameboardMapped = [...gameboardMapped, cell];
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
 
@@ -346,22 +354,25 @@
   }
 
   function removeFromScoringArray(square) {
-    let row = square.id[1]
-    let column = square.id[3]
+    let row = square.id[1];
+    let column = square.id[3];
     tickedArray = tickedArray.filter(function(obj) {
-      console.log(`obj: `, obj)
-      console.log(`row: `, row)
-      console.log(`column: `, column)
+      console.log(`obj: `, obj);
+      console.log(`row: `, row);
+      console.log(`column: `, column);
       // console.log(`typeof obj: `,typeof obj)
       // console.log(`typeof obj.row: `,typeof obj.row)
       // console.log(`typeof row: `,typeof row)
       // console.log(`typeof obj.column: `,typeof obj.column)
       // console.log(`typeof column: `,typeof column)
-      console.log(`obj.row !== row`, obj.row !== row)
-      console.log(`obj.column !== column`, obj.column !== column)
-      console.log(`obj.row !== row && obj.column !== column`,obj.row !== row && obj.column !== column)
-      return !(obj.row !== row && obj.column !== column)
-    })
+      console.log(`obj.row !== row`, obj.row !== row);
+      console.log(`obj.column !== column`, obj.column !== column);
+      console.log(
+        `obj.row !== row && obj.column !== column`,
+        obj.row !== row && obj.column !== column
+      );
+      return !(obj.row !== row && obj.column !== column);
+    });
   }
 
   function addToScoringArray(square) {
@@ -369,20 +380,20 @@
     let row = id[1];
     let column = id[3];
     console.log(`extracting coordinates of click: ${row} ${column}`);
-    lastClicked = {
+    lastTicked = {
       row: row,
       column: column,
       playerId: currentPlayer.id,
       playerName: currentPlayer.name
     };
-    tickedArray.push(lastClicked)
-    console.log(`tickedArray `, tickedArray)
-    console.log(typeof tickedArray)
-    console.log(typeof lines)
-    console.log(typeof lines.diagonalDownRight)
+    tickedArray.push(lastTicked);
+    console.log(`tickedArray `, tickedArray);
+    console.log(typeof tickedArray);
+    console.log(typeof lines);
+    console.log(typeof lines.diagonalDownRight);
     tickedArray.forEach(cell => {
-      console.log(cell.row, cell.column, cell.playerName)
-    })
+      console.log(cell.row, cell.column, cell.playerName);
+    });
     // lines.diagonalDownRight.forEach(line => {
     //   console.log(typeof line)
     //   console.dir(line)
@@ -395,8 +406,17 @@
 
   function tickThis(square) {
     console.log("tickThis(square)");
+    let id = square.id;
+    let row = id[1];
+    let column = id[3];
+    lastTicked = {
+      row: row,
+      column: column,
+      playerId: currentPlayer.id,
+      playerName: currentPlayer.name
+    };
     square.classList.add("ticked");
-    addToScoringArray(square);
+    // addToScoringArray(square);
     square.dataset.ticked = true;
 
     if (currentPlayer.id == 0) {
@@ -424,7 +444,7 @@
     square.dataset.ticked = false;
     square.removeAttribute("player-id");
     square.removeAttribute("player-name");
-    removeFromScoringArray(square)
+    // removeFromScoringArray(square)
     movesRemaining++;
   }
 
@@ -663,7 +683,7 @@ Line: {index + 1} | Squares:
         Tally points
       </button>
       <button id="test-scoring-button" on:click={test}>TEST</button>
-      {lastClicked.row} {lastClicked.column} {currentPlayer.name}
+      {lastTicked.row} {lastTicked.column} {currentPlayer.name}
       <button id="restart-game-button">Restart game</button>
       <button id="save-game-button">Save game</button>
     </div>
