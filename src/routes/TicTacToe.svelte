@@ -3,8 +3,8 @@
 
   $: testValue = "test value";
   $: lastTicked = {};
-  $: rows = 5;
-  $: columns = 5;
+  $: rows = 2;
+  $: columns = 3;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = players[0];
@@ -84,8 +84,8 @@
     console.log(
       "TEST --------------------------------------------------------------------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     );
-    
-    let testId = `R${lastTicked.row}C${lastTicked.column}`;
+
+    let cellsToFilterOut = [`R${lastTicked.row}C${lastTicked.column}`];
     gameboardMapped.forEach(obj => {
       // console.log(`row ${obj.row} column ${obj.column}`)
       console.log(`gameboardMapped.forEach: R${obj.row}C${obj.col}`);
@@ -93,10 +93,18 @@
     });
     // console.log(`typeof gameboardMapped`,typeof gameboardMapped)
     // console.log(`Object.prototype.toString.call(gameboardMapped) == '[object Array]';`, Object.prototype.toString.call(gameboardMapped) == '[object Array]')
-    let filtered = gameboardMapped.filter(obj => {
-      return !(testId == `R${obj.row}C${obj.col}`);
+    let filtered = gameboardMapped;
+    gameHistory.forEach(turnSet => {
+      turnSet.forEach(cell => {
+        console.log(`cell.squareId: `, cell.squareId);
+        filtered = filtered.filter(square => {
+          console.log(`square.id: `, square.id);
+          return !(cell.squareId == square.id);
+        });
+      });
     });
-    console.log(`filtered ${testId} `, filtered);
+
+    console.log(`filtered `, gameHistory, filtered);
   }
 
   function createGameArrays() {
@@ -243,7 +251,7 @@
   }
 
   function renderGameBoard(rows, columns, size, gutter) {
-    gameboardMapped = []
+    gameboardMapped = [];
     let gameboard = document.getElementById("game-board");
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
@@ -266,6 +274,7 @@
         square.style.height = size + "px";
         square.id = `R${rowNum}C${colNum}`;
         let cell = {};
+        cell["id"] = `R${rowNum}C${colNum}`;
         cell["row"] = rowNum;
         cell["col"] = colNum;
         cell["player"] = null;
