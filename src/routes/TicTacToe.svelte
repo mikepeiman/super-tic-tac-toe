@@ -22,7 +22,7 @@
     leftToRight: [],
     topToBottom: [],
     diagonalDownLeft: [],
-    diagonalDownRight: [],
+    diagonalDownRight: []
   };
   $: numberOfPlayers = 2;
   $: players = [
@@ -92,62 +92,66 @@
 
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
     let leftToRight = {
-      'name': 'leftToRight',
-      'lines': lines.leftToRight
-    }
-        let topToBottom = {
-      'name': 'topToBottom',
-      'lines': lines.topToBottom
-    }
-        let diagonalDownLeft = {
-      'name': 'diagonalDownLeft',
-      'lines': lines.diagonalDownLeft
-    }
-        let diagonalDownRight = {
-      'name': 'diagonalDownRight',
-      'lines': lines.diagonalDownRight
-    }
+      name: "leftToRight",
+      lines: lines.leftToRight
+    };
+    let topToBottom = {
+      name: "topToBottom",
+      lines: lines.topToBottom
+    };
+    let diagonalDownLeft = {
+      name: "diagonalDownLeft",
+      lines: lines.diagonalDownLeft
+    };
+    let diagonalDownRight = {
+      name: "diagonalDownRight",
+      lines: lines.diagonalDownRight
+    };
     players.forEach(player => {
       score(leftToRight, player);
       score(topToBottom, player);
       score(diagonalDownLeft, player);
       score(diagonalDownRight, player);
-    })
-
+    });
   }
 
   function score(direction, player) {
     // $: cellsToScore
 
-    let lines = []
-    let score = 0
-    let arr = direction.lines
+    let lines = [];
+    let score = 0;
+    let arr = direction.lines;
 
     arr.forEach((line, index) => {
-      console.log(`### Score ${player.name} direction ### ${direction.name}, line #${index}, line length ${line.length}`)
-      let count = 0
+      console.log(
+        `### Score ${player.name} direction ### ${direction.name}, line #${index}, line length ${line.length}`
+      );
+      let count = 0;
       line.forEach(cell => {
-        let p = getPlayerFromCell(cell.id)
-        console.log(`direction.forEach => line.forEach cell: player.name `, p.name)
-        console.log(`direction.forEach => line.forEach cell: player.id `, p.id)
-        if(p.name !== 'none' && p.id === player.id) {
-          count++
+        let p = getPlayerFromCell(cell.id);
+        console.log(
+          `direction.forEach => line.forEach cell: player.name `,
+          p.name
+        );
+        console.log(`direction.forEach => line.forEach cell: player.id `, p.id);
+        if (p.name !== "none" && p.id === player.id) {
+          count++;
         }
       });
-      lines.push(count)
+      lines.push(count);
     });
     lines.forEach(num => {
-      console.log(`count for player in this line: `, num)
-      let thisScore = numScore(num)
-      score += thisScore
-    })
-    console.log(`score of ... `, score)
+      console.log(`count for player in this line: `, num);
+      let thisScore = numScore(num);
+      score += thisScore;
+    });
+    console.log(`score of ... `, score);
   }
   function numScore(num) {
-    if(num >= cellsToScore) {
-      return (num - (cellsToScore - 1))
+    if (num >= cellsToScore) {
+      return num - (cellsToScore - 1);
     }
-    return 0
+    return 0;
   }
 
   function test() {
@@ -202,13 +206,13 @@
   }
 
   function getPlayerFromCell(id) {
-    let payload
+    let payload;
     gameboardMapped.forEach(move => {
       if (move.id == id) {
-        payload = move.player
+        payload = move.player;
       }
     });
-    return payload
+    return payload;
   }
 
   function createDirectionArrays() {
@@ -390,8 +394,8 @@
         cell["row"] = rowNum;
         cell["col"] = colNum;
         cell["player"] = {
-          'id': 'none',
-          'name': 'none'
+          id: "none",
+          name: "none"
         };
         gameboardMapped = [...gameboardMapped, cell];
         square.setAttribute("data-ticked", false);
@@ -754,6 +758,17 @@
       <button id="test-scoring-button" on:click={test}>TEST</button>
       <button id="reset-game-button" on:click={reset}>Reset game</button>
       <button id="save-game-button">Save game</button>
+    </div>
+  </div>
+  <div class="player-indicator player-0">
+    <h2 class="player-indicator-heading">Points</h2>
+
+    <div class="buttons-wrapper">
+      <div class="dir-1">
+        {#each lines.leftToRight as line}
+          {#each line as point}{point.player.name}{/each}
+        {/each}
+      </div>
     </div>
   </div>
 
