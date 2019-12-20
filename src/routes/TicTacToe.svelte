@@ -8,7 +8,7 @@
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = players[0];
-  $: movesPerTurn = 2;
+  $: movesPerTurn = 1;
   $: cellsToScore = 3;
   $: movesRemaining = 0;
   $: turn = 0;
@@ -85,25 +85,72 @@
     // console.log(`move property id`, move.id)
     // console.log(`nextSquareFrom, move `, move)
 
+    // leftToRight: [],
+    // topToBottom: [],
+    // diagonalDownLeft: [],
+    // diagonalDownRight: [],
+
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-    let NW_SE = lines.diagonalDownRight
-    score(NW_SE);
+    let leftToRight = {
+      'name': 'leftToRight',
+      'lines': lines.leftToRight
+    }
+        let topToBottom = {
+      'name': 'topToBottom',
+      'lines': lines.topToBottom
+    }
+        let diagonalDownLeft = {
+      'name': 'diagonalDownLeft',
+      'lines': lines.diagonalDownLeft
+    }
+        let diagonalDownRight = {
+      'name': 'diagonalDownRight',
+      'lines': lines.diagonalDownRight
+    }
+    players.forEach(player => {
+      score(leftToRight, player);
+      score(topToBottom, player);
+      score(diagonalDownLeft, player);
+      score(diagonalDownRight, player);
+    })
+
   }
 
-  function score(direction) {
-    direction.forEach(line => {
+  function score(direction, player) {
+    // $: cellsToScore
+
+    let lines = []
+    let score = 0
+    let arr = direction.lines
+
+    arr.forEach((line, index) => {
+      console.log(`### Score ${player.name} direction ### ${direction.name}, line #${index}, line length ${line.length}`)
+      let count = 0
       line.forEach(cell => {
-        let player = getPlayerFromCell(cell.id)
-        console.log(`player.name `, player.name)
+        let p = getPlayerFromCell(cell.id)
+        console.log(`direction.forEach => line.forEach cell: player.name `, p.name)
+        console.log(`direction.forEach => line.forEach cell: player.id `, p.id)
+        if(p.name !== 'none' && p.id === player.id) {
+          count++
+        }
       });
+      lines.push(count)
     });
+    lines.forEach(num => {
+      console.log(`count for player in this line: `, num)
+      let thisScore = numScore(num)
+      score += thisScore
+    })
+    console.log(`score of ... `, score)
+  }
+  function numScore(num) {
+    if(num >= cellsToScore) {
+      return (num - (cellsToScore - 1))
+    }
+    return 0
   }
 
   function test() {
-    console.log(
-      "TEST --------------------------------------------------------------------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-    );
-
     gameboardMapped.forEach(obj => {
       console.log(`gameboardMapped.forEach: R${obj.row}C${obj.col}`);
       console.log(obj);
@@ -156,13 +203,8 @@
 
   function getPlayerFromCell(id) {
     let payload
-    console.log(`getPlayerFromCell called for ${id}`);
     gameboardMapped.forEach(move => {
-      // console.log(`getPlayerFromCell move, move.id ${move.id}`, move)
       if (move.id == id) {
-        console.log(
-          `getPlayerFromCell move, move.id ${move.id} MATCH MATCH MATCH MATCH MATCH MATCH MATCH`
-        );
         payload = move.player
       }
     });
