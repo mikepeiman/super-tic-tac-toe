@@ -3,7 +3,7 @@
 
   $: testValue = "test value";
   $: lastTicked = {};
-  $: rows = 2;
+  $: rows = 3;
   $: columns = 3;
   $: size = 24;
   $: gutter = 0;
@@ -228,6 +228,12 @@
   }
 
   function nextSquareFrom(row, column, rowChange, columnChange, line) {
+    // the following line is crucial to refactoring to use the gameboardMapped and gameHistory arrays to build our scoring arrays
+    // I'll need to replace that de novo object with a copy of the object from gameboardMapped
+
+    // also, need to add a function to complete turn (and execute associated functions) with fewer than assigned moves per turn,
+    // if it is the last move of the game. Can check length of gameHistory against gameboardMapped.
+    
     line = [...line, { row: row, column: column }];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
