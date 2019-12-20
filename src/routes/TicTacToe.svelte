@@ -19,10 +19,10 @@
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: lines = {
-    leftToRight: {},
-    topToBottom: {},
-    diagonalDownLeft: {},
-    diagonalDownRight: {}
+    leftToRight: [],
+    topToBottom: [],
+    diagonalDownLeft: [],
+    diagonalDownRight: [],
   };
   $: numberOfPlayers = 2;
   $: players = [
@@ -71,19 +71,32 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
-          console.log(`******* COUNT POINTS ******** ******* ************ *********** ******* ************`);
+    console.log(
+      `******* COUNT POINTS ******** ******* ************ *********** ******* ************`
+    );
     gameboardMapped.forEach(move => {
-        move.player ? console.log(`square ${move.id} owned by player: ${move.player.name}`) : console.log(`no move here ${move.id}`)
-        console.log(`move: `, move)
-
+      move.player
+        ? console.log(`square ${move.id} owned by player: ${move.player.name}`)
+        : console.log(`no move here ${move.id}`);
+      console.log(`move: `, move);
     });
-            // let id = `R${row}C${column}`;
+    // let id = `R${row}C${column}`;
     // let move = getPlayerFromCell(id)
     // console.log(`move property id`, move.id)
     // console.log(`nextSquareFrom, move `, move)
 
-    
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
+    let NW_SE = lines.diagonalDownRight
+    score(NW_SE);
+  }
+
+  function score(direction) {
+    direction.forEach(line => {
+      line.forEach(cell => {
+        let player = getPlayerFromCell(cell.id)
+        console.log(`player.name `, player.name)
+      });
+    });
   }
 
   function test() {
@@ -96,6 +109,7 @@
       console.log(obj);
     });
     // console.log(`typeof gameboardMapped`,typeof gameboardMapped)
+    // returns object
     // console.log(`Object.prototype.toString.call(gameboardMapped) == '[object Array]';`, Object.prototype.toString.call(gameboardMapped) == '[object Array]')
     let filtered = gameboardMapped;
     gameHistory.forEach(turnSet => {
@@ -141,14 +155,18 @@
   }
 
   function getPlayerFromCell(id) {
-    console.log(`getPlayerFromCell called for ${id}`)
+    let payload
+    console.log(`getPlayerFromCell called for ${id}`);
     gameboardMapped.forEach(move => {
       // console.log(`getPlayerFromCell move, move.id ${move.id}`, move)
       if (move.id == id) {
-        console.log(`getPlayerFromCell move, move.id ${move.id} MATCH MATCH MATCH MATCH MATCH MATCH MATCH`)
-        return move
+        console.log(
+          `getPlayerFromCell move, move.id ${move.id} MATCH MATCH MATCH MATCH MATCH MATCH MATCH`
+        );
+        payload = move.player
       }
     });
+    return payload
   }
 
   function createDirectionArrays() {
@@ -168,10 +186,16 @@
     makeLinesFrom(topToBottom);
     makeLinesFrom(diagonalDownRight);
     makeLinesFrom(diagonalDownLeft);
-    localStorage.setItem('diagonalDownLeft', JSON.stringify(lines.diagonalDownLeft))
-    localStorage.setItem('diagonalDownRight', JSON.stringify(lines.diagonalDownRight))
-    localStorage.setItem('topToBottom', JSON.stringify(lines.topToBottom))
-    localStorage.setItem('leftToRight', JSON.stringify(lines.leftToRight))
+    localStorage.setItem(
+      "diagonalDownLeft",
+      JSON.stringify(lines.diagonalDownLeft)
+    );
+    localStorage.setItem(
+      "diagonalDownRight",
+      JSON.stringify(lines.diagonalDownRight)
+    );
+    localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
+    localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
   }
 
   function makeLinesFrom(direction) {
@@ -228,16 +252,7 @@
         start.column++;
         theseLines.push(newLine);
       }
-      console.log(`typeof theseLines structure 1`, typeof theseLines);
-      console.log(
-        `typeof diagonalDownRight structure 1`,
-        typeof lines.diagonalDownRight
-      );
-      lines.diagonalDownRight.array = theseLines;
-      console.log(
-        `typeof diagonalDownRight structure 2`,
-        typeof lines.diagonalDownRight.array
-      );
+      lines.diagonalDownRight = theseLines;
     }
 
     if (direction.id == 4) {
@@ -263,9 +278,9 @@
     }
   }
 
-  async function makeLineFrom(start, pattern) {
+  function makeLineFrom(start, pattern) {
     let line = [];
-    let nextLine = await nextSquareFrom(
+    let nextLine = nextSquareFrom(
       start.row,
       start.column,
       pattern.row,
@@ -275,7 +290,7 @@
     return nextLine;
   }
 
-  async function nextSquareFrom(row, column, rowChange, columnChange, line) {
+  function nextSquareFrom(row, column, rowChange, columnChange, line) {
     // the following line is crucial to refactoring to use the gameboardMapped and gameHistory arrays to build our scoring arrays
     // I'll need to replace that de novo object with a copy of the object from gameboardMapped
 
@@ -284,7 +299,7 @@
 
     // console.log(`nextSquareFrom R${row}C${column} ${id}`);
 
-    line = [...line, { row: row, column: column }];
+    line = [...line, { id: `R${row}C${column}`, row: row, column: column }];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
     let nextSquare = { row: nextRow, column: nextColumn };
@@ -318,7 +333,6 @@
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
-      // gameboardMapped.push([]);
 
       for (let colNum = 0; colNum < columns; colNum++) {
         console.log(`row: ${rowNum} column: ${colNum}`);
@@ -333,7 +347,10 @@
         cell["id"] = `R${rowNum}C${colNum}`;
         cell["row"] = rowNum;
         cell["col"] = colNum;
-        cell["player"] = null;
+        cell["player"] = {
+          'id': 'none',
+          'name': 'none'
+        };
         gameboardMapped = [...gameboardMapped, cell];
         square.setAttribute("data-ticked", false);
         square.setAttribute("data-marker", "X");
@@ -681,15 +698,6 @@
 </style>
 
 <h1>Tic Tac Toe</h1>
-<!-- {#each lines.diagonalDownRight as line, index}
-Line: {index + 1} | Squares: 
-{#each line as square}
-  {square.row},{square.column} --- <span></span>
-{/each}
-<br>
-{/each}
-{lines.leftToRight} {lines.topToBottom}
-{lines.diagonalDownLeft} {lines.diagonalDownRight} -->
 <div class="main">
   <div class="player-indicator player-0">
     <h2 class="player-indicator-heading">Player {currentPlayer.name}</h2>
