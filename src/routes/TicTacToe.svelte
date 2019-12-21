@@ -3,12 +3,12 @@
 
   $: testValue = "test value";
   $: lastTicked = {};
-  $: rows = 3;
-  $: columns = 3;
+  $: rows = 4;
+  $: columns = 4;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = players[0];
-  $: movesPerTurn = 1;
+  $: movesPerTurn = 3;
   $: cellsToScore = 3;
   $: movesRemaining = 0;
   $: turn = 0;
@@ -24,6 +24,7 @@
     diagonalDownLeft: [],
     diagonalDownRight: []
   };
+  $: scores = {};
   $: numberOfPlayers = 2;
   $: players = [
     {
@@ -75,7 +76,6 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
-    
     console.log(
       `******* COUNT POINTS ******** ******* ************ *********** ******* ************`
     );
@@ -119,7 +119,7 @@
     );
     localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
     localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
-    lines = lines
+    lines = lines;
   }
 
   function score(direction, player) {
@@ -127,20 +127,17 @@
 
     let lines = [];
     let score = 0;
+    let name = direction.name;
     let arr = direction.lines;
 
     direction.lines.forEach((line, index) => {
       console.log(
-        `### Score ${player.name} direction ### ${direction.name}, line #${index}, line length ${line.length}`
+        `### SCORE ### ### ### ${player.name} direction ${direction.name}, ### line #${index}, ### line length ${line.length}`
       );
       let count = 0;
       line.forEach(cell => {
         let p = getPlayerFromCell(cell.id);
-        console.log(
-          `direction.forEach => line.forEach cell: player.name `,
-          p.name
-        );
-        console.log(`direction.forEach => line.forEach cell: player.id `, p.id);
+        console.log(`### ### Player`, p.name);
         cell.player = {
           name: p.name,
           id: p.id
@@ -149,9 +146,18 @@
         if (p.name !== "none" && p.id === player.id) {
           count++;
         }
+        if (count >= cellsToScore) {
+          console.log(
+            `~~~~~~~~~~~~~~~            ~~~~~~~~~~~~~~~~~~            Woot woot! ### ### ### We have scored a point! ${count}`
+          );
+        }
       });
       lines.push(count);
     });
+    scores["player"] = player.name;
+    scores.player[direction.name] = lines;
+    // scores.player.direction = lines;
+    console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, scores, scores.player, scores.player.direction)
     lines.forEach(num => {
       console.log(`count for player in this line: `, num);
       let thisScore = numScore(num);
@@ -357,10 +363,22 @@
 
     // console.log(`nextSquareFrom R${row}C${column} ${id}`);
 
-    line = [...line, { id: `R${row}C${column}`, row: row, column: column, player: { 'id': null, 'name': 'none' } }];
+    line = [
+      ...line,
+      {
+        id: `R${row}C${column}`,
+        row: row,
+        column: column,
+        player: { id: null, name: "none" }
+      }
+    ];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
-    let nextSquare = { row: nextRow, column: nextColumn, player: { 'id': null, 'name': 'none' }};
+    let nextSquare = {
+      row: nextRow,
+      column: nextColumn,
+      player: { id: null, name: "none" }
+    };
 
     if (nextRow >= rows) {
       return line;
