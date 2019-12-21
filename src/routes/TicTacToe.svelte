@@ -7,7 +7,7 @@
   $: columns = 4;
   $: size = 24;
   $: gutter = 0;
-  $: currentPlayer = players[0];
+  $: currentPlayer = {};
   $: movesPerTurn = 3;
   $: cellsToScore = 3;
   $: movesRemaining = 0;
@@ -31,13 +31,13 @@
       id: 0,
       name: "Kaya",
       moves: 0,
-      scores: {}
+      scores: []
     },
     {
       id: 1,
       name: "Mike",
       moves: 0,
-      scores: {}
+      scores: []
     }
   ];
 
@@ -111,17 +111,26 @@
       lines: lines.diagonalDownRight
     };
     players.forEach(player => {
-      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
-      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
-      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
+      console.log(
+        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
+      );
+      console.log(
+        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
+      );
+      console.log(
+        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
+      );
 
-      player["scores"]["leftToRight"] = score(leftToRight, player);
-      player["scores"]["topToBottom"] = score(topToBottom, player);
-      player["scores"]["diagonalDownLeft"] = score(diagonalDownLeft, player);
-      player["scores"]["diagonalDownRight"] = score(diagonalDownRight, player);
+player["scores"] = []
+player["scores"] = [...player["scores"], {"name": "leftToRight", "score": score(leftToRight, player)}]
+player["scores"] = [...player["scores"], {"name": "topToBottom", "score": score(topToBottom, player)}]
+player["scores"] = [...player["scores"], {"name": "diagonalDownLeft", "score": score(diagonalDownLeft, player)}]
+player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": score(diagonalDownRight, player)}]
 
-      localStorage.setItem(`player-${player.name}`, JSON.stringify(player.scores));
+
     });
+    localStorage.setItem(`players`, '');
+    localStorage.setItem(`players`, JSON.stringify(players));
     localStorage.setItem(
       "diagonalDownLeft",
       JSON.stringify(lines.diagonalDownLeft)
@@ -133,6 +142,7 @@
     localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
     localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
     lines = lines;
+    players = players;
   }
 
   function score(direction, player) {
@@ -141,66 +151,58 @@
     let lines = [];
     let dirScore = 0;
     let name = direction.name;
-    let arr = direction.lines;
 
     direction.lines.forEach((line, index) => {
       console.log(
-        `### SCORE ### ### ### ${player.name} direction ${direction.name}, ### line #${index}, ### line length ${line.length}`
+        `### SCORE ${player.name} ### direction ${direction.name} ### line #${index} ### line length ${line.length}`
       );
-      console.log(
-        `### SCORE ### ### ### ${player.id} direction ${direction.id}, ### line #${index}, ### line length ${line.length}`
-      );
-      let count = 0;
+
+      let countInLine = 0;
+      let countInLoop = 0;
       let points = 0;
       line.forEach(cell => {
         let p = getPlayerFromCell(cell.id);
-
         cell.player = {
           name: p.name,
           id: p.id
         };
-        // console.log(`cell.player`, cell);
+        console.log(`p.name (from gameboardMapped)`, p.name);
         if (p.name !== "none" && p.id === player.id) {
-          count++;
-        } 
-        if(p.id !== player.id) {
-          count = 0;
+          countInLoop++;
         }
-        if (count >= cellsToScore) {
-          points += (count - (cellsToScore - 1));
-          console.log(
-            `~~~~~~~~~~~~~~~  Woot woot! ### ### ### We have scored a point! COUNT ${count}, POINTS ${points}  ~~~~~~~~~~~~~~~~~~  `
-          );
+        if (p.id !== player.id) {
+          if (countInLoop >= cellsToScore) {
+            points += countInLoop - (cellsToScore - 1);
+          } 
+          countInLine += countInLoop
+            countInLoop = 0;
         }
-        console.log(
-          `### ### Player ${p.name}, count ${count}, points ${points}`
-        );
       });
+      if (countInLoop >= cellsToScore) {
+        points += countInLoop - (cellsToScore - 1);
+        console.log(
+          `~~~~~~~~~~~~~~~  Woot woot! ### ### ### We have scored a point! countInLoop ${countInLoop}, POINTS ${points}  ~~~~~~~~~~~~~~~~~~  `
+        );
+      }
+      // console.log(`### ### Player ${p.name}, count ${count}, points ${points}`);
 
-      lines.push({ 'count': count, 'points': points });
-      dirScore += points
+      lines.push({ countInLine: countInLine, points: points });
+      dirScore += points;
     });
-    player.score += dirScore
-    // scores["player"] = player.name;
-    // players[player.id].scores[direction.id] = lines;
-    // scores.push(player);
+    player.score += dirScore;
 
-    // scores.player[direction.name] = lines;
-    // scores.player.direction = lines;
-    // console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, scores, scores.player, scores.player.direction)
-    // console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, player, player.scores, player.scores[direction.id])
-    // console.log(
-    //   `SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`,
-    //   scores,
-    //   scores.player.name
-    // );
-    
     lines.forEach(num => {
       console.log(`count for ${player.name} in this line: `, num);
     });
-    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: dirScore of ... `, dirScore);
-    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: total score of ... `, player.score);
-    return dirScore
+    console.log(
+      `!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: dirScore of ... `,
+      dirScore
+    );
+    console.log(
+      `!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: total score of ... `,
+      player.score
+    );
+    return dirScore;
   }
 
   function test() {
@@ -807,8 +809,18 @@
     display: flex;
     flex-direction: column;
   }
-  .score-block {
+  .scores-wrap {
     display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+  }
+  .scores-block {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .scores-section {
+    display: flex;
+    flex-direction: column;
   }
 </style>
 
@@ -829,17 +841,20 @@
       <button id="save-game-button">Save game</button>
     </div>
   </div>
-  <div class="player-indicator player-0">
+  <div class="player-indicator scores-wrap">
     <h2 class="player-indicator-heading">Points</h2>
-    <div class="buttons-wrapper">
-      {#each players as player}
-        <div class="score-block">{player.name}</div>
-      {/each}
-      {#each scores as player}
-        <div>| player.name: {player.name} |</div>
-      {/each}
-    </div>
-    <div class="buttons-wrapper">
+
+    {#each players as player}
+      <h2>{player.name}</h2>
+      <div class="scores-block">
+        {#each player.scores as direction}
+        <div>{direction.name}: {direction.score}</div>
+        {/each}
+      </div>
+    {/each}
+
+  </div>
+  <!-- <div class="buttons-wrapper">
       <div class="dir-1">
         {#each lines.leftToRight as line}
           <div class="score-block">
@@ -849,8 +864,7 @@
           </div>
         {/each}
       </div>
-    </div>
-  </div>
+    </div> -->
 
   <h2>Layout and Game Options</h2>
   <div class="form-wrap">
