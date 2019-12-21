@@ -47,6 +47,10 @@
     localStorage.setItem("gameboard", "");
     localStorage.setItem("gameHistory", "");
     localStorage.setItem("gameboardMapped", "");
+    localStorage.setItem("diagonalDownLeft", "");
+    localStorage.setItem("diagonalDownRight", "");
+    localStorage.setItem("topToBottom", "");
+    localStorage.setItem("leftToRight", "");
     columns = document.getElementById("columns").value;
     rows = document.getElementById("rows").value;
     size = document.getElementById("size").value;
@@ -71,6 +75,7 @@
   //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
   //     a user-set minimum scoring length
   function countPoints() {
+    
     console.log(
       `******* COUNT POINTS ******** ******* ************ *********** ******* ************`
     );
@@ -80,15 +85,6 @@
         : console.log(`no move here ${move.id}`);
       console.log(`move: `, move);
     });
-    // let id = `R${row}C${column}`;
-    // let move = getPlayerFromCell(id)
-    // console.log(`move property id`, move.id)
-    // console.log(`nextSquareFrom, move `, move)
-
-    // leftToRight: [],
-    // topToBottom: [],
-    // diagonalDownLeft: [],
-    // diagonalDownRight: [],
 
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
     let leftToRight = {
@@ -113,6 +109,17 @@
       score(diagonalDownLeft, player);
       score(diagonalDownRight, player);
     });
+    localStorage.setItem(
+      "diagonalDownLeft",
+      JSON.stringify(lines.diagonalDownLeft)
+    );
+    localStorage.setItem(
+      "diagonalDownRight",
+      JSON.stringify(lines.diagonalDownRight)
+    );
+    localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
+    localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
+    lines = lines
   }
 
   function score(direction, player) {
@@ -122,7 +129,7 @@
     let score = 0;
     let arr = direction.lines;
 
-    arr.forEach((line, index) => {
+    direction.lines.forEach((line, index) => {
       console.log(
         `### Score ${player.name} direction ### ${direction.name}, line #${index}, line length ${line.length}`
       );
@@ -134,6 +141,11 @@
           p.name
         );
         console.log(`direction.forEach => line.forEach cell: player.id `, p.id);
+        cell.player = {
+          name: p.name,
+          id: p.id
+        };
+        console.log(`cell.player`, cell);
         if (p.name !== "none" && p.id === player.id) {
           count++;
         }
@@ -345,10 +357,10 @@
 
     // console.log(`nextSquareFrom R${row}C${column} ${id}`);
 
-    line = [...line, { id: `R${row}C${column}`, row: row, column: column }];
+    line = [...line, { id: `R${row}C${column}`, row: row, column: column, player: { 'id': null, 'name': 'none' } }];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
-    let nextSquare = { row: nextRow, column: nextColumn };
+    let nextSquare = { row: nextRow, column: nextColumn, player: { 'id': null, 'name': 'none' }};
 
     if (nextRow >= rows) {
       return line;
@@ -741,6 +753,14 @@
     // display: none;
     // visibility: hidden;
   }
+
+  .dir-1 {
+    display: flex;
+    flex-direction: column;
+  }
+  .score-block {
+    display: flex;
+  }
 </style>
 
 <h1>Tic Tac Toe</h1>
@@ -766,7 +786,11 @@
     <div class="buttons-wrapper">
       <div class="dir-1">
         {#each lines.leftToRight as line}
-          {#each line as point}{point.player.name}{/each}
+          <div class="score-block">
+            {#each line as square}
+              <div>| {square.id}-{square.player.name} |</div>
+            {/each}
+          </div>
         {/each}
       </div>
     </div>
