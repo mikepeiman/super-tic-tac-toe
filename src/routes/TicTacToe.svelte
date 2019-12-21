@@ -24,18 +24,20 @@
     diagonalDownLeft: [],
     diagonalDownRight: []
   };
-  $: scores = {};
+  $: scores = [];
   $: numberOfPlayers = 2;
   $: players = [
     {
       id: 0,
       name: "Kaya",
-      moves: 0
+      moves: 0,
+      scores: {}
     },
     {
       id: 1,
       name: "Mike",
-      moves: 0
+      moves: 0,
+      scores: {}
     }
   ];
 
@@ -79,35 +81,46 @@
     console.log(
       `******* COUNT POINTS ******** ******* ************ *********** ******* ************`
     );
-    gameboardMapped.forEach(move => {
-      move.player
-        ? console.log(`square ${move.id} owned by player: ${move.player.name}`)
-        : console.log(`no move here ${move.id}`);
-      console.log(`move: `, move);
-    });
+
+    // gameboardMapped.forEach(move => {
+    //   move.player
+    //     ? console.log(`square ${move.id} owned by player: ${move.player.name}`)
+    //     : console.log(`no move here ${move.id}`);
+    //   console.log(`move: `, move);
+    // });
 
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
     let leftToRight = {
+      id: 1,
       name: "leftToRight",
       lines: lines.leftToRight
     };
     let topToBottom = {
+      id: 2,
       name: "topToBottom",
       lines: lines.topToBottom
     };
     let diagonalDownLeft = {
+      id: 3,
       name: "diagonalDownLeft",
       lines: lines.diagonalDownLeft
     };
     let diagonalDownRight = {
+      id: 4,
       name: "diagonalDownRight",
       lines: lines.diagonalDownRight
     };
     players.forEach(player => {
-      score(leftToRight, player);
-      score(topToBottom, player);
-      score(diagonalDownLeft, player);
-      score(diagonalDownRight, player);
+      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
+      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
+      console.log(`$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`)
+
+      player["scores"]["leftToRight"] = score(leftToRight, player);
+      player["scores"]["topToBottom"] = score(topToBottom, player);
+      player["scores"]["diagonalDownLeft"] = score(diagonalDownLeft, player);
+      player["scores"]["diagonalDownRight"] = score(diagonalDownRight, player);
+
+      localStorage.setItem(`player-${player.name}`, JSON.stringify(player.scores));
     });
     localStorage.setItem(
       "diagonalDownLeft",
@@ -126,7 +139,7 @@
     // $: cellsToScore
 
     let lines = [];
-    let score = 0;
+    let dirScore = 0;
     let name = direction.name;
     let arr = direction.lines;
 
@@ -134,42 +147,60 @@
       console.log(
         `### SCORE ### ### ### ${player.name} direction ${direction.name}, ### line #${index}, ### line length ${line.length}`
       );
+      console.log(
+        `### SCORE ### ### ### ${player.id} direction ${direction.id}, ### line #${index}, ### line length ${line.length}`
+      );
       let count = 0;
+      let points = 0;
       line.forEach(cell => {
         let p = getPlayerFromCell(cell.id);
-        console.log(`### ### Player`, p.name);
+
         cell.player = {
           name: p.name,
           id: p.id
         };
-        console.log(`cell.player`, cell);
+        // console.log(`cell.player`, cell);
         if (p.name !== "none" && p.id === player.id) {
           count++;
+        } 
+        if(p.id !== player.id) {
+          count = 0;
         }
         if (count >= cellsToScore) {
+          points += (count - (cellsToScore - 1));
           console.log(
-            `~~~~~~~~~~~~~~~            ~~~~~~~~~~~~~~~~~~            Woot woot! ### ### ### We have scored a point! ${count}`
+            `~~~~~~~~~~~~~~~  Woot woot! ### ### ### We have scored a point! COUNT ${count}, POINTS ${points}  ~~~~~~~~~~~~~~~~~~  `
           );
         }
+        console.log(
+          `### ### Player ${p.name}, count ${count}, points ${points}`
+        );
       });
-      lines.push(count);
+
+      lines.push({ 'count': count, 'points': points });
+      dirScore += points
     });
-    scores["player"] = player.name;
-    scores.player[direction.name] = lines;
+    player.score += dirScore
+    // scores["player"] = player.name;
+    // players[player.id].scores[direction.id] = lines;
+    // scores.push(player);
+
+    // scores.player[direction.name] = lines;
     // scores.player.direction = lines;
-    console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, scores, scores.player, scores.player.direction)
+    // console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, scores, scores.player, scores.player.direction)
+    // console.log(`SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`, player, player.scores, player.scores[direction.id])
+    // console.log(
+    //   `SCORES.PLAYER.DIRECTION: : : : : : : : : : : : :`,
+    //   scores,
+    //   scores.player.name
+    // );
+    
     lines.forEach(num => {
-      console.log(`count for player in this line: `, num);
-      let thisScore = numScore(num);
-      score += thisScore;
+      console.log(`count for ${player.name} in this line: `, num);
     });
-    console.log(`score of ... `, score);
-  }
-  function numScore(num) {
-    if (num >= cellsToScore) {
-      return num - (cellsToScore - 1);
-    }
-    return 0;
+    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: dirScore of ... `, dirScore);
+    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: total score of ... `, player.score);
+    return dirScore
   }
 
   function test() {
@@ -800,7 +831,14 @@
   </div>
   <div class="player-indicator player-0">
     <h2 class="player-indicator-heading">Points</h2>
-
+    <div class="buttons-wrapper">
+      {#each players as player}
+        <div class="score-block">{player.name}</div>
+      {/each}
+      {#each scores as player}
+        <div>| player.name: {player.name} |</div>
+      {/each}
+    </div>
     <div class="buttons-wrapper">
       <div class="dir-1">
         {#each lines.leftToRight as line}
