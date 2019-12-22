@@ -44,6 +44,7 @@
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
+    currentPlayer = players[0];
   });
 
   function reset() {
@@ -121,15 +122,34 @@
         `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
       );
 
-player["scores"] = []
-player["scores"] = [...player["scores"], {"name": "leftToRight", "score": score(leftToRight, player)}]
-player["scores"] = [...player["scores"], {"name": "topToBottom", "score": score(topToBottom, player)}]
-player["scores"] = [...player["scores"], {"name": "diagonalDownLeft", "score": score(diagonalDownLeft, player)}]
-player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": score(diagonalDownRight, player)}]
-
-
+      player["scores"] = [];
+      player["scores"] = [
+        ...player["scores"],
+        { name: "leftToRight", score: score(leftToRight, player) }
+      ];
+      player["scores"] = [
+        ...player["scores"],
+        { name: "topToBottom", score: score(topToBottom, player) }
+      ];
+      player["scores"] = [
+        ...player["scores"],
+        { name: "diagonalDownLeft", score: score(diagonalDownLeft, player) }
+      ];
+      player["scores"] = [
+        ...player["scores"],
+        { name: "diagonalDownRight", score: score(diagonalDownRight, player) }
+      ];
+      let totalScore =
+        player.scores[0].score +
+        player.scores[1].score +
+        player.scores[2].score +
+        player.scores[3].score;
+      player["scores"] = [
+        ...player["scores"],
+        { name: "totalScore", score: totalScore }
+      ];
     });
-    localStorage.setItem(`players`, '');
+    localStorage.setItem(`players`, "");
     localStorage.setItem(`players`, JSON.stringify(players));
     localStorage.setItem(
       "diagonalDownLeft",
@@ -148,7 +168,7 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
   function score(direction, player) {
     // $: cellsToScore
 
-    let lines = [];
+    let dirLines = [];
     let dirScore = 0;
     let name = direction.name;
 
@@ -173,9 +193,9 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
         if (p.id !== player.id) {
           if (countInLoop >= cellsToScore) {
             points += countInLoop - (cellsToScore - 1);
-          } 
-          countInLine += countInLoop
-            countInLoop = 0;
+          }
+          countInLine += countInLoop;
+          countInLoop = 0;
         }
       });
       if (countInLoop >= cellsToScore) {
@@ -186,12 +206,12 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
       }
       // console.log(`### ### Player ${p.name}, count ${count}, points ${points}`);
 
-      lines.push({ countInLine: countInLine, points: points });
+      dirLines.push({ countInLine: countInLine, points: points });
       dirScore += points;
     });
     player.score += dirScore;
 
-    lines.forEach(num => {
+    dirLines.forEach(num => {
       console.log(`count for ${player.name} in this line: `, num);
     });
     console.log(
@@ -203,28 +223,6 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
       player.score
     );
     return dirScore;
-  }
-
-  function test() {
-    gameboardMapped.forEach(obj => {
-      console.log(`gameboardMapped.forEach: R${obj.row}C${obj.col}`);
-      console.log(obj);
-    });
-    // console.log(`typeof gameboardMapped`,typeof gameboardMapped)
-    // returns object
-    // console.log(`Object.prototype.toString.call(gameboardMapped) == '[object Array]';`, Object.prototype.toString.call(gameboardMapped) == '[object Array]')
-    let filtered = gameboardMapped;
-    gameHistory.forEach(turnSet => {
-      turnSet.forEach(cell => {
-        console.log(`cell.squareId: `, cell.squareId);
-        filtered = filtered.filter(square => {
-          console.log(`square.id: `, square.id);
-          return !(cell.squareId == square.id);
-        });
-      });
-    });
-
-    console.log(`filtered `, gameHistory, filtered);
   }
 
   function setPlayerMove(squareId) {
@@ -251,7 +249,6 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
         };
         move.move = null;
       }
-      console.log(`post-if loop REMOVE removePlayerMove mapped move`, move);
       localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     });
   }
@@ -513,6 +510,7 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
   }
 
   function playMove(e) {
+    localStorage.setItem(`currentPlayer`, currentPlayer);
     clickCount++;
     let square = e.target;
     let ticked = square.dataset.ticked == "true";
@@ -764,24 +762,9 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
     border-radius: 3px;
     border: none;
     color: white;
-  }
-
-  #next-turn-button {
     background: rgba(55, 255, 155, 0.5);
     &:hover {
-      background: rgba(55, 255, 155, 0.75);
-    }
-  }
-  #restart-game-button {
-    background: rgba(255, 55, 155, 0.5);
-    &:hover {
-      background: rgba(255, 55, 155, 0.75);
-    }
-  }
-  #save-game-button {
-    background: rgba(155, 55, 255, 0.5);
-    &:hover {
-      background: rgba(155, 55, 255, 0.75);
+      background: rgba(0, 25, 75, 1);
     }
   }
 
@@ -800,11 +783,13 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
       opacity: 1;
     }
   }
-  .buttons-wrapper button {
-    // display: none;
-    // visibility: hidden;
-  }
 
+  .control-button {
+    background: #1a1aaa;
+    &:hover {
+      background: rgba(0, 25, 75, 0.5);
+    }
+  }
   .dir-1 {
     display: flex;
     flex-direction: column;
@@ -832,13 +817,17 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
     <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
 
     <div class="buttons-wrapper">
-      <button id="next-turn-button">End turn</button>
-      <button id="tally-game-button" on:click={countPoints}>
+      <button class="control-button" id="next-turn-button">End turn</button>
+      <button
+        class="control-button"
+        id="tally-game-button"
+        on:click={countPoints}>
         Tally points
       </button>
-      <button id="test-scoring-button" on:click={test}>TEST</button>
-      <button id="reset-game-button" on:click={reset}>Reset game</button>
-      <button id="save-game-button">Save game</button>
+      <button class="control-button" id="reset-game-button" on:click={reset}>
+        Reset game
+      </button>
+      <button class="control-button" id="save-game-button">Save game</button>
     </div>
   </div>
   <div class="player-indicator scores-wrap">
@@ -848,7 +837,7 @@ player["scores"] = [...player["scores"], {"name": "diagonalDownRight", "score": 
       <h2>{player.name}</h2>
       <div class="scores-block">
         {#each player.scores as direction}
-        <div>{direction.name}: {direction.score}</div>
+          <div>{direction.name}: {direction.score}</div>
         {/each}
       </div>
     {/each}
