@@ -18,6 +18,24 @@
   $: moveNumber = 0;
   $: gameboardMapped = [];
   $: tickedArray = [];
+  $: icons = [
+    {
+      name: 'leftToRight',
+      src: 'tictactoe-horizontal.png'
+    },
+        {
+      name: 'topToBottom',
+      src: 'tictactoe-vertical.png'
+    },
+        {
+      name: 'diagonalDownLeft',
+      src: 'tictactoe-diagonal-down-left.png'
+    },
+        {
+      name: 'diagonalDownRight',
+      src: 'tictactoe-diagonal-down-right.png'
+    }
+  ]
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -112,15 +130,6 @@
       lines: lines.diagonalDownRight
     };
     players.forEach(player => {
-      console.log(
-        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
-      );
-      console.log(
-        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
-      );
-      console.log(
-        `$%$%$%$%$%$%$%$%$%$%$%$%$ NEW PLAYER ${player.name} $^$^$^$^$^$^$^$^$^$^$^$^`
-      );
 
       player["scores"] = [];
       player["scores"] = [
@@ -159,8 +168,14 @@
       "diagonalDownRight",
       JSON.stringify(lines.diagonalDownRight)
     );
-    localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
-    localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
+    localStorage.setItem(
+      "topToBottom"
+      , JSON.stringify(lines.topToBottom)
+      );
+    localStorage.setItem(
+      "leftToRight"
+      , JSON.stringify(lines.leftToRight)
+      );
     lines = lines;
     players = players;
   }
@@ -173,10 +188,6 @@
     let name = direction.name;
 
     direction.lines.forEach((line, index) => {
-      console.log(
-        `### SCORE ${player.name} ### direction ${direction.name} ### line #${index} ### line length ${line.length}`
-      );
-
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
@@ -186,7 +197,6 @@
           name: p.name,
           id: p.id
         };
-        console.log(`p.name (from gameboardMapped)`, p.name);
         if (p.name !== "none" && p.id === player.id) {
           countInLoop++;
         }
@@ -200,29 +210,21 @@
       });
       if (countInLoop >= cellsToScore) {
         points += countInLoop - (cellsToScore - 1);
-        console.log(
-          `~~~~~~~~~~~~~~~  Woot woot! ### ### ### We have scored a point! countInLoop ${countInLoop}, POINTS ${points}  ~~~~~~~~~~~~~~~~~~  `
-        );
       }
-      // console.log(`### ### Player ${p.name}, count ${count}, points ${points}`);
-
       dirLines.push({ countInLine: countInLine, points: points });
       dirScore += points;
     });
     player.score += dirScore;
-
-    dirLines.forEach(num => {
-      console.log(`count for ${player.name} in this line: `, num);
-    });
-    console.log(
-      `!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: dirScore of ... `,
-      dirScore
-    );
-    console.log(
-      `!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   PLAYER ${player.name}: total score of ... `,
-      player.score
-    );
+    setIcon(direction);
     return dirScore;
+  }
+
+  function setIcon(direction) {
+    icons.forEach(icon => {
+    if(direction.name == icon.name) {
+      console.log(`directions name matches icon name ${direction.name}, ${icon.src}`)
+    }
+    })
   }
 
   function setPlayerMove(squareId) {
@@ -827,6 +829,12 @@
   }
   .scoreboard-direction {
     background: rgba(0, 0, 155, 0.1);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .direction-icon {
+    margin-right: 1rem;
   }
 </style>
     <h1>Tic Tac Toe</h1>
@@ -840,9 +848,10 @@
         {#each players as player}
           <div class="scoreboard-player">
             <h2>{player.name}</h2>
-            {#each player.scores as direction}
+            {#each player.scores as direction, i}
               <div class="scoreboard-direction">
                 <div>{direction.name}: {direction.score}</div>
+                <img class="direction-icon" src={icons[i].src} width="25" alt="Icon for {`${icons[i].name}`}" />
               </div>
             {/each}
           </div>
