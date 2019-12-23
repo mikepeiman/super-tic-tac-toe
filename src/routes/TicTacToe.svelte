@@ -18,10 +18,12 @@
   $: moveNumber = 0;
   $: gameboardMapped = [];
   $: tickedArray = [];
+  $: scoredPlayers = [];
   $: players = [
     {
       id: 0,
       name: "Kaya",
+      totalScore: 0,
       moves: 0,
       scores: [
         {
@@ -34,7 +36,7 @@
           iconSrc: "tictactoe-horizontal.png"
         },
         {
-          id: 1,
+          id: 2,
           name: "topToBottom",
           src: "tictactoe-horizontal.png",
           lines: lines.topToBottom,
@@ -43,7 +45,7 @@
           iconSrc: "tictactoe-vertical.png"
         },
         {
-          id: 1,
+          id: 3,
           name: "diagonalDownLeft",
           src: "tictactoe-horizontal.png",
           lines: lines.diagonalDownLeft,
@@ -52,7 +54,7 @@
           iconSrc: "tictactoe-diagonal-down-left.png"
         },
         {
-          id: 1,
+          id: 4,
           name: "diagonalDownRight",
           src: "tictactoe-horizontal.png",
           lines: lines.diagonalDownRight,
@@ -60,12 +62,12 @@
           dirScore: 0,
           iconSrc: "tictactoe-diagonal-down-right.png"
         }
-      ],
-      totalScore: 0
+      ]
     },
     {
       id: 1,
       name: "Mike",
+      totalScore: 0,
       moves: 0,
       scores: [
         {
@@ -78,7 +80,7 @@
           iconSrc: "tictactoe-horizontal.png"
         },
         {
-          id: 1,
+          id: 2,
           name: "topToBottom",
           src: "tictactoe-horizontal.png",
           lines: lines.topToBottom,
@@ -87,7 +89,7 @@
           iconSrc: "tictactoe-vertical.png"
         },
         {
-          id: 1,
+          id: 3,
           name: "diagonalDownLeft",
           src: "tictactoe-horizontal.png",
           lines: lines.diagonalDownLeft,
@@ -96,7 +98,7 @@
           iconSrc: "tictactoe-diagonal-down-left.png"
         },
         {
-          id: 1,
+          id: 4,
           name: "diagonalDownRight",
           src: "tictactoe-horizontal.png",
           lines: lines.diagonalDownRight,
@@ -104,12 +106,11 @@
           dirScore: 0,
           iconSrc: "tictactoe-diagonal-down-right.png"
         }
-      ],
-      totalScore: 0
+      ]
     }
   ];
   // $: players.forEach(player => {console.log(player)});
-  $: console.log(`Kaya's horizontal score: ${players[0].scores[0].dirScore}`)
+  $: console.log(`Kaya's horizontal score: ${players[0].scores[0].dirScore}`);
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -154,23 +155,25 @@
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
 
     players.forEach(player => {
+      console.dir(player);
       player.scores.forEach(direction => {
+        console.dir(direction);
         direction["dirScore"] = score(direction, player);
         player["totalScore"] += direction["dirScore"];
-        player = player
+        console.dir(direction["dirScore"]);
+        // players = players
         localStorage.setItem(
           `${direction.name}`,
           JSON.stringify(`lines.${direction.name}`)
         );
       });
     });
-    players = players;
+    scoredPlayers = players;
+    lines = lines;
     localStorage.setItem(`players`, "");
     localStorage.setItem(`players`, JSON.stringify(players));
-    console.log('player object just after set localStorage')
-    console.log(players)
-    lines = lines;
-
+    console.log("players object just after set localStorage");
+    console.log(players);
   }
 
   function score(direction, player) {
@@ -208,8 +211,7 @@
       dirLines.push({ countInLine: countInLine, points: points });
       dirScore += points;
     });
-    player.score += dirScore;
-    players = players;
+    player["score"] += dirScore;
     // setIcon(direction);
     return dirScore;
   }
@@ -827,39 +829,41 @@
   .scoreboard-direction {
     background: rgba(0, 0, 155, 0.1);
     display: flex;
-    justify-content: space-between;
   }
 
   .direction-icon {
-    margin-right: 1rem;
+    margin-left: .5rem;
+    // background: #1a1a1a;
+  }
+  .direction-score {
+    display: flex;
+    justify-content: space-between;
   }
 </style>
 
 <h1>Tic Tac Toe</h1>
 <div class="page-container">
   <div class="scoreboard-container">
-    scoreboard-container
-    <div class="scoreboard-headings">
-      scoreboard-headings
+    {#each scoredPlayers as player}
       <div class="scoreboard-totals">
-        scoreboard-totals
-        {#each players as player}
-          <div class="scoreboard-player">
-            <h2>{player.name}</h2>
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div>{direction.name}: {direction.dirScore}</div>
-                <img
-                  class="direction-icon"
-                  src={direction.iconSrc}
-                  width="25"
-                  alt="icon for direction" />
-              </div>
-            {/each}
-          </div>
-        {/each}
+        <h3 class="total-score">{player.name}: {player.totalScore}</h3>
+        <div class="scoreboard-player">
+          <!-- <h2 class="player-name">{player.name}</h2> -->
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              
+              <img
+                class="direction-icon"
+                src={direction.iconSrc}
+                width="25"
+                alt="icon for direction" />
+                <div class="direction-score"><div>{direction.name}:</div> <div>{direction.dirScore}</div></div>
+            </div>
+            
+          {/each}
+        </div>
       </div>
-    </div>
+    {/each}
   </div>
 
   <div class="gameboard-container">
