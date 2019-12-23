@@ -18,24 +18,98 @@
   $: moveNumber = 0;
   $: gameboardMapped = [];
   $: tickedArray = [];
-  $: icons = [
+  $: players = [
     {
-      name: 'leftToRight',
-      src: 'tictactoe-horizontal.png'
-    },
+      id: 0,
+      name: "Kaya",
+      moves: 0,
+      scores: [
         {
-      name: 'topToBottom',
-      src: 'tictactoe-vertical.png'
-    },
+          id: 1,
+          name: "leftToRight",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
         {
-      name: 'diagonalDownLeft',
-      src: 'tictactoe-diagonal-down-left.png'
-    },
+          id: 1,
+          name: "topToBottom",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
         {
-      name: 'diagonalDownRight',
-      src: 'tictactoe-diagonal-down-right.png'
+          id: 1,
+          name: "diagonalDownLeft",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 1,
+          name: "diagonalDownRight",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ],
+      totalScore: 0
+    },
+    {
+      id: 1,
+      name: "Mike",
+      moves: 0,
+      scores: [
+        {
+          id: 1,
+          name: "leftToRight",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
+        {
+          id: 1,
+          name: "topToBottom",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
+        {
+          id: 1,
+          name: "diagonalDownLeft",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 1,
+          name: "diagonalDownRight",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ],
+      totalScore: 0
     }
-  ]
+  ];
+  // $: players.forEach(player => {console.log(player)});
+  $: console.log(`Kaya's horizontal score: ${players[0].scores[0].dirScore}`)
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -44,20 +118,6 @@
   };
   $: scores = [];
   $: numberOfPlayers = 2;
-  $: players = [
-    {
-      id: 0,
-      name: "Kaya",
-      moves: 0,
-      scores: []
-    },
-    {
-      id: 1,
-      name: "Mike",
-      moves: 0,
-      scores: []
-    }
-  ];
 
   onMount(() => {
     renderGameBoard(rows, columns, size, gutter);
@@ -90,119 +150,32 @@
     movesRemaining = movesPerTurn;
   }
 
-  // I think my method for scoring will be this:
-  //  1. when generating gameboard, create an set of arrays indexed with the same IDs
-  //     these arrays cover the horizontal, vertical, and the two diagonal directions: 4 sets of lines
-  //  2. As moves are made, mark which player occupied each cell in the arrays
-  //  3. whenever scoring function is called, it loops through each array of arrays and counts up the points based on
-  //     a user-set minimum scoring length
   function countPoints() {
-    console.log(
-      `******* COUNT POINTS ******** ******* ************ *********** ******* ************`
-    );
-
-    // gameboardMapped.forEach(move => {
-    //   move.player
-    //     ? console.log(`square ${move.id} owned by player: ${move.player.name}`)
-    //     : console.log(`no move here ${move.id}`);
-    //   console.log(`move: `, move);
-    // });
-
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-    // {
-    //   name: 'leftToRight',
-    //   src: 'tictactoe-horizontal.png'
-    // },
-    //     {
-    //   name: 'topToBottom',
-    //   src: 'tictactoe-vertical.png'
-    // },
-    //     {
-    //   name: 'diagonalDownLeft',
-    //   src: 'tictactoe-diagonal-down-left.png'
-    // },
-    //     {
-    //   name: 'diagonalDownRight',
-    //   src: 'tictactoe-diagonal-down-right.png'
-    // }
 
-    let leftToRight = {
-      id: 1,
-      name: "leftToRight",
-      src: 'tictactoe-horizontal.png',
-      lines: lines.leftToRight
-    };
-    let topToBottom = {
-      id: 2,
-      name: "topToBottom",
-      src: 'tictactoe-vertical.png',
-      lines: lines.topToBottom
-    };
-    let diagonalDownLeft = {
-      id: 3,
-      name: "diagonalDownLeft",
-      src: 'tictactoe-diagonal-down-left.png',
-      lines: lines.diagonalDownLeft
-    };
-    let diagonalDownRight = {
-      id: 4,
-      name: "diagonalDownRight",
-      src: 'tictactoe-diagonal-down-right.png',
-      lines: lines.diagonalDownRight
-    };
     players.forEach(player => {
-
-      player["scores"] = [];
-      player["scores"] = [
-        ...player["scores"],
-        { name: "leftToRight", score: score(leftToRight, player) }
-      ];
-      player["scores"] = [
-        ...player["scores"],
-        { name: "topToBottom", score: score(topToBottom, player) }
-      ];
-      player["scores"] = [
-        ...player["scores"],
-        { name: "diagonalDownLeft", score: score(diagonalDownLeft, player) }
-      ];
-      player["scores"] = [
-        ...player["scores"],
-        { name: "diagonalDownRight", score: score(diagonalDownRight, player) }
-      ];
-      let totalScore =
-        player.scores[0].score +
-        player.scores[1].score +
-        player.scores[2].score +
-        player.scores[3].score;
-      player["scores"] = [
-        ...player["scores"],
-        { name: "totalScore", score: totalScore }
-      ];
+      player.scores.forEach(direction => {
+        direction["dirScore"] = score(direction, player);
+        player["totalScore"] += direction["dirScore"];
+        player = player
+        localStorage.setItem(
+          `${direction.name}`,
+          JSON.stringify(`lines.${direction.name}`)
+        );
+      });
     });
+    players = players;
     localStorage.setItem(`players`, "");
     localStorage.setItem(`players`, JSON.stringify(players));
-    localStorage.setItem(
-      "diagonalDownLeft",
-      JSON.stringify(lines.diagonalDownLeft)
-    );
-    localStorage.setItem(
-      "diagonalDownRight",
-      JSON.stringify(lines.diagonalDownRight)
-    );
-    localStorage.setItem(
-      "topToBottom"
-      , JSON.stringify(lines.topToBottom)
-      );
-    localStorage.setItem(
-      "leftToRight"
-      , JSON.stringify(lines.leftToRight)
-      );
+    console.log('player object just after set localStorage')
+    console.log(players)
     lines = lines;
-    players = players;
+
   }
 
   function score(direction, player) {
     // $: cellsToScore
+    console.log(`score called with direction `, direction);
 
     let dirLines = [];
     let dirScore = 0;
@@ -236,16 +209,19 @@
       dirScore += points;
     });
     player.score += dirScore;
-    setIcon(direction);
+    players = players;
+    // setIcon(direction);
     return dirScore;
   }
 
   function setIcon(direction) {
     icons.forEach(icon => {
-    if(direction.name == icon.name) {
-      console.log(`directions name matches icon name ${direction.name}, ${icon.src}`)
-    }
-    })
+      if (direction.name == icon.name) {
+        console.log(
+          `directions name matches icon name ${direction.name}, ${icon.src}`
+        );
+      }
+    });
   }
 
   function setPlayerMove(squareId) {
@@ -502,14 +478,14 @@
       name: currentPlayer.name
     };
     if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
-      console.log(
-        `turnHistory already contains this move - that means we should remove it!`
-      );
+      // console.log(
+      //   `turnHistory already contains this move - that means we should remove it!`
+      // );
       turnHistory = turnHistory.filter(turn => turn.squareId !== id);
     } else {
-      console.log(
-        `apparently we have not made this move yet, let's add it to turnHistory`
-      );
+      // console.log(
+      //   `apparently we have not made this move yet, let's add it to turnHistory`
+      // );
       turnHistory = [...turnHistory, move];
     }
     console.log(turnHistory);
@@ -520,9 +496,9 @@
     turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.squareId}`);
       let thisMoveNum = moveNumber - movesPerTurn + index + 1;
-      console.log(
-        `############### setGameHistory, locking moves ${turn.squareId}`
-      );
+      // console.log(
+      //   `############### setGameHistory, locking moves ${turn.squareId}`
+      // );
       move.setAttribute("locked", true);
       turn.move = thisMoveNum;
       move.classList.add("locked");
@@ -537,9 +513,9 @@
     clickCount++;
     let square = e.target;
     let ticked = square.dataset.ticked == "true";
-    console.log(
-      `ticked status ::: ${ticked} ::: movesRemaining ||| ${movesRemaining} |||`
-    );
+    // console.log(
+    //   `ticked status ::: ${ticked} ::: movesRemaining ||| ${movesRemaining} |||`
+    // );
 
     if (ticked) {
       if (!square.hasAttribute("locked")) {
@@ -858,7 +834,8 @@
     margin-right: 1rem;
   }
 </style>
-    <h1>Tic Tac Toe</h1>
+
+<h1>Tic Tac Toe</h1>
 <div class="page-container">
   <div class="scoreboard-container">
     scoreboard-container
@@ -871,9 +848,12 @@
             <h2>{player.name}</h2>
             {#each player.scores as direction, i}
               <div class="scoreboard-direction">
-                <div>{direction.name}: {direction.score}</div>
-                <img class="direction-icon" src="tictactoe-horizontal.png" width="25" alt="icon for direction" />
-                <!-- <img class="direction-icon" src={icons[i].src} width="25" alt="icon for direction" /> -->
+                <div>{direction.name}: {direction.dirScore}</div>
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="25"
+                  alt="icon for direction" />
               </div>
             {/each}
           </div>
