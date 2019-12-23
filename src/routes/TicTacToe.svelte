@@ -429,7 +429,7 @@
 
   function renderGameBoard(rows, columns, size, gutter) {
     gameboardMapped = [];
-    let gameboard = document.getElementById("game-board");
+    let gameboard = document.getElementById("gameboard-board");
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
@@ -592,7 +592,7 @@
   }
 
   function playerChange() {
-    let gameboard = document.getElementById("game-board");
+    let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");
     setTimeout(() => {
       gameboard.classList.remove("player-change");
@@ -618,7 +618,12 @@
 </script>
 
 <style lang="scss" global>
-  .main {
+  .page-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
+
+  .gameboard-container {
     background: #1a1a1a;
     padding: 1rem;
     display: flex;
@@ -712,7 +717,7 @@
     -moz-appearance: textfield;
   }
 
-  .game-board {
+  .gameboard-board {
     margin: 2rem;
     display: flex;
     flex-direction: column;
@@ -785,7 +790,8 @@
   }
 
   .control-button {
-    background: #1a1aaa;
+    background: rgba(0, 25, 75, 0.25);
+    margin: 0.25rem;
     &:hover {
       background: rgba(0, 25, 75, 0.5);
     }
@@ -807,120 +813,133 @@
     display: flex;
     flex-direction: column;
   }
+
+  .scoreboard-container {
+    // position: absolute;
+    // left: 0;
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-headings {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-totals {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-direction {
+    background: rgba(0, 0, 155, 0.1);
+  }
 </style>
-
-<h1>Tic Tac Toe</h1>
-<div class="main">
-  <div class="player-indicator player-0">
-    <h2 class="player-indicator-heading">Player {currentPlayer.name}</h2>
-    <h2 class="player-indicator-heading">Turn Moves: {movesRemaining}</h2>
-    <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
-
-    <div class="buttons-wrapper">
-      <button class="control-button" id="next-turn-button">End turn</button>
-      <button
-        class="control-button"
-        id="tally-game-button"
-        on:click={countPoints}>
-        Tally points
-      </button>
-      <button class="control-button" id="reset-game-button" on:click={reset}>
-        Reset game
-      </button>
-      <button class="control-button" id="save-game-button">Save game</button>
-    </div>
-  </div>
-  <div class="player-indicator scores-wrap">
-    <h2 class="player-indicator-heading">Points</h2>
-
-    {#each players as player}
-      <h2>{player.name}</h2>
-      <div class="scores-block">
-        {#each player.scores as direction}
-          <div>{direction.name}: {direction.score}</div>
-        {/each}
-      </div>
-    {/each}
-
-  </div>
-  <!-- <div class="buttons-wrapper">
-      <div class="dir-1">
-        {#each lines.leftToRight as line}
-          <div class="score-block">
-            {#each line as square}
-              <div>| {square.id}-{square.player.name} |</div>
+    <h1>Tic Tac Toe</h1>
+<div class="page-container">
+  <div class="scoreboard-container">
+    scoreboard-container
+    <div class="scoreboard-headings">
+      scoreboard-headings
+      <div class="scoreboard-totals">
+        scoreboard-totals
+        {#each players as player}
+          <div class="scoreboard-player">
+            <h2>{player.name}</h2>
+            {#each player.scores as direction}
+              <div class="scoreboard-direction">
+                <div>{direction.name}: {direction.score}</div>
+              </div>
             {/each}
           </div>
         {/each}
       </div>
+    </div>
+  </div>
+
+  <div class="gameboard-container">
+    <div class="player-indicator player-0">
+      <h2 class="player-indicator-heading">Player {currentPlayer.name}</h2>
+      <h2 class="player-indicator-heading">Turn Moves: {movesRemaining}</h2>
+      <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
+
+      <div class="buttons-wrapper">
+        <button class="control-button" id="next-turn-button">End turn</button>
+        <button
+          class="control-button"
+          id="tally-game-button"
+          on:click={countPoints}>
+          Tally points
+        </button>
+        <button class="control-button" id="reset-game-button" on:click={reset}>
+          Reset game
+        </button>
+        <button class="control-button" id="save-game-button">Save game</button>
+      </div>
+    </div>
+
+    <h2>Layout and Game Options</h2>
+    <div class="form-wrap">
+
+      <label for="rows">
+        Rows:
+        <input
+          id="rows"
+          name="rows"
+          type="number"
+          placeholder={rows}
+          value={rows}
+          on:input={triggerGameBoardUpdate}
+          style="width: 2.5ch;" />
+      </label>
+      <label for="columns">
+        Columns:
+        <input
+          id="columns"
+          name="columns"
+          type="number"
+          placeholder={columns}
+          value={columns}
+          on:input={triggerGameBoardUpdate}
+          style="width: 2.5ch;" />
+      </label>
+      <label for="size">
+        Square size (px):
+        <input
+          id="size"
+          name="size"
+          type="number"
+          placeholder="24"
+          value={size}
+          step="4"
+          on:input={triggerGameBoardUpdate}
+          style="width: 2.5ch;" />
+      </label>
+      <label for="gutter">
+        Gutter (px):
+        <input
+          id="gutter"
+          name="gutter"
+          type="number"
+          placeholder={gutter}
+          value={gutter}
+          on:input={triggerGameBoardUpdate}
+          style="width: 1.5ch;" />
+      </label>
+      <label for="movesPerTurn">
+        Moves Per Turn:
+        <input
+          id="movesPerTurn"
+          name="movesPerTurn"
+          type="number"
+          placeholder={movesPerTurn}
+          bind:value={movesPerTurn}
+          on:input={updateGameSettings}
+          style="width: 1.5ch;" />
+      </label>
+
+    </div>
+    <!-- 
+    <div class="form-wrap">
+      <h2>GAME OPTIONS</h2>
+  
     </div> -->
 
-  <h2>Layout and Game Options</h2>
-  <div class="form-wrap">
-
-    <label for="rows">
-      Rows:
-      <input
-        id="rows"
-        name="rows"
-        type="number"
-        placeholder={rows}
-        value={rows}
-        on:input={triggerGameBoardUpdate}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="columns">
-      Columns:
-      <input
-        id="columns"
-        name="columns"
-        type="number"
-        placeholder={columns}
-        value={columns}
-        on:input={triggerGameBoardUpdate}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="size">
-      Square size (px):
-      <input
-        id="size"
-        name="size"
-        type="number"
-        placeholder="24"
-        value={size}
-        step="4"
-        on:input={triggerGameBoardUpdate}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="gutter">
-      Gutter (px):
-      <input
-        id="gutter"
-        name="gutter"
-        type="number"
-        placeholder={gutter}
-        value={gutter}
-        on:input={triggerGameBoardUpdate}
-        style="width: 1.5ch;" />
-    </label>
-    <label for="movesPerTurn">
-      Moves Per Turn:
-      <input
-        id="movesPerTurn"
-        name="movesPerTurn"
-        type="number"
-        placeholder={movesPerTurn}
-        bind:value={movesPerTurn}
-        on:input={updateGameSettings}
-        style="width: 1.5ch;" />
-    </label>
-
+    <div id="gameboard-board" class="gameboard-board" />
   </div>
-  <!-- 
-  <div class="form-wrap">
-    <h2>GAME OPTIONS</h2>
 
-  </div> -->
-
-  <div id="game-board" class="game-board" />
 </div>
