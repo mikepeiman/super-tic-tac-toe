@@ -109,24 +109,45 @@
     // });
 
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
+    // {
+    //   name: 'leftToRight',
+    //   src: 'tictactoe-horizontal.png'
+    // },
+    //     {
+    //   name: 'topToBottom',
+    //   src: 'tictactoe-vertical.png'
+    // },
+    //     {
+    //   name: 'diagonalDownLeft',
+    //   src: 'tictactoe-diagonal-down-left.png'
+    // },
+    //     {
+    //   name: 'diagonalDownRight',
+    //   src: 'tictactoe-diagonal-down-right.png'
+    // }
+
     let leftToRight = {
       id: 1,
       name: "leftToRight",
+      src: 'tictactoe-horizontal.png',
       lines: lines.leftToRight
     };
     let topToBottom = {
       id: 2,
       name: "topToBottom",
+      src: 'tictactoe-vertical.png',
       lines: lines.topToBottom
     };
     let diagonalDownLeft = {
       id: 3,
       name: "diagonalDownLeft",
+      src: 'tictactoe-diagonal-down-left.png',
       lines: lines.diagonalDownLeft
     };
     let diagonalDownRight = {
       id: 4,
       name: "diagonalDownRight",
+      src: 'tictactoe-diagonal-down-right.png',
       lines: lines.diagonalDownRight
     };
     players.forEach(player => {
@@ -851,7 +872,8 @@
             {#each player.scores as direction, i}
               <div class="scoreboard-direction">
                 <div>{direction.name}: {direction.score}</div>
-                <img class="direction-icon" src={icons[i].src} width="25" alt="Icon for {`${icons[i].name}`}" />
+                <img class="direction-icon" src="tictactoe-horizontal.png" width="25" alt="icon for direction" />
+                <!-- <img class="direction-icon" src={icons[i].src} width="25" alt="icon for direction" /> -->
               </div>
             {/each}
           </div>
