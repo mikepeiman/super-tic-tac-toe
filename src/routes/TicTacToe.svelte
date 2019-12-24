@@ -1,15 +1,16 @@
 <script>
   import { onMount } from "svelte";
 
-  $: testValue = "test value";
+  $: numberOfPlayers = 3;
+  $: movesPerTurn = 3;
+  $: cellsToScore = 3;
+  $: bonusForCompleteRow = 5;
   $: lastTicked = {};
   $: rows = 4;
   $: columns = 4;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = {};
-  $: movesPerTurn = 3;
-  $: cellsToScore = 3;
   $: movesRemaining = 0;
   $: turn = 0;
   $: gameHistory = [];
@@ -19,11 +20,50 @@
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: scoredPlayers = [];
+  $: scoreDirections = [
+    {
+      id: 1,
+      name: "leftToRight",
+      src: "tictactoe-horizontal.png",
+      lines: lines.leftToRight,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-horizontal.png"
+    },
+    {
+      id: 2,
+      name: "topToBottom",
+      src: "tictactoe-horizontal.png",
+      lines: lines.topToBottom,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-vertical.png"
+    },
+    {
+      id: 3,
+      name: "diagonalDownLeft",
+      src: "tictactoe-horizontal.png",
+      lines: lines.diagonalDownLeft,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-diagonal-down-left.png"
+    },
+    {
+      id: 4,
+      name: "diagonalDownRight",
+      src: "tictactoe-horizontal.png",
+      lines: lines.diagonalDownRight,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-diagonal-down-right.png"
+    }
+  ];
   $: players = [
     {
       id: 0,
       name: "Kaya",
       totalScore: 0,
+      bgColor: "",
       moves: 0,
       scores: [
         {
@@ -68,6 +108,7 @@
       id: 1,
       name: "Mike",
       totalScore: 0,
+      bgColor: "",
       moves: 0,
       scores: [
         {
@@ -109,8 +150,6 @@
       ]
     }
   ];
-  // $: players.forEach(player => {console.log(player)});
-  $: console.log(`Kaya's horizontal score: ${players[0].scores[0].dirScore}`);
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -118,9 +157,9 @@
     diagonalDownRight: []
   };
   $: scores = [];
-  $: numberOfPlayers = 2;
 
   onMount(() => {
+    initializePlayers();
     renderGameBoard(rows, columns, size, gutter);
     movesRemaining = movesPerTurn;
     currentPlayer = players[0];
@@ -139,6 +178,35 @@
     size = document.getElementById("size").value;
     gutter = document.getElementById("gutter").value;
     renderGameBoard(rows, columns, size, gutter);
+  }
+
+  function initializePlayers() {
+    players = [];
+    // let hueDeg = 360 / numberOfPlayers;
+    for (let i = 0; i < numberOfPlayers; i++) {
+      console.log(
+        `initializePlayers: bgColor hue ${(i + 1) * (360 / numberOfPlayers)}`
+      );
+
+      players = [
+        ...players,
+        {
+          id: 0,
+          name: `Player ${i + 1}`,
+          totalScore: 0,
+          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers)}, 50%, 50%, .75)`,
+          moves: 0,
+          scores: []
+        }
+      ];
+
+      scoreDirections.forEach(direction => {
+        players[i]["scores"].push(direction);
+      });
+    }
+    scoredPlayers = players;
+    players = players;
+    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
   }
 
   function triggerGameBoardUpdate(e) {
@@ -832,7 +900,7 @@
   }
 
   .direction-icon {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     // background: #1a1a1a;
   }
   .direction-score {
@@ -851,15 +919,17 @@
           <!-- <h2 class="player-name">{player.name}</h2> -->
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
-              
+
               <img
                 class="direction-icon"
                 src={direction.iconSrc}
                 width="25"
                 alt="icon for direction" />
-                <div class="direction-score"><div>{direction.name}:</div> <div>{direction.dirScore}</div></div>
+              <div class="direction-score">
+                <div>{direction.name}:</div>
+                <div>{direction.dirScore}</div>
+              </div>
             </div>
-            
           {/each}
         </div>
       </div>
