@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
+  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer)
   $: numberOfPlayers = 3;
   $: movesPerTurn = 3;
   $: cellsToScore = 3;
@@ -191,7 +192,7 @@
       players = [
         ...players,
         {
-          id: 0,
+          id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
           bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers)}, 50%, 50%, .75)`,
@@ -223,12 +224,12 @@
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
 
     players.forEach(player => {
-      console.dir(player);
+      // console.dir(player);
       player.scores.forEach(direction => {
-        console.dir(direction);
+        // console.dir(direction);
         direction["dirScore"] = score(direction, player);
         player["totalScore"] += direction["dirScore"];
-        console.dir(direction["dirScore"]);
+        // console.dir(direction["dirScore"]);
         // players = players
         localStorage.setItem(
           `${direction.name}`,
@@ -240,13 +241,13 @@
     lines = lines;
     localStorage.setItem(`players`, "");
     localStorage.setItem(`players`, JSON.stringify(players));
-    console.log("players object just after set localStorage");
-    console.log(players);
+    // console.log("players object just after set localStorage");
+    // console.log(players);
   }
 
   function score(direction, player) {
     // $: cellsToScore
-    console.log(`score called with direction `, direction);
+    // console.log(`score called with direction `, direction);
 
     let dirLines = [];
     let dirScore = 0;
@@ -282,16 +283,6 @@
     player["score"] += dirScore;
     // setIcon(direction);
     return dirScore;
-  }
-
-  function setIcon(direction) {
-    icons.forEach(icon => {
-      if (direction.name == icon.name) {
-        console.log(
-          `directions name matches icon name ${direction.name}, ${icon.src}`
-        );
-      }
-    });
   }
 
   function setPlayerMove(squareId) {
@@ -628,25 +619,11 @@
       playerName: currentPlayer.name
     };
     square.classList.add("ticked");
-    // addToScoringArray(square);
     square.dataset.ticked = true;
-
-    if (currentPlayer.id == 0) {
-      console.log(`currentPlayer.id == 0`);
-      square.setAttribute("data-marker", "X");
-      square.setAttribute("player-id", currentPlayer.id);
-      square.setAttribute("player-name", currentPlayer.name);
-      square.style = "--custom-bg: #abf";
-      // square.setAttribute("data-background-color", "rgba(255, 150, 150, 0.75)");
-    } else {
-      square.setAttribute("data-marker", "O");
-      square.setAttribute("player-id", currentPlayer.id);
-      square.setAttribute("player-name", currentPlayer.name);
-      square.style = "--custom-bg: #fab";
-      // square.setAttribute("data-background-color", "rgba(150, 255, 150, 0.75)");
-    }
-    // square.style.border = "1px solid rgba(255,100,155,1)"
-    //  square.style.background = "rgba(150, 150, 255, 0.75)"
+    square.setAttribute("player-id", currentPlayer.id);
+    square.setAttribute("player-name", currentPlayer.name);
+    square.style = `--custom-bg: ${currentPlayer.bgColor}`;
+    square.setAttribute("data-marker", "O");
   }
 
   function untickThis(square) {
@@ -668,12 +645,25 @@
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
+    console.log(
+      `playerChanges, currentPlayer.id before change:`,
+      currentPlayer.id
+    );
+    // currentPlayer.id == 0
+    //   ? (currentPlayer = players[1])
+    //   : (currentPlayer = players[0]);
+    let id = currentPlayer.id;
+    if (id >= numberOfPlayers - 1) {
+      currentPlayer = scoredPlayers[0];
+    } else {
+      currentPlayer = scoredPlayers[id + 1];
+    }
 
-    currentPlayer.id == 0
-      ? (currentPlayer = players[1])
-      : (currentPlayer = players[0]);
     movesRemaining = movesPerTurn;
-
+    console.log(
+      `playerChanges, currentPlayer.id AFTER change:`,
+      currentPlayer.id
+    );
     console.log(`playerIndicator`, playerIndicator);
     playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
