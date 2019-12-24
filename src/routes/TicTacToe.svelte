@@ -294,6 +294,7 @@
       ];
     }
     scoredPlayers = players;
+    players = players;
     localStorage.setItem("generatedPlayers", JSON.stringify(scoredPlayers));
   }
 
@@ -319,14 +320,15 @@
       player.scores.forEach(direction => {
         direction["dirScore"] = score(direction, player);
         player["totalScore"] += direction["dirScore"];
-        localStorage.setItem(
-          `${direction.name}`,
-          JSON.stringify(`lines.${direction.name}`)
-        );
+        // localStorage.setItem(
+        //   `${direction.name}`,
+        //   JSON.stringify(`lines.${direction.name}`)
+        // );
       });
     });
 
     scoredPlayers = players;
+    players = players
     lines = lines;
 
     localStorage.setItem(`players`, "");
@@ -566,9 +568,9 @@
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
-    console.log(`rows: ${rows} columns: ${columns}`);
+    // console.log(`rows: ${rows} columns: ${columns}`);
     for (let rowNum = 0; rowNum < rows; rowNum++) {
-      console.log(`row: ${rowNum}`);
+      // console.log(`row: ${rowNum}`);
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
