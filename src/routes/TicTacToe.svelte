@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 3;
+  $: numberOfPlayers = 4;
   $: movesPerTurn = 3;
   $: cellsToScore = 3;
   $: bonusForCompleteRow = 5;
@@ -309,6 +309,7 @@
     makeLinesFrom(diagonalDownRight);
     makeLinesFrom(diagonalDownLeft);
     localStorage.setItem("LINES", JSON.stringify(lines));
+    initializePlayers();
   }
 
   function makeLinesFrom(direction) {
