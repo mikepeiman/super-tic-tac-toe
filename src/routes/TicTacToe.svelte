@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 2;
+  $: numberOfPlayers = 3;
   $: movesPerTurn = 3;
   $: cellsToScore = 3;
   $: bonusForCompleteRow = 5;
@@ -78,6 +78,7 @@
     localStorage.setItem("diagonalDownRight", "");
     localStorage.setItem("topToBottom", "");
     localStorage.setItem("leftToRight", "");
+    localStorage.setItem("scoredPlayers", "");
     columns = document.getElementById("columns").value;
     rows = document.getElementById("rows").value;
     size = document.getElementById("size").value;
@@ -87,12 +88,7 @@
 
   function initializePlayers() {
     scoredPlayers = [];
-    // let hueDeg = 360 / numberOfPlayers;
     for (let i = 0; i < numberOfPlayers; i++) {
-      // console.log(
-      //   `initializePlayers: bgColor hue ${(i + 1) * (360 / numberOfPlayers)}`
-      // );
-
       scoredPlayers = [
         ...scoredPlayers,
         {
@@ -102,28 +98,16 @@
           bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers)}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
-          dirScoresByIndex: []
+          dirScoresByIndex: [0, 0, 0, 0]
         }
       ];
-      // console.log(
-      //   `initializePlayers: lines array for scoring #1: `,
-      //   scoredPlayers[i].lines
-      // );
 
       scoreDirections.forEach((direction, index) => {
-        // console.log(`inside initializePlayers, index ${index} scoredPlayers[i] ${scoredPlayers[i]} scoreDirections.forEach direction: `, direction, scoredPlayers[i])
         scoredPlayers[i]["scores"].push(direction);
-        scoredPlayers[i]["scores"][index]["lines"] = lines[direction.name]
-        // console.log(`lines global: `, lines)
-        // console.log(`lines global at index ${direction.name}: `, lines[direction.name])
+        scoredPlayers[i]["scores"][index]["lines"] = lines[direction.name];
       });
-      // console.log(
-      //   `initializePlayers: lines array for scoring #2: `,
-      //   scoredPlayers[i].lines
-      // );
     }
     scoredPlayers = scoredPlayers;
-    // players = players;
     localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
   }
 
@@ -138,27 +122,61 @@
   }
 
   function countPoints() {
-    console.log(`countPoints called`);
+    console.log(
+      `||||||||||||||||||||||  countPoints called  ||||||||||||||||||||||`
+    );
+    console.log(
+      "******************************************************************"
+    );
+    console.log(
+      "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+    );
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
 
     scoredPlayers.forEach(player => {
-      console.log(`countPoints, forEach player in scoredPlayers: ${player.name}`, player);
+      console.log(
+        `countPoints, forEach player in scoredPlayers: ${player.name}`,
+        player
+      );
+      console.log(
+        `!!!!!! scoredPlayers.forEach player.name: ${player.name} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+      );
       player.scores.forEach((direction, index) => {
         console.log(
-          `************** each direction score in ${player.name}`,
-          direction.name,
-          direction.dirScore,
-          direction.lines
+          `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
         );
-        direction.dirScore = score(direction, player);
+        // direction.dirScore = score(direction, player, index);
+
+        // console.log(
+        //   `************** each direction score in ${player.name}`,
+        //   direction.name,
+        //   direction.dirScore
+        // );
+        let thisScore = score(direction, player, index);
         console.log(
-          `************** each direction score in ${player.name}`,
-          direction.name,
-          direction.dirScore
+          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
         );
-        
-        player["dirScoresByIndex"][index] = direction.dirScore
-        player["totalScore"] = player["dirScoresByIndex"].reduce((a, b) => a + b, 0)
+        console.log(
+          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+        );
+        console.log(
+          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+        );
+        player["dirScoresByIndex"][index] = thisScore;
+        console.log(
+          `player["scores"][index]["dirScore"]`,
+          player["scores"][index]["dirScore"]
+        );
+        player["scores"][index]["dirScore"] = thisScore;
+        console.log(
+          `player["scores"][index]["dirScore"] set::: `,
+          player["scores"][index]["dirScore"]
+        );
+        let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
+        player["totalScore"] = totalScore;
+        console.log(
+          `!!!!!! totalScore ${totalScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+        );
         // console.dir(direction["dirScore"]);
         // players = players
         localStorage.setItem(
@@ -166,10 +184,10 @@
           JSON.stringify(lines[direction.name])
         );
       });
+      scoredPlayers = scoredPlayers;
     });
     // player["totalScore"] += direction["dirScore"];
 
-    scoredPlayers = scoredPlayers;
     // lines = lines;
     // localStorage.setItem(`players`, "");
     localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
@@ -177,9 +195,13 @@
     // console.log(players);
   }
 
-  function score(direction, player) {
+  function score(direction, player, idx) {
     // $: cellsToScore
-    console.log(`score called with direction `, direction);
+    console.log(
+      `score called with direction and player and idx ${idx}`,
+      direction,
+      player
+    );
 
     let dirLines = [];
     let dirScore = 0;
@@ -210,13 +232,24 @@
         points += countInLoop - (cellsToScore - 1);
       }
       dirLines.push({ countInLine: countInLine, points: points });
-      console.log(`dirLines `, dirLines)
+      // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
-    console.log(`score closing with direction `, direction);
-    direction.dirScore = dirScore
-    // scoredPlayers = scoredPlayers;
-    console.log(`scoredPlayers assigned to itself; score closing with dirScore ${dirScore} and direction `, direction);
+    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
+    // direction.dirScore = dirScore
+    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
+    scoredPlayers = scoredPlayers;
+    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
+    console.log(
+      `score closing with direction score ${dirScore} | player: `,
+      player
+    );
+    console.log(
+      `player.scores[idx] ${idx} .dirScore: `,
+      player.scores[idx].dirScore
+    );
+    // player.scores[idx].dirScore = dirScore
+    // player.scores[idx].dirLines = dirLines
     return dirScore;
   }
 
@@ -839,9 +872,7 @@
   <div class="scoreboard-container">
     {#each scoredPlayers as player}
       <div class="scoreboard-totals">
-        <h3 class="total-score">
-          {player.name}: {player.totalScore}
-        </h3>
+        <h3 class="total-score">{player.name}: {player.totalScore}</h3>
         <div class="scoreboard-player">
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
@@ -852,7 +883,7 @@
                   width="25"
                   alt="icon for direction" />
                 <div class="direction-name">{direction.name}:</div>
-                <div class="direction-score">{direction.dirScore}</div>
+                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
               </div>
             </div>
           {/each}
