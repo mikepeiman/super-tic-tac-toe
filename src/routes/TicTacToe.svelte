@@ -14,7 +14,6 @@
   $: currentPlayer = {};
   $: movesRemaining = 0;
   $: turn = 0;
-  $: lastTicked = {};
   $: gameHistory = [];
   $: turnHistory = [];
   $: clickCount = 0;
@@ -65,12 +64,25 @@
   $: scores = [];
 
   onMount(() => {
-    initializePlayers();
     renderGameBoard(rows, columns, size, gutter);
     initializePlayers();
     movesRemaining = movesPerTurn;
     currentPlayer = scoredPlayers[0];
+    setTimeout(() => {
+      addStyles();
+    }, 1);
   });
+
+  function addStyles() {
+    let scoreHeadings = document.querySelectorAll(".total-score");
+    console.log(
+      `addStyle function, scoreHeadings for total-score: `,
+      scoreHeadings
+    );
+    scoreHeadings.forEach((h, i) => {
+      h.style = `--custom-bg: ${scoredPlayers[i].bgColor}`;
+    });
+  }
 
   function reset() {
     localStorage.setItem("gameboard", "");
@@ -451,7 +463,7 @@
         // console.log(`row: ${rowNum} column: ${colNum}`);
         let square = document.createElement("div");
         square.classList = "game-square";
-        square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
+        square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
         square.style.margin = gutter + "px";
         square.style.width = size + "px";
         square.style.height = size + "px";
@@ -742,7 +754,7 @@
   .game-square {
     width: 24px;
     height: 24px;
-    background: var(--custom-bg); // rgba(150, 150, 255, 0.75);
+    background: var(--custom-bg);
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -838,6 +850,7 @@
   .scoreboard-direction {
     background: rgba(0, 0, 155, 0.1);
     display: flex;
+    // padding: .25rem;
   }
 
   .direction-icon {
@@ -853,6 +866,19 @@
     justify-self: flex-end;
     margin-right: 0.5rem;
   }
+
+  .total-score {
+    background: var(--custom-bg);
+    padding: 0.25rem;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .total-score-number {
+    border: 2px solid white;
+    padding: .25rem;
+  }
 </style>
 
 <h1>Tic Tac Toe</h1>
@@ -860,7 +886,10 @@
   <div class="scoreboard-container">
     {#each scoredPlayers as player}
       <div class="scoreboard-totals">
-        <h3 class="total-score">{player.name}: {player.totalScore}</h3>
+        <h3 class="total-score">
+          <div>{player.name}:</div>
+          <div class="total-score-number">{player.totalScore}</div>
+        </h3>
         <div class="scoreboard-player">
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
@@ -868,8 +897,9 @@
                 <img
                   class="direction-icon"
                   src={direction.iconSrc}
-                  width="25"
-                  alt="icon for direction" />
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
                 <div class="direction-name">{direction.name}:</div>
                 <div class="direction-score">{player.dirScoresByIndex[i]}</div>
               </div>
