@@ -1,17 +1,17 @@
 <script>
   import { onMount } from "svelte";
 
-  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 4;
-  $: movesPerTurn = 3;
-  $: cellsToScore = 3;
-  $: bonusForCompleteRow = 5;
-  $: lastTicked = {};
+  $: numberOfPlayers = 3;
+  $: hueDeg = 360 / numberOfPlayers;
   $: rows = 4;
   $: columns = 4;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = {};
+  $: currentPlayerId = 0;
+  $: movesPerTurn = 3;
+  $: cellsToScore = 3;
+  $: bonusForCompleteRow = 5;
   $: movesRemaining = 0;
   $: turn = 0;
   $: lastTicked = {};
@@ -21,39 +21,188 @@
   $: moveNumber = 0;
   $: gameboardMapped = [];
   $: tickedArray = [];
-  $: scoredPlayers = [];
-  $: scoreDirections = [
+  $: scoredPlayers = [
+    {
+      id: 0,
+      name: "Player 0",
+      totalScore: 0,
+      bgColor: `hsla(60, 50%, 50%, .75)`,
+      moves: 0,
+      scores: [
+        {
+          id: 1,
+          name: "Horizontal",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
+        {
+          id: 2,
+          name: "Vertical",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
+        {
+          id: 3,
+          name: "Diagonal (down left)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 4,
+          name: "Diagonal (down right)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ]
+    },
     {
       id: 1,
-      name: "leftToRight",
-      lines: lines.leftToRight,
-      scoringLines: [],
-      dirScore: 0,
-      iconSrc: "tictactoe-horizontal.png"
+      name: "Player 1",
+      totalScore: 0,
+      bgColor: `hsla(120, 50%, 50%, .75)`,
+      moves: 0,
+      scores: [
+        {
+          id: 1,
+          name: "Horizontal",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
+        {
+          id: 2,
+          name: "Vertical",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
+        {
+          id: 3,
+          name: "Diagonal (down left)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 4,
+          name: "Diagonal (down right)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ]
+    }
+  ];
+  $: players = [
+    {
+      id: 0,
+      name: "Kaya",
+      totalScore: 0,
+      bgColor: `hsla(60, 50%, 50%, .75)`,
+      moves: 0,
+      scores: [
+        {
+          id: 1,
+          name: "Horizontal",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
+        {
+          id: 2,
+          name: "Vertical",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
+        {
+          id: 3,
+          name: "Diagonal (down left)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 4,
+          name: "Diagonal (down right)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ]
     },
     {
-      id: 2,
-      name: "topToBottom",
-      lines: lines.topToBottom,
-      scoringLines: [],
-      dirScore: 0,
-      iconSrc: "tictactoe-vertical.png"
-    },
-    {
-      id: 3,
-      name: "diagonalDownLeft",
-      lines: lines.diagonalDownLeft,
-      scoringLines: [],
-      dirScore: 0,
-      iconSrc: "tictactoe-diagonal-down-left.png"
-    },
-    {
-      id: 4,
-      name: "diagonalDownRight",
-      lines: lines.diagonalDownRight,
-      scoringLines: [],
-      dirScore: 0,
-      iconSrc: "tictactoe-diagonal-down-right.png"
+      id: 1,
+      name: "Mike",
+      totalScore: 0,
+      bgColor: `hsla(120, 50%, 50%, .75)`,
+      moves: 0,
+      scores: [
+        {
+          id: 1,
+          name: "Horizontal",
+          src: "tictactoe-horizontal.png",
+          lines: lines.leftToRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-horizontal.png"
+        },
+        {
+          id: 2,
+          name: "Vertical",
+          src: "tictactoe-horizontal.png",
+          lines: lines.topToBottom,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-vertical.png"
+        },
+        {
+          id: 3,
+          name: "Diagonal (down left)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownLeft,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-left.png"
+        },
+        {
+          id: 4,
+          name: "Diagonal (down right)",
+          src: "tictactoe-horizontal.png",
+          lines: lines.diagonalDownRight,
+          scoringLines: [],
+          dirScore: 0,
+          iconSrc: "tictactoe-diagonal-down-right.png"
+        }
+      ]
     }
   ];
   $: lines = {
@@ -67,9 +216,10 @@
   onMount(() => {
     initializePlayers();
     renderGameBoard(rows, columns, size, gutter);
-    initializePlayers();
     movesRemaining = movesPerTurn;
+    scoredPlayers = players;
     currentPlayer = scoredPlayers[0];
+    localStorage.setItem(`currentPlayer`, JSON.stringify(currentPlayer));
   });
 
   function reset() {
@@ -80,7 +230,6 @@
     localStorage.setItem("diagonalDownRight", "");
     localStorage.setItem("topToBottom", "");
     localStorage.setItem("leftToRight", "");
-    localStorage.setItem("scoredPlayers", "");
     columns = document.getElementById("columns").value;
     rows = document.getElementById("rows").value;
     size = document.getElementById("size").value;
@@ -89,28 +238,69 @@
   }
 
   function initializePlayers() {
-    scoredPlayers = [];
+    players = [];
+    // let hueDeg = 360 / numberOfPlayers;
     for (let i = 0; i < numberOfPlayers; i++) {
-      scoredPlayers = [
-        ...scoredPlayers,
+      console.log(
+        `initializePlayers: bgColor hue ${(i + 1) * (360 / numberOfPlayers)}`
+      );
+      players = [
+        ...players,
         {
-          id: i,
+          id: 0,
           name: `Player ${i + 1}`,
           totalScore: 0,
           bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers)}, 50%, 50%, .75)`,
           moves: 0,
-          scores: [],
-          dirScoresByIndex: [0, 0, 0, 0]
+          scores: [
+            {
+              id: 1,
+              name: "Horizontal",
+              src: "tictactoe-horizontal.png",
+              lines: lines.leftToRight,
+              scoringLines: [],
+              dirScore: 0,
+              iconSrc: "tictactoe-horizontal.png"
+            },
+            {
+              id: 2,
+              name: "Vertical",
+              src: "tictactoe-horizontal.png",
+              lines: lines.topToBottom,
+              scoringLines: [],
+              dirScore: 0,
+              iconSrc: "tictactoe-vertical.png"
+            },
+            {
+              id: 3,
+              name: "Diagonal (down left)",
+              src: "tictactoe-horizontal.png",
+              lines: lines.diagonalDownLeft,
+              scoringLines: [],
+              dirScore: 0,
+              iconSrc: "tictactoe-diagonal-down-left.png"
+            },
+            {
+              id: 4,
+              name: "Diagonal (down right)",
+              src: "tictactoe-horizontal.png",
+              lines: lines.diagonalDownRight,
+              scoringLines: [],
+              dirScore: 0,
+              iconSrc: "tictactoe-diagonal-down-right.png"
+            }
+          ]
         }
       ];
-
-      scoreDirections.forEach((direction, index) => {
-        scoredPlayers[i]["scores"].push(direction);
-        scoredPlayers[i]["scores"][index]["lines"] = lines[direction.name];
-      });
     }
-    scoredPlayers = scoredPlayers;
-    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    scoredPlayers = players;
+    players = players;
+    localStorage.setItem("generatedPlayers", JSON.stringify(scoredPlayers));
+  }
+
+  function modifyNumberOfPlayers() {
+    initializePlayers();
+    console.log(`number of player ${numberOfPlayers}`);
   }
 
   function triggerGameBoardUpdate(e) {
@@ -124,86 +314,30 @@
   }
 
   function countPoints() {
-    console.log(
-      `||||||||||||||||||||||  countPoints called  ||||||||||||||||||||||`
-    );
-    console.log(
-      "******************************************************************"
-    );
-    console.log(
-      "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-    );
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
 
-    scoredPlayers.forEach(player => {
-      console.log(
-        `countPoints, forEach player in scoredPlayers: ${player.name}`,
-        player
-      );
-      console.log(
-        `!!!!!! scoredPlayers.forEach player.name: ${player.name} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-      );
-      player.scores.forEach((direction, index) => {
-        console.log(
-          `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        // direction.dirScore = score(direction, player, index);
-
-        // console.log(
-        //   `************** each direction score in ${player.name}`,
-        //   direction.name,
-        //   direction.dirScore
+    players.forEach(player => {
+      player.scores.forEach(direction => {
+        direction["dirScore"] = score(direction, player);
+        player["totalScore"] += direction["dirScore"];
+        // localStorage.setItem(
+        //   `${direction.name}`,
+        //   JSON.stringify(`lines.${direction.name}`)
         // );
-        let thisScore = score(direction, player, index);
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        player["dirScoresByIndex"][index] = thisScore;
-        console.log(
-          `player["scores"][index]["dirScore"]`,
-          player["scores"][index]["dirScore"]
-        );
-        player["scores"][index]["dirScore"] = thisScore;
-        console.log(
-          `player["scores"][index]["dirScore"] set::: `,
-          player["scores"][index]["dirScore"]
-        );
-        let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
-        player["totalScore"] = totalScore;
-        console.log(
-          `!!!!!! totalScore ${totalScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        // console.dir(direction["dirScore"]);
-        // players = players
-        localStorage.setItem(
-          `${direction.name}`,
-          JSON.stringify(lines[direction.name])
-        );
       });
-      scoredPlayers = scoredPlayers;
     });
-    // player["totalScore"] += direction["dirScore"];
 
-    // lines = lines;
-    // localStorage.setItem(`players`, "");
-    localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
-    // console.log("players object just after set localStorage");
-    // console.log(players);
+    scoredPlayers = players;
+    players = players
+    lines = lines;
+
+    localStorage.setItem(`players`, "");
+    localStorage.setItem(`players`, JSON.stringify(players));
   }
 
-  function score(direction, player, idx) {
+  function score(direction, player) {
     // $: cellsToScore
-    console.log(
-      `score called with direction and player and idx ${idx}`,
-      direction,
-      player
-    );
+    // console.log(`score called with direction `, direction);
 
     let dirLines = [];
     let dirScore = 0;
@@ -234,24 +368,10 @@
         points += countInLoop - (cellsToScore - 1);
       }
       dirLines.push({ countInLine: countInLine, points: points });
-      // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    // direction.dirScore = dirScore
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    scoredPlayers = scoredPlayers;
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    console.log(
-      `score closing with direction score ${dirScore} | player: `,
-      player
-    );
-    console.log(
-      `player.scores[idx] ${idx} .dirScore: `,
-      player.scores[idx].dirScore
-    );
-    // player.scores[idx].dirScore = dirScore
-    // player.scores[idx].dirLines = dirLines
+    player["score"] += dirScore;
+    // setIcon(direction);
     return dirScore;
   }
 
@@ -310,8 +430,16 @@
     makeLinesFrom(topToBottom);
     makeLinesFrom(diagonalDownRight);
     makeLinesFrom(diagonalDownLeft);
-    localStorage.setItem("LINES", JSON.stringify(lines));
-    initializePlayers();
+    localStorage.setItem(
+      "diagonalDownLeft",
+      JSON.stringify(lines.diagonalDownLeft)
+    );
+    localStorage.setItem(
+      "diagonalDownRight",
+      JSON.stringify(lines.diagonalDownRight)
+    );
+    localStorage.setItem("topToBottom", JSON.stringify(lines.topToBottom));
+    localStorage.setItem("leftToRight", JSON.stringify(lines.leftToRight));
   }
 
   function makeLinesFrom(direction) {
@@ -473,10 +601,6 @@
       }
     }
     createDirectionArrays();
-    console.log(
-      `inside renderGameBoard, called createDirectionArrays(), lines: `,
-      lines
-    );
   }
 
   function setTurnHistory(square) {
@@ -521,7 +645,7 @@
   }
 
   function playMove(e) {
-    localStorage.setItem(`currentPlayer`, JSON.stringify(currentPlayer));
+    // localStorage.setItem(`currentPlayer`, JSON.stringify(currentPlayer));
     clickCount++;
     let square = e.target;
     let ticked = square.dataset.ticked == "true";
@@ -570,11 +694,12 @@
       playerName: currentPlayer.name
     };
     square.classList.add("ticked");
+    // addToScoringArray(square);
     square.dataset.ticked = true;
+    square.setAttribute("data-marker", "X");
     square.setAttribute("player-id", currentPlayer.id);
     square.setAttribute("player-name", currentPlayer.name);
     square.style = `--custom-bg: ${currentPlayer.bgColor}`;
-    square.setAttribute("data-marker", "O");
   }
 
   function untickThis(square) {
@@ -596,25 +721,41 @@
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
+    players = players
+    scoredPlayers = scoredPlayers
+    // !currentPlayer ? currentPlayer = players[0] : currentPlayer
+    let id = currentPlayer.id;
+    let nextId = id++;
     console.log(
-      `playerChanges, currentPlayer.id before change:`,
-      currentPlayer.id
+      `playerChange function, scoredPlayers.length ${scoredPlayers.length} currentPlayer.id ${id}, nextId ${nextId}`
     );
+    console.log(`numberOfPlayers global var: ${numberOfPlayers}`)
+    console.log(scoredPlayers);
+    console.log(players);
+    console.log(currentPlayer);
+
+    currentPlayerId === numberOfPlayers - 1 ? currentPlayerId = 0 : currentPlayerId++
+    currentPlayer = scoredPlayers[currentPlayerId]
+    // if (id < scoredPlayers.length - 1) {
+    //   console.log(
+    //     `currentPlayer.id ${id} < scoredPlayers.length - 1 ${scoredPlayers.length -
+    //       1}`
+    //   );
+    //   currentPlayer = scoredPlayers[nextId];
+    //   console.dir(currentPlayer);
+    // } else {
+    //   console.log(
+    //     `currentPlayer.id not less than numberOfPlayers, will be reset to scoredPlayers[0]`
+    //   );
+    //   currentPlayer = scoredPlayers[0];
+      console.dir(currentPlayer);
+    // }
+
     // currentPlayer.id == 0
     //   ? (currentPlayer = players[1])
     //   : (currentPlayer = players[0]);
-    let id = currentPlayer.id;
-    if (id >= numberOfPlayers - 1) {
-      currentPlayer = scoredPlayers[0];
-    } else {
-      currentPlayer = scoredPlayers[id + 1];
-    }
-
     movesRemaining = movesPerTurn;
-    console.log(
-      `playerChanges, currentPlayer.id AFTER change:`,
-      currentPlayer.id
-    );
+
     console.log(`playerIndicator`, playerIndicator);
     playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
@@ -871,7 +1012,7 @@
                   width="25"
                   alt="icon for direction" />
                 <div class="direction-name">{direction.name}:</div>
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+                <div class="direction-score">{direction.dirScore}</div>
               </div>
             </div>
           {/each}
