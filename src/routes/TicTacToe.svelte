@@ -2,13 +2,13 @@
   import { onMount } from "svelte";
 
   $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 4;
-  $: movesPerTurn = 3;
+  $: numberOfPlayers = 5;
+  $: movesPerTurn = 1;
   $: cellsToScore = 3;
   $: bonusForCompleteRow = 5;
   $: lastTicked = {};
-  $: rows = 4;
-  $: columns = 4;
+  $: rows = 15;
+  $: columns = 15;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = {};
@@ -109,7 +109,7 @@
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers)}, 50%, 50%, .75)`,
+          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers) + 30}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -123,6 +123,9 @@
     }
     scoredPlayers = scoredPlayers;
     localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    let playerIndicator = document.querySelector(".player-indicator");
+    let id = currentPlayer.id;
+    playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`
   }
 
   function triggerGameBoardUpdate(e) {
@@ -608,20 +611,16 @@
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
-    console.log(
-      `playerChanges, currentPlayer.id before change:`,
-      currentPlayer.id
-    );
-    // currentPlayer.id == 0
-    //   ? (currentPlayer = players[1])
-    //   : (currentPlayer = players[0]);
+
     let id = currentPlayer.id;
+    // id === 0 ? playerIndicator.style = `--custom-bg: ${scoredPlayers[scoredPlayers.length].bgColor}` : playerIndicator.style = `--custom-bg: ${scoredPlayers[id].bgColor}`
+    
     if (id >= numberOfPlayers - 1) {
       currentPlayer = scoredPlayers[0];
     } else {
       currentPlayer = scoredPlayers[id + 1];
     }
-
+    playerIndicator.style = `--custom-bg: ${scoredPlayers[id+1].bgColor}`
     movesRemaining = movesPerTurn;
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
@@ -671,6 +670,7 @@
 
   .player-indicator {
     width: calc(100% - (2 * #{$title-padding-horizontal}));
+    background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;
@@ -680,21 +680,12 @@
     border-radius: 5px;
     border-bottom: 5px solid rgba(0, 255, 155, 0.85);
 
-    &.player-0 {
-      background: rgba(0, 255, 155, 0.5);
-    }
-    &.player-1 {
-      background: rgba(255, 0, 155, 0.5);
-    }
     & h2 {
       margin: 0;
     }
   }
 
-  // .player-indicator-heading {
-  //   background: #1a1a1a;
-  //   transition: all .5s;
-  // }
+
 
   .form-wrap {
     display: flex;
