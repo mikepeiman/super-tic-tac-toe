@@ -617,10 +617,12 @@
     
     if (id >= numberOfPlayers - 1) {
       currentPlayer = scoredPlayers[0];
+      playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`
     } else {
       currentPlayer = scoredPlayers[id + 1];
+      playerIndicator.style = `--custom-bg: ${scoredPlayers[id+1].bgColor}`
     }
-    playerIndicator.style = `--custom-bg: ${scoredPlayers[id+1].bgColor}`
+    
     movesRemaining = movesPerTurn;
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
