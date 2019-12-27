@@ -1,14 +1,14 @@
 <script>
   import { onMount } from "svelte";
 
-  $: loadedData = {};
+  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
   $: numberOfPlayers = 3;
   $: movesPerTurn = 5;
   $: cellsToScore = 3;
   $: bonusForCompleteRow = 5;
   $: lastTicked = {};
-  $: rows = 16;
-  $: columns = 16;
+  $: rows = 6;
+  $: columns = 6;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = {};
@@ -66,14 +66,14 @@
   onMount(() => {
     // let storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
 
-    console.log("onMount, stored scoredPlayers length: ", scoredPlayers.length);
+    // console.log("onMount, stored scoredPlayers length: ", storedPlayers.length);
     if (scoredPlayers.length < 1) {
       console.log("onMount called initializePlayers()");
       initializePlayers();
       renderGameBoard(rows, columns, size, gutter);
       createDirectionArrays();
     } else {
-      // console.log("onMount called reloadPlayers()");
+      console.log("onMount called reloadPlayers()");
       reloadPlayers();
     }
 
@@ -112,28 +112,10 @@
   }
 
   function checkForSavedGame() {
-    let saved = JSON.parse(localStorage.getItem("scoredPlayers"));
+    let saved = JSON.parse(localStorage.getItem("gameHistory"));
     let settings = JSON.parse(localStorage.getItem("gameSettings"));
     console.log(`check for saved game`, saved, settings);
-    recreateGameHistoryFromCurrentPlayerInLS(scoredPlayers);
     renderGameBoardReload();
-  }
-
-  function recreateGameHistoryFromCurrentPlayerInLS(players) {
-    // let sp = JSON.parse(localStorage.getItem('currentPlayer'))
-    players[0].scores.forEach(direction => {
-      direction.lines.forEach(line => {
-        line.forEach(square => {
-          console.log(
-            "testing recreateGameHistoryFromCurrentPlayerInLS(), each square from player[0]: ",
-            square
-          );
-          gameHistory = [...gameHistory, square];
-        });
-      });
-    });
-    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
-    return gameHistory;
   }
 
   function addStyles() {
@@ -194,7 +176,6 @@
 
   function reloadPlayers() {
     scoredPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
-    // scoredPlayers =
     currentPlayer = scoredPlayers[0];
 
     scoredPlayers.forEach(player => {
@@ -216,7 +197,7 @@
     });
     scoredPlayers = scoredPlayers;
 
-    // localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
   }
 
   function getMoveFromHistory(id) {
@@ -245,11 +226,9 @@
       "*************__________countPoints called________**************"
     );
     console.log("scoredPlayers from countPoints: ", scoredPlayers);
-    // let players = JSON.parse(localStorage.getItem('scoredPlayers'))
-    // console.log("scoredPlayers from countPoints from localStorage before loop: ", players);
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-    let players = scoredPlayers;
-    players.forEach(player => {
+
+    scoredPlayers.forEach(player => {
       player.scores.forEach((direction, index) => {
         console.log(
           `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
@@ -265,7 +244,7 @@
           JSON.stringify(lines[direction.name])
         );
       });
-      // scoredPlayers = scoredPlayers;
+      scoredPlayers = scoredPlayers;
     });
     localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
   }
@@ -288,13 +267,11 @@
       let points = 0;
       line.forEach(move => {
         console.log(`scoring ${move.id}`, move);
-        let p = move.player;
-        // let p = getPlayerFromCell(move.id);
-        console.log(`scoring p = getPlayerFromCell, `, p);
-        // move.player = {
-        //   name: p.name,
-        //   id: p.id
-        // };
+        let p = getPlayerFromCell(move.id);
+        move.player = {
+          name: p.name,
+          id: p.id
+        };
         if (p.name !== "none" && p.id === player.id) {
           countInLoop++;
         }
@@ -329,76 +306,6 @@
     // player.scores[idx].dirScore = dirScore
     // player.scores[idx].dirLines = dirLines
     return dirScore;
-  }
-
-  function modal() {
-    const modalTriggers = document.querySelectorAll(".popup-trigger");
-    const modalCloseTrigger = document.querySelector(".popup-modal__close");
-    const bodyBlackout = document.querySelector(".body-blackout");
-    modalTriggers.forEach(trigger => {
-      trigger.addEventListener("click", () => {
-        const { popupTrigger } = trigger.dataset;
-        const popupModal = document.querySelector(
-          `[data-popup-modal="${popupTrigger}"]`
-        );
-        popupModal.classList.add("is--visible");
-        bodyBlackout.classList.add("is-blacked-out");
-
-        popupModal
-          .querySelector(".popup-modal__close")
-          .addEventListener("click", () => {
-            popupModal.classList.remove("is--visible");
-            bodyBlackout.classList.remove("is-blacked-out");
-          });
-      });
-    });
-  }
-
-  function saveTextAsFile() {
-    setGameSettings();
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
-    let textToSave = {
-      players: scoredPlayers,
-      gameHistory: gameHistory,
-      settings: settings
-    };
-    let textToSaveAsBlob = JSON.stringify(textToSave); // new Blob([JSON.stringify(textToSave)], { type: "text/plain" });
-    let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-    let fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs")
-      .value;
-
-    let downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    downloadLink.href = textToSaveAsURL;
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
-  }
-
-  function destroyClickedElement(event) {
-    document.body.removeChild(event.target);
-  }
-
-  function loadFileAsText() {
-    let fileToLoad = document.getElementById("fileToLoad").files[0];
-    // let fileToLoad = 't2.txt'
-
-    let fileReader = new FileReader();
-    fileReader.onload = async function(fileLoadedEvent) {
-      loadedData = JSON.parse(fileLoadedEvent.target.result);
-      // document.getElementById("inputTextToSave").value = loadedData;
-      console.log("loadedData from file: ", loadedData);
-      console.log("loadedData.players from file: ", loadedData.players);
-      scoredPlayers = await loadedData.players;
-      console.log("scoredPlayers from file: ", scoredPlayers);
-      await recreateGameHistoryFromCurrentPlayerInLS(loadedData.players);
-    };
-
-    console.log("scoredPlayers from file: ", scoredPlayers);
-    fileReader.readAsText(fileToLoad, "UTF-8");
   }
 
   function setPlayerMove(squareId) {
@@ -593,15 +500,21 @@
       settings.size,
       settings.gutter
     );
-    // let history = JSON.parse(localStorage.getItem("gameHistory"));
-    let history = recreateGameHistoryFromCurrentPlayerInLS(scoredPlayers);
-    // let players = JSON.parse(localStorage.getItem("scoredPlayers"));
-    let players = scoredPlayers;
+    let history = JSON.parse(localStorage.getItem("gameHistory"));
+
+    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
     localStorage.setItem("reloadedGameboard", "");
     let amount, number;
     let len = history.length;
     scoredPlayers = players;
     console.log("scoredPlayers", scoredPlayers);
+
+    // history.forEach(turn => {
+    //   turn.forEach(move => {
+    //     console.log(`each move in history: `, move);
+    //   });
+    // });
+
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
@@ -622,11 +535,23 @@
           square.style.margin = gutter + "px";
           square.style.width = size + "px";
           square.style.height = size + "px";
+
           let cell = {};
+          // cell["id"] = `R${i}C${j}`;
+          // cell["row"] = i;
+          // cell["col"] = j;
           cell = move;
+
+          // {
+          //   id: p,
+          //   name: players[p].name
+          // };
+          // gameboardMapped = [...gameboardMapped, cell];
+
           await delay(5);
         }
       }
+
     }
     loop();
   }
@@ -698,6 +623,7 @@
       // );
       turnHistory = [...turnHistory, move];
     }
+    console.log(turnHistory);
   }
 
   function setGameHistory(square) {
@@ -854,7 +780,7 @@
 
   .player-indicator {
     width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: let(--custom-bg);
+    background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;
@@ -927,7 +853,7 @@
   .game-square {
     width: 24px;
     height: 24px;
-    background: let(--custom-bg);
+    background: var(--custom-bg);
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -1041,7 +967,7 @@
   }
 
   .total-score {
-    background: let(--custom-bg);
+    background: var(--custom-bg);
     padding: 0.25rem;
     margin: 0;
     display: flex;
@@ -1051,106 +977,6 @@
   .total-score-number {
     border: 2px solid white;
     padding: 0.25rem;
-  }
-
-  // ## Import Google font
-  // -------------------
-
-  @import "https://fonts.googleapis.com/css?family=Open+Sans:300,400,700";
-
-  // ## Mixins
-  // -------------------
-
-  // Clearfix
-  @mixin clearfix {
-    &:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-  }
-
-  // ## Base
-  // -------------------
-
-  // apply a natural box layout model to all elements, but
-  // allowing components to change
-  html {
-    box-sizing: border-box;
-  }
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
-
-  html,
-  body {
-    font-family: "Open Sans", sans-serif;
-    padding: 0;
-    margin: 0;
-  }
-
-  body {
-    background-color: #f6f6f6;
-    min-height: 100vh;
-    height: 100vh;
-    padding: 35px;
-    position: relative;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  // ## Page styles
-  // -------------------
-  .body-blackout {
-    position: absolute;
-    z-index: 1010;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.65);
-    display: none;
-
-    &.is-blacked-out {
-      display: block;
-    }
-  }
-
-  .popup-trigger {
-    display: inline-block;
-  }
-
-  .popup-modal {
-    height: 365px;
-    width: 650px;
-    background-color: #fff;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 45px;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 300ms ease-in-out;
-    z-index: 1011;
-
-    &.is--visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    &__close {
-      position: absolute;
-      font-size: 1.2rem;
-      right: -10px;
-      top: -10px;
-      cursor: pointer;
-    }
   }
 </style>
 
@@ -1192,62 +1018,26 @@
       <div class="buttons-wrapper">
         <button class="control-button" id="next-turn-button">End turn</button>
         <button
-          type="button"
-          data-popup-trigger="one"
-          class="control-button popup-trigger"
+          class="control-button"
           id="tally-game-button"
           on:click={countPoints}>
           Tally points
         </button>
-        <button
-          type="button"
-          data-popup-trigger="one"
-          class="control-button popup-trigger"
-          id="reset-game-button"
-          on:click={reset}>
+        <button class="control-button" id="reset-game-button" on:click={reset}>
           Reset game
         </button>
         <button
-          type="button"
-          data-popup-trigger="one"
-          class="control-button popup-trigger"
+          class="control-button"
           id="save-game-button"
-          on:click={modal}>
+          on:click={saveGame}>
           Save game
         </button>
         <button
-          type="button"
-          data-popup-trigger="one"
-          class="control-button popup-trigger"
+          class="control-button"
           id="save-game-button"
           on:click={checkForSavedGame}>
           Load game
         </button>
-
-      </div>
-    </div>
-    <div class="popup-modal shadow" data-popup-modal="one">
-      <i
-        class="fas fa-2x fa-times text-white bg-primary p-3 popup-modal__close" />
-      <h1 class="font-weight-bold">Modal One Title</h1>
-      <div>
-        <div>Filename to Save As:</div>
-        <div>
-          <input id="inputFileNameToSaveAs" />
-        </div>
-        <div>
-          <button on:click={saveTextAsFile}>Save Text to File</button>
-        </div>
-      </div>
-      <div>
-        <div>Select a File to Load:</div>
-        <div>
-          <input type="file" id="fileToLoad" />
-        </div>
-        <div>
-          <button on:click={loadFileAsText}>Load Selected File</button>
-        </div>
-        <div />
       </div>
     </div>
 
