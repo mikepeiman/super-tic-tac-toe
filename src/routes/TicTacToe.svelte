@@ -64,14 +64,26 @@
   $: scores = [];
 
   onMount(() => {
-    renderGameBoard(rows, columns, size, gutter);
-    initializePlayers();
+    let storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+
+    console.log("onMount, stored scoredPlayers length: ", storedPlayers.length);
+    if (storedPlayers.length < 1) {
+      console.log("onMount called initializePlayers()");
+      initializePlayers();
+      renderGameBoard(rows, columns, size, gutter);
+      createDirectionArrays();
+    } else {
+      console.log("onMount called reloadPlayers()");
+      reloadPlayers();
+    }
+
     movesRemaining = movesPerTurn;
     currentPlayer = scoredPlayers[0];
     setTimeout(() => {
       addStyles();
     }, 1);
     setGameSettings();
+    renderGameBoardReload();
   });
 
   function setGameSettings() {
@@ -162,6 +174,43 @@
     playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
   }
 
+  function reloadPlayers() {
+    scoredPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+    currentPlayer = scoredPlayers[0];
+
+    scoredPlayers.forEach(player => {
+      player.scores.forEach(direction => {
+        direction.lines.forEach(line => {
+          line.forEach(move => {
+            let player = getMoveFromHistory(move.id);
+            move.player = player;
+            // console.log("reloadPlayers loop, each getMoveFromHistory player: ", player);
+            // console.log("reloadPlayers loop, each move's player: ", move);
+            move = move;
+            // console.log("reloadPlayers loop, each move's player: ", move.player);
+          });
+          line = line;
+        });
+        direction = direction;
+      });
+      player = player;
+    });
+    scoredPlayers = scoredPlayers;
+
+    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+  }
+
+  function getMoveFromHistory(id) {
+    let payload = "empty";
+    let game = JSON.parse(localStorage.getItem("gameboardMapped"));
+    game.forEach(move => {
+      if (move.id == id) {
+        payload = move.player;
+      }
+    });
+    return payload;
+  }
+
   function triggerGameBoardUpdate(e) {
     reset();
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
@@ -174,62 +223,22 @@
 
   function countPoints() {
     console.log(
-      `||||||||||||||||||||||  countPoints called  ||||||||||||||||||||||`
+      "*************__________countPoints called________**************"
     );
-    console.log(
-      "******************************************************************"
-    );
-    console.log(
-      "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-    );
+    console.log("scoredPlayers from countPoints: ", scoredPlayers);
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-
-    scoredPlayers.forEach(player => {
-      console.log(
-        `countPoints, forEach player in scoredPlayers: ${player.name}`,
-        player
-      );
-      console.log(
-        `!!!!!! scoredPlayers.forEach player.name: ${player.name} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-      );
+    let players = scoredPlayers
+    players.forEach(player => {
       player.scores.forEach((direction, index) => {
         console.log(
           `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
         );
-        // direction.dirScore = score(direction, player, index);
-
-        // console.log(
-        //   `************** each direction score in ${player.name}`,
-        //   direction.name,
-        //   direction.dirScore
-        // );
         let thisScore = score(direction, player, index);
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        console.log(
-          `!!!!!! POINTS POINTS POINTS ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
+        console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
-        console.log(
-          `player["scores"][index]["dirScore"]`,
-          player["scores"][index]["dirScore"]
-        );
         player["scores"][index]["dirScore"] = thisScore;
-        console.log(
-          `player["scores"][index]["dirScore"] set::: `,
-          player["scores"][index]["dirScore"]
-        );
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
         player["totalScore"] = totalScore;
-        console.log(
-          `!!!!!! totalScore ${totalScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
-        // console.dir(direction["dirScore"]);
-        // players = players
         localStorage.setItem(
           `${direction.name}`,
           JSON.stringify(lines[direction.name])
@@ -237,13 +246,7 @@
       });
       scoredPlayers = scoredPlayers;
     });
-    // player["totalScore"] += direction["dirScore"];
-
-    // lines = lines;
-    // localStorage.setItem(`players`, "");
     localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
-    // console.log("players object just after set localStorage");
-    // console.log(players);
   }
 
   function score(direction, player, idx) {
@@ -262,9 +265,10 @@
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
-      line.forEach(cell => {
-        let p = getPlayerFromCell(cell.id);
-        cell.player = {
+      line.forEach(move => {
+        console.log(`scoring ${move.id}`, move);
+        let p = getPlayerFromCell(move.id);
+        move.player = {
           name: p.name,
           id: p.id
         };
@@ -484,12 +488,8 @@
   }
 
   function renderGameBoardReload() {
-    let history = JSON.parse(localStorage.getItem("gameHistory"));
     let settings = JSON.parse(localStorage.getItem("gameSettings"));
     let gameboard = document.getElementById("gameboard-board");
-    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
-    let amount, number;
-    let len = history.length;
 
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
@@ -500,26 +500,35 @@
       settings.size,
       settings.gutter
     );
-
+    let history = JSON.parse(localStorage.getItem("gameHistory"));
+    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
+    localStorage.setItem("reloadedGameboard", "");
+    let amount, number;
+    let len = history.length;
+    scoredPlayers = players;
+    console.log("scoredPlayers", scoredPlayers);
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
       });
     };
+
     async function loop() {
       for (let i = 0; i < len; i++) {
         let turn = history[i];
-        console.log(`building reload function, this turn is: `, turn);
+        // console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
-          let p = move.player.id
-          console.log(`building reload function, this move is: `, move);
-          console.log(`building reload function, this player is: `, p);
+          let p = move.player.id;
+          // console.log(`building reload function, this move is: `, move);
+          // console.log(`building reload function, this player is: `, p);
           let square = document.getElementById(move.squareId);
           square.style = `--custom-bg: ${players[p].bgColor}`;
           square.style.margin = gutter + "px";
           square.style.width = size + "px";
           square.style.height = size + "px";
+          let cell = {};
+          cell = move;
           await delay(5);
         }
       }
@@ -567,7 +576,6 @@
         square.addEventListener("click", () => playMove(event));
       }
     }
-    createDirectionArrays();
     console.log(
       `inside renderGameBoard, called createDirectionArrays(), lines: `,
       lines
