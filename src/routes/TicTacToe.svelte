@@ -2,13 +2,13 @@
   import { onMount } from "svelte";
 
   $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 5;
-  $: movesPerTurn = 1;
+  $: numberOfPlayers = 3;
+  $: movesPerTurn = 5;
   $: cellsToScore = 3;
   $: bonusForCompleteRow = 5;
   $: lastTicked = {};
-  $: rows = 15;
-  $: columns = 15;
+  $: rows = 16;
+  $: columns = 16;
   $: size = 24;
   $: gutter = 0;
   $: currentPlayer = {};
@@ -71,7 +71,40 @@
     setTimeout(() => {
       addStyles();
     }, 1);
+    setGameSettings();
   });
+
+  function setGameSettings() {
+    localStorage.setItem("gameSettings", "");
+    let settings = {
+      rows: rows,
+      columns: columns,
+      numberOfPlayers: numberOfPlayers,
+      movesPerTurn: movesPerTurn,
+      cellsToScore: cellsToScore,
+      bonusForCompleteRow: bonusForCompleteRow,
+      size: size,
+      gutter: gutter
+    };
+    localStorage.setItem("gameSettings", JSON.stringify(settings));
+  }
+
+  function saveGame() {
+    localStorage.setItem(
+      "savedGame",
+      JSON.stringify({ gameboard: gameboardMapped, players: scoredPlayers })
+    );
+    let test = localStorage.getItem("savedGame");
+    console.log("saveGame calling LS: ");
+    console.log(JSON.parse(test));
+  }
+
+  function checkForSavedGame() {
+    let saved = JSON.parse(localStorage.getItem("gameHistory"));
+    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    console.log(`check for saved game`, saved, settings);
+    renderGameBoardReload();
+  }
 
   function addStyles() {
     let scoreHeadings = document.querySelectorAll(".total-score");
@@ -109,7 +142,8 @@
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers) + 30}, 50%, 50%, .75)`,
+          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers) +
+            30}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -125,7 +159,7 @@
     localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
     let playerIndicator = document.querySelector(".player-indicator");
     let id = currentPlayer.id;
-    playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`
+    playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
   }
 
   function triggerGameBoardUpdate(e) {
@@ -449,6 +483,49 @@
     return nextSquare;
   }
 
+  function renderGameBoardReload() {
+    let history = JSON.parse(localStorage.getItem("gameHistory"));
+    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let gameboard = document.getElementById("gameboard-board");
+    let amount, number;
+    let len = history.length;
+
+    while (gameboard.firstChild) {
+      gameboard.removeChild(gameboard.firstChild);
+    }
+    renderGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
+
+    const delay = (amount = number) => {
+      return new Promise(resolve => {
+        setTimeout(resolve, amount);
+      });
+    };
+    async function loop() {
+      for (let i = 0; i < len; i++) {
+        let turn = history[i];
+        console.log(`building reload function, this turn is: `, turn);
+        for (let j = 0; j < settings.movesPerTurn; j++) {
+          let move = turn[j];
+          console.log(`building reload function, this move is: `, move);
+          let square = document.getElementById(move.squareId);
+          square.style = `--custom-bg: rgba(${j}, 0, ${255 - j}, 0.5)`;
+          square.style.margin = gutter + "px";
+          square.style.width = size + "px";
+          square.style.height = size + "px";
+          await delay(25);
+        }
+      }
+    }
+    loop();
+  }
+
+  // console.log(`rows: ${rows} columns: ${columns}`);
+
   function renderGameBoard(rows, columns, size, gutter) {
     gameboardMapped = [];
     let gameboard = document.getElementById("gameboard-board");
@@ -614,15 +691,15 @@
 
     let id = currentPlayer.id;
     // id === 0 ? playerIndicator.style = `--custom-bg: ${scoredPlayers[scoredPlayers.length].bgColor}` : playerIndicator.style = `--custom-bg: ${scoredPlayers[id].bgColor}`
-    
+
     if (id >= numberOfPlayers - 1) {
       currentPlayer = scoredPlayers[0];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`
+      playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
     } else {
       currentPlayer = scoredPlayers[id + 1];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[id+1].bgColor}`
+      playerIndicator.style = `--custom-bg: ${scoredPlayers[id + 1].bgColor}`;
     }
-    
+
     movesRemaining = movesPerTurn;
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
@@ -686,8 +763,6 @@
       margin: 0;
     }
   }
-
-
 
   .form-wrap {
     display: flex;
@@ -870,7 +945,7 @@
 
   .total-score-number {
     border: 2px solid white;
-    padding: .25rem;
+    padding: 0.25rem;
   }
 </style>
 
@@ -920,7 +995,18 @@
         <button class="control-button" id="reset-game-button" on:click={reset}>
           Reset game
         </button>
-        <button class="control-button" id="save-game-button">Save game</button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={saveGame}>
+          Save game
+        </button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={checkForSavedGame}>
+          Load game
+        </button>
       </div>
     </div>
 
