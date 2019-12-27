@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
+  $: loadedData = {};
   $: numberOfPlayers = 3;
   $: movesPerTurn = 5;
   $: cellsToScore = 3;
@@ -229,7 +229,7 @@
     // let players = JSON.parse(localStorage.getItem('scoredPlayers'))
     // console.log("scoredPlayers from countPoints from localStorage before loop: ", players);
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-    let players = scoredPlayers
+    let players = scoredPlayers;
     players.forEach(player => {
       player.scores.forEach((direction, index) => {
         console.log(
@@ -269,9 +269,9 @@
       let points = 0;
       line.forEach(move => {
         console.log(`scoring ${move.id}`, move);
-        let p = move.player
+        let p = move.player;
         // let p = getPlayerFromCell(move.id);
-        console.log(`scoring p = getPlayerFromCell, `, p)
+        console.log(`scoring p = getPlayerFromCell, `, p);
         // move.player = {
         //   name: p.name,
         //   id: p.id
@@ -310,6 +310,46 @@
     // player.scores[idx].dirScore = dirScore
     // player.scores[idx].dirLines = dirLines
     return dirScore;
+  }
+
+  function saveTextAsFile() {
+    setGameSettings()
+    let settings = JSON.parse(localStorage.getItem('gameSettings'))
+    let textToSave = {
+      players: scoredPlayers,
+      gameHistory: gameHistory,
+      settings: settings
+    }
+    let textToSaveAsBlob = JSON.stringify(textToSave); // new Blob([JSON.stringify(textToSave)], { type: "text/plain" });
+    let textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    let fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs")
+      .value;
+
+    let downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+  }
+
+  function destroyClickedElement(event) {
+    document.body.removeChild(event.target);
+  }
+
+  function loadFileAsText() {
+    let fileToLoad = document.getElementById("fileToLoad").files[0];
+
+    let fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent) {
+      loadedData = JSON.parse(fileLoadedEvent.target.result);
+      // document.getElementById("inputTextToSave").value = loadedData;
+      console.log('loadedData from file: ', loadedData)
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8");
   }
 
   function setPlayerMove(squareId) {
@@ -764,7 +804,7 @@
 
   .player-indicator {
     width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: var(--custom-bg);
+    background: let(--custom-bg);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;
@@ -837,7 +877,7 @@
   .game-square {
     width: 24px;
     height: 24px;
-    background: var(--custom-bg);
+    background: let(--custom-bg);
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -951,7 +991,7 @@
   }
 
   .total-score {
-    background: var(--custom-bg);
+    background: let(--custom-bg);
     padding: 0.25rem;
     margin: 0;
     display: flex;
@@ -1022,6 +1062,26 @@
           on:click={checkForSavedGame}>
           Load game
         </button>
+
+          <div>
+            <div>Filename to Save As:</div>
+            <div>
+              <input id="inputFileNameToSaveAs" />
+            </div>
+            <div>
+              <button on:click={saveTextAsFile}>Save Text to File</button>
+            </div>
+          </div>
+          <div>
+            <div>Select a File to Load:</div>
+            <div>
+              <input type="file" id="fileToLoad" />
+            </div>
+            <div>
+              <button on:click={loadFileAsText}>Load Selected File</button>
+            </div>
+            <div />
+          </div>
       </div>
     </div>
 
