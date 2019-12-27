@@ -226,6 +226,8 @@
       "*************__________countPoints called________**************"
     );
     console.log("scoredPlayers from countPoints: ", scoredPlayers);
+    // let players = JSON.parse(localStorage.getItem('scoredPlayers'))
+    // console.log("scoredPlayers from countPoints from localStorage before loop: ", players);
     localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
     let players = scoredPlayers
     players.forEach(player => {
@@ -244,7 +246,7 @@
           JSON.stringify(lines[direction.name])
         );
       });
-      scoredPlayers = scoredPlayers;
+      // scoredPlayers = scoredPlayers;
     });
     localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
   }
@@ -267,11 +269,13 @@
       let points = 0;
       line.forEach(move => {
         console.log(`scoring ${move.id}`, move);
-        let p = getPlayerFromCell(move.id);
-        move.player = {
-          name: p.name,
-          id: p.id
-        };
+        let p = move.player
+        // let p = getPlayerFromCell(move.id);
+        console.log(`scoring p = getPlayerFromCell, `, p)
+        // move.player = {
+        //   name: p.name,
+        //   id: p.id
+        // };
         if (p.name !== "none" && p.id === player.id) {
           countInLoop++;
         }
