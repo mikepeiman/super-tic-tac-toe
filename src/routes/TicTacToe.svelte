@@ -487,6 +487,7 @@
     let history = JSON.parse(localStorage.getItem("gameHistory"));
     let settings = JSON.parse(localStorage.getItem("gameSettings"));
     let gameboard = document.getElementById("gameboard-board");
+    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
     let amount, number;
     let len = history.length;
 
@@ -511,13 +512,15 @@
         console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
+          let p = move.player.id
           console.log(`building reload function, this move is: `, move);
+          console.log(`building reload function, this player is: `, p);
           let square = document.getElementById(move.squareId);
-          square.style = `--custom-bg: rgba(${j}, 0, ${255 - j}, 0.5)`;
+          square.style = `--custom-bg: ${players[p].bgColor}`;
           square.style.margin = gutter + "px";
           square.style.width = size + "px";
           square.style.height = size + "px";
-          await delay(25);
+          await delay(5);
         }
       }
     }
