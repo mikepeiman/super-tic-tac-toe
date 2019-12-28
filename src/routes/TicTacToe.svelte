@@ -1,16 +1,18 @@
 <script>
   import { onMount } from "svelte";
 
-  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 3;
-  $: movesPerTurn = 5;
-  $: cellsToScore = 3;
-  $: bonusForCompleteRow = 5;
+  $: settings = {
+    numberOfPlayers: 3,
+    movesPerTurn: 5,
+    cellsToScore: 3,
+    bonusForCompleteRow: 5,
+    rows: 10,
+    columns: 10,
+    size: 24,
+    gutter: 0
+  };
+
   $: lastTicked = {};
-  $: rows = 16;
-  $: columns = 16;
-  $: size = 24;
-  $: gutter = 0;
   $: currentPlayer = {};
   $: movesRemaining = 0;
   $: turn = 0;
@@ -64,20 +66,28 @@
   $: scores = [];
 
   onMount(() => {
-    let storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+    let storedPlayers = [];
+    if (localStorage.getItem("scoredPlayers").length > 0) {
+      storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+    }
 
     console.log("onMount, stored scoredPlayers length: ", storedPlayers.length);
     if (storedPlayers.length < 1) {
       console.log("onMount called initializePlayers()");
       initializePlayers();
-      renderGameBoard(rows, columns, size, gutter);
+      renderGameBoard(
+        settings.rows,
+        settings.columns,
+        settings.size,
+        settings.gutter
+      );
       createDirectionArrays();
     } else {
       console.log("onMount called reloadPlayers()");
       reloadPlayers();
     }
 
-    movesRemaining = movesPerTurn;
+    movesRemaining = settings.movesPerTurn;
     currentPlayer = scoredPlayers[0];
     setTimeout(() => {
       addStyles();
@@ -87,17 +97,7 @@
   });
 
   function setGameSettings() {
-    localStorage.setItem("gameSettings", "");
-    let settings = {
-      rows: rows,
-      columns: columns,
-      numberOfPlayers: numberOfPlayers,
-      movesPerTurn: movesPerTurn,
-      cellsToScore: cellsToScore,
-      bonusForCompleteRow: bonusForCompleteRow,
-      size: size,
-      gutter: gutter
-    };
+    localStorage.setItem("gameSettings", {});
     localStorage.setItem("gameSettings", JSON.stringify(settings));
   }
 
@@ -106,6 +106,7 @@
       "savedGame",
       JSON.stringify({ gameboard: gameboardMapped, players: scoredPlayers })
     );
+
     let test = localStorage.getItem("savedGame");
     console.log("saveGame calling LS: ");
     console.log(JSON.parse(test));
@@ -130,31 +131,36 @@
   }
 
   function reset() {
-    localStorage.setItem("gameboard", "");
-    localStorage.setItem("gameHistory", "");
-    localStorage.setItem("gameboardMapped", "");
-    localStorage.setItem("diagonalDownLeft", "");
-    localStorage.setItem("diagonalDownRight", "");
-    localStorage.setItem("topToBottom", "");
-    localStorage.setItem("leftToRight", "");
-    localStorage.setItem("scoredPlayers", "");
-    columns = document.getElementById("columns").value;
-    rows = document.getElementById("rows").value;
-    size = document.getElementById("size").value;
-    gutter = document.getElementById("gutter").value;
-    renderGameBoard(rows, columns, size, gutter);
+    localStorage.setItem("gameboard", []);
+    localStorage.setItem("gameHistory", []);
+    localStorage.setItem("gameboardMapped", []);
+    localStorage.setItem("diagonalDownLeft", []);
+    localStorage.setItem("diagonalDownRight", []);
+    localStorage.setItem("topToBottom", []);
+    localStorage.setItem("leftToRight", []);
+    localStorage.setItem("scoredPlayers", []);
+    settings.columns = document.getElementById("columns").value;
+    settings.rows = document.getElementById("rows").value;
+    settings.size = document.getElementById("size").value;
+    settings.gutter = document.getElementById("gutter").value;
+    renderGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
   }
 
   function initializePlayers() {
     scoredPlayers = [];
-    for (let i = 0; i < numberOfPlayers; i++) {
+    for (let i = 0; i < settings.numberOfPlayers; i++) {
       scoredPlayers = [
         ...scoredPlayers,
         {
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers) +
+          bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
             30}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
@@ -201,42 +207,59 @@
   }
 
   function getMoveFromHistory(id) {
-    let payload = "empty";
-    let game = JSON.parse(localStorage.getItem("gameboardMapped"));
-    game.forEach(move => {
-      if (move.id == id) {
-        payload = move.player;
-      }
-    });
+    let payload = { id: "zzz", name: "zzz" };
+    if (localStorage.getItem("gameboardMapped")) {
+      let game = JSON.parse(localStorage.getItem("gameboardMapped"));
+      game.forEach(move => {
+        if (move.id == id) {
+          payload = move.player;
+        }
+      });
+    }
     return payload;
   }
 
   function triggerGameBoardUpdate(e) {
     reset();
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
-    localStorage.setItem("gameHistory", []);
+    // localStorage.setItem("gameHistory", []);
   }
 
   function updateGameSettings() {
-    movesRemaining = movesPerTurn;
+    movesRemaining = settings.movesPerTurn;
   }
 
   function countPoints() {
     console.log(
       "*************__________countPoints called________**************"
     );
-    console.log("scoredPlayers from countPoints: ", scoredPlayers);
+    console.log(
+      "scoredPlayers from countPoints before checking localStorage: ",
+      scoredPlayers
+    );
     // let players = JSON.parse(localStorage.getItem('scoredPlayers'))
-    // console.log("scoredPlayers from countPoints from localStorage before loop: ", players);
-    localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
-    let players = scoredPlayers
+
+    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+    let players = scoredPlayers;
+    if (localStorage.getItem("scoredPlayers")) {
+      players = JSON.parse(localStorage.getItem("scoredPlayers"));
+      console.log("using localStorage");
+    }
+    console.log(
+      "scoredPlayers from countPoints after checking localStorage, before loop: ",
+      players
+    );
+    console.log(
+      "gameboardMapped from countPoints from localStorage before loop: ",
+      gameboardMapped
+    );
     players.forEach(player => {
       player.scores.forEach((direction, index) => {
-        console.log(
-          `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
+        // console.log(
+        //   `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+        // );
         let thisScore = score(direction, player, index);
-        console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
+        // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
         player["scores"][index]["dirScore"] = thisScore;
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
@@ -246,18 +269,18 @@
           JSON.stringify(lines[direction.name])
         );
       });
-      // scoredPlayers = scoredPlayers;
+      scoredPlayers = players;
     });
     localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
   }
 
   function score(direction, player, idx) {
-    // $: cellsToScore
-    console.log(
-      `score called with direction and player and idx ${idx}`,
-      direction,
-      player
-    );
+    // $: settings.cellsToScore
+    // console.log(
+    //   `score called with direction and player and idx ${idx}`,
+    //   direction,
+    //   player
+    // );
 
     let dirLines = [];
     let dirScore = 0;
@@ -269,9 +292,10 @@
       let points = 0;
       line.forEach(move => {
         console.log(`scoring ${move.id}`, move);
-        let p = move.player
-        // let p = getPlayerFromCell(move.id);
-        console.log(`scoring p = getPlayerFromCell, `, p)
+        let p = move.player;
+        console.log(`scoring p = move.player, `, p);
+        p = getPlayerFromCell(move.id);
+        console.log(`scoring p = getPlayerFromCell, `, p);
         // move.player = {
         //   name: p.name,
         //   id: p.id
@@ -280,39 +304,32 @@
           countInLoop++;
         }
         if (p.id !== player.id) {
-          if (countInLoop >= cellsToScore) {
-            points += countInLoop - (cellsToScore - 1);
+          if (countInLoop >= settings.cellsToScore) {
+            points += countInLoop - (settings.cellsToScore - 1);
           }
           countInLine += countInLoop;
           countInLoop = 0;
         }
       });
-      if (countInLoop >= cellsToScore) {
-        points += countInLoop - (cellsToScore - 1);
+      if (countInLoop >= settings.cellsToScore) {
+        points += countInLoop - (settings.cellsToScore - 1);
       }
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    // direction.dirScore = dirScore
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
     scoredPlayers = scoredPlayers;
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
     console.log(
       `score closing with direction score ${dirScore} | player: `,
       player
     );
-    console.log(
-      `player.scores[idx] ${idx} .dirScore: `,
-      player.scores[idx].dirScore
-    );
-    // player.scores[idx].dirScore = dirScore
-    // player.scores[idx].dirLines = dirLines
     return dirScore;
   }
 
   function setPlayerMove(squareId) {
+    console.log(
+      `setPlayerMove(${squareId}) - currentPlayer.id ${currentPlayer.id}`
+    );
     gameboardMapped.forEach(move => {
       if (move.id == squareId) {
         console.log(`if(move.id == squareId) ${squareId}`);
@@ -323,6 +340,7 @@
         move.move = moveNumber;
       }
     });
+    // scoredPlayers
     localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
@@ -351,37 +369,23 @@
   }
 
   function createDirectionArrays() {
-    let leftToRight = {
-      id: 1
-    };
-    let topToBottom = {
-      id: 2
-    };
-    let diagonalDownRight = {
-      id: 3
-    };
-    let diagonalDownLeft = {
-      id: 4
-    };
-    makeLinesFrom(leftToRight);
-    makeLinesFrom(topToBottom);
-    makeLinesFrom(diagonalDownRight);
-    makeLinesFrom(diagonalDownLeft);
-    localStorage.setItem("LINES", JSON.stringify(lines));
+    for (let i = 1; i === 4; i++) {
+      makeLinesFrom(i);
+    }
     initializePlayers();
   }
 
-  function makeLinesFrom(direction) {
+  function makeLinesFrom(dir) {
     let start,
       pattern = {};
     let theseLines = [],
       newLine = [];
 
-    if (direction.id == 1) {
+    if (dir == 1) {
       start = { row: 0, column: 0 };
       pattern = { row: 0, column: +1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.row++;
         theseLines.push(newLine);
@@ -389,11 +393,11 @@
       lines.leftToRight = theseLines;
     }
 
-    if (direction.id == 2) {
+    if (dir == 2) {
       start = { row: 0, column: 0 };
       pattern = { row: +1, column: 0 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
         theseLines.push(newLine);
@@ -401,11 +405,11 @@
       lines.topToBottom = theseLines;
     }
 
-    if (direction.id == 3) {
-      start = { row: rows, column: 0 };
+    if (dir == 3) {
+      start = { row: settings.rows, column: 0 };
       pattern = { row: +1, column: +1 };
 
-      for (let i = 0; i < rows; i++) {
+      for (let i = 0; i < settings.rows; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
@@ -414,7 +418,7 @@
       start = { row: 0, column: 1 };
       pattern = { row: +1, column: +1 };
 
-      for (let i = 1; i < columns; i++) {
+      for (let i = 1; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
         theseLines.push(newLine);
@@ -422,20 +426,20 @@
       lines.diagonalDownRight = theseLines;
     }
 
-    if (direction.id == 4) {
-      start = { row: rows, column: columns - 1 };
+    if (dir == 4) {
+      start = { row: settings.rows, column: settings.columns - 1 };
       pattern = { row: +1, column: -1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
       }
 
-      start = { row: 0, column: columns - 1 };
+      start = { row: 0, column: settings.columns - 1 };
       pattern = { row: +1, column: -1 };
 
-      for (let i = 1; i < columns; i++) {
+      for (let i = 1; i < settings.columns; i++) {
         start.column--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
@@ -474,10 +478,10 @@
       player: { id: null, name: "none" }
     };
 
-    if (nextRow >= rows) {
+    if (nextRow >= settings.rows) {
       return line;
     }
-    if (nextColumn >= columns || nextColumn < 0) {
+    if (nextColumn >= settings.columns || nextColumn < 0) {
       return line;
     }
 
@@ -504,20 +508,17 @@
       settings.size,
       settings.gutter
     );
-    let history = JSON.parse(localStorage.getItem("gameHistory"));
-    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
-    localStorage.setItem("reloadedGameboard", "");
+    let history = gameHistory;
+    let players = scoredPlayers;
     let amount, number;
     let len = history.length;
-    scoredPlayers = players;
-    console.log("scoredPlayers", scoredPlayers);
+
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
       });
     };
-
-    async function loop() {
+    async function loop(history) {
       for (let i = 0; i < len; i++) {
         let turn = history[i];
         // console.log(`building reload function, this turn is: `, turn);
@@ -528,19 +529,30 @@
           // console.log(`building reload function, this player is: `, p);
           let square = document.getElementById(move.squareId);
           square.style = `--custom-bg: ${players[p].bgColor}`;
-          square.style.margin = gutter + "px";
-          square.style.width = size + "px";
-          square.style.height = size + "px";
-          let cell = {};
-          cell = move;
+          square.style.margin = settings.gutter + "px";
+          square.style.width = settings.size + "px";
+          square.style.height = settings.size + "px";
+          square.setAttribute("data-marker", "O");
+          square.setAttribute("data-ticked", true);
+          square.classList.add("locked");
+          square.setAttribute("locked", true);
+          square.style.border = "1px solid rgba(0,0,0,0.5)";
           await delay(5);
         }
       }
     }
-    loop();
-  }
 
-  // console.log(`rows: ${rows} columns: ${columns}`);
+    if (localStorage.getItem("gameHistory")) {
+      history = JSON.parse(localStorage.getItem("gameHistory"));
+      // players = JSON.parse(localStorage.getItem("scoredPlayers"));
+      loop(history);
+    }
+
+    // localStorage.setItem("reloadedGameboard", []);
+
+    scoredPlayers = players;
+    console.log(`history length: ${len}, scoredPlayers`, scoredPlayers);
+  }
 
   function renderGameBoard(rows, columns, size, gutter) {
     gameboardMapped = [];
@@ -548,21 +560,21 @@
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
-    // console.log(`rows: ${rows} columns: ${columns}`);
+    // console.log(`rows: ${rows} settings.columns: ${settings.columns}`);
     for (let rowNum = 0; rowNum < rows; rowNum++) {
       // console.log(`row: ${rowNum}`);
       let row = document.createElement("div");
       row.classList = "game-row";
       gameboard.appendChild(row);
 
-      for (let colNum = 0; colNum < columns; colNum++) {
+      for (let colNum = 0; colNum < settings.columns; colNum++) {
         // console.log(`row: ${rowNum} column: ${colNum}`);
         let square = document.createElement("div");
         square.classList = "game-square";
         square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
-        square.style.margin = gutter + "px";
-        square.style.width = size + "px";
-        square.style.height = size + "px";
+        square.style.margin = settings.gutter + "px";
+        square.style.width = settings.size + "px";
+        square.style.height = settings.size + "px";
         square.id = `R${rowNum}C${colNum}`;
         let cell = {};
         cell["id"] = `R${rowNum}C${colNum}`;
@@ -614,11 +626,9 @@
     gameHistory = [...gameHistory, turnHistory];
     turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.squareId}`);
-      let thisMoveNum = moveNumber - movesPerTurn + index + 1;
-      // console.log(
-      //   `############### setGameHistory, locking moves ${turn.squareId}`
-      // );
+      let thisMoveNum = moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
+      move.setAttribute("data-marker", "O");
       turn.move = thisMoveNum;
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
@@ -687,7 +697,7 @@
   function untickThis(square) {
     console.log(`------------untickThis(square)`);
     square.classList.remove("ticked");
-    square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
+    square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
     square.dataset.ticked = false;
     square.removeAttribute("player-id");
     square.removeAttribute("player-name");
@@ -703,11 +713,8 @@
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
-
     let id = currentPlayer.id;
-    // id === 0 ? playerIndicator.style = `--custom-bg: ${scoredPlayers[scoredPlayers.length].bgColor}` : playerIndicator.style = `--custom-bg: ${scoredPlayers[id].bgColor}`
-
-    if (id >= numberOfPlayers - 1) {
+    if (id >= settings.numberOfPlayers - 1) {
       currentPlayer = scoredPlayers[0];
       playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
     } else {
@@ -715,7 +722,7 @@
       playerIndicator.style = `--custom-bg: ${scoredPlayers[id + 1].bgColor}`;
     }
 
-    movesRemaining = movesPerTurn;
+    movesRemaining = settings.movesPerTurn;
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
       currentPlayer.id
@@ -1033,8 +1040,8 @@
           id="players"
           name="players"
           type="number"
-          placeholder={numberOfPlayers}
-          bind:value={numberOfPlayers}
+          placeholder={settings.numberOfPlayers}
+          bind:value={settings.numberOfPlayers}
           on:input={initializePlayers}
           style="width: 2.5ch;" />
       </label>
@@ -1044,8 +1051,8 @@
           id="rows"
           name="rows"
           type="number"
-          placeholder={rows}
-          value={rows}
+          placeholder={settings.rows}
+          value={settings.rows}
           on:input={triggerGameBoardUpdate}
           style="width: 2.5ch;" />
       </label>
@@ -1055,8 +1062,8 @@
           id="columns"
           name="columns"
           type="number"
-          placeholder={columns}
-          value={columns}
+          placeholder={settings.columns}
+          value={settings.columns}
           on:input={triggerGameBoardUpdate}
           style="width: 2.5ch;" />
       </label>
@@ -1067,7 +1074,7 @@
           name="size"
           type="number"
           placeholder="24"
-          value={size}
+          value={settings.size}
           step="4"
           on:input={triggerGameBoardUpdate}
           style="width: 2.5ch;" />
@@ -1078,8 +1085,8 @@
           id="gutter"
           name="gutter"
           type="number"
-          placeholder={gutter}
-          value={gutter}
+          placeholder={settings.gutter}
+          value={settings.gutter}
           on:input={triggerGameBoardUpdate}
           style="width: 1.5ch;" />
       </label>
@@ -1089,8 +1096,8 @@
           id="movesPerTurn"
           name="movesPerTurn"
           type="number"
-          placeholder={movesPerTurn}
-          bind:value={movesPerTurn}
+          placeholder={settings.movesPerTurn}
+          bind:value={settings.movesPerTurn}
           on:input={updateGameSettings}
           style="width: 1.5ch;" />
       </label>
