@@ -8,7 +8,12 @@
   export let players = [];
 
   $: gameboardMapped = [];
-  // $: players = [];
+  $: lines = {
+    leftToRight: [],
+    topToBottom: [],
+    diagonalDownLeft: [],
+    diagonalDownRight: []
+  };
 
   // $: settings = {
   //   numberOfPlayers: 3,
@@ -40,14 +45,149 @@
     console.log(`GameBoard component mounted`);
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
     console.log(gameboardMapped, settings, state, players);
-    // drawGameBoard(
-    //   settings.rows,
-    //   settings.columns,
-    //   settings.size,
-    //   settings.gutter
-    // );
     buildGrid();
+    createDirectionArrays();
+    console.log('createDirectionArrays completed, lines, ', lines)
+    localStorage.setItem('lines', JSON.stringify(lines))  
   });
+
+  function createDirectionArrays() {
+    console.log('createDirectionArrays called')
+    for (let i = 1; i <= 4; i++) {
+      console.log(`makeLinesFrom ${i}`)
+      makeLinesFrom(i);
+    }
+    // initializePlayers();
+    
+  }
+
+  function makeLinesFrom(dir) {
+    let rows = settings.rows
+    let columns = settings.columns
+    console.log('makeLinesFrom called')
+    let start,
+      pattern = {};
+    let theseLines = [],
+      newLine = [];
+
+    if (dir == 1) {
+      console.log('makeLinesFrom dir == 1')
+      start = { row: 0, column: 0 };
+      pattern = { row: 0, column: +1 };
+
+      for (let i = 0; i < columns; i++) {
+        newLine = makeLineFrom(start, pattern);
+        start.row++;
+        theseLines.push(newLine);
+      }
+      lines.leftToRight = theseLines;
+    }
+
+    if (dir == 2) {
+      console.log('makeLinesFrom dir == 2')
+      start = { row: 0, column: 0 };
+      pattern = { row: +1, column: 0 };
+
+      for (let i = 0; i < columns; i++) {
+        newLine = makeLineFrom(start, pattern);
+        start.column++;
+        theseLines.push(newLine);
+      }
+      lines.topToBottom = theseLines;
+    }
+
+    if (dir == 3) {
+      start = { row: rows, column: 0 };
+      pattern = { row: +1, column: +1 };
+
+      for (let i = 0; i < rows; i++) {
+        start.row--;
+        newLine = makeLineFrom(start, pattern);
+        theseLines.push(newLine);
+      }
+
+      start = { row: 0, column: 1 };
+      pattern = { row: +1, column: +1 };
+
+      for (let i = 1; i < columns; i++) {
+        newLine = makeLineFrom(start, pattern);
+        start.column++;
+        theseLines.push(newLine);
+      }
+      lines.diagonalDownRight = theseLines;
+    }
+
+    if (dir == 4) {
+      start = { row: rows, column: columns - 1 };
+      pattern = { row: +1, column: -1 };
+
+      for (let i = 0; i < columns; i++) {
+        start.row--;
+        newLine = makeLineFrom(start, pattern);
+        theseLines.push(newLine);
+      }
+
+      start = { row: 0, column: columns - 1 };
+      pattern = { row: +1, column: -1 };
+
+      for (let i = 1; i < columns; i++) {
+        start.column--;
+        newLine = makeLineFrom(start, pattern);
+        theseLines.push(newLine);
+      }
+      lines.diagonalDownLeft = theseLines;
+    }
+  }
+
+  function makeLineFrom(start, pattern) {
+    let line = [];
+    let nextLine = nextSquareFrom(
+      start.row,
+      start.column,
+      pattern.row,
+      pattern.column,
+      line
+    );
+    return nextLine;
+  }
+
+  function nextSquareFrom(row, column, rowChange, columnChange, line) {
+    let id = `R${row}C${column}`
+    line = [
+      ...line,
+      {
+        id: id,
+        row: row,
+        column: column,
+        player: { id: null, name: "none" }
+      }
+    ];
+    let cell = getCellById(id)
+    console.log(`nextSquareFrom row ${row} column ${column}, ${id}, `, cell)
+    let nextRow = row + rowChange;
+    let nextColumn = column + columnChange;
+    let nextSquare = {
+      row: nextRow,
+      column: nextColumn,
+      player: { id: null, name: "none" }
+    };
+
+    if (nextRow >= settings.rows) {
+      return line;
+    }
+    if (nextColumn >= settings.columns || nextColumn < 0) {
+      return line;
+    }
+
+    nextSquare = nextSquareFrom(
+      nextRow,
+      nextColumn,
+      rowChange,
+      columnChange,
+      line
+    );
+    return nextSquare;
+  }
 
   function getMoveFromHistory(id) {
     let payload = { id: "zzz", name: "zzz" };
