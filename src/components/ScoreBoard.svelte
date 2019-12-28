@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import CountPoints from './CountPoints.svelte';
   export let players;
 
   onMount(() => {
@@ -8,8 +9,14 @@
   });
 
   function test() {
-    console.log(`scoreBoard component, clicked to test players: `, players);
+    console.log(`ScoreBoard component, clicked to test players: `, players);
   }
+
+    function countPoints() {
+    console.log(`ScoreBoard component, clicked to countPoints, players: `, players);
+  }
+
+
 </script>
 
 <style lang="scss">
@@ -18,12 +25,7 @@
 
 <div class="scoreboard-container" on:click={test}>
   <div class="scoreboard-controls">
-    <button
-      class="control-button"
-      id="tally-game-button"
-      on:click={test}>
-      Tally points
-    </button>
+    <CountPoints {players} />
   </div>
   {#each players as player}
     <div class="scoreboard-totals">
