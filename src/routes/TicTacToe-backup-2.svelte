@@ -1,6 +1,15 @@
 <script>
   import { onMount } from "svelte";
 
+  // $: numberOfPlayers = 3;
+  // $: movesPerTurn = 5;
+  // $: cellsToScore = 3;
+  // $: bonusForCompleteRow = 5;
+  // $: rows = 10;
+  // $: columns = 10;
+  // $: size = 24;
+  // $: gutter = 0;
+
   $: settings = {
     numberOfPlayers: 3,
     movesPerTurn: 5,
