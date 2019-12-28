@@ -1,9 +1,9 @@
-  <script>
+<script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
-    import StatusBar from "./../components/StatusBar.svelte";
-        import MainMenu from "./../components/MainMenu.svelte";
+  import StatusBar from "./../components/StatusBar.svelte";
+  import MainMenu from "./../components/MainMenu.svelte";
 
   $: settings = {
     numberOfPlayers: 3,
@@ -82,8 +82,10 @@
     console.log(`TicTacToe.svelte onMount`);
 
     let storedPlayers = [];
-    if (localStorage.getItem("players").length > 0) {
-      storedPlayers = JSON.parse(localStorage.getItem("players"));
+    if (localStorage.getItem("players")) {
+      if (localStorage.getItem("players").length > 0) {
+        storedPlayers = JSON.parse(localStorage.getItem("players"));
+      }
     }
 
     console.log("onMount, stored players length: ", storedPlayers.length);
@@ -114,7 +116,7 @@
   });
 
   function moveNotification(cell) {
-  console.log(`TicTacToe.svelte moveNotification for `, cell.detail)
+    console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
   }
 
   function setGameSettings() {
@@ -690,243 +692,251 @@
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(e.target.style.width);
   }
-  </script>
+</script>
 
-  <style lang="scss" global>
-    .page-container {
-      display: grid;
-      grid-template-columns: 1fr 4fr;
-    }
+<style lang="scss" global>
+  .page-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
 
-    .gameboard-container {
-      background: #1a1a1a;
-      padding: 1rem;
+  .gameboard-container {
+    background: #1a1a1a;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    color: #eee;
+    justify-content: start;
+    align-items: start;
+    height: 90vh;
+    overflow: hidden;
+  }
+
+  .form-wrap {
+    display: flex;
+    // align-items: flex-start;
+
+    justify-content: space-between;
+    // flex-direction: column;
+    width: 100%;
+    & label {
       display: flex;
-      flex-direction: column;
-      color: #eee;
-      justify-content: start;
-      align-items: start;
-      height: 90vh;
-      overflow: hidden;
-    }
-
-
-
-
-    .form-wrap {
-      display: flex;
-      // align-items: flex-start;
-
-      justify-content: space-between;
-      // flex-direction: column;
-      width: 100%;
-      & label {
-        display: flex;
-        align-items: center;
-        // justify-self: flex-end;
-        margin: 0.5rem;
-        padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.25);
-        & input {
-          // margin-left: 1rem;
-        }
-      }
-    }
-
-    input {
-      background: none;
-      border: none;
-      color: rgba(50, 200, 255, 1);
-      font-family: "Muli";
-      font-size: 1.1rem;
-      padding-left: 0.25rem;
-      width: 5ch;
-      border-bottom: 1px solid rgba(50, 200, 255, 1);
-      margin: 0.5rem;
-      justify-self: flex-end;
-    }
-
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-
-    .gameboard-board {
-      margin: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-self: center;
-      border: 0px solid none;
-    }
-
-    .game-row {
-      display: flex;
-    }
-
-    .game-square {
-      width: 24px;
-      height: 24px;
-      background: var(--custom-bg);
-      border: 1px solid black;
-      display: flex;
-      justify-content: center;
       align-items: center;
-      &:hover {
-        background: rgba(150, 150, 255, 0.5);
+      // justify-self: flex-end;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.25);
+      & input {
+        // margin-left: 1rem;
       }
     }
-    .ticked {
-      &.unlocked {
-        border: 1px solid red;
-      }
-      &:hover {
-        background: rgba(150, 150, 255, 0.5);
-      }
-      &::after {
-        content: attr(data-marker);
-        justify-self: center;
-        align-self: center;
-        background: attr(data-background-color);
-      }
-    }
+  }
 
-    .player-change {
-      transition: all 0.25s;
-      // border: 50px solid red;
-      background: rgba(155, 255, 155, 1);
-    }
+  input {
+    background: none;
+    border: none;
+    color: rgba(50, 200, 255, 1);
+    font-family: "Muli";
+    font-size: 1.1rem;
+    padding-left: 0.25rem;
+    width: 5ch;
+    border-bottom: 1px solid rgba(50, 200, 255, 1);
+    margin: 0.5rem;
+    justify-self: flex-end;
+  }
 
-    button {
-      padding: 1rem;
-      border-radius: 3px;
-      border: none;
-      color: white;
-      background: rgba(55, 255, 155, 0.5);
-      &:hover {
-        background: rgba(0, 25, 75, 1);
-      }
-    }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-    .locked {
-      opacity: 0.75;
-      border: 1px solid rgba(0, 0, 0, 0.5);
-      &::before {
-        background: #000;
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -2;
-        opacity: 1;
-      }
-    }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
-    .control-button {
-      background: rgba(0, 25, 75, 0.25);
-      margin: 0.25rem;
-      &:hover {
-        background: rgba(0, 25, 75, 0.5);
-      }
-    }
-    .dir-1 {
-      display: flex;
-      flex-direction: column;
-    }
-    .scores-wrap {
-      display: flex;
-      flex-direction: column;
-      background: #1a1a1a;
-    }
-    .scores-block {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .scores-section {
-      display: flex;
-      flex-direction: column;
-    }
+  .gameboard-board {
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    border: 0px solid none;
+  }
 
-    .scoreboard-container {
-      // position: absolute;
-      // left: 0;
-      background: rgba(0, 0, 155, 0.1);
-    }
-    .scoreboard-headings {
-      background: rgba(0, 0, 155, 0.1);
-    }
-    .scoreboard-totals {
-      background: rgba(0, 0, 155, 0.1);
-    }
-    .scoreboard-direction {
-      background: rgba(0, 0, 155, 0.1);
-      display: flex;
-      // padding: .25rem;
-    }
+  .game-row {
+    display: flex;
+  }
 
-    .direction-icon {
-      margin-left: 0.5rem;
-      // background: #1a1a1a;
+  .game-square {
+    width: 24px;
+    height: 24px;
+    background: var(--custom-bg);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      background: rgba(150, 150, 255, 0.5);
     }
-    .direction-score-section {
-      display: flex;
-      justify-content: space-between;
+  }
+  .ticked {
+    &.unlocked {
+      border: 1px solid red;
+    }
+    &:hover {
+      background: rgba(150, 150, 255, 0.5);
+    }
+    &::after {
+      content: attr(data-marker);
+      justify-self: center;
+      align-self: center;
+      background: attr(data-background-color);
+    }
+  }
+
+  .player-change {
+    transition: all 0.25s;
+    // border: 50px solid red;
+    background: rgba(155, 255, 155, 1);
+  }
+
+  button {
+    padding: 1rem;
+    border-radius: 3px;
+    border: none;
+    color: white;
+    background: rgba(55, 255, 155, 0.5);
+    &:hover {
+      background: rgba(0, 25, 75, 1);
+    }
+  }
+
+  .locked {
+    opacity: 0.75;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    &::before {
+      background: #000;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 1;
     }
-    .direction-score {
-      justify-self: flex-end;
-      margin-right: 0.5rem;
+  }
+
+  .control-button {
+    background: rgba(0, 25, 75, 0.25);
+    margin: 0.25rem;
+    &:hover {
+      background: rgba(0, 25, 75, 0.5);
     }
+  }
+  .dir-1 {
+    display: flex;
+    flex-direction: column;
+  }
+  .scores-wrap {
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+  }
+  .scores-block {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .scores-section {
+    display: flex;
+    flex-direction: column;
+  }
 
-    .total-score {
-      background: var(--custom-bg);
-      padding: 0.25rem;
-      margin: 0;
-      display: flex;
-      justify-content: space-between;
-    }
+  .scoreboard-container {
+    // position: absolute;
+    // left: 0;
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-headings {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-totals {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-direction {
+    background: rgba(0, 0, 155, 0.1);
+    display: flex;
+    // padding: .25rem;
+  }
 
-    .total-score-number {
-      border: 2px solid white;
-      padding: 0.25rem;
-    }
-  </style>
+  .direction-icon {
+    margin-left: 0.5rem;
+    // background: #1a1a1a;
+  }
+  .direction-score-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .direction-score {
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+  }
 
-  <h1>Tic Tac Toe</h1>
+  .total-score {
+    background: var(--custom-bg);
+    padding: 0.25rem;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
 
-  <div class="page-container">
-    {#await players}
-      <!-- promise is pending -->
-      <p>waiting for the promise to resolve...</p>
-    {:then players}
-      <!-- promise was fulfilled -->
-      <ScoreBoard {players} />
-    {:catch error}
-      <!-- promise was rejected -->
-      <p>Something went wrong: {error.message}</p>
-      <ScoreBoard players={players} />
-    {/await}
+  .total-score-number {
+    border: 2px solid white;
+    padding: 0.25rem;
+  }
+</style>
+
+
+<h1>Tic Tac Toe</h1>
+
+<div class="page-container">
+  {#await players}
+    <!-- promise is pending -->
+    <p>waiting for the promise to resolve...</p>
+  {:then players}
+    <!-- promise was fulfilled -->
+    <ScoreBoard {players} />
+  {:catch error}
+    <!-- promise was rejected -->
+    <p>Something went wrong: {error.message}</p>
+    <ScoreBoard {players} />
+  {/await}
   <div class="gameboard-container">
-    <StatusBar {state} players={players} />
-    <MainMenu {settings} players={players} />
+    <StatusBar {state} {players} />
+    <MainMenu {settings} {players} />
     {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
     {:then players}
       <!-- promise was fulfilled -->
-      <GameBoard {gameboardMapped} {settings} {state} {players} on:move={moveNotification} />
+      <GameBoard
+        {gameboardMapped}
+        {settings}
+        {state}
+        {players}
+        on:move={moveNotification} />
     {:catch error}
       <!-- promise was rejected -->
       <p>Something went wrong: {error.message}</p>
-      <GameBoard {gameboardMapped} {settings} {state} players={players} on:move={moveNotification} />
+      <GameBoard
+        {gameboardMapped}
+        {settings}
+        {state}
+        {players}
+        on:move={moveNotification} />
     {/await}
 
   </div>
 
-  </div>
+</div>

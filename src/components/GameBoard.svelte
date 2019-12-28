@@ -29,8 +29,8 @@
 
   const dispatch = createEventDispatcher();
   function moveNotification(e) {
-    console.log(`GameBoard moveNOtification: `, e)
-    playMove(getCellById(e.detail))
+    console.log(`GameBoard moveNOtification: `, e);
+    playMove(getCellById(e.detail));
     // let cell = document.getElementById(e.detail)
     // console.log(cell)
     dispatch("move", e.detail);
@@ -49,9 +49,32 @@
     buildGrid();
   });
 
+  function getMoveFromHistory(id) {
+    let payload = { id: "zzz", name: "zzz" };
+    if (localStorage.getItem("gameboardMapped")) {
+      let game = JSON.parse(localStorage.getItem("gameboardMapped"));
+      game.forEach(move => {
+        if (move.id == id) {
+          payload = move.player;
+        }
+      });
+    }
+    return payload;
+  }
+
   function getCellById(id) {
-    let cell = document.getElementById(id)
-    return cell
+    let cell = document.getElementById(id);
+    return cell;
+  }
+
+  function getPlayerFromCell(id) {
+    let payload;
+    gameboardMapped.forEach(move => {
+      if (move.id == id) {
+        payload = move.player;
+      }
+    });
+    return payload;
   }
 
   function buildGrid() {
@@ -158,7 +181,7 @@
       }
     });
     // players
-    // localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
   function removePlayerMove(squareId) {
@@ -173,16 +196,6 @@
       }
       localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     });
-  }
-
-  function getPlayerFromCell(id) {
-    let payload;
-    gameboardMapped.forEach(move => {
-      if (move.id == id) {
-        payload = move.player;
-      }
-    });
-    return payload;
   }
 
   function playerChange() {
@@ -217,7 +230,7 @@
     let move = {};
     let id = cell.id;
     move["move"] = state.moveNumber;
-    move["cellId"] = cell.id;
+    move["id"] = cell.id;
     move["clickCount"] = state.clickCount;
     move["player"] = {
       id: state.currentPlayer.id,
@@ -252,7 +265,7 @@
     });
     state.turnHistory = [];
     localStorage.setItem(
-      "state.gameHistory",
+      "gameHistory",
       JSON.stringify(state.gameHistory)
     );
   }
@@ -269,7 +282,6 @@
     justify-content: flex-start;
     align-items: center;
   }
-
 </style>
 
 <div class="component-wrapper">
@@ -278,10 +290,7 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell
-          id={cell}
-          on:move={moveNotification}
-          {cellStyles} />
+        <Cell id={cell} on:move={moveNotification} {cellStyles} />
       {/each}
     </div>
   {/each}
