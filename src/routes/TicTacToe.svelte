@@ -34,7 +34,7 @@
 
   $: gameboardMapped = [];
   $: tickedArray = [];
-  $: scoredPlayers = [];
+  $: players = [];
   $: scoreDirections = [
     {
       id: 1,
@@ -82,11 +82,11 @@
     console.log(`TicTacToe.svelte onMount`);
 
     let storedPlayers = [];
-    if (localStorage.getItem("scoredPlayers").length > 0) {
-      storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+    if (localStorage.getItem("players").length > 0) {
+      storedPlayers = JSON.parse(localStorage.getItem("players"));
     }
 
-    console.log("onMount, stored scoredPlayers length: ", storedPlayers.length);
+    console.log("onMount, stored players length: ", storedPlayers.length);
     if (storedPlayers.length < 1) {
       console.log("onMount called initializePlayers()");
       initializePlayers();
@@ -103,14 +103,14 @@
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    state.currentPlayer = scoredPlayers[0];
+    state.currentPlayer = players[0];
     setTimeout(() => {
       addStyles();
     }, 1);
     setGameSettings();
     // renderGameBoardReload();
-    console.log(`TicTacToe onMount(): gameboardMapped, scoredPlayers`);
-    console.log(gameboardMapped, scoredPlayers);
+    console.log(`TicTacToe onMount(): gameboardMapped, players`);
+    console.log(gameboardMapped, players);
   });
 
   function moveNotification(cell) {
@@ -125,7 +125,7 @@
   function saveGame() {
     localStorage.setItem(
       "savedGame",
-      JSON.stringify({ gameboard: gameboardMapped, players: scoredPlayers })
+      JSON.stringify({ gameboard: gameboardMapped, players: players })
     );
 
     let test = localStorage.getItem("savedGame");
@@ -153,7 +153,7 @@
       scoreHeadings
     );
     scoreHeadings.forEach((h, i) => {
-      h.style = `--custom-bg: ${scoredPlayers[i].bgColor}`;
+      h.style = `--custom-bg: ${players[i].bgColor}`;
     });
   }
 
@@ -165,7 +165,7 @@
     localStorage.setItem("diagonalDownRight", []);
     localStorage.setItem("topToBottom", []);
     localStorage.setItem("leftToRight", []);
-    localStorage.setItem("scoredPlayers", []);
+    localStorage.setItem("players", []);
     settings.columns = document.getElementById("columns").value;
     settings.rows = document.getElementById("rows").value;
     settings.size = document.getElementById("size").value;
@@ -179,10 +179,10 @@
   }
 
   function initializePlayers() {
-    scoredPlayers = [];
+    players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
-      scoredPlayers = [
-        ...scoredPlayers,
+      players = [
+        ...players,
         {
           id: i,
           name: `Player ${i + 1}`,
@@ -196,22 +196,22 @@
       ];
 
       scoreDirections.forEach((direction, index) => {
-        scoredPlayers[i]["scores"].push(direction);
-        scoredPlayers[i]["scores"][index]["lines"] = lines[direction.name];
+        players[i]["scores"].push(direction);
+        players[i]["scores"][index]["lines"] = lines[direction.name];
       });
     }
-    scoredPlayers = scoredPlayers;
-    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    players = players;
+    localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
     let id = state.currentPlayer.id;
-    playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
+    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
   function reloadPlayers() {
-    scoredPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
-    state.currentPlayer = scoredPlayers[0];
+    players = JSON.parse(localStorage.getItem("players"));
+    state.currentPlayer = players[0];
 
-    scoredPlayers.forEach(player => {
+    players.forEach(player => {
       player.scores.forEach(direction => {
         direction.lines.forEach(line => {
           line.forEach(move => {
@@ -234,9 +234,9 @@
       });
       player = player;
     });
-    scoredPlayers = scoredPlayers;
+    players = players;
 
-    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    localStorage.setItem("players", JSON.stringify(players));
   }
 
   function getMoveFromHistory(id) {
@@ -267,19 +267,19 @@
       "*************__________countPoints called________**************"
     );
     console.log(
-      "scoredPlayers from countPoints before checking localStorage: ",
-      scoredPlayers
+      "players from countPoints before checking localStorage: ",
+      players
     );
-    // let players = JSON.parse(localStorage.getItem('scoredPlayers'))
+    // let players = JSON.parse(localStorage.getItem('players'))
 
     localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-    let players = scoredPlayers;
-    if (localStorage.getItem("scoredPlayers")) {
-      players = JSON.parse(localStorage.getItem("scoredPlayers"));
+    let players = players;
+    if (localStorage.getItem("players")) {
+      players = JSON.parse(localStorage.getItem("players"));
       console.log("using localStorage");
     }
     console.log(
-      "scoredPlayers from countPoints after checking localStorage, before loop: ",
+      "players from countPoints after checking localStorage, before loop: ",
       players
     );
     console.log(
@@ -303,8 +303,8 @@
         );
       });
     });
-    scoredPlayers = players;
-    localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
+    players = players;
+    localStorage.setItem(`players`, JSON.stringify(players));
   }
 
   function score(direction, player, idx) {
@@ -351,7 +351,7 @@
       // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
-    scoredPlayers = scoredPlayers;
+    players = players;
     console.log(
       `score closing with direction score ${dirScore} | player: `,
       player
@@ -373,7 +373,7 @@
         move.move = state.moveNumber;
       }
     });
-    // scoredPlayers
+    // players
     localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
@@ -542,7 +542,7 @@
       settings.gutter
     );
     let history = state.gameHistory;
-    let players = scoredPlayers;
+    let players = players;
     let amount, number;
     let len = history.length;
 
@@ -577,11 +577,11 @@
 
     if (localStorage.getItem("gameHistory")) {
       history = JSON.parse(localStorage.getItem("gameHistory"));
-      // players = JSON.parse(localStorage.getItem("scoredPlayers"));
+      // players = JSON.parse(localStorage.getItem("players"));
       loop(history);
     }
-    scoredPlayers = players;
-    console.log(`history length: ${len}, scoredPlayers`, scoredPlayers);
+    players = players;
+    console.log(`history length: ${len}, players`, players);
   }
 
   function setTurnHistory(square) {
@@ -668,11 +668,11 @@
     playerIndicator.classList.remove(`player-${state.currentPlayer.id}`);
     let id = state.currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-      state.currentPlayer = scoredPlayers[0];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
+      state.currentPlayer = players[0];
+      playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
     } else {
-      state.currentPlayer = scoredPlayers[id + 1];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[id + 1].bgColor}`;
+      state.currentPlayer = players[id + 1];
+      playerIndicator.style = `--custom-bg: ${players[id + 1].bgColor}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;
@@ -901,7 +901,7 @@
   <h1>Tic Tac Toe</h1>
 
   <div class="page-container">
-    {#await scoredPlayers}
+    {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
     {:then players}
@@ -910,12 +910,12 @@
     {:catch error}
       <!-- promise was rejected -->
       <p>Something went wrong: {error.message}</p>
-      <ScoreBoard players={scoredPlayers} />
+      <ScoreBoard players={players} />
     {/await}
   <div class="gameboard-container">
-    <StatusBar {state} players={scoredPlayers} />
-    <MainMenu {settings} players={scoredPlayers} />
-    {#await scoredPlayers}
+    <StatusBar {state} players={players} />
+    <MainMenu {settings} players={players} />
+    {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
     {:then players}
@@ -924,7 +924,7 @@
     {:catch error}
       <!-- promise was rejected -->
       <p>Something went wrong: {error.message}</p>
-      <GameBoard {gameboardMapped} {settings} {state} players={scoredPlayers} on:move={moveNotification} />
+      <GameBoard {gameboardMapped} {settings} {state} players={players} on:move={moveNotification} />
     {/await}
 
   </div>
