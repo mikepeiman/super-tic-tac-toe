@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
   import Cell from "./Cell.svelte";
 
   export let gameboardMapped;
@@ -27,6 +27,13 @@
   $: player = {};
   $: ticked = false;
 
+  const dispatch = createEventDispatcher();
+  function moveNotification(e) {
+    console.log(`GameBoard moveNOtification: `,e.detail)
+    // let cell = document.getElementById(e.detail)
+    // console.log(cell)
+    dispatch("move", e.detail);
+  }
   onMount(() => {
     console.log(`GameBoard component mounted`);
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
@@ -58,7 +65,7 @@
 
   function playMove(e) {
     state.clickCount++;
-    console.log(`clickCount: ${state.clickCount}`);
+    // console.log(`clickCount: ${state.clickCount}`);
     let cell = e.target;
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
@@ -71,7 +78,7 @@
     e.target.setAttribute("data-marker", "O");
     let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
     e.target.style = customBg;
-    console.log(`click from ${e.target.id}`, e.target, customBg);
+    // console.log(`click from ${e.target.id}`, e.target, customBg);
 
     if (ticked) {
       if (!cell.hasAttribute("locked")) {
@@ -101,7 +108,7 @@
   }
 
   function tickThis(cell) {
-    console.log("tickThis(cell)");
+    // console.log("tickThis(cell)");
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -264,7 +271,11 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell} on:click={playMove} {cellStyles} />
+        <Cell
+          id={cell}
+          on:click={playMove}
+          on:move={moveNotification}
+          {cellStyles} />
       {/each}
     </div>
   {/each}

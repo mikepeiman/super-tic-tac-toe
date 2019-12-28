@@ -1,16 +1,17 @@
 <script>
-import {onMount} from 'svelte'
+import {onMount, createEventDispatcher} from 'svelte'
+// import { createEventDispatcher } from 'svelte';
 export let id, player, ticked, cellClasses, cellStyles, customBg
 
-
+const dispatch = createEventDispatcher();
 onMount(() => {
 
   customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
 
 })
 
-function setStyles() {
-  // customBg = `hsla(${id[1]*5}, 50%, 50%, ${id[3]/100})`
+function moveNotification() {
+  dispatch('move',id)
 }
 </script>
 
@@ -58,7 +59,7 @@ function setStyles() {
 <div
   class="game-square"
   id={id}
-  on:click
+  on:click={moveNotification}
   data-ticked={ticked}
   data-marker="X"
   style={customBg} />

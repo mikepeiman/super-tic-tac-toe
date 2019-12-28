@@ -2,13 +2,21 @@
 import {onMount} from 'svelte'
 export let players
 
+onMount(() => {
+  console.log(`ScoreBoard onMount(), players`)
+  console.log(players)
+})
+
+function test() {
+  console.log(`scoreBoard component, clicked to test players: `, players)
+}
 </script>
 
 <style lang="scss">
 
 </style>
 
-   <div class="scoreboard-container">
+   <div class="scoreboard-container" on:click={test} >
     {#each players as player}
       <div class="scoreboard-totals">
         <h3 class="total-score">

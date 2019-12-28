@@ -111,6 +111,10 @@
     console.log(gameboardMapped, scoredPlayers);
   });
 
+function moveNotification(cell) {
+  console.log(`TicTacToe.svelte moveNotification for `, cell.detail)
+}
+
   function setGameSettings() {
     localStorage.setItem("gameSettings", {});
     localStorage.setItem("gameSettings", JSON.stringify(settings));
@@ -1049,11 +1053,11 @@
       <p>waiting for the promise to resolve...</p>
     {:then players}
       <!-- promise was fulfilled -->
-      <GameBoard {gameboardMapped} {settings} {state} {players} />
+      <GameBoard {gameboardMapped} {settings} {state} {players} on:move={moveNotification} />
     {:catch error}
       <!-- promise was rejected -->
       <p>Something went wrong: {error.message}</p>
-      <GameBoard {gameboardMapped} {settings} {state} players={scoredPlayers} />
+      <GameBoard {gameboardMapped} {settings} {state} players={scoredPlayers} on:move={moveNotification} />
     {/await}
 
   </div>
