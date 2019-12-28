@@ -69,6 +69,8 @@
   function playMove(e) {
     let id = e.target.id
     let customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, 1)`
+    e.target.setAttribute("data-marker", 'O');
+    e.target.classList.add("ticked")
     e.target.style = customBg;
     console.log(`click from ${e.target.id}`, e.target, customBg);
   }
