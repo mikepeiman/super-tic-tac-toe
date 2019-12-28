@@ -567,53 +567,9 @@
       // players = JSON.parse(localStorage.getItem("scoredPlayers"));
       loop(history);
     }
-
-    // localStorage.setItem("reloadedGameboard", []);
-
     scoredPlayers = players;
     console.log(`history length: ${len}, scoredPlayers`, scoredPlayers);
   }
-
-  // function renderGameBoard(rows, columns, size, gutter) {
-  //   gameboardMapped = [];
-  //   let gameboard = document.getElementById("gameboard-board");
-  //   while (gameboard.firstChild) {
-  //     gameboard.removeChild(gameboard.firstChild);
-  //   }
-  //   // console.log(`rows: ${rows} settings.columns: ${settings.columns}`);
-  //   for (let rowNum = 0; rowNum < rows; rowNum++) {
-  //     // console.log(`row: ${rowNum}`);
-  //     let row = document.createElement("div");
-  //     row.classList = "game-row";
-  //     gameboard.appendChild(row);
-
-  //     for (let colNum = 0; colNum < settings.columns; colNum++) {
-  //       // console.log(`row: ${rowNum} column: ${colNum}`);
-  //       let square = document.createElement("div");
-  //       square.classList = "game-square";
-  //       square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
-  //       square.style.margin = settings.gutter + "px";
-  //       square.style.width = settings.size + "px";
-  //       square.style.height = settings.size + "px";
-  //       square.id = `R${rowNum}C${colNum}`;
-  //       let cell = {};
-  //       cell["id"] = `R${rowNum}C${colNum}`;
-  //       cell["row"] = rowNum;
-  //       cell["col"] = colNum;
-  //       cell["player"] = {
-  //         id: "none",
-  //         name: "none"
-  //       };
-  //       gameboardMapped = [...gameboardMapped, cell];
-  //       square.setAttribute("data-ticked", false);
-  //       square.setAttribute("data-marker", "X");
-
-  //       row.appendChild(square);
-  //       square.addEventListener("click", () => playMove(event));
-  //     }
-  //   }
-  //   // createDirectionArrays()
-  // }
 
   function setTurnHistory(square) {
     let move = {};

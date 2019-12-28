@@ -1,5 +1,17 @@
 <script>
-export let id, player, ticked, cellClasses, cellStyles
+import {onMount} from 'svelte'
+export let id, player, ticked, cellClasses, cellStyles, customBg
+
+
+onMount(() => {
+  // console.log(`Cell mounted`, id)
+  customBg = `hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
+  console.log(customBg)
+})
+
+function setStyles() {
+  // customBg = `hsla(${id[1]*5}, 50%, 50%, ${id[3]/100})`
+}
 </script>
 
 <style lang="scss">
@@ -46,7 +58,7 @@ export let id, player, ticked, cellClasses, cellStyles
 <div
   class="game-square"
   id={id}
+  on:click
   data-ticked={ticked}
   data-marker="X"
-  style="--custom-bg: rgba(0, 30, 255, 0.25); margin: 0px; width: 24px; height:
-  24px;" />
+  style={`--custom-bg: ${customBg};`} />
