@@ -15,13 +15,18 @@
 
   $: state = {
     lastTicked: "",
-    currentPlayer: "",
-    movesRemaining: "",
-    turn: "",
-    gameHistory: "",
-    turnHistory: "",
-    clickCount: "",
-    moveNumber: ""
+    currentPlayer: {
+      id: 0,
+      name: "Mike",
+      bgColor: "",
+      marker: "M"
+    },
+    movesRemaining: 0,
+    turn: 0,
+    gameHistory: [],
+    turnHistory: [],
+    clickCount: 0,
+    moveNumber: 0
   };
 
   $: gameboardMapped = [];
@@ -70,10 +75,9 @@
   $: scores = [];
 
   onMount(() => {
-    let gameboardMapped = ['test','two','three']
-    console.log(`TicTacToe.svelte onMount`)
-    console.log(`test props for GameBoard: gameboardMapped`)
-    console.log(gameboardMapped)
+    let gameboardMapped = ["test", "two", "three"];
+    console.log(`TicTacToe.svelte onMount`);
+
     let storedPlayers = [];
     if (localStorage.getItem("scoredPlayers").length > 0) {
       storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
@@ -102,6 +106,8 @@
     }, 1);
     setGameSettings();
     // renderGameBoardReload();
+    console.log(`TicTacToe onMount(): gameboardMapped, scoredPlayers`);
+    console.log(gameboardMapped, scoredPlayers);
   });
 
   function setGameSettings() {
@@ -1053,11 +1059,18 @@
       <h2>GAME OPTIONS</h2>
   
     </div> -->
+{#await scoredPlayers}
+	<!-- promise is pending -->
+	<p>waiting for the promise to resolve...</p>
+{:then players}
+	<!-- promise was fulfilled -->
+	    <GameBoard {gameboardMapped} {settings} {state} players={players} />
+{:catch error}
+	<!-- promise was rejected -->
+	<p>Something went wrong: {error.message}</p>
+      <GameBoard {gameboardMapped} {settings} {state} players={scoredPlayers} />
+{/await}
 
-  <GameBoard
-  {gameboardMapped}
-  {settings}
-  {state} />
   </div>
 
 </div>

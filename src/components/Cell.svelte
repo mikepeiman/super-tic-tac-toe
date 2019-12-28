@@ -4,9 +4,9 @@ export let id, player, ticked, cellClasses, cellStyles, customBg
 
 
 onMount(() => {
-  // console.log(`Cell mounted`, id)
+
   customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
-  console.log(customBg)
+
 })
 
 function setStyles() {
