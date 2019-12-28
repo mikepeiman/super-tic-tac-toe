@@ -21,7 +21,6 @@
   //   gutter: 0
   // };
 
-
   $: cellStyles = [];
   $: cellClasses = [];
   $: grid = [];
@@ -101,7 +100,6 @@
     }
   }
 
-
   function tickThis(cell) {
     console.log("tickThis(cell)");
     let id = cell.id;
@@ -174,7 +172,6 @@
     return payload;
   }
 
-  
   function playerChange() {
     let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");
@@ -203,7 +200,6 @@
     playerIndicator.classList.add(`player-${state.currentPlayer.id}`);
   }
 
-  
   function setTurnHistory(cell) {
     let move = {};
     let id = cell.id;
@@ -214,8 +210,8 @@
       id: state.currentPlayer.id,
       name: state.currentPlayer.name
     };
-    console.log(`setTurnHistory(cell) ${id}`, cell, state)
-    let history = state.turnHistory
+    console.log(`setTurnHistory(cell) ${id}`, cell, state);
+    let history = state.turnHistory;
     if (history.filter(turn => turn.cellId == id).length > 0) {
       // console.log(
       //   `turnHistory already contains this move - that means we should remove it!`
@@ -242,14 +238,23 @@
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
     state.turnHistory = [];
-    localStorage.setItem("state.gameHistory", JSON.stringify(state.gameHistory));
+    localStorage.setItem(
+      "state.gameHistory",
+      JSON.stringify(state.gameHistory)
+    );
   }
-
 </script>
 
 <style lang="scss">
   .row {
     display: flex;
+  }
+  .component-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
   }
 </style>
 
