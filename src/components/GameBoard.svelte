@@ -156,9 +156,10 @@
   }
 
   function untickThis(cell) {
+    let id = cell.id
     console.log(`------------untickThis(cell)`);
     cell.classList.remove("ticked");
-    cell.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
+    cell.style = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`;
     cell.dataset.ticked = false;
     cell.removeAttribute("player-id");
     cell.removeAttribute("player-name");
