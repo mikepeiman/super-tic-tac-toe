@@ -31,6 +31,7 @@
 
   // $: id = 0;
   $: cellStyles = [];
+  // $: customBg = '';
   $: cellClasses = [];
   $: grid = [];
   $: player = {};
@@ -50,14 +51,14 @@
   });
 
   function buildGrid() {
-    grid = []
+    grid = [];
     for (let r = 0; r < settings.rows; r++) {
       // console.log(`buildGrid loops cols: ${r}`);
       grid.push([]);
       for (let c = 0; c < settings.columns; c++) {
         // console.log(`grid[r]: ${grid[r]}`);
         // console.log(`buildGrid loops cols: ${c}`);
-        let id = `R${r}C${c}`
+        let id = `R${r}C${c}`;
         grid[r].push(id);
       }
     }
@@ -66,10 +67,9 @@
   }
 
   function playMove(e) {
-    console.log(`click from ${e.target.id}`, e.target)
-    cellStyles = {
-      
-    }
+    let customBg = `--custom-bg: hsla(${e.target.id[1] * 50},50%,50%,1);`;
+    e.target.style = customBg;
+    console.log(`click from ${e.target.id}`, e.target, customBg);
   }
 
   function drawGameBoard(rows, columns, size, gutter) {
@@ -116,19 +116,19 @@
 </script>
 
 <style lang="scss">
-.row {
-  display: flex;
-}
+  .row {
+    display: flex;
+  }
 </style>
 
 <div class="component-wrapper">
   <h1>GameBoard component</h1>
   <div id="gameboard-board" class="gameboard-board" />
   {#each grid as row}
-  <div class="row">
-    {#each row as cell}
-      <Cell id={cell} on:click={playMove} {cellStyles} />
-    {/each}
+    <div class="row">
+      {#each row as cell}
+        <Cell id={cell} on:click={playMove} {cellStyles}  />
+      {/each}
     </div>
   {/each}
 
