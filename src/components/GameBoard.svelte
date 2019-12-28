@@ -269,6 +269,7 @@
     justify-content: flex-start;
     align-items: center;
   }
+
 </style>
 
 <div class="component-wrapper">

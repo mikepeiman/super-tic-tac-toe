@@ -1,7 +1,9 @@
-<script>
+  <script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
+    import StatusBar from "./../components/StatusBar.svelte";
+        import MainMenu from "./../components/MainMenu.svelte";
 
   $: settings = {
     numberOfPlayers: 3,
@@ -111,9 +113,9 @@
     console.log(gameboardMapped, scoredPlayers);
   });
 
-function moveNotification(cell) {
+  function moveNotification(cell) {
   console.log(`TicTacToe.svelte moveNotification for `, cell.detail)
-}
+  }
 
   function setGameSettings() {
     localStorage.setItem("gameSettings", {});
@@ -688,366 +690,231 @@ function moveNotification(cell) {
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(e.target.style.width);
   }
-</script>
+  </script>
 
-<style lang="scss" global>
-  .page-container {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-  }
-
-  .gameboard-container {
-    background: #1a1a1a;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    color: #eee;
-    justify-content: start;
-    align-items: start;
-    height: 90vh;
-    overflow: hidden;
-  }
-
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
-
-  $title-margin: 1rem;
-  $title-padding-horizontal: 1rem;
-  $title-padding-vertical: 0.5rem;
-  $calc-padding: 2 * $title-padding-horizontal;
-
-  .player-indicator {
-    width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: var(--custom-bg);
-    transition: all 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding: $title-padding-vertical $title-padding-horizontal;
-    border-radius: 5px;
-    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
-
-    & h2 {
-      margin: 0;
+  <style lang="scss" global>
+    .page-container {
+      display: grid;
+      grid-template-columns: 1fr 4fr;
     }
-  }
 
-  .form-wrap {
-    display: flex;
-    // align-items: flex-start;
-
-    justify-content: space-between;
-    // flex-direction: column;
-    width: 100%;
-    & label {
+    .gameboard-container {
+      background: #1a1a1a;
+      padding: 1rem;
       display: flex;
-      align-items: center;
-      // justify-self: flex-end;
-      margin: 0.5rem;
-      padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.25);
-      & input {
-        // margin-left: 1rem;
+      flex-direction: column;
+      color: #eee;
+      justify-content: start;
+      align-items: start;
+      height: 90vh;
+      overflow: hidden;
+    }
+
+
+
+
+    .form-wrap {
+      display: flex;
+      // align-items: flex-start;
+
+      justify-content: space-between;
+      // flex-direction: column;
+      width: 100%;
+      & label {
+        display: flex;
+        align-items: center;
+        // justify-self: flex-end;
+        margin: 0.5rem;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.25);
+        & input {
+          // margin-left: 1rem;
+        }
       }
     }
-  }
 
-  input {
-    background: none;
-    border: none;
-    color: rgba(50, 200, 255, 1);
-    font-family: "Muli";
-    font-size: 1.1rem;
-    padding-left: 0.25rem;
-    width: 5ch;
-    border-bottom: 1px solid rgba(50, 200, 255, 1);
-    margin: 0.5rem;
-    justify-self: flex-end;
-  }
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  .gameboard-board {
-    margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    border: 0px solid none;
-  }
-
-  .game-row {
-    display: flex;
-  }
-
-  .game-square {
-    width: 24px;
-    height: 24px;
-    background: var(--custom-bg);
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
+    input {
+      background: none;
+      border: none;
+      color: rgba(50, 200, 255, 1);
+      font-family: "Muli";
+      font-size: 1.1rem;
+      padding-left: 0.25rem;
+      width: 5ch;
+      border-bottom: 1px solid rgba(50, 200, 255, 1);
+      margin: 0.5rem;
+      justify-self: flex-end;
     }
-  }
-  .ticked {
-    &.unlocked {
-      border: 1px solid red;
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
+
+    input[type="number"] {
+      -moz-appearance: textfield;
     }
-    &::after {
-      content: attr(data-marker);
-      justify-self: center;
+
+    .gameboard-board {
+      margin: 2rem;
+      display: flex;
+      flex-direction: column;
       align-self: center;
-      background: attr(data-background-color);
+      border: 0px solid none;
     }
-  }
 
-  .player-change {
-    transition: all 0.25s;
-    // border: 50px solid red;
-    background: rgba(155, 255, 155, 1);
-  }
-
-  button {
-    padding: 1rem;
-    border-radius: 3px;
-    border: none;
-    color: white;
-    background: rgba(55, 255, 155, 0.5);
-    &:hover {
-      background: rgba(0, 25, 75, 1);
+    .game-row {
+      display: flex;
     }
-  }
 
-  .locked {
-    opacity: 0.75;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    &::before {
-      background: #000;
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
+    .game-square {
+      width: 24px;
+      height: 24px;
+      background: var(--custom-bg);
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background: rgba(150, 150, 255, 0.5);
+      }
+    }
+    .ticked {
+      &.unlocked {
+        border: 1px solid red;
+      }
+      &:hover {
+        background: rgba(150, 150, 255, 0.5);
+      }
+      &::after {
+        content: attr(data-marker);
+        justify-self: center;
+        align-self: center;
+        background: attr(data-background-color);
+      }
+    }
+
+    .player-change {
+      transition: all 0.25s;
+      // border: 50px solid red;
+      background: rgba(155, 255, 155, 1);
+    }
+
+    button {
+      padding: 1rem;
+      border-radius: 3px;
+      border: none;
+      color: white;
+      background: rgba(55, 255, 155, 0.5);
+      &:hover {
+        background: rgba(0, 25, 75, 1);
+      }
+    }
+
+    .locked {
+      opacity: 0.75;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      &::before {
+        background: #000;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        opacity: 1;
+      }
+    }
+
+    .control-button {
+      background: rgba(0, 25, 75, 0.25);
+      margin: 0.25rem;
+      &:hover {
+        background: rgba(0, 25, 75, 0.5);
+      }
+    }
+    .dir-1 {
+      display: flex;
+      flex-direction: column;
+    }
+    .scores-wrap {
+      display: flex;
+      flex-direction: column;
+      background: #1a1a1a;
+    }
+    .scores-block {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .scores-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scoreboard-container {
+      // position: absolute;
+      // left: 0;
+      background: rgba(0, 0, 155, 0.1);
+    }
+    .scoreboard-headings {
+      background: rgba(0, 0, 155, 0.1);
+    }
+    .scoreboard-totals {
+      background: rgba(0, 0, 155, 0.1);
+    }
+    .scoreboard-direction {
+      background: rgba(0, 0, 155, 0.1);
+      display: flex;
+      // padding: .25rem;
+    }
+
+    .direction-icon {
+      margin-left: 0.5rem;
+      // background: #1a1a1a;
+    }
+    .direction-score-section {
+      display: flex;
+      justify-content: space-between;
       width: 100%;
-      height: 100%;
-      z-index: -2;
-      opacity: 1;
     }
-  }
-
-  .control-button {
-    background: rgba(0, 25, 75, 0.25);
-    margin: 0.25rem;
-    &:hover {
-      background: rgba(0, 25, 75, 0.5);
+    .direction-score {
+      justify-self: flex-end;
+      margin-right: 0.5rem;
     }
-  }
-  .dir-1 {
-    display: flex;
-    flex-direction: column;
-  }
-  .scores-wrap {
-    display: flex;
-    flex-direction: column;
-    background: #1a1a1a;
-  }
-  .scores-block {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .scores-section {
-    display: flex;
-    flex-direction: column;
-  }
 
-  .scoreboard-container {
-    // position: absolute;
-    // left: 0;
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-headings {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-totals {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-direction {
-    background: rgba(0, 0, 155, 0.1);
-    display: flex;
-    // padding: .25rem;
-  }
+    .total-score {
+      background: var(--custom-bg);
+      padding: 0.25rem;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+    }
 
-  .direction-icon {
-    margin-left: 0.5rem;
-    // background: #1a1a1a;
-  }
-  .direction-score-section {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .direction-score {
-    justify-self: flex-end;
-    margin-right: 0.5rem;
-  }
+    .total-score-number {
+      border: 2px solid white;
+      padding: 0.25rem;
+    }
+  </style>
 
-  .total-score {
-    background: var(--custom-bg);
-    padding: 0.25rem;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-  }
+  <h1>Tic Tac Toe</h1>
 
-  .total-score-number {
-    border: 2px solid white;
-    padding: 0.25rem;
-  }
-</style>
-
-<h1>Tic Tac Toe</h1>
-
-<div class="page-container">
-  {#await scoredPlayers}
-    <!-- promise is pending -->
-    <p>waiting for the promise to resolve...</p>
-  {:then players}
-    <!-- promise was fulfilled -->
-    <ScoreBoard {players} />
-  {:catch error}
-    <!-- promise was rejected -->
-    <p>Something went wrong: {error.message}</p>
-    <ScoreBoard players={scoredPlayers} />
-  {/await}
+  <div class="page-container">
+    {#await scoredPlayers}
+      <!-- promise is pending -->
+      <p>waiting for the promise to resolve...</p>
+    {:then players}
+      <!-- promise was fulfilled -->
+      <ScoreBoard {players} />
+    {:catch error}
+      <!-- promise was rejected -->
+      <p>Something went wrong: {error.message}</p>
+      <ScoreBoard players={scoredPlayers} />
+    {/await}
   <div class="gameboard-container">
-    <div class="player-indicator player-0">
-      <h2 class="player-indicator-heading">
-        Player: {state.currentPlayer.name}
-      </h2>
-      <h2 class="player-indicator-heading">
-        Turn Moves: {state.movesRemaining}
-      </h2>
-      <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
-
-      <div class="buttons-wrapper">
-        <button class="control-button" id="next-turn-button">End turn</button>
-        <button
-          class="control-button"
-          id="tally-game-button"
-          on:click={countPoints}>
-          Tally points
-        </button>
-        <button class="control-button" id="reset-game-button" on:click={reset}>
-          Reset game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={saveGame}>
-          Save game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={loadGame}>
-          Load game
-        </button>
-      </div>
-    </div>
-
-    <h2>Layout and Game Options</h2>
-    <div class="form-wrap">
-      <label for="players">
-        # Of Players:
-        <input
-          id="players"
-          name="players"
-          type="number"
-          placeholder={settings.numberOfPlayers}
-          bind:value={settings.numberOfPlayers}
-          on:input={initializePlayers}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="rows">
-        Rows:
-        <input
-          id="rows"
-          name="rows"
-          type="number"
-          placeholder={settings.rows}
-          value={settings.rows}
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="columns">
-        Columns:
-        <input
-          id="columns"
-          name="columns"
-          type="number"
-          placeholder={settings.columns}
-          value={settings.columns}
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="size">
-        Square size (px):
-        <input
-          id="size"
-          name="size"
-          type="number"
-          placeholder="24"
-          value={settings.size}
-          step="4"
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="gutter">
-        Gutter (px):
-        <input
-          id="gutter"
-          name="gutter"
-          type="number"
-          placeholder={settings.gutter}
-          value={settings.gutter}
-          on:input={triggerGameBoardUpdate}
-          style="width: 1.5ch;" />
-      </label>
-      <label for="movesPerTurn">
-        Moves Per Turn:
-        <input
-          id="movesPerTurn"
-          name="movesPerTurn"
-          type="number"
-          placeholder={settings.movesPerTurn}
-          bind:value={settings.movesPerTurn}
-          on:input={updateGameSettings}
-          style="width: 1.5ch;" />
-      </label>
-
-    </div>
-    <!-- 
-    <div class="form-wrap">
-      <h2>GAME OPTIONS</h2>
-  
-    </div> -->
+    <StatusBar {state} players={scoredPlayers} />
+    <MainMenu {settings} players={scoredPlayers} />
     {#await scoredPlayers}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
@@ -1062,4 +929,4 @@ function moveNotification(cell) {
 
   </div>
 
-</div>
+  </div>
