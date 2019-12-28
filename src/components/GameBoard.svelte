@@ -167,9 +167,9 @@
   }
 
   function setPlayerMove(squareId) {
-    console.log(
-      `setPlayerMove(${squareId}) - currentPlayer.id ${state.currentPlayer.id}`
-    );
+    // console.log(
+    //   `setPlayerMove(${squareId}) - currentPlayer.id ${state.currentPlayer.id}`
+    // );
     gameboardMapped.forEach(move => {
       if (move.id == squareId) {
         console.log(`if(move.id == squareId) ${squareId}`);
@@ -228,7 +228,6 @@
 
   function setTurnHistory(cell) {
     let move = {};
-    let id = cell.id;
     move["move"] = state.moveNumber;
     move["id"] = cell.id;
     move["clickCount"] = state.clickCount;
@@ -236,26 +235,26 @@
       id: state.currentPlayer.id,
       name: state.currentPlayer.name
     };
-    console.log(`setTurnHistory(cell) ${id}`, cell, state);
-    let history = state.turnHistory;
-    if (history.filter(turn => turn.cellId == id).length > 0) {
+    console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
+    // let history = state.turnHistory;
+    if (state.turnHistory.filter(turn => turn.id == cell.id).length > 0) {
       // console.log(
       //   `turnHistory already contains this move - that means we should remove it!`
       // );
-      history = history.filter(turn => turn.cellId !== id);
+      state.turnHistory = state.turnHistory.filter(turn => turn.id !== cell.id);
     } else {
       // console.log(
       //   `apparently we have not made this move yet, let's add it to state.turnHistory`
       // );
-      state.turnHistory = [...history, move];
+      state.turnHistory = [...state.turnHistory, move];
     }
-    console.log(state.turnHistory);
+    // console.log(state.turnHistory);
   }
 
   function setGameHistory(cell) {
     state.gameHistory = [...state.gameHistory, state.turnHistory];
     state.turnHistory.forEach((turn, index) => {
-      let move = document.getElementById(`${turn.cellId}`);
+      let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
       move.setAttribute("data-marker", "O");
