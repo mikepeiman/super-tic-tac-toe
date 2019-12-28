@@ -29,11 +29,13 @@
 
   const dispatch = createEventDispatcher();
   function moveNotification(e) {
-    console.log(`GameBoard moveNOtification: `,e.detail)
+    console.log(`GameBoard moveNOtification: `, e)
+    playMove(getCellById(e.detail))
     // let cell = document.getElementById(e.detail)
     // console.log(cell)
     dispatch("move", e.detail);
   }
+
   onMount(() => {
     console.log(`GameBoard component mounted`);
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
@@ -46,6 +48,11 @@
     // );
     buildGrid();
   });
+
+  function getCellById(id) {
+    let cell = document.getElementById(id)
+    return cell
+  }
 
   function buildGrid() {
     grid = [];
@@ -63,10 +70,9 @@
     grid = grid;
   }
 
-  function playMove(e) {
+  function playMove(cell) {
     state.clickCount++;
-    // console.log(`clickCount: ${state.clickCount}`);
-    let cell = e.target;
+    console.log(`playMove clickCount: ${state.clickCount}`);
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
     cell.setAttribute("row", id[1]);
@@ -74,11 +80,11 @@
     cell.setAttribute("playername", "empty");
     cell.setAttribute("playerid", "empty");
     let ticked = cell.dataset.ticked == "true";
-    e.target.classList.add("ticked");
-    e.target.setAttribute("data-marker", "O");
+    cell.classList.add("ticked");
+    cell.setAttribute("data-marker", "O");
     let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
-    e.target.style = customBg;
-    // console.log(`click from ${e.target.id}`, e.target, customBg);
+    cell.style = customBg;
+    // console.log(`click from ${cell.id}`, cell, customBg);
 
     if (ticked) {
       if (!cell.hasAttribute("locked")) {
@@ -108,7 +114,7 @@
   }
 
   function tickThis(cell) {
-    // console.log("tickThis(cell)");
+    console.log("tickThis(cell)", cell, state.currentPlayer);
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -273,7 +279,6 @@
       {#each row as cell}
         <Cell
           id={cell}
-          on:click={playMove}
           on:move={moveNotification}
           {cellStyles} />
       {/each}

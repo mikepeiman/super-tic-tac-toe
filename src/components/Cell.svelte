@@ -5,14 +5,13 @@ export let id, player, ticked, cellClasses, cellStyles, customBg
 
 const dispatch = createEventDispatcher();
 onMount(() => {
-
   customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
-
 })
 
 function moveNotification() {
   dispatch('move',id)
 }
+
 </script>
 
 <style lang="scss">
