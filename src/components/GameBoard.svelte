@@ -67,7 +67,8 @@
   }
 
   function playMove(e) {
-    let customBg = `--custom-bg: hsla(${e.target.id[1] * 50},50%,50%,1);`;
+    let id = e.target.id
+    let customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, 1)`
     e.target.style = customBg;
     console.log(`click from ${e.target.id}`, e.target, customBg);
   }
