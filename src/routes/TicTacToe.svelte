@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
+  import ScoreBoard from "./../components/ScoreBoard.svelte";
 
   $: settings = {
     numberOfPlayers: 3,
@@ -920,33 +921,17 @@
 <h1>Tic Tac Toe</h1>
 
 <div class="page-container">
-  <div class="scoreboard-container">
-    {#each scoredPlayers as player}
-      <div class="scoreboard-totals">
-        <h3 class="total-score">
-          <div>{player.name}:</div>
-          <div class="total-score-number">{player.totalScore}</div>
-        </h3>
-        <div class="scoreboard-player">
-          {#each player.scores as direction, i}
-            <div class="scoreboard-direction">
-              <div class="direction-score-section">
-                <img
-                  class="direction-icon"
-                  src={direction.iconSrc}
-                  width="20"
-                  height="20"
-                  alt="Icon for direction {direction.name}" />
-                <div class="direction-name">{direction.name}:</div>
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-    {/each}
-  </div>
-
+  {#await scoredPlayers}
+    <!-- promise is pending -->
+    <p>waiting for the promise to resolve...</p>
+  {:then players}
+    <!-- promise was fulfilled -->
+    <ScoreBoard {players} />
+  {:catch error}
+    <!-- promise was rejected -->
+    <p>Something went wrong: {error.message}</p>
+    <ScoreBoard players={scoredPlayers} />
+  {/await}
   <div class="gameboard-container">
     <div class="player-indicator player-0">
       <h2 class="player-indicator-heading">
@@ -1059,17 +1044,17 @@
       <h2>GAME OPTIONS</h2>
   
     </div> -->
-{#await scoredPlayers}
-	<!-- promise is pending -->
-	<p>waiting for the promise to resolve...</p>
-{:then players}
-	<!-- promise was fulfilled -->
-	    <GameBoard {gameboardMapped} {settings} {state} players={players} />
-{:catch error}
-	<!-- promise was rejected -->
-	<p>Something went wrong: {error.message}</p>
+    {#await scoredPlayers}
+      <!-- promise is pending -->
+      <p>waiting for the promise to resolve...</p>
+    {:then players}
+      <!-- promise was fulfilled -->
+      <GameBoard {gameboardMapped} {settings} {state} {players} />
+    {:catch error}
+      <!-- promise was rejected -->
+      <p>Something went wrong: {error.message}</p>
       <GameBoard {gameboardMapped} {settings} {state} players={scoredPlayers} />
-{/await}
+    {/await}
 
   </div>
 
