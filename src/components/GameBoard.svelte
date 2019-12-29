@@ -399,8 +399,8 @@
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
     cell.setAttribute("data-marker", "O");
-    let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
-    cell.style = customBg;
+    // let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
+    // cell.style = customBg;
     // console.log(`click from ${cell.id}`, cell, customBg);
 
     if (ticked) {
