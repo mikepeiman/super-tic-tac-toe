@@ -29,6 +29,8 @@
     localStorage.setItem("players", []);
     localStorage.setItem("lines", []);
     localStorage.setItem('gameInProgress', false)
+    // location.reload();
+    dispatch('reset', true)
     // let settings = JSON.parse(localStorage.getItem('gameSettings'))
     // settings.columns = document.getElementById("columns").value;
     // settings.rows = document.getElementById("rows").value;

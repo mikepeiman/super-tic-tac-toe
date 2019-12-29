@@ -8,6 +8,8 @@
   export let players = [];
 
   $: gameboardMapped = [];
+  $: console.log(`GameBoard state: `, state)
+  $: state.reset ? buildGameBoard() : state.reset
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -336,6 +338,7 @@
   }
 
   function buildGameBoard() {
+    state.reset = false
     grid = [];
     for (let r = 0; r < settings.rows; r++) {
       grid.push([]);
@@ -563,7 +566,7 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell} on:move={moveNotification} {cellStyles} />
+        <Cell id={cell} on:move={moveNotification}  />
       {/each}
     </div>
   {/each}

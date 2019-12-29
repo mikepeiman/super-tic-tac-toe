@@ -29,7 +29,8 @@
     gameHistory: [],
     turnHistory: [],
     clickCount: 0,
-    moveNumber: 0
+    moveNumber: 0,
+    reset: false
   };
 
   $: gameboardMapped = [];
@@ -239,6 +240,11 @@
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     // localStorage.setItem("gameHistory", []);
   }
+
+function resetClicked() {
+  console.log(`TicTacToe => reset bubbled from StatusBar`)
+  state.reset = true
+}
 
   function updateGameSettings() {
     state.movesRemaining = settings.movesPerTurn;
@@ -861,7 +867,7 @@
     <ScoreBoard {players} {settings} {gameboardMapped} />
   {/await}
   <div class="gameboard-container">
-    <StatusBar {state} {players} />
+    <StatusBar {state} {players} on:reset={resetClicked} />
     <MainMenu {settings} {players} />
     {#await players}
       <!-- promise is pending -->
