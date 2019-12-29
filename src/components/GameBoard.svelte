@@ -11,7 +11,9 @@
   $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
   $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
+  $: console.log(`GameBoard state updateGameSettings: `, state.updateGameSettings);
   $: state.reset ? resetGameBoard() : (state.reset = false);
+  $: state.updateGameSettings ? updateGameSettings() : (state.updateGameSettings = false);
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -71,11 +73,11 @@
     console.log(gameboardMapped, settings, state, players);
     buildGameBoard();
     let gameInProgress = localStorage.getItem("gameInProgress");
-    console.log(
-      `gameInProgress as boolean: `,
-      gameInProgress,
-      gameInProgress == "true"
-    );
+    // console.log(
+    //   `gameInProgress as boolean: `,
+    //   gameInProgress,
+    //   gameInProgress == "true"
+    // );
     if (gameInProgress == "true") {
       state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
       console.log("GameBoard onMount says that game is in progress");
@@ -93,6 +95,10 @@
       localStorage.setItem("lines", JSON.stringify(lines));
     }
   });
+function updateGameSettings() {
+  let settings = JSON.parse(localStorage.getItem('settings'))
+  resetGameBoard()
+}
 
   function initializePlayers() {
     players = [];
@@ -361,6 +367,7 @@
     setTimeout(() => {
       buildGameBoard();
       initializePlayers();
+      console.log(`GameBoard just ran a reset, now state, players INSIDE TIMEOUT `, state, players)
     }, 1);
     state = {
       lastTicked: "",
@@ -374,6 +381,8 @@
       reset: false
     };
     state.movesRemaining = settings.movesPerTurn;
+    state = state
+    console.log(`GameBoard just ran a reset, now state, players `, state, players)
   }
 
   function clearGameBoard() {

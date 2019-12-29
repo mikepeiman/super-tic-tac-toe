@@ -1,9 +1,9 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-  export let state, players;
   const dispatch = createEventDispatcher();
+  export let state, players;
 
-  $: state
+  $: state;
 
   onMount(() => {
     console.log(`StatusBar onMount(), state`, state);
@@ -31,9 +31,10 @@
     localStorage.setItem("leftToRight", []);
     localStorage.setItem("players", []);
     localStorage.setItem("lines", []);
-    localStorage.setItem('gameInProgress', false)
+    localStorage.setItem("state", "");
+    localStorage.setItem("gameInProgress", false);
     // location.reload();
-    dispatch('reset', true)
+    dispatch("reset", true);
     // let settings = JSON.parse(localStorage.getItem('gameSettings'))
     // settings.columns = document.getElementById("columns").value;
     // settings.rows = document.getElementById("rows").value;

@@ -20,26 +20,30 @@
       "players from countPoints before checking localStorage: ",
       players
     );
+    if (localStorage.getItem("gameHistory")) {
+      let gh = JSON.parse(localStorage.getItem("gameHistory"));
+      console.log(`countPoints, gameHistory from LS: `, gh)
+    }
     // let players = JSON.parse(localStorage.getItem('players'))
 
     // localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     // let players = players;
-    if (localStorage.getItem("players")) {
-      players = JSON.parse(localStorage.getItem("players"));
-      console.log("using localStorage");
-    }
-    console.log(
-      "players from countPoints after checking localStorage, before loop: ",
-      players
-    );
-    if (localStorage.getItem("gameboardMapped")) {
-      gameboardMapped = JSON.parse(localStorage.getItem("gameboardMapped"));
-      console.log("using localStorage");
-    }
-    console.log(
-      "gameboardMapped from countPoints from localStorage before loop: ",
-      gameboardMapped
-    );
+    // if (localStorage.getItem("players")) {
+    //   players = JSON.parse(localStorage.getItem("players"));
+    //   console.log("using localStorage");
+    // }
+    // console.log(
+    //   "players from countPoints after checking localStorage, before loop: ",
+    //   players
+    // );
+    // if (localStorage.getItem("gameboardMapped")) {
+    //   gameboardMapped = JSON.parse(localStorage.getItem("gameboardMapped"));
+    //   console.log("using localStorage");
+    // }
+    // console.log(
+    //   "gameboardMapped from countPoints from localStorage before loop: ",
+    //   gameboardMapped
+    // );
     players.forEach(player => {
       player.scores.forEach((direction, index) => {
         // console.log(
@@ -74,7 +78,7 @@
     let dirScore = 0;
     let name = direction.name;
     console.log(
-      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`
+      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
     );
     let settings = JSON.parse(localStorage.getItem("settings"));
     direction.lines.forEach((line, index) => {

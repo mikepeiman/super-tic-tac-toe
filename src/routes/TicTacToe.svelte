@@ -109,6 +109,11 @@
     }, 10);
   }
 
+  function updateGameSettings() {
+    resetNotification()
+    state.updateGameSettings = true
+  } 
+
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
     state = state;
@@ -228,12 +233,6 @@
       });
     }
     return payload;
-  }
-
-  function triggerGameBoardUpdate(e) {
-    reset();
-    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
-    // localStorage.setItem("gameHistory", []);
   }
 
   function updateGameState() {
@@ -857,7 +856,7 @@
   {/await}
   <div class="gameboard-container">
     <StatusBar {state} {players} on:reset={resetNotification} />
-    <MainMenu {settings} {players} />
+    <MainMenu on:updateGameSettings={updateGameSettings} {settings} {players} />
     {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
