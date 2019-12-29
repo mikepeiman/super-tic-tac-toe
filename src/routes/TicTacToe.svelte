@@ -120,6 +120,8 @@
   function resetNotification() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     state.reset = true;
+    initializePlayers()
+
   }
 
   function moveNotification(cell) {
