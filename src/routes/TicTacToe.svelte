@@ -17,16 +17,16 @@
   };
 
   $: state = {
-        lastTicked: "",
-        currentPlayer: {},
-        movesRemaining: 0,
-        turn: 0,
-        gameHistory: [],
-        turnHistory: [],
-        clickCount: 0,
-        moveNumber: 0,
-        reset: false
-      };
+    lastTicked: "",
+    currentPlayer: {},
+    movesRemaining: 0,
+    turn: 0,
+    gameHistory: [],
+    turnHistory: [],
+    clickCount: 0,
+    moveNumber: 0,
+    reset: false
+  };
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: players = [];
@@ -73,38 +73,22 @@
   $: scores = [];
 
   onMount(() => {
-        console.log(`TicTacToe.svelte onMount`);
+    console.log(`TicTacToe.svelte onMount`);
 
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress == "true") {
       players = JSON.parse(localStorage.getItem("players"));
       state = JSON.parse(localStorage.getItem("state"));
-      console.log("TicTacToe => onMount calling reloadPlayers(). Current players, state: ", players, state);
-
+      console.log(
+        "TicTacToe => onMount calling reloadPlayers(). Current players, state: ",
+        players,
+        state
+      );
     } else {
       reloadPlayers();
       state.currentPlayer = players[0];
-      localStorage.setItem('state', JSON.stringify(state))
+      localStorage.setItem("state", JSON.stringify(state));
     }
-
-    // let gameboardMapped = ["test", "two", "three"];
-
-
-    // let storedPlayers = [];
-    // if (localStorage.getItem("players")) {
-    //   if (localStorage.getItem("players").length > 0) {
-    //     players = JSON.parse(localStorage.getItem("players"));
-    //   }
-    // }
-
-    // console.log("onMount, stored players length: ", players.length);
-    // if (players.length < 1) {
-    //   state.currentPlayer = players[0];
-    // } else {
-    //   console.log("onMount called reloadPlayers()");
-    //   reloadPlayers();
-    // }
-
     state.movesRemaining = settings.movesPerTurn;
 
     setTimeout(() => {
@@ -116,17 +100,18 @@
     console.log(gameboardMapped, players);
   });
 
-
   function resetNotification() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     state.reset = true;
-    initializePlayers()
-
+    initializePlayers();
+    setTimeout(() => {
+      state.reset = false;
+    }, 10);
   }
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
-    state = state
+    state = state;
   }
 
   function setGameSettings() {
@@ -194,7 +179,8 @@
     players = players;
     // localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
-    let id = state.currentPlayer.id;
+    state.currentPlayer = players[0];
+    state.movesRemaining = settings.movesPerTurn;
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
@@ -250,8 +236,7 @@
     // localStorage.setItem("gameHistory", []);
   }
 
-
-  function updateGameSettings() {
+  function updateGameState() {
     state.movesRemaining = settings.movesPerTurn;
   }
 

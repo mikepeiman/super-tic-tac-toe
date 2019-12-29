@@ -583,7 +583,6 @@
 </style>
 
 <div class="component-wrapper">
-  <h1>GameBoard component</h1>
   <div id="gameboard-board" class="gameboard-board" />
   {#each grid as row}
     <div class="row">

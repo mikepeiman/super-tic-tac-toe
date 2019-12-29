@@ -4,7 +4,7 @@
   export let players, state, gameboardMapped;
 
 
-  $: state.reset ? resetPlayers() : (state.reset = false);
+  // $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
     console.log(`ScoreBoard onMount(), players`);
