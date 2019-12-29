@@ -33,7 +33,7 @@
     localStorage.setItem("lines", []);
     localStorage.setItem("state", "");
     localStorage.setItem("gameInProgress", false);
-    // location.reload();
+    location.reload();
     dispatch("reset", true);
     // let settings = JSON.parse(localStorage.getItem('gameSettings'))
     // settings.columns = document.getElementById("columns").value;

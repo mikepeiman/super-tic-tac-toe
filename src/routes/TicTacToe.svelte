@@ -104,13 +104,15 @@
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     state.reset = true;
     initializePlayers();
-    location.reload()
+    // location.reload()
     setTimeout(() => {
       state.reset = false;
     }, 10);
   }
 
-  function updateGameSettings() {
+  function updateGameSettings(e) {
+    console.log(`TicTacToe => reset bubbled from MainMenu settings change`, e);
+    settings = e.detail
     resetNotification()
     state.updateGameSettings = true
   } 
@@ -857,7 +859,7 @@
   {/await}
   <div class="gameboard-container">
     <StatusBar {state} {players} on:reset={resetNotification} />
-    <MainMenu on:updateGameSettings={updateGameSettings} {settings} {players} />
+    <MainMenu on:updateGameSettings={updateGameSettings} {players} />
     {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>

@@ -1,10 +1,13 @@
 <script>
 import {onMount, createEventDispatcher} from 'svelte'
 // import { createEventDispatcher } from 'svelte';
-export let id, player, ticked, cellClasses, cellStyles, customBg
+export let id, settings
 
 const dispatch = createEventDispatcher();
 onMount(() => {
+  let hue = id[3]
+  let alpha = id[1]
+  console.log(`Cell component onMount, settings: `, settings)
   customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
   // console.log(`Cell => onMount, this: `, this)
 })

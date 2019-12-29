@@ -1,7 +1,20 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  export let settings, players;
+  export let players;
+
+  $: settings = {
+    numberOfPlayers: 3,
+    movesPerTurn: 5,
+    cellsToScore: 3,
+    bonusForCompleteRow: 5,
+    rows: 5,
+    columns: 5,
+    size: 24,
+    gutter: 0
+  };
+  $: console.log(`MainMenu settings.rows: ${settings.rows}`);
+  $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`);
@@ -13,14 +26,12 @@
   }
 
   function triggerGameBoardUpdate(e) {
-    // reset();
-    dispatch('updateGameSettings', 'redraw')
+    dispatch("updateGameSettings", settings);
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
-    // localStorage.setItem("gameHistory", []);
+    console.log(
+      `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `
+    );
   }
-  // function updateGameSettings() {
-  //   console.log(`MainMenu component, clicked to test countPoints: `, players);
-  // }
 </script>
 
 <style lang="scss">
@@ -47,7 +58,7 @@
       name="rows"
       type="number"
       placeholder={settings.rows}
-      value={settings.rows}
+      bind:value={settings.rows}
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
   </label>
@@ -58,7 +69,7 @@
       name="columns"
       type="number"
       placeholder={settings.columns}
-      value={settings.columns}
+      bind:value={settings.columns}
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
   </label>
@@ -69,7 +80,7 @@
       name="size"
       type="number"
       placeholder="24"
-      value={settings.size}
+      bind:value={settings.size}
       step="4"
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
@@ -81,7 +92,7 @@
       name="gutter"
       type="number"
       placeholder={settings.gutter}
-      value={settings.gutter}
+      bind:value={settings.gutter}
       on:input={triggerGameBoardUpdate}
       style="width: 1.5ch;" />
   </label>

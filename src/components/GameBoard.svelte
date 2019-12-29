@@ -8,12 +8,17 @@
   export let players = [];
 
   $: gameboardMapped = [];
-  $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
-  $: console.log(`GameBoard state reset: `, state.reset);
-  $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
-  $: console.log(`GameBoard state updateGameSettings: `, state.updateGameSettings);
+  // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  // $: console.log(`GameBoard state reset: `, state.reset);
+  // $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
+  // $: console.log(
+  //   `GameBoard state updateGameSettings: `,
+  //   state.updateGameSettings
+  // );
   $: state.reset ? resetGameBoard() : (state.reset = false);
-  $: state.updateGameSettings ? updateGameSettings() : (state.updateGameSettings = false);
+  $: state.updateGameSettings
+    ? updateGameSettings()
+    : (state.updateGameSettings = false);
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -71,7 +76,12 @@
     console.log(`GameBoard component mounted`);
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
     console.log(gameboardMapped, settings, state, players);
-    buildGameBoard();
+    buildGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
     let gameInProgress = localStorage.getItem("gameInProgress");
     // console.log(
     //   `gameInProgress as boolean: `,
@@ -95,10 +105,10 @@
       localStorage.setItem("lines", JSON.stringify(lines));
     }
   });
-function updateGameSettings() {
-  let settings = JSON.parse(localStorage.getItem('settings'))
-  resetGameBoard()
-}
+  function updateGameSettings() {
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    resetGameBoard();
+  }
 
   function initializePlayers() {
     players = [];
@@ -164,6 +174,7 @@ function updateGameSettings() {
       settings.size,
       settings.gutter
     );
+    settings.rows, settings.columns, settings.size, settings.gutter;
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
@@ -347,13 +358,13 @@ function updateGameSettings() {
     return cell;
   }
 
-  function buildGameBoard() {
+  function buildGameBoard(rows, columns, size, gutter) {
     // clearGameBoard();
     state.reset = false;
     grid = [];
-    for (let r = 0; r < settings.rows; r++) {
+    for (let r = 0; r < rows; r++) {
       grid.push([]);
-      for (let c = 0; c < settings.columns; c++) {
+      for (let c = 0; c < columns; c++) {
         let id = `R${r}C${c}`;
         grid[r].push(id);
       }
@@ -365,9 +376,18 @@ function updateGameSettings() {
   function resetGameBoard() {
     clearGameBoard();
     setTimeout(() => {
-      buildGameBoard();
+      buildGameBoard(
+        settings.rows,
+        settings.columns,
+        settings.size,
+        settings.gutter
+      );
       initializePlayers();
-      console.log(`GameBoard just ran a reset, now state, players INSIDE TIMEOUT `, state, players)
+      // console.log(
+      //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,
+      //   state,
+      //   players
+      // );
     }, 1);
     state = {
       lastTicked: "",
@@ -381,8 +401,12 @@ function updateGameSettings() {
       reset: false
     };
     state.movesRemaining = settings.movesPerTurn;
-    state = state
-    console.log(`GameBoard just ran a reset, now state, players `, state, players)
+    state = state;
+    // console.log(
+    //   `GameBoard just ran a reset, now state, players `,
+    //   state,
+    //   players
+    // );
   }
 
   function clearGameBoard() {
@@ -521,8 +545,8 @@ function updateGameSettings() {
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    localStorage.setItem('state', JSON.stringify(state))
-    localStorage.setItem('currentPlayer', JSON.stringify(state.currentPlayer))
+    localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("currentPlayer", JSON.stringify(state.currentPlayer));
     console.log(
       `playerChanges, state.currentPlayer.id AFTER change:`,
       state.currentPlayer.id
@@ -596,7 +620,7 @@ function updateGameSettings() {
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell} on:move={moveNotification} />
+        <Cell id={cell} settings={settings} on:move={moveNotification} />
       {/each}
     </div>
   {/each}
