@@ -8,8 +8,8 @@
   export let players = [];
 
   $: gameboardMapped = [];
-  $: console.log(`GameBoard state: `, state)
-  $: state.reset ? buildGameBoard() : state.reset
+  $: console.log(`GameBoard state: `, state);
+  $: state.reset ? resetGameBoard() : (state.reset = false);
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -82,8 +82,8 @@
       // localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
       console.log("GameBoard onMount says that game is in progress");
       // redrawGameHistory();
-      let redrawInterval = 1000 / (settings.rows * settings.columns)
-      console.log(`onMount, redrawInterval ${redrawInterval}`)
+      let redrawInterval = 1000 / (settings.rows * settings.columns);
+      console.log(`onMount, redrawInterval ${redrawInterval}`);
       setTimeout(() => {
         renderGameBoardReload(redrawInterval);
       }, 50);
@@ -127,7 +127,10 @@
   }
 
   function renderGameBoardReload(delayMS) {
-    console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
+    console.log(
+      `renderGameBoardReload => state.gameHistory::: `,
+      state.gameHistory
+    );
     let settings = JSON.parse(localStorage.getItem("settings"));
     let players = JSON.parse(localStorage.getItem("players"));
     let history = JSON.parse(localStorage.getItem("gameHistory"));
@@ -138,7 +141,10 @@
     //     state.gameHistory = [...history, state.gameHistory];
     // }
 
-    console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
+    console.log(
+      `renderGameBoardReload => state.gameHistory::: `,
+      state.gameHistory
+    );
     // localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
@@ -338,7 +344,8 @@
   }
 
   function buildGameBoard() {
-    state.reset = false
+    // clearGameBoard();
+    state.reset = false;
     grid = [];
     for (let r = 0; r < settings.rows; r++) {
       grid.push([]);
@@ -351,23 +358,22 @@
     grid = grid;
   }
 
-  function redrawGameHistory() {
-    console.log(`redrawGameHisotry called`);
-    let history = JSON.parse(localStorage.getItem("gameHistory"));
-    console.log(`GameBoard => buildGameBoard, gameHistory::: `, history);
-    if (history.length > 0) {
-      console.log(
-        `GameBoard => buildGameBoard, gameHistory.length > 0 `,
-        history.length
-      );
-      history.forEach(turn => {
-        console.log(`turn: `, turn);
-        turn.forEach(move => {
-          let cell = getCellById(move.id);
-          console.log(`got cell ${move.id} from gameHistory: `, move, cell);
-        });
-      });
+  function resetGameBoard() {
+    clearGameBoard();
+    setTimeout(() => {
+      buildGameBoard();
+    }, 1);
+  }
+
+  function clearGameBoard() {
+    console.log(`clearGameBoard called from buildGameBoard`);
+    let gameboard = document.getElementById("gameboard-board");
+
+    while (gameboard.firstChild) {
+      console.log(`renderGameBoardReload::: removing a DOM child el`);
+      gameboard.removeChild(gameboard.firstChild);
     }
+    grid = [];
   }
 
   function playMove(cell) {
@@ -566,7 +572,7 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell} on:move={moveNotification}  />
+        <Cell id={cell} on:move={moveNotification} />
       {/each}
     </div>
   {/each}
