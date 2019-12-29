@@ -512,6 +512,8 @@
     }
 
     state.movesRemaining = settings.movesPerTurn;
+    localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem('currentPlayer', JSON.stringify(state.currentPlayer))
     console.log(
       `playerChanges, state.currentPlayer.id AFTER change:`,
       state.currentPlayer.id
