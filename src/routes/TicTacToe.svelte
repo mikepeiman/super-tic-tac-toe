@@ -85,12 +85,12 @@
     let storedPlayers = [];
     if (localStorage.getItem("players")) {
       if (localStorage.getItem("players").length > 0) {
-        storedPlayers = JSON.parse(localStorage.getItem("players"));
+        players = JSON.parse(localStorage.getItem("players"));
       }
     }
 
-    console.log("onMount, stored players length: ", storedPlayers.length);
-    if (storedPlayers.length < 1) {
+    console.log("onMount, stored players length: ", players.length);
+    if (players.length < 1) {
       console.log("onMount called initializePlayers()");
       initializePlayers();
       // renderGameBoard(
@@ -100,13 +100,14 @@
       //   settings.gutter
       // );
       createDirectionArrays();
+      state.currentPlayer = players[0];
     } else {
       console.log("onMount called reloadPlayers()");
       reloadPlayers();
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    state.currentPlayer = players[0];
+
     setTimeout(() => {
       addStyles();
     }, 1);

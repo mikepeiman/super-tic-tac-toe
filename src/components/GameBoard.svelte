@@ -8,7 +8,9 @@
   export let players = [];
 
   $: gameboardMapped = [];
-  $: console.log(`GameBoard state: `, state);
+  $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  $: console.log(`GameBoard state reset: `, state.reset);
+  $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: lines = {
     leftToRight: [],
@@ -122,7 +124,8 @@
     players = players;
     localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
-    let id = state.currentPlayer.id;
+    // let id = state.currentPlayer.id;
+
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
@@ -362,7 +365,20 @@
     clearGameBoard();
     setTimeout(() => {
       buildGameBoard();
+      initializePlayers();
     }, 1);
+    state = {
+      lastTicked: "",
+      currentPlayer: players[0],
+      movesRemaining: 0,
+      turn: 0,
+      gameHistory: [],
+      turnHistory: [],
+      clickCount: 0,
+      moveNumber: 0,
+      reset: false
+    };
+    state.movesRemaining = settings.movesPerTurn;
   }
 
   function clearGameBoard() {
@@ -420,7 +436,7 @@
   }
 
   function tickThis(cell) {
-    console.log("tickThis(cell)", cell, state.currentPlayer);
+    // console.log("tickThis(cell)", cell, state.currentPlayer);
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -536,7 +552,10 @@
     // console.log(state.turnHistory);
   }
 
-  function setGameHistory(cell) {
+  function setGameHistory() {
+    if (localStorage.getItem("gameHistory")) {
+      state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
+    }
     state.gameHistory = [...state.gameHistory, state.turnHistory];
     state.turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.id}`);

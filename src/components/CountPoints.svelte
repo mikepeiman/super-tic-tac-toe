@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
   export let players;
   // export let gameboardMapped
@@ -59,7 +59,7 @@
     });
     players = players;
     localStorage.setItem(`players`, JSON.stringify(players));
-    dispatch('playersScored', players)
+    dispatch("playersScored", players);
   }
 
   function score(direction, player, idx) {
@@ -82,28 +82,24 @@
       let countInLoop = 0;
       let points = 0;
       line.forEach(move => {
-        console.log(`scoring ${move.id}`, move);
+        // console.log(`scoring ${move.id}`, move);
         let p = move.player;
-        console.log(`scoring p = move.player, `, p);
+        // console.log(`scoring p = move.player, `, p);
         p = getPlayerFromCellInGameboardMapped(move.id);
-        console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
-        // move.player = {
-        //   name: p.name,
-        //   id: p.id
-        // };
+        // console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
         if (p) {
           console.log(
             `there is a p = getPlayerFromCellInGameboardMapped(${move.id})`
           );
           if (p.name !== "none" && p.id === player.id) {
             countInLoop++;
-            console.log(`${move.id} count: ${countInLoop}`);
+            // console.log(`${move.id} count: ${countInLoop}`);
           }
           if (p.id !== player.id) {
-            console.log(`${move.id} !== player.id ${player.id}: ${countInLoop}`);
+            // console.log(`${move.id} !== player.id ${player.id}: ${countInLoop}`);
             if (countInLoop >= settings.cellsToScore) {
               points += countInLoop - (settings.cellsToScore - 1);
-              console.log(`${move.id} points: ${points}`);
+              // console.log(`${move.id} points: ${points}`);
             }
             countInLine += countInLoop;
             countInLoop = 0;
@@ -113,7 +109,7 @@
       if (countInLoop >= settings.cellsToScore) {
         points += countInLoop - (settings.cellsToScore - 1);
       }
-      console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
+      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
@@ -127,12 +123,26 @@
   }
 
   function getPlayerFromCellInGameboardMapped(id) {
+    let gbm = JSON.parse(localStorage.getItem("gameboardMapped"));
+    let gh = JSON.parse(localStorage.getItem("gameHistory"));
+    console.log(
+      `getPlayerFromCellInGameboardMapped :::::::::::::::::::::::: ${id}, `,
+      gbm,
+      gh
+    );
     let payload;
-    gameboardMapped.forEach(move => {
-      if (move.id == id) {
-        payload = move.player;
-      }
+    gh.forEach(turn => {
+      turn.forEach(move => {
+        if (move.id == id) {
+          payload = move.player;
+        }
+      });
     });
+    // gameboardMapped.forEach(move => {
+    //   if (move.id == id) {
+    //     payload = move.player;
+    //   }
+    // });
     return payload;
   }
 </script>
