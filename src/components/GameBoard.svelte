@@ -58,8 +58,6 @@
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
     playMove(getCellById(e.detail));
-    // let cell = document.getElementById(e.detail)
-    // console.log(cell)
     dispatch("move", e.detail);
   }
 
@@ -68,9 +66,19 @@
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
     console.log(gameboardMapped, settings, state, players);
     buildGrid();
-    createDirectionArrays();
-    console.log("createDirectionArrays completed, lines, ", lines);
-    localStorage.setItem("lines", JSON.stringify(lines));
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    console.log(
+      `gameInProgress as boolean: `,
+      gameInProgress,
+      gameInProgress == "true"
+    );
+    if (gameInProgress) {
+      console.log("GameBoard onMount says that game is in progress");
+    } else {
+      createDirectionArrays();
+      console.log("createDirectionArrays completed, lines, ", lines);
+      localStorage.setItem("lines", JSON.stringify(lines));
+    }
   });
 
   function initializePlayers() {
@@ -97,9 +105,69 @@
     }
     players = players;
     localStorage.setItem("players", JSON.stringify(players));
+    localStorage.setItem("gameInProgress", true);
     let playerIndicator = document.querySelector(".player-indicator");
     let id = state.currentPlayer.id;
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
+  }
+
+  function renderGameBoardReload() {
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    let gameboard = document.getElementById("gameboard-board");
+
+    while (gameboard.firstChild) {
+      gameboard.removeChild(gameboard.firstChild);
+    }
+    renderGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
+    let history = gameHistory;
+    let players = scoredPlayers;
+    let amount, number;
+    let len = history.length;
+
+    const delay = (amount = number) => {
+      return new Promise(resolve => {
+        setTimeout(resolve, amount);
+      });
+    };
+    async function loop(history) {
+      for (let i = 0; i < len; i++) {
+        let turn = history[i];
+        // console.log(`building reload function, this turn is: `, turn);
+        for (let j = 0; j < settings.movesPerTurn; j++) {
+          let move = turn[j];
+          let p = move.player.id;
+          // console.log(`building reload function, this move is: `, move);
+          // console.log(`building reload function, this player is: `, p);
+          let cell = document.getElementById(move.id);
+          cell.style = `--custom-bg: ${players[p].bgColor}`;
+          cell.style.margin = settings.gutter + "px";
+          cell.style.width = settings.size + "px";
+          cell.style.height = settings.size + "px";
+          cell.setAttribute("data-marker", "O");
+          cell.setAttribute("data-ticked", true);
+          cell.classList.add("locked", "ticked");
+          cell.setAttribute("locked", true);
+          cell.style.border = "1px solid rgba(0,0,0,0.5)";
+          await delay(5);
+        }
+      }
+    }
+
+    if (localStorage.getItem("gameHistory")) {
+      history = JSON.parse(localStorage.getItem("gameHistory"));
+      // players = JSON.parse(localStorage.getItem("scoredPlayers"));
+      loop(history);
+    }
+
+    // localStorage.setItem("reloadedGameboard", []);
+
+    scoredPlayers = players;
+    console.log(`history length: ${len}, scoredPlayers`, scoredPlayers);
   }
 
   function createDirectionArrays() {
@@ -190,7 +258,7 @@
 
   function makeLineFrom(start, pattern) {
     let line = [];
-    let nextLine = nextSquareFrom(
+    let nextLine = nextCellFrom(
       start.row,
       start.column,
       pattern.row,
@@ -200,7 +268,7 @@
     return nextLine;
   }
 
-  function nextSquareFrom(row, column, rowChange, columnChange, line) {
+  function nextCellFrom(row, column, rowChange, columnChange, line) {
     let id = `R${row}C${column}`;
     line = [
       ...line,
@@ -213,7 +281,7 @@
     ];
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
-    let nextSquare = {
+    let nextCell = {
       row: nextRow,
       column: nextColumn,
       player: { id: null, name: "none" }
@@ -226,14 +294,8 @@
       return line;
     }
 
-    nextSquare = nextSquareFrom(
-      nextRow,
-      nextColumn,
-      rowChange,
-      columnChange,
-      line
-    );
-    return nextSquare;
+    nextCell = nextCellFrom(nextRow, nextColumn, rowChange, columnChange, line);
+    return nextCell;
   }
 
   function getMoveFromHistory(id) {
@@ -251,18 +313,7 @@
 
   function getCellById(id) {
     let cell = document.getElementById(id);
-    // console.log(`getCellById called with ${id}`, cell)
     return cell;
-  }
-
-  function getPlayerFromCell(id) {
-    let payload;
-    gameboardMapped.forEach(move => {
-      if (move.id == id) {
-        payload = move.player;
-      }
-    });
-    return payload;
   }
 
   function buildGrid() {
@@ -274,8 +325,16 @@
         grid[r].push(id);
       }
     }
-    console.log(grid);
+    console.log(`GameBoard => buildGrid completed`);
     grid = grid;
+    let history = JSON.parse(localStorage.getItem("gameHistory"));
+    console.log(`GameBoard => buildGrid, gameHistory::: `, history);
+    if (history.length > 0) {
+      console.log(
+        `GameBoard => buildGrid, gameHistory.length > 0 `,
+        history.length
+      );
+    }
   }
 
   function playMove(cell) {
@@ -352,11 +411,11 @@
     state.movesRemaining++;
   }
 
-  function setPlayerMove(squareId) {
+  function setPlayerMove(cellId) {
     if (gameboardMapped.length > 0) {
       gameboardMapped.forEach(move => {
-        if (move.id == squareId) {
-          console.log(`if(move.id == squareId) ${squareId}`);
+        if (move.id == cellId) {
+          console.log(`if(move.id == cellId) ${cellId}`);
           move.player = {
             id: state.currentPlayer.id,
             name: state.currentPlayer.name
@@ -366,14 +425,13 @@
       });
     }
 
-
     localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
-  function removePlayerMove(squareId) {
+  function removePlayerMove(cellId) {
     gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
+      if (move.id == cellId) {
+        console.log(`if(move.id == cellId) ${cellId}`);
         move.player = {
           id: null,
           name: null
@@ -433,8 +491,8 @@
       //   `apparently we have not made this move yet, let's add it to state.turnHistory`
       // );
       state.turnHistory = [...state.turnHistory, move];
-      gameboardMapped = [...gameboardMapped, move]
-      localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
+      gameboardMapped = [...gameboardMapped, move];
+      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     }
     // console.log(state.turnHistory);
   }

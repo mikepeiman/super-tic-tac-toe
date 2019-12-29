@@ -182,7 +182,7 @@
       });
     }
     players = players;
-    localStorage.setItem("players", JSON.stringify(players));
+    // localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
     let id = state.currentPlayer.id;
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
@@ -218,7 +218,7 @@
     });
     players = players;
 
-    localStorage.setItem("players", JSON.stringify(players));
+    // localStorage.setItem("players", JSON.stringify(players));
   }
 
   function getMoveFromHistory(id) {
@@ -286,7 +286,7 @@
       });
     });
     players = players;
-    localStorage.setItem(`players`, JSON.stringify(players));
+    // localStorage.setItem(`players`, JSON.stringify(players));
   }
 
   function score(direction, player, idx) {

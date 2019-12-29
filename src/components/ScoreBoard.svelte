@@ -8,28 +8,19 @@
     console.log(players);
   });
 
-  function test() {
-    console.log(`ScoreBoard component, clicked to test players: `, players);
-  }
 
   function playersScored(e) {
     console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail)
     players = e.detail
   }
 
-  function countPoints() {
-    console.log(
-      `ScoreBoard component, clicked to countPoints, players: `,
-      players
-    );
-  }
 </script>
 
 <style lang="scss">
 
 </style>
 
-<div class="scoreboard-container" on:click={test}>
+<div class="scoreboard-container">
   <div class="scoreboard-controls">
     <CountPoints {players} {gameboardMapped} on:playersScored={playersScored} />
   </div>
