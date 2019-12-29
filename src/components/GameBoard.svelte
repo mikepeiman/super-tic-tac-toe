@@ -65,16 +65,28 @@
     console.log(`GameBoard component mounted`);
     console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
     console.log(gameboardMapped, settings, state, players);
-    buildGrid();
+    buildGameBoard();
     let gameInProgress = localStorage.getItem("gameInProgress");
     console.log(
       `gameInProgress as boolean: `,
       gameInProgress,
       gameInProgress == "true"
     );
-    if (gameInProgress) {
+    if (gameInProgress == "true") {
+      console.log(`gameHistory::: `, state.gameHistory);
+      let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
+      state.gameHistory = [...lsHistory, state.gameHistory];
+      console.log(`gameHistory::: `, state.gameHistory);
+      localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
       console.log("GameBoard onMount says that game is in progress");
+      // redrawGameHistory();
+      setTimeout(() => {
+        renderGameBoardReload(150);
+      }, 50);
     } else {
+      console.log(
+        "GameBoard onMount says that game is ***:::NOT:::*** in progress"
+      );
       createDirectionArrays();
       console.log("createDirectionArrays completed, lines, ", lines);
       localStorage.setItem("lines", JSON.stringify(lines));
@@ -105,36 +117,46 @@
     }
     players = players;
     localStorage.setItem("players", JSON.stringify(players));
-    localStorage.setItem("gameInProgress", true);
     let playerIndicator = document.querySelector(".player-indicator");
     let id = state.currentPlayer.id;
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
-  function renderGameBoardReload() {
+  function renderGameBoardReload(delayMS) {
+    console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
     let settings = JSON.parse(localStorage.getItem("settings"));
+    let players = JSON.parse(localStorage.getItem("players"));
+    let history = JSON.parse(localStorage.getItem("gameHistory"));
+    console.log(`renderGameBoardReload => LS gameHistory::: `, history);
+    // let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
+    if(state.gameHistory.length > 0) {
+      console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
+        state.gameHistory = [...history, state.gameHistory];
+    }
+
+    console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
+    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
     let gameboard = document.getElementById("gameboard-board");
+    let amount, number;
+    let len = history.length;
 
     while (gameboard.firstChild) {
+      console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
-    renderGameBoard(
+    buildGameBoard(
       settings.rows,
       settings.columns,
       settings.size,
       settings.gutter
     );
-    let history = gameHistory;
-    let players = scoredPlayers;
-    let amount, number;
-    let len = history.length;
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
       });
     };
-    async function loop(history) {
+    async function loop(history, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = history[i];
         // console.log(`building reload function, this turn is: `, turn);
@@ -153,21 +175,16 @@
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);
           cell.style.border = "1px solid rgba(0,0,0,0.5)";
-          await delay(5);
+          await delay(delayMS);
         }
       }
     }
-
-    if (localStorage.getItem("gameHistory")) {
-      history = JSON.parse(localStorage.getItem("gameHistory"));
-      // players = JSON.parse(localStorage.getItem("scoredPlayers"));
-      loop(history);
-    }
-
-    // localStorage.setItem("reloadedGameboard", []);
-
-    scoredPlayers = players;
-    console.log(`history length: ${len}, scoredPlayers`, scoredPlayers);
+    loop(history, delayMS);
+    players = players;
+    console.log(
+      `renderGameBoardReload:::   history length: ${len}, players`,
+      players
+    );
   }
 
   function createDirectionArrays() {
@@ -316,7 +333,7 @@
     return cell;
   }
 
-  function buildGrid() {
+  function buildGameBoard() {
     grid = [];
     for (let r = 0; r < settings.rows; r++) {
       grid.push([]);
@@ -325,15 +342,26 @@
         grid[r].push(id);
       }
     }
-    console.log(`GameBoard => buildGrid completed`);
+    console.log(`GameBoard => buildGameBoard completed`);
     grid = grid;
+  }
+
+  function redrawGameHistory() {
+    console.log(`redrawGameHisotry called`);
     let history = JSON.parse(localStorage.getItem("gameHistory"));
-    console.log(`GameBoard => buildGrid, gameHistory::: `, history);
+    console.log(`GameBoard => buildGameBoard, gameHistory::: `, history);
     if (history.length > 0) {
       console.log(
-        `GameBoard => buildGrid, gameHistory.length > 0 `,
+        `GameBoard => buildGameBoard, gameHistory.length > 0 `,
         history.length
       );
+      history.forEach(turn => {
+        console.log(`turn: `, turn);
+        turn.forEach(move => {
+          let cell = getCellById(move.id);
+          console.log(`got cell ${move.id} from gameHistory: `, move, cell);
+        });
+      });
     }
   }
 
@@ -510,6 +538,7 @@
     });
     state.turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
+    localStorage.setItem("gameInProgress", true);
   }
 </script>
 
