@@ -69,8 +69,8 @@
     console.log(gameboardMapped, settings, state, players);
     buildGrid();
     createDirectionArrays();
-    console.log('createDirectionArrays completed, lines, ', lines)
-    localStorage.setItem('lines', JSON.stringify(lines))  
+    console.log("createDirectionArrays completed, lines, ", lines);
+    localStorage.setItem("lines", JSON.stringify(lines));
   });
 
   function initializePlayers() {
@@ -103,18 +103,17 @@
   }
 
   function createDirectionArrays() {
-    console.log('createDirectionArrays called')
+    console.log("createDirectionArrays called");
     for (let i = 1; i <= 4; i++) {
-      console.log(`makeLinesFrom ${i}`)
+      console.log(`makeLinesFrom ${i}`);
       makeLinesFrom(i);
     }
     initializePlayers();
-    
   }
 
   function makeLinesFrom(dir) {
-    let rows = settings.rows
-    let columns = settings.columns
+    let rows = settings.rows;
+    let columns = settings.columns;
     // console.log('makeLinesFrom called')
     let start,
       pattern = {};
@@ -135,7 +134,6 @@
     }
 
     if (dir == 2) {
-
       start = { row: 0, column: 0 };
       pattern = { row: +1, column: 0 };
 
@@ -203,7 +201,7 @@
   }
 
   function nextSquareFrom(row, column, rowChange, columnChange, line) {
-    let id = `R${row}C${column}`
+    let id = `R${row}C${column}`;
     line = [
       ...line,
       {
@@ -343,32 +341,32 @@
   }
 
   function untickThis(cell) {
-    let id = cell.id
+    let id = cell.id;
     console.log(`------------untickThis(cell)`);
     cell.classList.remove("ticked");
-    cell.style = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`;
+    cell.style = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, ${id[1] /
+      10})`;
     cell.dataset.ticked = false;
     cell.removeAttribute("player-id");
     cell.removeAttribute("player-name");
-    // removeFromScoringArray(cell)
     state.movesRemaining++;
   }
 
   function setPlayerMove(squareId) {
-    // console.log(
-    //   `setPlayerMove(${squareId}) - currentPlayer.id ${state.currentPlayer.id}`
-    // );
-    gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
-        move.player = {
-          id: state.currentPlayer.id,
-          name: state.currentPlayer.name
-        };
-        move.move = state.moveNumber;
-      }
-    });
-    // players
+    if (gameboardMapped.length > 0) {
+      gameboardMapped.forEach(move => {
+        if (move.id == squareId) {
+          console.log(`if(move.id == squareId) ${squareId}`);
+          move.player = {
+            id: state.currentPlayer.id,
+            name: state.currentPlayer.name
+          };
+          move.move = state.moveNumber;
+        }
+      });
+    }
+
+
     localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
   }
 
@@ -435,6 +433,8 @@
       //   `apparently we have not made this move yet, let's add it to state.turnHistory`
       // );
       state.turnHistory = [...state.turnHistory, move];
+      gameboardMapped = [...gameboardMapped, move]
+      localStorage.setItem('gameboardMapped', JSON.stringify(gameboardMapped))
     }
     // console.log(state.turnHistory);
   }
@@ -451,10 +451,7 @@
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
     state.turnHistory = [];
-    localStorage.setItem(
-      "gameHistory",
-      JSON.stringify(state.gameHistory)
-    );
+    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
   }
 </script>
 

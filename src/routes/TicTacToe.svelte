@@ -10,8 +10,8 @@
     movesPerTurn: 5,
     cellsToScore: 3,
     bonusForCompleteRow: 5,
-    rows: 10,
-    columns: 10,
+    rows: 5,
+    columns: 5,
     size: 24,
     gutter: 0
   };
@@ -339,38 +339,6 @@
       player
     );
     return dirScore;
-  }
-
-  function setPlayerMove(squareId) {
-    console.log(
-      `setPlayerMove(${squareId}) - state.currentPlayer.id ${state.currentPlayer.id}`
-    );
-    gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
-        move.player = {
-          id: state.currentPlayer.id,
-          name: state.currentPlayer.name
-        };
-        move.move = state.moveNumber;
-      }
-    });
-    // players
-    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-  }
-
-  function removePlayerMove(squareId) {
-    gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
-        move.player = {
-          id: null,
-          name: null
-        };
-        move.move = null;
-      }
-      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-    });
   }
 
   function getPlayerFromCellInGameboardMapped(id) {
@@ -886,11 +854,11 @@
     <p>waiting for the promise to resolve...</p>
   {:then players}
     <!-- promise was fulfilled -->
-    <ScoreBoard {players} />
+    <ScoreBoard {players} {settings} {gameboardMapped} />
   {:catch error}
     <!-- promise was rejected -->
     <p>Something went wrong: {error.message}</p>
-    <ScoreBoard {players} />
+    <ScoreBoard {players} {settings} {gameboardMapped} />
   {/await}
   <div class="gameboard-container">
     <StatusBar {state} {players} />

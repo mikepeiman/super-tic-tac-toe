@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
-  import CountPoints from './CountPoints.svelte';
-  export let players;
+  import CountPoints from "./CountPoints.svelte";
+  export let players, gameboardMapped;
 
   onMount(() => {
     console.log(`ScoreBoard onMount(), players`);
@@ -12,11 +12,17 @@
     console.log(`ScoreBoard component, clicked to test players: `, players);
   }
 
-    function countPoints() {
-    console.log(`ScoreBoard component, clicked to countPoints, players: `, players);
+  function playersScored(e) {
+    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail)
+    players = e.detail
   }
 
-
+  function countPoints() {
+    console.log(
+      `ScoreBoard component, clicked to countPoints, players: `,
+      players
+    );
+  }
 </script>
 
 <style lang="scss">
@@ -25,7 +31,7 @@
 
 <div class="scoreboard-container" on:click={test}>
   <div class="scoreboard-controls">
-    <CountPoints {players} />
+    <CountPoints {players} {gameboardMapped} on:playersScored={playersScored} />
   </div>
   {#each players as player}
     <div class="scoreboard-totals">
