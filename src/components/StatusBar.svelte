@@ -3,7 +3,7 @@
   export let state, players;
   const dispatch = createEventDispatcher();
 
-  // $: state = {}
+  $: state
 
   onMount(() => {
     console.log(`StatusBar onMount(), state`, state);
