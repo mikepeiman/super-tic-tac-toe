@@ -104,6 +104,7 @@
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     state.reset = true;
     initializePlayers();
+    location.reload()
     setTimeout(() => {
       state.reset = false;
     }, 10);
