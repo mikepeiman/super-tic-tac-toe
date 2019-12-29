@@ -120,8 +120,8 @@
   }
 
   function setGameSettings() {
-    localStorage.setItem("gameSettings", {});
-    localStorage.setItem("gameSettings", JSON.stringify(settings));
+    localStorage.setItem("settings", {});
+    localStorage.setItem("settings", JSON.stringify(settings));
   }
 
   function saveGame() {
@@ -137,7 +137,7 @@
 
   function loadGame() {
     let saved = JSON.parse(localStorage.getItem("gameHistory"));
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let settings = JSON.parse(localStorage.getItem("settings"));
     let ps = JSON.parse(localStorage.getItem("players"));
     console.log(
       `check for saved game: gameHistory, players, settings: `,
@@ -157,27 +157,6 @@
     scoreHeadings.forEach((h, i) => {
       h.style = `--custom-bg: ${players[i].bgColor}`;
     });
-  }
-
-  function reset() {
-    localStorage.setItem("gameboard", []);
-    localStorage.setItem("gameHistory", []);
-    localStorage.setItem("gameboardMapped", []);
-    localStorage.setItem("diagonalDownLeft", []);
-    localStorage.setItem("diagonalDownRight", []);
-    localStorage.setItem("topToBottom", []);
-    localStorage.setItem("leftToRight", []);
-    localStorage.setItem("players", []);
-    settings.columns = document.getElementById("columns").value;
-    settings.rows = document.getElementById("rows").value;
-    settings.size = document.getElementById("size").value;
-    settings.gutter = document.getElementById("gutter").value;
-    renderGameBoard(
-      settings.rows,
-      settings.columns,
-      settings.size,
-      settings.gutter
-    );
   }
 
   function initializePlayers() {
@@ -211,6 +190,7 @@
 
   function reloadPlayers() {
     players = JSON.parse(localStorage.getItem("players"));
+    console.log(`reloadPlayers, from LS: `, players)
     state.currentPlayer = players[0];
 
     players.forEach(player => {
@@ -219,16 +199,16 @@
           line.forEach(move => {
             let player = getMoveFromHistory(move.id);
             move.player = player;
-            console.log(
-              "reloadPlayers loop, each getMoveFromHistory player: ",
-              player
-            );
-            console.log("reloadPlayers loop, each move's player: ", move);
+            // console.log(
+            //   "reloadPlayers loop, each getMoveFromHistory player: ",
+            //   player
+            // );
+            // console.log("reloadPlayers loop, each move's player: ", move);
             move = move;
-            console.log(
-              "reloadPlayers loop, each move's player: ",
-              move.player
-            );
+            // console.log(
+            //   "reloadPlayers loop, each move's player: ",
+            //   move.player
+            // );
           });
           line = line;
         });
@@ -329,8 +309,8 @@
         console.log(`scoring ${move.id}`, move);
         let p = move.player;
         console.log(`scoring p = move.player, `, p);
-        p = getPlayerFromCell(move.id);
-        console.log(`scoring p = getPlayerFromCell, `, p);
+        p = getPlayerFromCellInGameboardMapped(move.id);
+        console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
         // move.player = {
         //   name: p.name,
         //   id: p.id
@@ -393,7 +373,7 @@
     });
   }
 
-  function getPlayerFromCell(id) {
+  function getPlayerFromCellInGameboardMapped(id) {
     let payload;
     gameboardMapped.forEach(move => {
       if (move.id == id) {
@@ -531,7 +511,7 @@
   }
 
   function renderGameBoardReload() {
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let settings = JSON.parse(localStorage.getItem("settings"));
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {

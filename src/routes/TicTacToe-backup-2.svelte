@@ -106,8 +106,8 @@
   });
 
   function setGameSettings() {
-    localStorage.setItem("gameSettings", {});
-    localStorage.setItem("gameSettings", JSON.stringify(settings));
+    localStorage.setItem("settings", {});
+    localStorage.setItem("settings", JSON.stringify(settings));
   }
 
   function saveGame() {
@@ -123,7 +123,7 @@
 
   function loadGame() {
     let saved = JSON.parse(localStorage.getItem("gameHistory"));
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let settings = JSON.parse(localStorage.getItem("settings"));
     let ps = JSON.parse(localStorage.getItem("players"));
     console.log(`check for saved game: gameHistory, players, settings: `, saved, ps, settings);
     renderGameBoardReload();
@@ -506,7 +506,7 @@
   }
 
   function renderGameBoardReload() {
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let settings = JSON.parse(localStorage.getItem("settings"));
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {

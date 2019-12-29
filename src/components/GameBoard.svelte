@@ -14,18 +14,40 @@
     diagonalDownLeft: [],
     diagonalDownRight: []
   };
-
-  // $: settings = {
-  //   numberOfPlayers: 3,
-  //   movesPerTurn: 5,
-  //   cellsToScore: 3,
-  //   bonusForCompleteRow: 5,
-  //   rows: 5,
-  //   columns: 10,
-  //   size: 24,
-  //   gutter: 0
-  // };
-
+  $: scoreDirections = [
+    {
+      id: 1,
+      name: "leftToRight",
+      lines: lines.leftToRight,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-horizontal.png"
+    },
+    {
+      id: 2,
+      name: "topToBottom",
+      lines: lines.topToBottom,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-vertical.png"
+    },
+    {
+      id: 3,
+      name: "diagonalDownLeft",
+      lines: lines.diagonalDownLeft,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-diagonal-down-left.png"
+    },
+    {
+      id: 4,
+      name: "diagonalDownRight",
+      lines: lines.diagonalDownRight,
+      scoringLines: [],
+      dirScore: 0,
+      iconSrc: "tictactoe-diagonal-down-right.png"
+    }
+  ];
   $: cellStyles = [];
   $: cellClasses = [];
   $: grid = [];
@@ -51,27 +73,56 @@
     localStorage.setItem('lines', JSON.stringify(lines))  
   });
 
+  function initializePlayers() {
+    players = [];
+    for (let i = 0; i < settings.numberOfPlayers; i++) {
+      players = [
+        ...players,
+        {
+          id: i,
+          name: `Player ${i + 1}`,
+          totalScore: 0,
+          bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
+            30}, 50%, 50%, .75)`,
+          moves: 0,
+          scores: [],
+          dirScoresByIndex: [0, 0, 0, 0]
+        }
+      ];
+
+      scoreDirections.forEach((direction, index) => {
+        players[i]["scores"].push(direction);
+        players[i]["scores"][index]["lines"] = lines[direction.name];
+      });
+    }
+    players = players;
+    localStorage.setItem("players", JSON.stringify(players));
+    let playerIndicator = document.querySelector(".player-indicator");
+    let id = state.currentPlayer.id;
+    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
+  }
+
   function createDirectionArrays() {
     console.log('createDirectionArrays called')
     for (let i = 1; i <= 4; i++) {
       console.log(`makeLinesFrom ${i}`)
       makeLinesFrom(i);
     }
-    // initializePlayers();
+    initializePlayers();
     
   }
 
   function makeLinesFrom(dir) {
     let rows = settings.rows
     let columns = settings.columns
-    console.log('makeLinesFrom called')
+    // console.log('makeLinesFrom called')
     let start,
       pattern = {};
     let theseLines = [],
       newLine = [];
 
     if (dir == 1) {
-      console.log('makeLinesFrom dir == 1')
+      // console.log('makeLinesFrom dir == 1')
       start = { row: 0, column: 0 };
       pattern = { row: 0, column: +1 };
 
@@ -84,7 +135,7 @@
     }
 
     if (dir == 2) {
-      console.log('makeLinesFrom dir == 2')
+
       start = { row: 0, column: 0 };
       pattern = { row: +1, column: 0 };
 
@@ -162,8 +213,6 @@
         player: { id: null, name: "none" }
       }
     ];
-    let cell = getCellById(id)
-    console.log(`nextSquareFrom row ${row} column ${column}, ${id}, `, cell)
     let nextRow = row + rowChange;
     let nextColumn = column + columnChange;
     let nextSquare = {
@@ -204,6 +253,7 @@
 
   function getCellById(id) {
     let cell = document.getElementById(id);
+    // console.log(`getCellById called with ${id}`, cell)
     return cell;
   }
 
@@ -220,11 +270,8 @@
   function buildGrid() {
     grid = [];
     for (let r = 0; r < settings.rows; r++) {
-      // console.log(`buildGrid loops cols: ${r}`);
       grid.push([]);
       for (let c = 0; c < settings.columns; c++) {
-        // console.log(`grid[r]: ${grid[r]}`);
-        // console.log(`buildGrid loops cols: ${c}`);
         let id = `R${r}C${c}`;
         grid[r].push(id);
       }
