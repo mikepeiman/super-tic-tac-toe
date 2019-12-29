@@ -1,12 +1,19 @@
 <script>
   import { onMount } from "svelte";
   import CountPoints from "./CountPoints.svelte";
-  export let players, gameboardMapped;
+  export let players, state, gameboardMapped;
+
+
+  $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
     console.log(`ScoreBoard onMount(), players`);
     console.log(players);
   });
+
+  function resetPlayers() {
+    console.log(`ScoreBoard => resetPlayers due to state.reset from StatusBar => TicTacToe => ScoreBoard`)
+  }
 
 
   function playersScored(e) {

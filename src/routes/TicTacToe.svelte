@@ -116,6 +116,12 @@
     console.log(gameboardMapped, players);
   });
 
+
+  function resetNotification() {
+    console.log(`TicTacToe => reset bubbled from StatusBar`);
+    state.reset = true;
+  }
+
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
   }
@@ -241,10 +247,6 @@
     // localStorage.setItem("gameHistory", []);
   }
 
-  function resetClicked() {
-    console.log(`TicTacToe => reset bubbled from StatusBar`);
-    state.reset = true;
-  }
 
   function updateGameSettings() {
     state.movesRemaining = settings.movesPerTurn;
@@ -859,14 +861,14 @@
     <p>waiting for the promise to resolve...</p>
   {:then players}
     <!-- promise was fulfilled -->
-    <ScoreBoard {players} {settings} {gameboardMapped} />
+    <ScoreBoard {players} {state} />
   {:catch error}
     <!-- promise was rejected -->
     <p>Something went wrong: {error.message}</p>
-    <ScoreBoard {players} {settings} {gameboardMapped} />
+    <ScoreBoard {players} {state} {gameboardMapped} />
   {/await}
   <div class="gameboard-container">
-    <StatusBar {state} {players} on:reset={resetClicked} />
+    <StatusBar {state} {players} on:reset={resetNotification} />
     <MainMenu {settings} {players} />
     {#await players}
       <!-- promise is pending -->
