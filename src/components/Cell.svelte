@@ -1,21 +1,23 @@
 <script>
-import {onMount, createEventDispatcher} from 'svelte'
-// import { createEventDispatcher } from 'svelte';
-export let id, settings
+  import { onMount, createEventDispatcher } from "svelte";
+  // import { createEventDispatcher } from 'svelte';
+  export let id, row, column, player, ticked, cellClasses, cellStyles, customBg;
 
-const dispatch = createEventDispatcher();
-onMount(() => {
-  let hue = id[3]
-  let alpha = id[1]
-  console.log(`Cell component onMount, settings: `, settings)
-  customBg = `--custom-bg: hsla(${id[3]*20+120}, 50%, 50%, ${id[1]/10})`
-  // console.log(`Cell => onMount, this: `, this)
-})
+  const dispatch = createEventDispatcher();
+  onMount(() => {
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    let rowFactor = 60 / settings.rows
+    let colFactor = settings.columns / 100
+    let hue =  rowFactor  * row + 210;
+    let alpha = parseFloat((column + 1) / 200 / colFactor).toFixed(2);
+    // console.log(`Cell ${id} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
+    // customBg = `--custom-bg: hsla(${row * 20 + 120}, 50%, 50%, ${id[1] / 10})`;
+    customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha})`;
+  });
 
-function moveNotification() {
-  dispatch('move',id)
-}
-
+  function moveNotification() {
+    dispatch("move", id);
+  }
 </script>
 
 <style lang="scss">
@@ -61,7 +63,9 @@ function moveNotification() {
 
 <div
   class="game-square"
-  id={id}
+  row={row}
+  column={column}
+  {id}
   on:click={moveNotification}
   data-ticked={ticked}
   data-marker="X"

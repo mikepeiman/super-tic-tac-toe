@@ -27,6 +27,7 @@
 
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
+    localStorage.setItem('settings', JSON.stringify(settings))
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(
       `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `

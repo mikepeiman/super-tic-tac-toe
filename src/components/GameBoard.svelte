@@ -366,10 +366,16 @@
       grid.push([]);
       for (let c = 0; c < columns; c++) {
         let id = `R${r}C${c}`;
-        grid[r].push(id);
+        let cellAttributes = {
+          id: id,
+          row: r,
+          column: c
+        }
+        grid[r].push(cellAttributes);
+        // grid[r].push()
       }
     }
-    console.log(`GameBoard => buildGameBoard completed`);
+    console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
     grid = grid;
   }
 
@@ -620,7 +626,7 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell} settings={settings} on:move={moveNotification} />
+        <Cell id={cell.id} row={cell.row} column={cell.column} on:move={moveNotification} />
       {/each}
     </div>
   {/each}
