@@ -77,13 +77,8 @@
       gameInProgress == "true"
     );
     if (gameInProgress == "true") {
-      console.log(`gameHistory::: `, state.gameHistory);
-      // let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
       state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
-      console.log(`gameHistory::: `, state.gameHistory);
-      // localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
       console.log("GameBoard onMount says that game is in progress");
-      // redrawGameHistory();
       let redrawInterval = 1000 / (settings.rows * settings.columns);
       console.log(`onMount, redrawInterval ${redrawInterval}`);
       setTimeout(() => {

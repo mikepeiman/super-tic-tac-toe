@@ -82,28 +82,37 @@
       let countInLoop = 0;
       let points = 0;
       line.forEach(move => {
-        // console.log(`scoring ${move.id}`, move);
+        console.log(`scoring ${move.id}`, move);
         let p = move.player;
-        // console.log(`scoring p = move.player, `, p);
+        console.log(`scoring p = move.player, `, p);
         p = getPlayerFromCellInGameboardMapped(move.id);
-        // console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
+        console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
         if (p) {
           console.log(
             `there is a p = getPlayerFromCellInGameboardMapped(${move.id})`
           );
           if (p.name !== "none" && p.id === player.id) {
             countInLoop++;
-            // console.log(`${move.id} count: ${countInLoop}`);
+            console.log(`${move.id} count: ${countInLoop}`);
           }
           if (p.id !== player.id) {
-            // console.log(`${move.id} !== player.id ${player.id}: ${countInLoop}`);
+            console.log(
+              `${move.id} !== player.id ${player.id}: ${countInLoop}`
+            );
             if (countInLoop >= settings.cellsToScore) {
               points += countInLoop - (settings.cellsToScore - 1);
-              // console.log(`${move.id} points: ${points}`);
+              console.log(`${move.id} points: ${points}`);
             }
             countInLine += countInLoop;
             countInLoop = 0;
           }
+        } else {
+          if (countInLoop >= settings.cellsToScore) {
+            points += countInLoop - (settings.cellsToScore - 1);
+            console.log(`Was undefined, but we scored points: ${move.id} points: ${points}`);
+          }
+          countInLine += countInLoop;
+          countInLoop = 0;
         }
       });
       if (countInLoop >= settings.cellsToScore) {
@@ -125,11 +134,11 @@
   function getPlayerFromCellInGameboardMapped(id) {
     let gbm = JSON.parse(localStorage.getItem("gameboardMapped"));
     let gh = JSON.parse(localStorage.getItem("gameHistory"));
-    console.log(
-      `getPlayerFromCellInGameboardMapped :::::::::::::::::::::::: ${id}, `,
-      gbm,
-      gh
-    );
+    // console.log(
+    //   `getPlayerFromCellInGameboardMapped :::::::::::::::::::::::: ${id}, `,
+    //   gbm,
+    //   gh
+    // );
     let payload;
     gh.forEach(turn => {
       turn.forEach(move => {

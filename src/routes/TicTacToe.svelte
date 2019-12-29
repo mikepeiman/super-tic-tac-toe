@@ -17,22 +17,16 @@
   };
 
   $: state = {
-    lastTicked: "",
-    currentPlayer: {
-      id: 0,
-      name: "Mike",
-      bgColor: "",
-      marker: "M"
-    },
-    movesRemaining: 0,
-    turn: 0,
-    gameHistory: [],
-    turnHistory: [],
-    clickCount: 0,
-    moveNumber: 0,
-    reset: false
-  };
-
+        lastTicked: "",
+        currentPlayer: {},
+        movesRemaining: 0,
+        turn: 0,
+        gameHistory: [],
+        turnHistory: [],
+        clickCount: 0,
+        moveNumber: 0,
+        reset: false
+      };
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: players = [];
@@ -79,32 +73,37 @@
   $: scores = [];
 
   onMount(() => {
-    let gameboardMapped = ["test", "two", "three"];
-    console.log(`TicTacToe.svelte onMount`);
+        console.log(`TicTacToe.svelte onMount`);
 
-    let storedPlayers = [];
-    if (localStorage.getItem("players")) {
-      if (localStorage.getItem("players").length > 0) {
-        players = JSON.parse(localStorage.getItem("players"));
-      }
-    }
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    if (gameInProgress == "true") {
+      players = JSON.parse(localStorage.getItem("players"));
+      state = JSON.parse(localStorage.getItem("state"));
+      console.log("TicTacToe => onMount calling reloadPlayers(). Current players, state: ", players, state);
 
-    console.log("onMount, stored players length: ", players.length);
-    if (players.length < 1) {
-      console.log("onMount called initializePlayers()");
-      initializePlayers();
-      // renderGameBoard(
-      //   settings.rows,
-      //   settings.columns,
-      //   settings.size,
-      //   settings.gutter
-      // );
-      createDirectionArrays();
-      state.currentPlayer = players[0];
     } else {
-      console.log("onMount called reloadPlayers()");
       reloadPlayers();
+      state.currentPlayer = players[0];
+      localStorage.setItem('state', JSON.stringify(state))
     }
+
+    // let gameboardMapped = ["test", "two", "three"];
+
+
+    // let storedPlayers = [];
+    // if (localStorage.getItem("players")) {
+    //   if (localStorage.getItem("players").length > 0) {
+    //     players = JSON.parse(localStorage.getItem("players"));
+    //   }
+    // }
+
+    // console.log("onMount, stored players length: ", players.length);
+    // if (players.length < 1) {
+    //   state.currentPlayer = players[0];
+    // } else {
+    //   console.log("onMount called reloadPlayers()");
+    //   reloadPlayers();
+    // }
 
     state.movesRemaining = settings.movesPerTurn;
 
@@ -192,7 +191,7 @@
 
   function reloadPlayers() {
     players = JSON.parse(localStorage.getItem("players"));
-    console.log(`reloadPlayers, from LS: `, players)
+    console.log(`reloadPlayers, from LS: `, players);
     state.currentPlayer = players[0];
 
     players.forEach(player => {
@@ -242,10 +241,10 @@
     // localStorage.setItem("gameHistory", []);
   }
 
-function resetClicked() {
-  console.log(`TicTacToe => reset bubbled from StatusBar`)
-  state.reset = true
-}
+  function resetClicked() {
+    console.log(`TicTacToe => reset bubbled from StatusBar`);
+    state.reset = true;
+  }
 
   function updateGameSettings() {
     state.movesRemaining = settings.movesPerTurn;
@@ -851,7 +850,6 @@ function resetClicked() {
     padding: 0.25rem;
   }
 </style>
-
 
 <h1>Tic Tac Toe</h1>
 

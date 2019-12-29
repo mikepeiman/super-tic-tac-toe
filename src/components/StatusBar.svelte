@@ -3,8 +3,11 @@
   export let state, players;
   const dispatch = createEventDispatcher();
 
+  // $: state = {}
+
   onMount(() => {
     console.log(`StatusBar onMount(), state`, state);
+    // state = JSON.parse(localStorage.getItem('state'))
   });
 
   function countPoints() {
