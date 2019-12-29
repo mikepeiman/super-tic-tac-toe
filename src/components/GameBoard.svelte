@@ -74,14 +74,16 @@
     );
     if (gameInProgress == "true") {
       console.log(`gameHistory::: `, state.gameHistory);
-      let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
-      state.gameHistory = [...lsHistory, state.gameHistory];
+      // let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
+      state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
       console.log(`gameHistory::: `, state.gameHistory);
-      localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
+      // localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
       console.log("GameBoard onMount says that game is in progress");
       // redrawGameHistory();
+      let redrawInterval = 1000 / (settings.rows * settings.columns)
+      console.log(`onMount, redrawInterval ${redrawInterval}`)
       setTimeout(() => {
-        renderGameBoardReload(150);
+        renderGameBoardReload(redrawInterval);
       }, 50);
     } else {
       console.log(
@@ -129,13 +131,13 @@
     let history = JSON.parse(localStorage.getItem("gameHistory"));
     console.log(`renderGameBoardReload => LS gameHistory::: `, history);
     // let lsHistory = JSON.parse(localStorage.getItem("gameHistory"));
-    if(state.gameHistory.length > 0) {
-      console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
-        state.gameHistory = [...history, state.gameHistory];
-    }
+    // if(state.gameHistory.length > 0) {
+    //   console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
+    //     state.gameHistory = [...history, state.gameHistory];
+    // }
 
     console.log(`renderGameBoardReload => state.gameHistory::: `, state.gameHistory);
-    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
+    // localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
     let len = history.length;
