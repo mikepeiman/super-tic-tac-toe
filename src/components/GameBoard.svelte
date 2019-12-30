@@ -9,12 +9,12 @@
 
   $: gameboardMapped = [];
   // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
-  // $: console.log(`GameBoard state reset: `, state.reset);
+  $: console.log(`GameBoard state reset: `, state.reset);
   // $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
-  // $: console.log(
-  //   `GameBoard state updateGameSettings: `,
-  //   state.updateGameSettings
-  // );
+  $: console.log(
+    `GameBoard state updateGameSettings: `,
+    state.updateGameSettings
+  );
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
@@ -107,6 +107,7 @@
   });
   function updateGameSettings() {
     let settings = JSON.parse(localStorage.getItem("settings"));
+    console.log(`GameBoard => updateGameSettings() about to resetGameBoard(), settings `, settings)
     resetGameBoard();
   }
 
@@ -296,6 +297,7 @@
       }
       lines.diagonalDownLeft = theseLines;
     }
+    localStorage.setItem('lines', JSON.stringify(lines))
   }
 
   function makeLineFrom(start, pattern) {
@@ -359,7 +361,6 @@
   }
 
   function buildGameBoard(rows, columns, size, gutter) {
-    // clearGameBoard();
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
@@ -376,6 +377,8 @@
       }
     }
     console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
+    createDirectionArrays()
+    console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
   }
 
@@ -416,7 +419,7 @@
   }
 
   function clearGameBoard() {
-    console.log(`clearGameBoard called from buildGameBoard`);
+    console.log(`clearGameBoard called from resetGameBoard`);
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {
