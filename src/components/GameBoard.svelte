@@ -493,10 +493,21 @@
 
   function untickThis(cell) {
     let id = cell.id;
-    console.log(`------------untickThis(cell)`);
+    let row = cell.getAttribute('row');
+    let column = cell.getAttribute('column');
+    console.log(`------------untickThis(cell)`, cell);
+    console.log(`------------untickThis(cell) row ${row} column ${column} `);
     cell.classList.remove("ticked");
-    cell.style = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, ${id[1] /
-      10})`;
+        let settings = JSON.parse(localStorage.getItem("settings"));
+    let rowFactor = 60 / settings.rows
+    let colFactor = settings.columns / 100
+    let hue =  rowFactor  * row + 210;
+    let alpha = parseFloat((column + 1) / (100 / colFactor)).toFixed(2);
+    console.log(`------------untickThis(cell) rowFactor ${rowFactor} colFactor ${colFactor} hue ${hue} alpha ${alpha} `);
+    // console.log(`Cell ${id} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
+    // customBg = `--custom-bg: hsla(${row * 20 + 120}, 50%, 50%, ${id[1] / 10})`;
+    let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
+    cell.style = customBg
     cell.dataset.ticked = false;
     cell.removeAttribute("player-id");
     cell.removeAttribute("player-name");

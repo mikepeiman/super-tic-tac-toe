@@ -6,12 +6,12 @@
   import MainMenu from "./../components/MainMenu.svelte";
 
   $: settings = {
-    numberOfPlayers: 3,
-    movesPerTurn: 5,
+    numberOfPlayers: 4,
+    movesPerTurn: 4,
     cellsToScore: 3,
     bonusForCompleteRow: 5,
-    rows: 5,
-    columns: 5,
+    rows: 8,
+    columns: 20,
     size: 24,
     gutter: 0
   };
@@ -702,7 +702,7 @@
   }
 
   .gameboard-board {
-    margin: 2rem;
+    margin: .25rem;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -859,7 +859,7 @@
   {/await}
   <div class="gameboard-container">
     <StatusBar {state} {players} on:reset={resetNotification} />
-    <MainMenu on:updateGameSettings={updateGameSettings} {players} />
+    <MainMenu on:updateGameSettings={updateGameSettings} {players} {settings} />
     {#await players}
       <!-- promise is pending -->
       <p>waiting for the promise to resolve...</p>
