@@ -129,8 +129,10 @@
       ];
 
       scoreDirections.forEach((direction, index) => {
+        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
+        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `, players[i]["scores"][index])
       });
     }
     players = players;
@@ -219,6 +221,8 @@
       console.log(`makeLinesFrom ${i}`);
       makeLinesFrom(i);
     }
+    localStorage.setItem('lines', JSON.stringify(lines))
+        // setPlayerDirectionArrays();
     initializePlayers();
   }
 
@@ -301,7 +305,6 @@
       }
       lines.diagonalDownLeft = theseLines;
     }
-    localStorage.setItem('lines', JSON.stringify(lines))
   }
 
   function makeLineFrom(start, pattern) {
@@ -397,7 +400,7 @@
         settings.gutter
       );
       createDirectionArrays()
-      initializePlayers();
+      // initializePlayers();
       // console.log(
       //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,
       //   state,
