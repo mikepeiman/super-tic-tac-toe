@@ -80,12 +80,13 @@
       players = JSON.parse(localStorage.getItem("players"));
       state = JSON.parse(localStorage.getItem("state"));
       console.log(
-        "TicTacToe => onMount calling reloadPlayers(). Current players, state: ",
+        "TicTacToe => onMount gameInProgress=true. Current players, state: ",
         players,
         state
       );
     } else {
-      reloadPlayers();
+      // reloadPlayers();
+      initializePlayers()
       state.currentPlayer = players[0];
       localStorage.setItem("state", JSON.stringify(state));
     }
@@ -96,8 +97,8 @@
     }, 1);
     setGameSettings();
     // renderGameBoardReload();
-    console.log(`TicTacToe onMount(): gameboardMapped, players`);
-    console.log(gameboardMapped, players);
+    console.log(`TicTacToe onMount() closing: players, state`);
+    console.log(players, state);
   });
 
   function resetNotification() {
@@ -112,10 +113,10 @@
 
   function updateGameSettings(e) {
     console.log(`TicTacToe => reset bubbled from MainMenu settings change`, e);
-    settings = e.detail
-    resetNotification()
-    state.updateGameSettings = true
-  } 
+    settings = e.detail;
+    resetNotification();
+    state.updateGameSettings = true;
+  }
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
@@ -163,6 +164,12 @@
   }
 
   function initializePlayers() {
+    let linesLS = JSON.parse(localStorage.getItem("lines"));
+    console.log(
+      "TicTacToe => initializePlayers()      <<<<<<<<<<<<<<<<<<<<<<<<   lines   >>>>>>>>>>>>>>>>>>>",
+      lines
+    );
+
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players = [
@@ -178,7 +185,6 @@
           dirScoresByIndex: [0, 0, 0, 0]
         }
       ];
-
       scoreDirections.forEach((direction, index) => {
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
@@ -190,9 +196,15 @@
     state.currentPlayer = players[0];
     state.movesRemaining = settings.movesPerTurn;
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
+    createDirectionArrays()
   }
 
   function reloadPlayers() {
+    let linesLS = JSON.parse(localStorage.getItem("lines"));
+    console.log(
+      "TicTacToe => reloadPlayers()      <<<<<<<<<<<<<<<<<<<<<<<<   lines   >>>>>>>>>>>>>>>>>>>",
+      lines
+    );
     players = JSON.parse(localStorage.getItem("players"));
     console.log(`reloadPlayers, from LS: `, players);
     state.currentPlayer = players[0];
@@ -221,7 +233,7 @@
       player = player;
     });
     players = players;
-
+    createDirectionArrays();
     // localStorage.setItem("players", JSON.stringify(players));
   }
 
@@ -353,10 +365,14 @@
     for (let i = 1; i === 4; i++) {
       makeLinesFrom(i);
     }
-    initializePlayers();
+    // initializePlayers();
   }
 
   function makeLinesFrom(dir) {
+    console.log(
+      `TicTacToe => makeLinesFrom(dir) - settings rows & columns to set player.lines for scoring: `,
+      settings
+    );
     let start,
       pattern = {};
     let theseLines = [],

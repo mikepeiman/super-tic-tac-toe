@@ -68,11 +68,11 @@
 
   function score(direction, player, idx) {
     // $: settings.cellsToScore
-    // console.log(
-    //   `score called with direction and player and idx ${idx}`,
-    //   direction,
-    //   player
-    // );
+    console.log(
+      `score called with direction and player and idx ${idx}`,
+      direction,
+      player
+    );
 
     let dirLines = [];
     let dirScore = 0;
@@ -82,19 +82,20 @@
     );
     let settings = JSON.parse(localStorage.getItem("settings"));
     direction.lines.forEach((line, index) => {
+      console.log(`each line ${index}`, line);
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
       line.forEach(move => {
-        // console.log(`scoring ${move.id}`, move);
+        console.log(`scoring ${move.id}`, move);
         let p = move.player;
-        // console.log(`scoring p = move.player, `, p);
+        console.log(`scoring p = move.player, `, p);
         if (localStorage.getItem("gameHistory")) {
           let gh = JSON.parse(localStorage.getItem("gameHistory"));
           p = getPlayerFromCellInGameHistory(move.id);
         }
 
-        // console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
+        console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
         if (p) {
           // console.log(
           //   `there is a p = getPlayerFromCellInGameHistory(${move.id})`

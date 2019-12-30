@@ -107,7 +107,13 @@
   });
   function updateGameSettings() {
     let settings = JSON.parse(localStorage.getItem("settings"));
-    resetGameBoard();
+    console.log(
+      `GameBoard => updateGameSettings will resetGameBoard() `,
+      settings
+    );
+    if (state.reset) {
+      resetGameBoard();
+    }
   }
 
   function initializePlayers() {
@@ -222,6 +228,10 @@
   }
 
   function makeLinesFrom(dir) {
+    console.log(
+      `GameBoard => makeLinesFrom(dir) - settings rows & columns to set player.lines for scoring: `,
+      settings
+    );
     let rows = settings.rows;
     let columns = settings.columns;
     // console.log('makeLinesFrom called')
@@ -359,7 +369,6 @@
   }
 
   function buildGameBoard(rows, columns, size, gutter) {
-    // clearGameBoard();
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
@@ -370,7 +379,7 @@
           id: id,
           row: r,
           column: c
-        }
+        };
         grid[r].push(cellAttributes);
         // grid[r].push()
       }
@@ -408,11 +417,11 @@
     };
     state.movesRemaining = settings.movesPerTurn;
     state = state;
-    // console.log(
-    //   `GameBoard just ran a reset, now state, players `,
-    //   state,
-    //   players
-    // );
+    console.log(
+      `GameBoard just ran a reset, now state, players `,
+      state,
+      players
+    );
   }
 
   function clearGameBoard() {
@@ -626,7 +635,11 @@
   {#each grid as row}
     <div class="row">
       {#each row as cell}
-        <Cell id={cell.id} row={cell.row} column={cell.column} on:move={moveNotification} />
+        <Cell
+          id={cell.id}
+          row={cell.row}
+          column={cell.column}
+          on:move={moveNotification} />
       {/each}
     </div>
   {/each}
