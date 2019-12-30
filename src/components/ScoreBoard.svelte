@@ -21,10 +21,21 @@
     players = e.detail
   }
 
+  function highlight() {
+document.execCommand("selectall",null,false)
+  }
+
 </script>
 
 <style lang="scss">
-
+.player-name {
+  background: black;
+  padding: .5rem;
+  margin: .25rem;
+  border-radius: 2px;
+  width: 100%;
+  color: var(--custom-bg);
+}
 </style>
 
 <div class="scoreboard-container">
@@ -34,7 +45,8 @@
   {#each players as player}
     <div class="scoreboard-totals">
       <h3 class="total-score">
-        <div>{player.name}:</div>
+      <input class="player-name" type="text" bind:value={player.name} placeholder={player.name} on:click={highlight}>
+        <!-- <div>{player.name}:</div> -->
         <div class="total-score-number">{player.totalScore}</div>
       </h3>
       <div class="scoreboard-player">

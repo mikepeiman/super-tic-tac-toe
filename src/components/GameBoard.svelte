@@ -498,17 +498,16 @@
     let id = cell.id;
     let row = cell.getAttribute("row");
     let column = cell.getAttribute("column");
-    console.log(`------------untickThis(cell)`, cell);
-    console.log(`------------untickThis(cell) row ${row} column ${column} `);
+    // console.log(`------------untickThis(cell)`, cell);
+    // console.log(`------------untickThis(cell) row ${row} column ${column} `);
     cell.classList.remove("ticked");
     let settings = JSON.parse(localStorage.getItem("settings"));
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
-    console.log(`------------untickThis(cell) ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
-    console.log(`------------untickThis(cell) ((column + 1) ${(parseInt(column) + 1)} (200 / colFactor) ${(200 / colFactor)} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
-
+    // console.log(`------------untickThis(cell) ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
+    // console.log(`------------untickThis(cell) ((column + 1) ${(parseInt(column) + 1)} (200 / colFactor) ${(200 / colFactor)} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
     // customBg = `--custom-bg: hsla(${row * 20 + 120}, 50%, 50%, ${id[1] / 10})`;
     let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     cell.style = customBg;
