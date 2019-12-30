@@ -101,7 +101,7 @@
         "GameBoard onMount says that game is ***:::NOT:::*** in progress"
       );
       createDirectionArrays();
-      console.log("createDirectionArrays completed, lines, ", lines);
+      console.log("onMount call createDirectionArrays() completed, lines, ", lines);
       localStorage.setItem("lines", JSON.stringify(lines));
     }
   });
@@ -224,7 +224,7 @@
 
   function makeLinesFrom(dir) {
     console.log(
-      `GameBoard => makeLinesFrom(dir) - settings rows & columns to set player.lines for scoring: `,
+      `GameBoard => makeLinesFrom(dir) - settings rows ${settings.rows} & columns ${settings.columns} to set player.lines for scoring: `,
       settings
     );
     let rows = settings.rows;
@@ -240,7 +240,7 @@
       start = { row: 0, column: 0 };
       pattern = { row: 0, column: +1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < rows; i++) {
         newLine = makeLineFrom(start, pattern);
         start.row++;
         theseLines.push(newLine);
@@ -285,7 +285,7 @@
       start = { row: rows, column: columns - 1 };
       pattern = { row: +1, column: -1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < rows; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
@@ -387,6 +387,7 @@
   }
 
   function resetGameBoard() {
+    console.log(`GameBoard => resetGameBoard(), settings rows ${settings.rows} columns ${settings.columns} `, settings)
     clearGameBoard();
     setTimeout(() => {
       buildGameBoard(
@@ -395,6 +396,7 @@
         settings.size,
         settings.gutter
       );
+      createDirectionArrays()
       initializePlayers();
       // console.log(
       //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,

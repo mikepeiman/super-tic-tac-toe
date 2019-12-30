@@ -10,8 +10,8 @@
     movesPerTurn: 5,
     cellsToScore: 3,
     bonusForCompleteRow: 5,
-    rows: 5,
-    columns: 5,
+    rows: 3,
+    columns: 12,
     size: 24,
     gutter: 0
   };
