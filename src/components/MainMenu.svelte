@@ -98,4 +98,15 @@
       on:input={triggerGameBoardUpdate}
       style="width: 1.5ch;" />
   </label>
+    <label for="movesPerTurn">
+    Cells-in-a-row to score:
+    <input
+      id="cellsToScore"
+      name="cellsToScore"
+      type="number"
+      placeholder={settings.cellsToScore}
+      bind:value={settings.cellsToScore}
+      on:input={triggerGameBoardUpdate}
+      style="width: 1.5ch;" />
+  </label>
 </div>
