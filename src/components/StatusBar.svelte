@@ -3,11 +3,14 @@
   const dispatch = createEventDispatcher();
   export let state, players;
 
-  $: state;
+  // $: state;
 
   onMount(() => {
-    console.log(`StatusBar onMount(), state`, state);
-    // state = JSON.parse(localStorage.getItem('state'))
+    console.log(`StatusBar onMount(), state, players`, state, players);
+    players = JSON.parse(localStorage.getItem("players"));
+    state.currentPlayer = players[0];
+    console.log(`players[0] `, players[0]);
+    console.log(`state.currentPlayer: `, state.currentPlayer);
   });
 
   function countPoints() {
@@ -76,19 +79,39 @@
 </style>
 
 <div class="player-indicator player-0">
-  <h2 class="player-indicator-heading">Player: {state.currentPlayer.name}</h2>
-  <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
-  <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
+  {#await state}
 
-  <div class="buttons-wrapper">
-    <button class="control-button" id="reset-game-button" on:click={reset}>
-      Reset game
-    </button>
-    <button class="control-button" id="save-game-button" on:click={saveGame}>
-      Save game
-    </button>
-    <button class="control-button" id="save-game-button" on:click={loadGame}>
-      Load game
-    </button>
-  </div>
+    <h1>...waiting for state in ScoreBoard...</h1>
+  {:then state}
+    {#await players}
+    {:then players}
+      <h2 class="player-indicator-heading">
+        Player: {state.currentPlayer.name}
+      </h2>
+      <h2 class="player-indicator-heading">
+        Turn Moves: {state.movesRemaining}
+      </h2>
+      <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
+
+      <div class="buttons-wrapper">
+        <button class="control-button" id="reset-game-button" on:click={reset}>
+          Reset game
+        </button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={saveGame}>
+          Save game
+        </button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={loadGame}>
+          Load game
+        </button>
+      </div>
+    {/await}
+  {:catch error}
+    <h1>Error! Message: {error}</h1>
+  {/await}
 </div>

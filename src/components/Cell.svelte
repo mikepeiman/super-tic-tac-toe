@@ -68,5 +68,5 @@
   {id}
   on:click={moveNotification}
   data-ticked={ticked}
-  data-marker="X"
+  data-marker="Y"
   style={customBg} />

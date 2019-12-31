@@ -7,11 +7,11 @@ import MainMenu from "./../components/MainMenu.svelte";
 
 $: settings = {
   numberOfPlayers: 4,
-  movesPerTurn: 20,
-  cellsToScore: 5,
+  movesPerTurn: 3,
+  cellsToScore: 3,
   bonusForCompleteRow: 5,
-  rows: 20,
-  columns: 30,
+  rows: 5,
+  columns: 6,
   size: 24,
   gutter: 0
 };

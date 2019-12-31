@@ -3,16 +3,6 @@
   const dispatch = createEventDispatcher();
   export let players, settings;
 
-  // $: settings = {
-  //   numberOfPlayers: 4,
-  //   movesPerTurn: 5,
-  //   cellsToScore: 3,
-  //   bonusForCompleteRow: 5,
-  //   rows: 12,
-  //   columns: 20,
-  //   size: 24,
-  //   gutter: 0
-  // };
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
