@@ -7,6 +7,8 @@
   export let state = {};
   export let players = [];
 
+
+  $: players.forEach(player => { console.log(`GameBoard watching for player.markers update: `, player.marker); renderGameBoardReload(5) })
   $: gameboardMapped = [];
   // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
@@ -123,8 +125,9 @@
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
+          marker: 'x',
           bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
-            30}, 50%, 50%, .75)`,
+            100}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -199,7 +202,7 @@
           cell.style.margin = settings.gutter + "px";
           cell.style.width = settings.size + "px";
           cell.style.height = settings.size + "px";
-          cell.setAttribute("data-marker", "O");
+          cell.setAttribute("data-marker", players[p].marker);
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);

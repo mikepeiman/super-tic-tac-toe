@@ -1,9 +1,10 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   export let players, state, gameboardMapped;
 
-
+  $: players
   // $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
@@ -25,6 +26,12 @@
 document.execCommand("selectall",null,false)
   }
 
+  function setPlayersToLS(player) {
+    console.log(`ScoreBoard input on:blur, marker ${player.marker}`)
+    localStorage.setItem('players', JSON.stringify(players))
+    dispatch('playerNameOrMarkerUpdate', players)
+  }
+
 </script>
 
 <style lang="scss">
@@ -36,6 +43,14 @@ document.execCommand("selectall",null,false)
   width: 100%;
   color: var(--custom-bg);
 }
+.player-marker {
+  background: black;
+  padding: .5rem;
+  margin: .25rem;
+  border-radius: 2px;
+  // width: 100%;
+  color: var(--custom-bg);
+}
 </style>
 
 <div class="scoreboard-container">
@@ -45,9 +60,9 @@ document.execCommand("selectall",null,false)
   {#each players as player}
     <div class="scoreboard-totals">
       <h3 class="total-score">
-      <input class="player-name" type="text" bind:value={player.name} placeholder={player.name} on:click={highlight}>
-        <!-- <div>{player.name}:</div> -->
+      <input class="player-name" type="text" bind:value={player.name} placeholder={player.name} on:click={highlight} on:blur={() => setPlayersToLS(player)}>
         <div class="total-score-number">{player.totalScore}</div>
+        <input class="player-marker" type="text" bind:value={player.marker} placeholder={player.marker} maxlength="1" on:click={highlight} on:blur={() => setPlayersToLS(player)}>
       </h3>
       <div class="scoreboard-player">
         {#each player.scores as direction, i}
