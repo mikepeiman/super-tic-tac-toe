@@ -1,9 +1,13 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   export let state, players;
 
   // $: state;
+  $: () => {
+    console.log(`StatusBar on players change`, players);
+    loadGame();
+  };
 
   onMount(() => {
     console.log(`StatusBar onMount(), state, players`, state, players);
@@ -12,6 +16,14 @@
     console.log(`players[0] `, players[0]);
     console.log(`state.currentPlayer: `, state.currentPlayer);
   });
+
+  // afterUpdate(() => {
+  //   console.log(`StatusBar afterUpdate(), state, players`, state, players);
+  //   players = JSON.parse(localStorage.getItem("players"));
+  //   state.currentPlayer = players[0];
+  //   console.log(`players[0] `, players[0]);
+  //   console.log(`state.currentPlayer: `, state.currentPlayer);
+  // });
 
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
@@ -83,8 +95,7 @@
 
     <h1>...waiting for state in ScoreBoard...</h1>
   {:then state}
-    {#await players}
-    {:then players}
+    {#await players then players}
       <h2 class="player-indicator-heading">
         Player: {state.currentPlayer.name}
       </h2>

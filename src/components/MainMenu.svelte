@@ -17,7 +17,7 @@
 
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    localStorage.setItem('settings', JSON.stringify(settings))
+    localStorage.setItem("settings", JSON.stringify(settings));
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(
       `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `
@@ -64,6 +64,28 @@
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
   </label>
+  <label for="movesPerTurn">
+    Moves Per Turn:
+    <input
+      id="movesPerTurn"
+      name="movesPerTurn"
+      type="number"
+      placeholder={settings.movesPerTurn}
+      bind:value={settings.movesPerTurn}
+      on:input={triggerGameBoardUpdate}
+      style="width: 1.5ch;" />
+  </label>
+  <label for="movesPerTurn">
+    Cells-in-a-row to score:
+    <input
+      id="cellsToScore"
+      name="cellsToScore"
+      type="number"
+      placeholder={settings.cellsToScore}
+      bind:value={settings.cellsToScore}
+      on:input={triggerGameBoardUpdate}
+      style="width: 1.5ch;" />
+  </label>
   <label for="size">
     Square size (px):
     <input
@@ -87,26 +109,5 @@
       on:input={triggerGameBoardUpdate}
       style="width: 1.5ch;" />
   </label>
-  <label for="movesPerTurn">
-    Moves Per Turn:
-    <input
-      id="movesPerTurn"
-      name="movesPerTurn"
-      type="number"
-      placeholder={settings.movesPerTurn}
-      bind:value={settings.movesPerTurn}
-      on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
-  </label>
-    <label for="movesPerTurn">
-    Cells-in-a-row to score:
-    <input
-      id="cellsToScore"
-      name="cellsToScore"
-      type="number"
-      placeholder={settings.cellsToScore}
-      bind:value={settings.cellsToScore}
-      on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
-  </label>
+
 </div>

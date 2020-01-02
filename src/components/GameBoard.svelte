@@ -118,6 +118,9 @@
   }
 
   function initializePlayers() {
+    let hueOffset = 0;
+    // let hueInterval = (360 / settings.numberOfPlayers)
+    let hueInterval = (180 / settings.numberOfPlayers)
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players = [
@@ -127,8 +130,8 @@
           name: `Player ${i + 1}`,
           totalScore: 0,
           marker: 'x',
-          bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
-            100}, 50%, 50%, .75)`,
+          bgColor: `hsla(${(i + 1) * hueInterval +
+            hueOffset}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -442,7 +445,7 @@
     cell.setAttribute("playerid", "empty");
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
-    cell.setAttribute("data-marker", "O");
+    cell.setAttribute("data-marker", state.currentPlayer.marker);
     // let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
     // cell.style = customBg;
     // console.log(`click from ${cell.id}`, cell, customBg);
@@ -490,7 +493,7 @@
     cell.setAttribute("player-id", state.currentPlayer.id);
     cell.setAttribute("player-name", state.currentPlayer.name);
     cell.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
-    cell.setAttribute("data-marker", "O");
+    cell.setAttribute("data-marker", state.currentPlayer.marker);
   }
 
   function untickThis(cell) {

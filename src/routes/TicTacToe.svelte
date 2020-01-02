@@ -6,12 +6,12 @@ import StatusBar from "./../components/StatusBar.svelte";
 import MainMenu from "./../components/MainMenu.svelte";
 
 $: settings = {
-  numberOfPlayers: 4,
-  movesPerTurn: 3,
-  cellsToScore: 3,
+  numberOfPlayers: 3,
+  movesPerTurn: 10,
+  cellsToScore: 4,
   bonusForCompleteRow: 5,
-  rows: 5,
-  columns: 6,
+  rows: 12,
+  columns: 15,
   size: 24,
   gutter: 0
 };
