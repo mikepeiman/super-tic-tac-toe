@@ -70,6 +70,7 @@
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
+      let lineBonus = settings.bonusForCompleteRow;
       line.forEach(move => {
         // console.log(`scoring ${move.id}`, move);
         let p = move.player;
@@ -89,6 +90,7 @@
             // console.log(`${move.id} count: ${countInLoop}`);
           }
           if (p.id !== player.id) {
+            lineBonus = 0;
             // console.log(
             //   `${move.id} !== player.id ${player.id}: ${countInLoop}`
             // );
@@ -100,6 +102,7 @@
             countInLoop = 0;
           }
         } else {
+          lineBonus = 0;
           if (countInLoop >= settings.cellsToScore) {
             points += countInLoop - (settings.cellsToScore - 1);
             // console.log(`Was undefined, but we scored points: ${move.id} points: ${points}`);
@@ -111,7 +114,10 @@
       if (countInLoop >= settings.cellsToScore) {
         points += countInLoop - (settings.cellsToScore - 1);
       }
-      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
+      
+      console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
+      points += lineBonus
+      console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;

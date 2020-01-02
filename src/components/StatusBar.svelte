@@ -44,10 +44,15 @@
     localStorage.setItem("diagonalDownRight", []);
     localStorage.setItem("topToBottom", []);
     localStorage.setItem("leftToRight", []);
-    localStorage.setItem("players", []);
+    
     localStorage.setItem("lines", []);
     localStorage.setItem("state", "");
     localStorage.setItem("gameInProgress", false);
+
+    players.forEach(player => {
+      player.lines = []
+    })
+    localStorage.setItem("players", players);
     location.reload();
     dispatch("reset", true);
     // let settings = JSON.parse(localStorage.getItem('gameSettings'))

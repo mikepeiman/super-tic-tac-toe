@@ -8,9 +8,9 @@ import MainMenu from "./../components/MainMenu.svelte";
 $: settings = {
   numberOfPlayers: 3,
   movesPerTurn: 10,
-  cellsToScore: 4,
+  cellsToScore: 3,
   bonusForCompleteRow: 5,
-  rows: 12,
+  rows: 5,
   columns: 15,
   size: 24,
   gutter: 0
