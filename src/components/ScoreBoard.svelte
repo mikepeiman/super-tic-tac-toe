@@ -2,7 +2,7 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let players, state, gameboardMapped;
+  export let players, state, gameboardMapped, highlighted
 
   $: players, resetPlayers()
   // $: state.reset ? resetPlayers() : (state.reset = false);
@@ -122,6 +122,10 @@
     text-align: center;
     color: var(--custom-bg);
   }
+  .highlighted {
+    border: 10px solid var(--custom-bg);
+    background: white;
+  }
 </style>
 
 {#await players then players}
@@ -131,7 +135,7 @@
   </div>
   {#each players as player}
     <div class="scoreboard-totals">
-      <h3 class="total-score">
+      <h3 class="total-score" class:highlighted={state.currentPlayer.id == player.id}>
         <input
           class="player-name"
           type="text"

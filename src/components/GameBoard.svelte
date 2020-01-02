@@ -126,7 +126,7 @@
   }
 
   function initializePlayers() {
-    let hueOffset = 0;
+    let hueOffset = 140;
     // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
     players = [];

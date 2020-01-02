@@ -7,7 +7,7 @@
 
   $: settings = {
     numberOfPlayers: 3,
-    movesPerTurn: 10,
+    movesPerTurn: 3,
     cellsToScore: 3,
     bonusForCompleteRow: 5,
     rows: 5,
@@ -88,11 +88,11 @@
     if (playerDetails == "true") {
       console.log("TicTacToe => onMount playerDetails true ");
       players = JSON.parse(localStorage.getItem("players"));
-      reloadPlayers();
+      reloadPlayers(playerDetails);
       // state.currentPlayer = players[0];
       // localStorage.setItem("state", JSON.stringify(state));
     } else {
-      reloadPlayers();
+      reloadPlayers(playerDetails);
       state.currentPlayer = players[0];
       localStorage.setItem("state", JSON.stringify(state));
       console.log("TicTacToe => onMount playerDetails FALSE ");
@@ -180,7 +180,7 @@
           name: `Player ${i + 1}`,
           totalScore: 0,
           bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
-            70}, 50%, 50%, .75)`,
+            0}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -200,11 +200,10 @@
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
-  function reloadPlayers() {
+  function reloadPlayers(playerDetails) {
     players = JSON.parse(localStorage.getItem("players"));
     console.log(`reloadPlayers, from LS: `, players);
-    state.currentPlayer = players[0];
-
+    playerDetails == "true" ? true : state.currentPlayer = players[0];
     players.forEach(player => {
       player.scores.forEach(direction => {
         direction.lines.forEach(line => {
