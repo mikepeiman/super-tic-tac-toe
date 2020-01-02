@@ -14,7 +14,7 @@
 
   function resetPlayers() {
     console.log(
-      `ScoreBoard => resetPlayers due to players change from StatusBar => TicTacToe => ScoreBoard`
+      `ScoreBoard => resetPlayers triggered due to players change from TicTacToe => ScoreBoard`
     );
   }
 
@@ -142,17 +142,17 @@
 
 {#await players then players}
   <div class="scoreboard-container">
-    <div class="scoreboard-controls">
+    <!-- <div class="scoreboard-controls">
       <CountPoints
         {players}
         {gameboardMapped}
         on:playersScored={playersScored} />
-    </div>
+    </div> -->
     {#each players as player}
-      <div class="scoreboard-totals" class:highlighted={state.currentPlayer.id == player.id}>
-        <h3
-          class="total-score"
-          >
+      <div
+        class="scoreboard-totals"
+        class:highlighted={state.currentPlayer.id == player.id}>
+        <h3 class="total-score">
           <input
             class="player-name"
             type="text"

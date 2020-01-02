@@ -85,17 +85,17 @@
        if (len >= longerDimension) {
 
         lineBonus = bonusForCompleteRow 
-        console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
 
       } else if(len >= shorterDimension) {
         
         lineBonus = Math.ceil(bonusForCompleteRow / (longerDimension / shorterDimension))
-        console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
 
       } else {
 
         lineBonus = 0
-        console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
         // console.log(`scoring ${move.id}`, move);
@@ -141,9 +141,9 @@
         points += countInLoop - (settings.cellsToScore - 1);
       }
       
-      console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
+      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
       points += lineBonus
-      console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
+      // console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
@@ -180,5 +180,5 @@
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
-  Tally points
+  Tally Scores
 </button>

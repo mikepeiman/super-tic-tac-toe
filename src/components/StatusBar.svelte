@@ -1,46 +1,58 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  export let state, players;
+  import CountPoints from "./CountPoints.svelte";
+  export let state, players, gameboardMapped;
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
   $: currentPlayer = state.currentPlayer;
-  $: players, console.log(`StatusBar players change, players, state.currentPlayer `, players, state.currentPlayer), currentPlayer = state.currentPlayer;
-  $: state, console.log(`StatusBar state change, currentplayer `, state.currentPlayer)
+  $: players,
+    console.log(
+      `StatusBar players change, players, state.currentPlayer `,
+      players,
+      state.currentPlayer
+    ),
+    (currentPlayer = state.currentPlayer);
+  $: state,
+    console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
 
   onMount(() => {
-    // currentPlayer = JSON.parse(localStorage.getItem("state")).currentPlayer;
-    currentPlayer = state.currentPlayer
-    // console.log(`StatusBar onMount(), state, players`, state, players);
-    // players = JSON.parse(localStorage.getItem("players"));
-    // state.currentPlayer = players[0];
-    // console.log(`players[0] `, players[0]);
-    // console.log(`state.currentPlayer: `, state.currentPlayer);
+    currentPlayer = state.currentPlayer;
   });
 
   afterUpdate(() => {
-    // currentPlayer =  players[currentPlayer.id]
-    console.log('StatusBar => aterUpdate() fired')
-  })
+    console.log("StatusBar => aterUpdate() fired");
+  });
 
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
     dispatch("tally", true);
   }
 
-function updateCurrentPlayer() {
-  console.log(`updateCurrentPlayer() run, currentPlayer: `, state.currentPlayer)
-  let id = currentPlayer.id
-  console.log(`updateCurrentPlayer() run, currentPlayer id: `, id)
-  state.currentPlayer = players[id]
-  console.log(`updateCurrentPlayer() updated, currentPlayer: `, state.currentPlayer)
-}
-  
+  function updateCurrentPlayer() {
+    console.log(
+      `updateCurrentPlayer() run, currentPlayer: `,
+      state.currentPlayer
+    );
+    let id = currentPlayer.id;
+    console.log(`updateCurrentPlayer() run, currentPlayer id: `, id);
+    state.currentPlayer = players[id];
+    console.log(
+      `updateCurrentPlayer() updated, currentPlayer: `,
+      state.currentPlayer
+    );
+  }
+
   function saveGame() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
   }
   function loadGame() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
+  }
+
+  function playersScored(e) {
+    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail);
+    players = e.detail;
   }
 
   function reset() {
@@ -53,18 +65,18 @@ function updateCurrentPlayer() {
     localStorage.setItem("leftToRight", []);
 
     localStorage.setItem("lines", []);
-        let currentPlayerId = state.currentPlayer.id
+    let currentPlayerId = state.currentPlayer.id;
     localStorage.setItem("state", {
-    lastTicked: "",
-    currentPlayer: {},
-    movesRemaining: 0,
-    turn: 0,
-    gameHistory: [],
-    turnHistory: [],
-    clickCount: 0,
-    moveNumber: 0,
-    reset: false
-  });
+      lastTicked: "",
+      currentPlayer: {},
+      movesRemaining: 0,
+      turn: 0,
+      gameHistory: [],
+      turnHistory: [],
+      clickCount: 0,
+      moveNumber: 0,
+      reset: false
+    });
     localStorage.setItem("gameInProgress", false);
 
     players.forEach(player => {
@@ -124,6 +136,10 @@ function updateCurrentPlayer() {
       </h2>
       <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
       <div class="buttons-wrapper">
+        <CountPoints
+          {players}
+          {gameboardMapped}
+          on:playersScored={playersScored} />
         <button class="control-button" id="reset-game-button" on:click={reset}>
           Reset game
         </button>
