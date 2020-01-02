@@ -10,9 +10,8 @@
     let colFactor = settings.columns / 100
     let hue =  rowFactor  * row + 210;
     let alpha = parseFloat((column + 1) / 200 / colFactor).toFixed(2);
-    // console.log(`Cell ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
-    // customBg = `--custom-bg: hsla(${row * 20 + 120}, 50%, 50%, ${id[1] / 10})`;
     customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha})`;
+    console.log(`------------Cell => onMount() ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
   });
 
   function moveNotification() {

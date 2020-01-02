@@ -11,9 +11,9 @@
 
   // $: players.forEach(player => { console.log(`GameBoard watching for player.markers update: `, player.marker)})
   $: gameboardMapped = [];
-  // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
-  // $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
+  $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
   $: console.log(
     `GameBoard state updateGameSettings: `,
     state.updateGameSettings
@@ -131,7 +131,7 @@
           totalScore: 0,
           marker: 'x',
           bgColor: `hsla(${(i + 1) * hueInterval +
-            hueOffset}, 50%, 50%, .75)`,
+            hueOffset}, 50%, 50%, 1)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -224,16 +224,16 @@
   function createDirectionArrays() {
     console.log("createDirectionArrays called");
     for (let i = 1; i <= 4; i++) {
-      console.log(`makeLinesFrom ${i}`);
+      // console.log(`makeLinesFrom ${i}`);
       makeLinesFrom(i);
     }
   }
 
   function makeLinesFrom(dir) {
-    console.log(
-      `GameBoard => makeLinesFrom(dir) - settings rows ${settings.rows} & columns ${settings.columns} to set player.lines for scoring: `,
-      settings
-    );
+    // console.log(
+    //   `GameBoard => makeLinesFrom(dir) - settings rows ${settings.rows} & columns ${settings.columns} to set player.lines for scoring: `,
+    //   settings
+    // );
     let rows = settings.rows;
     let columns = settings.columns;
     // console.log('makeLinesFrom called')
@@ -447,8 +447,8 @@
     console.log(`playMove clickCount: ${state.clickCount}`);
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
-    cell.setAttribute("row", id[1]);
-    cell.setAttribute("col", id[3]);
+    // cell.setAttribute("row", id[1]);
+    // cell.setAttribute("col", id[3]);
     cell.setAttribute("playername", "empty");
     cell.setAttribute("playerid", "empty");
     let ticked = cell.dataset.ticked == "true";
@@ -509,14 +509,14 @@
     let row = cell.getAttribute("row");
     let column = cell.getAttribute("column");
     // console.log(`------------untickThis(cell)`, cell);
-    // console.log(`------------untickThis(cell) row ${row} column ${column} `);
+    console.log(`------------untickThis(cell) row ${row} column ${column} `);
     cell.classList.remove("ticked");
     let settings = JSON.parse(localStorage.getItem("settings"));
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
-    // console.log(`------------untickThis(cell) ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
+    console.log(`------------untickThis(cell) ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
     // console.log(`------------untickThis(cell) ((column + 1) ${(parseInt(column) + 1)} (200 / colFactor) ${(200 / colFactor)} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
     // customBg = `--custom-bg: hsla(${row * 20 + 120}, 50%, 50%, ${id[1] / 10})`;
     let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;

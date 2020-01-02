@@ -73,7 +73,7 @@
       placeholder={settings.movesPerTurn}
       bind:value={settings.movesPerTurn}
       on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
+      style="width: 2.5ch;" />
   </label>
   <label for="movesPerTurn">
     Cells-in-a-row to score:
@@ -84,7 +84,7 @@
       placeholder={settings.cellsToScore}
       bind:value={settings.cellsToScore}
       on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
+      style="width: 2.5ch;" />
   </label>
   <label for="size">
     Square size (px):
