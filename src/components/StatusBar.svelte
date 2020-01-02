@@ -7,7 +7,7 @@
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
   $: currentPlayer = {}
   // $: players
-  // $: state
+  $: state
   // console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
 
   onMount(() => {

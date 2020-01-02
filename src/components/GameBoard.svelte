@@ -497,6 +497,7 @@
       setPlayerMove(cell.id);
       state.movesRemaining--;
     }
+    localStorage.setItem('state', JSON.stringify(state))
   }
 
   function tickThis(cell) {
