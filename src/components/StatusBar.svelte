@@ -10,11 +10,11 @@
   };
 
   onMount(() => {
-    console.log(`StatusBar onMount(), state, players`, state, players);
-    players = JSON.parse(localStorage.getItem("players"));
-    state.currentPlayer = players[0];
-    console.log(`players[0] `, players[0]);
-    console.log(`state.currentPlayer: `, state.currentPlayer);
+    // console.log(`StatusBar onMount(), state, players`, state, players);
+    // players = JSON.parse(localStorage.getItem("players"));
+    // state.currentPlayer = players[0];
+    // console.log(`players[0] `, players[0]);
+    // console.log(`state.currentPlayer: `, state.currentPlayer);
   });
 
   // afterUpdate(() => {

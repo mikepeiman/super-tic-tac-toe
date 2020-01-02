@@ -6,6 +6,7 @@
   // export let gameboardMapped
 
   $: gameboardMapped = [];
+  $: settings = JSON.parse(localStorage.getItem('settings'))
 
   onMount(() => {
     console.log(`CountPoints onMount(), players, gameboardMapped`);
@@ -13,8 +14,9 @@
   });
 
   function countPoints() {
+    // let settings = JSON.parse(localStorage.getItem('settings'))
     console.log(
-      "*************__________countPoints called________**************"
+      "*************__________countPoints called________**************, settings ", settings
     );
     console.log(
       "players from countPoints before checking localStorage: ",
@@ -24,32 +26,13 @@
       let gh = JSON.parse(localStorage.getItem("gameHistory"));
       console.log(`countPoints, gameHistory from LS: `, gh)
     }
-    // let players = JSON.parse(localStorage.getItem('players'))
 
-    // localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-    // let players = players;
-    // if (localStorage.getItem("players")) {
-    //   players = JSON.parse(localStorage.getItem("players"));
-    //   console.log("using localStorage");
-    // }
-    // console.log(
-    //   "players from countPoints after checking localStorage, before loop: ",
-    //   players
-    // );
-    // if (localStorage.getItem("gameboardMapped")) {
-    //   gameboardMapped = JSON.parse(localStorage.getItem("gameboardMapped"));
-    //   console.log("using localStorage");
-    // }
-    // console.log(
-    //   "gameboardMapped from countPoints from localStorage before loop: ",
-    //   gameboardMapped
-    // );
     players.forEach(player => {
       player.scores.forEach((direction, index) => {
         // console.log(
         //   `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
         // );
-        let thisScore = score(direction, player, index);
+        let thisScore = score(settings, direction, player, index);
         // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
         player["scores"][index]["dirScore"] = thisScore;
@@ -66,7 +49,8 @@
     dispatch("playersScored", players);
   }
 
-  function score(direction, player, idx) {
+  function score(settings, direction, player, idx) {
+    console.log(`score function, settings `, settings)
     // $: settings.cellsToScore
     console.log(
       `score called with direction and player and idx ${idx}`,
@@ -80,22 +64,22 @@
     console.log(
       `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
     );
-    let settings = JSON.parse(localStorage.getItem("settings"));
+
     direction.lines.forEach((line, index) => {
-      console.log(`each line ${index}`, line);
+      // console.log(`each line ${index}`, line);
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
       line.forEach(move => {
-        console.log(`scoring ${move.id}`, move);
+        // console.log(`scoring ${move.id}`, move);
         let p = move.player;
-        console.log(`scoring p = move.player, `, p);
+        // console.log(`scoring p = move.player, `, p);
         if (localStorage.getItem("gameHistory")) {
           let gh = JSON.parse(localStorage.getItem("gameHistory"));
           p = getPlayerFromCellInGameHistory(move.id);
         }
 
-        console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
+        // console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
         if (p) {
           // console.log(
           //   `there is a p = getPlayerFromCellInGameHistory(${move.id})`

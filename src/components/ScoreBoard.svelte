@@ -137,7 +137,7 @@
           placeholder={player.name}
           on:click={highlight}
           on:blur={() => setPlayersToLS(player)} />
-        <div class="total-score-number">{player.totalScore}</div>
+
         <input
           class="player-marker"
           type="text"
@@ -146,6 +146,7 @@
           maxlength="1"
           on:click={highlight}
           on:blur={() => setPlayersToLS(player)} />
+        <div class="total-score-number">{player.totalScore}</div>
       </h3>
       <div class="scoreboard-player">
         {#each player.scores as direction, i}
