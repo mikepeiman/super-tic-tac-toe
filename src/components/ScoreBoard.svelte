@@ -4,7 +4,7 @@
   import CountPoints from "./CountPoints.svelte";
   export let players, state, gameboardMapped;
 
-  $: players;
+  $: players, resetPlayers()
   // $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
@@ -14,7 +14,7 @@
 
   function resetPlayers() {
     console.log(
-      `ScoreBoard => resetPlayers due to state.reset from StatusBar => TicTacToe => ScoreBoard`
+      `ScoreBoard => resetPlayers due to players change from StatusBar => TicTacToe => ScoreBoard`
     );
   }
 
@@ -30,7 +30,9 @@
   function setPlayersToLS(player) {
     console.log(`ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `, state.currentPlayer);
     localStorage.setItem("players", JSON.stringify(players));
-    
+    localStorage.setItem("state", JSON.stringify(state));
+    // localStorage.setItem("gameInProgress", true);
+    localStorage.setItem("playerDetails", true);
     localStorage.setItem("currentPlayer", JSON.stringify(players[state.currentPlayer.id]));
     dispatch("playerNameOrMarkerUpdate", players);
   }
@@ -122,6 +124,7 @@
   }
 </style>
 
+{#await players then players}
 <div class="scoreboard-container">
   <div class="scoreboard-controls">
     <CountPoints {players} {gameboardMapped} on:playersScored={playersScored} />
@@ -166,3 +169,4 @@
     </div>
   {/each}
 </div>
+{/await}

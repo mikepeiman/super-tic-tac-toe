@@ -4,14 +4,13 @@
   export let state, players;
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-  $: currentPlayer = {};
-  $: () => {
-    console.log(`StatusBar on players change`, players);
-    loadGame();
-  };
+  $: currentPlayer = state.currentPlayer;
+  $: players, console.log(`StatusBar players change, players, state.currentPlayer `, players, state.currentPlayer), currentPlayer = state.currentPlayer;
+  $: state, console.log(`StatusBar state change, currentplayer `, state.currentPlayer)
 
   onMount(() => {
-    currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+    // currentPlayer = JSON.parse(localStorage.getItem("state")).currentPlayer;
+    currentPlayer = state.currentPlayer
     // console.log(`StatusBar onMount(), state, players`, state, players);
     // players = JSON.parse(localStorage.getItem("players"));
     // state.currentPlayer = players[0];
@@ -19,11 +18,24 @@
     // console.log(`state.currentPlayer: `, state.currentPlayer);
   });
 
+  afterUpdate(() => {
+    // currentPlayer =  players[currentPlayer.id]
+    console.log('StatusBar => aterUpdate() fired')
+  })
+
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
     dispatch("tally", true);
   }
 
+function updateCurrentPlayer() {
+  console.log(`updateCurrentPlayer() run, currentPlayer: `, state.currentPlayer)
+  let id = currentPlayer.id
+  console.log(`updateCurrentPlayer() run, currentPlayer id: `, id)
+  state.currentPlayer = players[id]
+  console.log(`updateCurrentPlayer() updated, currentPlayer: `, state.currentPlayer)
+}
+  
   function saveGame() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
   }
@@ -47,7 +59,7 @@
     players.forEach(player => {
       player.lines = [];
     });
-    localStorage.setItem("players", players);
+    localStorage.setItem("players", JSON.stringify(players));
     location.reload();
     dispatch("reset", true);
     // let settings = JSON.parse(localStorage.getItem('gameSettings'))

@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-  
+
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
 
@@ -85,15 +85,27 @@
       settings.gutter
     );
     let gameInProgress = localStorage.getItem("gameInProgress");
+    let playerDetails = localStorage.getItem("playerDetails");
     // console.log(
     //   `gameInProgress as boolean: `,
     //   gameInProgress,
     //   gameInProgress == "true"
     // );
+    if (!(playerDetails == "true")) {
+      console.log(
+        "GameBoard onMount says that player details are ***:::NOT:::*** present"
+      );
+      createDirectionArrays();
+      initializePlayers();
+      console.log("createDirectionArrays completed, lines, ", lines);
+      localStorage.setItem("lines", JSON.stringify(lines));
+    }
     if (gameInProgress == "true") {
       state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
       console.log("GameBoard onMount says that game is in progress");
-      let redrawInterval = (1000 / (settings.rows * settings.columns)).toFixed(2);
+      let redrawInterval = (1000 / (settings.rows * settings.columns)).toFixed(
+        2
+      );
       console.log(`onMount, redrawInterval ${redrawInterval}`);
       setTimeout(() => {
         renderGameBoardReload(redrawInterval);
@@ -102,10 +114,6 @@
       console.log(
         "GameBoard onMount says that game is ***:::NOT:::*** in progress"
       );
-      createDirectionArrays();
-      initializePlayers();
-      console.log("createDirectionArrays completed, lines, ", lines);
-      localStorage.setItem("lines", JSON.stringify(lines));
     }
   });
   function updateGameSettings() {
@@ -120,7 +128,7 @@
   function initializePlayers() {
     let hueOffset = 0;
     // let hueInterval = (360 / settings.numberOfPlayers)
-    let hueInterval = (180 / settings.numberOfPlayers)
+    let hueInterval = 180 / settings.numberOfPlayers;
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players = [
@@ -129,9 +137,8 @@
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          marker: 'x',
-          bgColor: `hsla(${(i + 1) * hueInterval +
-            hueOffset}, 50%, 50%, 1)`,
+          marker: "x",
+          bgColor: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -161,7 +168,11 @@
     let settings = JSON.parse(localStorage.getItem("settings"));
     let players = JSON.parse(localStorage.getItem("players"));
     let history = JSON.parse(localStorage.getItem("gameHistory"));
-    console.log(`renderGameBoardReload => LS gameHistory, players::: `, history, players);
+    console.log(
+      `renderGameBoardReload => LS gameHistory, players::: `,
+      history,
+      players
+    );
 
     console.log(
       `renderGameBoardReload => state.gameHistory::: `,
@@ -204,7 +215,9 @@
           cell.style.width = settings.size + "px";
           cell.style.height = settings.size + "px";
           cell.setAttribute("data-marker", players[p].marker);
-          console.log(`renderGameBoardReload::: players[p].marker ::: ${players[p].marker}`);
+          console.log(
+            `renderGameBoardReload::: players[p].marker ::: ${players[p].marker}`
+          );
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);
@@ -394,7 +407,10 @@
   }
 
   function resetGameBoard() {
-    console.log(`GameBoard => resetGameBoard(), settings rows ${settings.rows} columns ${settings.columns} `, settings)
+    console.log(
+      `GameBoard => resetGameBoard(), settings rows ${settings.rows} columns ${settings.columns} `,
+      settings
+    );
     clearGameBoard();
     setTimeout(() => {
       buildGameBoard(
@@ -403,7 +419,7 @@
         settings.size,
         settings.gutter
       );
-      createDirectionArrays()
+      createDirectionArrays();
       // initializePlayers();
       // console.log(
       //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,
@@ -616,17 +632,20 @@
   }
 
   function setGameHistory() {
-    console.log(`GameBoard => setGameHistory running`)
+    console.log(`GameBoard => setGameHistory running`);
     if (localStorage.getItem("gameHistory")) {
       state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
     }
     state.gameHistory = [...state.gameHistory, state.turnHistory];
     state.turnHistory.forEach((turn, index) => {
-      let pid = turn.player.id
+      let pid = turn.player.id;
       let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
-      console.log(`GameBoard => setGameHistory, turn => turn.player `, turn.player)
+      console.log(
+        `GameBoard => setGameHistory, turn => turn.player `,
+        turn.player
+      );
       move.setAttribute("data-marker", players[pid].marker);
       turn.move = thisMoveNum;
       move.classList.add("locked");
