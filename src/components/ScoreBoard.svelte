@@ -4,7 +4,7 @@
   import CountPoints from "./CountPoints.svelte";
   export let players, state, gameboardMapped;
 
-  $: players
+  $: players;
   // $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
@@ -13,44 +13,114 @@
   });
 
   function resetPlayers() {
-    console.log(`ScoreBoard => resetPlayers due to state.reset from StatusBar => TicTacToe => ScoreBoard`)
+    console.log(
+      `ScoreBoard => resetPlayers due to state.reset from StatusBar => TicTacToe => ScoreBoard`
+    );
   }
 
-
   function playersScored(e) {
-    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail)
-    players = e.detail
+    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail);
+    players = e.detail;
   }
 
   function highlight() {
-document.execCommand("selectall",null,false)
+    document.execCommand("selectall", null, false);
   }
 
   function setPlayersToLS(player) {
-    console.log(`ScoreBoard input on:blur, marker ${player.marker}`)
-    localStorage.setItem('players', JSON.stringify(players))
-    dispatch('playerNameOrMarkerUpdate', players)
+    console.log(`ScoreBoard input on:blur, marker ${player.marker}`);
+    localStorage.setItem("players", JSON.stringify(players));
+    dispatch("playerNameOrMarkerUpdate", players);
   }
-
 </script>
 
 <style lang="scss">
-.player-name {
-  background: black;
-  padding: .5rem;
-  margin: .25rem;
-  border-radius: 2px;
-  width: 100%;
-  color: var(--custom-bg);
-}
-.player-marker {
-  background: black;
-  padding: .5rem;
-  margin: .25rem;
-  border-radius: 2px;
-  // width: 100%;
-  color: var(--custom-bg);
-}
+  .scores-wrap {
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+  }
+  .scores-block {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .scores-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scoreboard-container {
+    // position: absolute;
+    // left: 0;
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-headings {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-totals {
+    background: rgba(0, 0, 155, 0.1);
+  }
+  .scoreboard-direction {
+    background: rgba(0, 0, 155, 0.1);
+    display: flex;
+    // padding: .25rem;
+  }
+
+  .direction-icon {
+    margin-left: 0.5rem;
+    // background: #1a1a1a;
+  }
+  .direction-score-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .direction-score {
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+  }
+
+  .total-score {
+    background: var(--custom-bg);
+    padding: 0.25rem;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .total-score-number {
+    background: black;
+    padding: 0.5rem;
+    margin: 0.25rem;
+    border-radius: 2px;
+    // width: 100%;
+    max-width: 5ch;
+    color: var(--custom-bg);
+    // border: 2px solid var(--custom-bg);
+    // padding: 0.25rem;
+    display: flex;
+    align-items: center;
+  }
+  .player-name {
+    background: black;
+    padding: 0.5rem;
+    margin: 0.25rem;
+    border-radius: 2px;
+    width: 100%;
+    color: var(--custom-bg);
+  }
+  .player-marker {
+    background: black;
+    padding: 0.5rem;
+    margin: 0.25rem;
+    border-radius: 2px;
+    max-width: 2ch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--custom-bg);
+  }
 </style>
 
 <div class="scoreboard-container">
@@ -60,9 +130,22 @@ document.execCommand("selectall",null,false)
   {#each players as player}
     <div class="scoreboard-totals">
       <h3 class="total-score">
-      <input class="player-name" type="text" bind:value={player.name} placeholder={player.name} on:click={highlight} on:blur={() => setPlayersToLS(player)}>
+        <input
+          class="player-name"
+          type="text"
+          bind:value={player.name}
+          placeholder={player.name}
+          on:click={highlight}
+          on:blur={() => setPlayersToLS(player)} />
         <div class="total-score-number">{player.totalScore}</div>
-        <input class="player-marker" type="text" bind:value={player.marker} placeholder={player.marker} maxlength="1" on:click={highlight} on:blur={() => setPlayersToLS(player)}>
+        <input
+          class="player-marker"
+          type="text"
+          bind:value={player.marker}
+          placeholder={player.marker}
+          maxlength="1"
+          on:click={highlight}
+          on:blur={() => setPlayersToLS(player)} />
       </h3>
       <div class="scoreboard-player">
         {#each player.scores as direction, i}

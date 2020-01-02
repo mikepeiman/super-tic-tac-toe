@@ -786,67 +786,7 @@ function storePlayers() {
       background: rgba(0, 25, 75, 0.5);
     }
   }
-  .dir-1 {
-    display: flex;
-    flex-direction: column;
-  }
-  .scores-wrap {
-    display: flex;
-    flex-direction: column;
-    background: #1a1a1a;
-  }
-  .scores-block {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .scores-section {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .scoreboard-container {
-    // position: absolute;
-    // left: 0;
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-headings {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-totals {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-direction {
-    background: rgba(0, 0, 155, 0.1);
-    display: flex;
-    // padding: .25rem;
-  }
-
-  .direction-icon {
-    margin-left: 0.5rem;
-    // background: #1a1a1a;
-  }
-  .direction-score-section {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .direction-score {
-    justify-self: flex-end;
-    margin-right: 0.5rem;
-  }
-
-  .total-score {
-    background: var(--custom-bg);
-    padding: 0.25rem;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .total-score-number {
-    border: 2px solid white;
-    padding: 0.25rem;
-  }
+  
 </style>
 
 <h1>Tic Tac Toe</h1>
