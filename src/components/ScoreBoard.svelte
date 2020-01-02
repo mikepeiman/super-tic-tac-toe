@@ -1,21 +1,31 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let players, state, gameboardMapped, highlighted;
+  export let state, players, highlighted;
 
-  $: players, resetPlayers();
-  // $: state.reset ? resetPlayers() : (state.reset = false);
+  $: players = [];
+  $: state = {};
+  // $: players, state, updateState()
+  // $: state.reset ? updateState() : (state.reset = false);
 
   onMount(() => {
-    console.log(`ScoreBoard onMount(), players`);
-    console.log(players);
+    console.log(`ScoreBoard onMount(), players, state `, players, state);
+
   });
 
-  function resetPlayers() {
+  afterUpdate(() => {
+    // players = JSON.parse(localStorage.getItem("players"));
+    // state = JSON.parse(localStorage.getItem("state"));
+  })
+
+  function updateState() {
     console.log(
-      `ScoreBoard => resetPlayers triggered due to players change from TicTacToe => ScoreBoard`
+      `ScoreBoard => updateState triggered due to players change from TicTacToe => ScoreBoard`,
+      players
     );
+    players = JSON.parse(localStorage.getItem("players"));
+    state = JSON.parse(localStorage.getItem("state"));
   }
 
   function playersScored(e) {

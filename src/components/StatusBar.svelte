@@ -29,19 +29,19 @@
     dispatch("tally", true);
   }
 
-  function updateCurrentPlayer() {
-    console.log(
-      `updateCurrentPlayer() run, currentPlayer: `,
-      state.currentPlayer
-    );
-    let id = currentPlayer.id;
-    console.log(`updateCurrentPlayer() run, currentPlayer id: `, id);
-    state.currentPlayer = players[id];
-    console.log(
-      `updateCurrentPlayer() updated, currentPlayer: `,
-      state.currentPlayer
-    );
-  }
+  // function updateCurrentPlayer() {
+  //   console.log(
+  //     `updateCurrentPlayer() run, currentPlayer: `,
+  //     state.currentPlayer
+  //   );
+  //   let id = currentPlayer.id;
+  //   console.log(`updateCurrentPlayer() run, currentPlayer id: `, id);
+  //   state.currentPlayer = players[id];
+  //   console.log(
+  //     `updateCurrentPlayer() updated, currentPlayer: `,
+  //     state.currentPlayer
+  //   );
+  // }
 
   function saveGame() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
@@ -51,8 +51,9 @@
   }
 
   function playersScored(e) {
-    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail);
+    console.log(`StatusBar receiving dispatch of playersScored, `, e.detail);
     players = e.detail;
+    dispatch('playersScored')
   }
 
   function reset() {
@@ -81,6 +82,8 @@
 
     players.forEach(player => {
       player.lines = [];
+      player.totalScore = 0;
+      player.dirScoresByIndex = [0,0,0,0]
     });
     localStorage.setItem("players", JSON.stringify(players));
     location.reload();

@@ -51,20 +51,20 @@
   }
 
   function score(settings, direction, player, idx) {
-    console.log(`score function, settings `, settings)
+    // console.log(`score function, settings `, settings)
     // $: settings.cellsToScore
-    console.log(
-      `score called with direction and player and idx ${idx}`,
-      direction,
-      player
-    );
+    // console.log(
+    //   `score called with direction and player and idx ${idx}`,
+    //   direction,
+    //   player
+    // );
 
     let dirLines = [];
     let dirScore = 0;
     let name = direction.name;
-    console.log(
-      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
-    );
+    // console.log(
+    //   `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
+    // );
 
     direction.lines.forEach((line, index) => {
       // console.log(`each line ${index}`, line);
@@ -78,7 +78,7 @@
       let shorterDimension = rows < columns ? rows : columns
       let len = line.length
       // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
-      console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
+      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
       let equalSides = rows === columns ? rows : false
       // console.log(`has equal sides? ${equalSides}`)
       let lineBonus = bonusForCompleteRow;
@@ -149,10 +149,10 @@
       dirScore += points;
     });
     players = players;
-    console.log(
-      `score closing with direction score ${dirScore} | player: `,
-      player
-    );
+    // console.log(
+    //   `score closing with direction score ${dirScore} | player: `,
+    //   player
+    // );
     return dirScore;
   }
 

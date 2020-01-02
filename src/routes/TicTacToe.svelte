@@ -809,14 +809,14 @@
     <p>waiting for the promise to resolve...</p>
   {:then players}
     <!-- promise was fulfilled -->
-    <ScoreBoard {players} {state} on:playerNameOrMarkerUpdate={storePlayers} />
+    <ScoreBoard {state} {players} on:playerNameOrMarkerUpdate={storePlayers} />
   {:catch error}
     <!-- promise was rejected -->
     <p>Something went wrong: {error.message}</p>
-    <ScoreBoard {players} {state} on:playerNameOrMarkerUpdate={storePlayers} />
+    <ScoreBoard {state} {players} on:playerNameOrMarkerUpdate={storePlayers} />
   {/await}
   <div class="gameboard-container">
-    <StatusBar {state} {players} on:reset={resetNotification} />
+    <StatusBar {state} {players} on:reset={resetNotification} on:playersScored={storePlayers} />
     <MainMenu on:updateGameSettings={updateGameSettings} {players} {settings} />
     {#await players}
       <!-- promise is pending -->
