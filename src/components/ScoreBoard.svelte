@@ -2,9 +2,9 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let players, state, gameboardMapped, highlighted
+  export let players, state, gameboardMapped, highlighted;
 
-  $: players, resetPlayers()
+  $: players, resetPlayers();
   // $: state.reset ? resetPlayers() : (state.reset = false);
 
   onMount(() => {
@@ -28,12 +28,18 @@
   }
 
   function setPlayersToLS(player) {
-    console.log(`ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `, state.currentPlayer);
+    console.log(
+      `ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `,
+      state.currentPlayer
+    );
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("state", JSON.stringify(state));
     // localStorage.setItem("gameInProgress", true);
     localStorage.setItem("playerDetails", true);
-    localStorage.setItem("currentPlayer", JSON.stringify(players[state.currentPlayer.id]));
+    localStorage.setItem(
+      "currentPlayer",
+      JSON.stringify(players[state.currentPlayer.id])
+    );
     dispatch("playerNameOrMarkerUpdate", players);
   }
 </script>
@@ -54,29 +60,34 @@
   }
 
   .scoreboard-container {
-    // position: absolute;
-    // left: 0;
-    background: rgba(0, 0, 155, 0.1);
+    background: #1a1a1a;
   }
-  .scoreboard-headings {
-    background: rgba(0, 0, 155, 0.1);
+  .scoreboard-player {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.5);
   }
+  // .scoreboard-headings {
+  // }
   .scoreboard-totals {
-    background: rgba(0, 0, 155, 0.1);
+    background: var(--custom-bg);
+    margin: 1rem;
   }
   .scoreboard-direction {
-    background: rgba(0, 0, 155, 0.1);
+    // background: rgba(0, 0, 155, 0.5);
     display: flex;
-    // padding: .25rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 100;
   }
 
   .direction-icon {
-    margin-left: 0.5rem;
-    // background: #1a1a1a;
+    margin: 0.5rem;
+    filter: brightness(1) invert(1) opacity(0.5);
   }
   .direction-score-section {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
   }
   .direction-score {
@@ -87,7 +98,7 @@
   .total-score {
     background: var(--custom-bg);
     padding: 0.25rem;
-    margin: 0;
+    margin: 0 0.5rem;
     display: flex;
     justify-content: space-between;
   }
@@ -123,54 +134,60 @@
     color: var(--custom-bg);
   }
   .highlighted {
-    border: 10px solid var(--custom-bg);
-    background: white;
+    // border: 10px solid var(--custom-bg);
+    border: 5px solid white;
+    // background: rgba(255, 255, 255, 0.5);
   }
 </style>
 
 {#await players then players}
-<div class="scoreboard-container">
-  <div class="scoreboard-controls">
-    <CountPoints {players} {gameboardMapped} on:playersScored={playersScored} />
-  </div>
-  {#each players as player}
-    <div class="scoreboard-totals">
-      <h3 class="total-score" class:highlighted={state.currentPlayer.id == player.id}>
-        <input
-          class="player-name"
-          type="text"
-          bind:value={player.name}
-          placeholder={player.name}
-          on:click={highlight}
-          on:blur={() => setPlayersToLS(player)} />
-
-        <input
-          class="player-marker"
-          type="text"
-          bind:value={player.marker}
-          placeholder={player.marker}
-          maxlength="1"
-          on:click={highlight}
-          on:blur={() => setPlayersToLS(player)} />
-        <div class="total-score-number">{player.totalScore}</div>
-      </h3>
-      <div class="scoreboard-player">
-        {#each player.scores as direction, i}
-          <div class="scoreboard-direction">
-            <div class="direction-score-section">
-              <img
-                class="direction-icon"
-                src={direction.iconSrc}
-                width="20"
-                height="20"
-                alt="Icon for direction {direction.name}" />
-              <div class="direction-name">{direction.name}:</div>
-              <div class="direction-score">{player.dirScoresByIndex[i]}</div>
-            </div>
-          </div>
-        {/each}
-      </div>
+  <div class="scoreboard-container">
+    <div class="scoreboard-controls">
+      <CountPoints
+        {players}
+        {gameboardMapped}
+        on:playersScored={playersScored} />
     </div>
-  {/each}
-</div>
+    {#each players as player}
+      <div class="scoreboard-totals" class:highlighted={state.currentPlayer.id == player.id}>
+        <h3
+          class="total-score"
+          >
+          <input
+            class="player-name"
+            type="text"
+            bind:value={player.name}
+            placeholder={player.name}
+            on:click={highlight}
+            on:blur={() => setPlayersToLS(player)} />
+
+          <input
+            class="player-marker"
+            type="text"
+            bind:value={player.marker}
+            placeholder={player.marker}
+            maxlength="1"
+            on:click={highlight}
+            on:blur={() => setPlayersToLS(player)} />
+          <div class="total-score-number">{player.totalScore}</div>
+        </h3>
+        <div class="scoreboard-player">
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              <div class="direction-score-section">
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
+                <!-- <div class="direction-name">{direction.name}:</div> -->
+                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+    {/each}
+  </div>
 {/await}

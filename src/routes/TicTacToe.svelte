@@ -88,11 +88,11 @@
     if (playerDetails == "true") {
       console.log("TicTacToe => onMount playerDetails true ");
       players = JSON.parse(localStorage.getItem("players"));
-      reloadPlayers(playerDetails);
+      reloadPlayers();
       // state.currentPlayer = players[0];
       // localStorage.setItem("state", JSON.stringify(state));
     } else {
-      reloadPlayers(playerDetails);
+      reloadPlayers();
       state.currentPlayer = players[0];
       localStorage.setItem("state", JSON.stringify(state));
       console.log("TicTacToe => onMount playerDetails FALSE ");
@@ -160,7 +160,7 @@
   }
 
   function addStyles() {
-    let scoreHeadings = document.querySelectorAll(".total-score");
+    let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
     console.log(
       `addStyle function, scoreHeadings for total-score: `,
       scoreHeadings
@@ -200,10 +200,11 @@
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
-  function reloadPlayers(playerDetails) {
+  function reloadPlayers() {
     players = JSON.parse(localStorage.getItem("players"));
     console.log(`reloadPlayers, from LS: `, players);
-    playerDetails == "true" ? true : state.currentPlayer = players[0];
+    state.currentPlayer = players[0];
+
     players.forEach(player => {
       player.scores.forEach(direction => {
         direction.lines.forEach(line => {

@@ -53,7 +53,18 @@ function updateCurrentPlayer() {
     localStorage.setItem("leftToRight", []);
 
     localStorage.setItem("lines", []);
-    localStorage.setItem("state", "");
+        let currentPlayerId = state.currentPlayer.id
+    localStorage.setItem("state", {
+    lastTicked: "",
+    currentPlayer: {},
+    movesRemaining: 0,
+    turn: 0,
+    gameHistory: [],
+    turnHistory: [],
+    clickCount: 0,
+    moveNumber: 0,
+    reset: false
+  });
     localStorage.setItem("gameInProgress", false);
 
     players.forEach(player => {
