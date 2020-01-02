@@ -804,42 +804,29 @@
 <h1>Tic Tac Toe</h1>
 
 <div class="page-container">
-  {#await players}
-    <!-- promise is pending -->
-    <p>waiting for the promise to resolve...</p>
-  {:then players}
-    <!-- promise was fulfilled -->
-    <ScoreBoard {state} {players} on:playerNameOrMarkerUpdate={storePlayers} />
-  {:catch error}
-    <!-- promise was rejected -->
-    <p>Something went wrong: {error.message}</p>
-    <ScoreBoard {state} {players} on:playerNameOrMarkerUpdate={storePlayers} />
-  {/await}
-  <div class="gameboard-container">
-    <StatusBar {state} {players} on:reset={resetNotification} on:playersScored={storePlayers} />
-    <MainMenu on:updateGameSettings={updateGameSettings} {players} {settings} />
-    {#await players}
-      <!-- promise is pending -->
-      <p>waiting for the promise to resolve...</p>
-    {:then players}
-      <!-- promise was fulfilled -->
-      <GameBoard
-        {gameboardMapped}
-        {settings}
+  {#await players then players}
+    {#await state then state}
+      <ScoreBoard
         {state}
         {players}
-        on:move={moveNotification} />
-    {:catch error}
-      <!-- promise was rejected -->
-      <p>Something went wrong: {error.message}</p>
-      <GameBoard
-        {gameboardMapped}
-        {settings}
-        {state}
-        {players}
-        on:move={moveNotification} />
+        on:playerNameOrMarkerUpdate={storePlayers} />
+      <div class="gameboard-container">
+        <StatusBar
+          {state}
+          {players}
+          on:reset={resetNotification}
+          on:playersScored={storePlayers} />
+        <MainMenu
+          on:updateGameSettings={updateGameSettings}
+          {players}
+          {settings} />
+        <GameBoard
+          {gameboardMapped}
+          {settings}
+          {state}
+          {players}
+          on:move={moveNotification} />
+      </div>
     {/await}
-
-  </div>
-
+  {/await}
 </div>

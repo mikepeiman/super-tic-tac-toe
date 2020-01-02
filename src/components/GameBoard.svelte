@@ -215,9 +215,6 @@
           cell.style.width = settings.size + "px";
           cell.style.height = settings.size + "px";
           cell.setAttribute("data-marker", players[p].marker);
-          console.log(
-            `renderGameBoardReload::: players[p].marker ::: ${players[p].marker}`
-          );
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);
@@ -459,8 +456,9 @@
   }
 
   function playMove(cell) {
+    state = JSON.parse(localStorage.getItem('state'))
     state.clickCount++;
-    console.log(`playMove clickCount: ${state.clickCount}`);
+    console.log(`########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${state.currentPlayer.name}`);
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
     // cell.setAttribute("row", id[1]);

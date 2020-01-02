@@ -5,23 +5,24 @@
   export let state, players, gameboardMapped;
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-  $: currentPlayer = state.currentPlayer;
-  $: players,
-    console.log(
-      `StatusBar players change, players, state.currentPlayer `,
-      players,
-      state.currentPlayer
-    ),
-    (currentPlayer = state.currentPlayer);
-  $: state,
-    console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
+  $: currentPlayer = {}
+  // $: players
+  // $: state
+  // console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
 
   onMount(() => {
+    console.log(`//////////////     StatusBar => onMount()`)
     currentPlayer = state.currentPlayer;
   });
 
   afterUpdate(() => {
-    console.log("StatusBar => aterUpdate() fired");
+    console.log("StatusBar => aterUpdate() fired #1, currentPlayer ", state.currentPlayer);
+    if (localStorage.getItem("state").length > 0) {
+      state = JSON.parse(localStorage.getItem("state"));
+      currentPlayer = state.currentPlayer;
+      // currentPlayer = state.currentPlayer;
+    }
+    console.log("StatusBar => aterUpdate() fired #2, currentPlayer ", state.currentPlayer);
   });
 
   function countPoints() {
@@ -53,7 +54,7 @@
   function playersScored(e) {
     console.log(`StatusBar receiving dispatch of playersScored, `, e.detail);
     players = e.detail;
-    dispatch('playersScored')
+    dispatch("playersScored");
   }
 
   function reset() {
@@ -83,7 +84,7 @@
     players.forEach(player => {
       player.lines = [];
       player.totalScore = 0;
-      player.dirScoresByIndex = [0,0,0,0]
+      player.dirScoresByIndex = [0, 0, 0, 0];
     });
     localStorage.setItem("players", JSON.stringify(players));
     location.reload();
@@ -129,7 +130,7 @@
 </style>
 
 {#await players then players}
-  {#await state then state}
+  <!-- {#await state then state} -->
     <div
       class="player-indicator player-0"
       style={`--custom-bg: ${currentPlayer.bgColor}`}>
@@ -160,5 +161,5 @@
         </button>
       </div>
     </div>
-  {/await}
+  <!-- {/await} -->
 {/await}

@@ -6,18 +6,21 @@
 
   $: players = [];
   $: state = {};
+  $: currentPlayer = {}
   // $: players, state, updateState()
   // $: state.reset ? updateState() : (state.reset = false);
 
   onMount(() => {
-    console.log(`ScoreBoard onMount(), players, state `, players, state);
-
+    console.log(`ScoreBoard => onMount(), players, state `, players, state);
   });
 
   afterUpdate(() => {
+    console.log(`ScoreBoard => afterUpdate() #1, players, state `, players, state);
     // players = JSON.parse(localStorage.getItem("players"));
-    // state = JSON.parse(localStorage.getItem("state"));
-  })
+    state = JSON.parse(localStorage.getItem("state"));
+    console.log(`ScoreBoard => afterUpdate() #2, players, state `, players, state);
+    currentPlayer = state.currentPlayer
+  });
 
   function updateState() {
     console.log(
@@ -151,53 +154,51 @@
 </style>
 
 {#await players then players}
-  <div class="scoreboard-container">
-    <!-- <div class="scoreboard-controls">
-      <CountPoints
-        {players}
-        {gameboardMapped}
-        on:playersScored={playersScored} />
-    </div> -->
-    {#each players as player}
-      <div
-        class="scoreboard-totals"
-        class:highlighted={state.currentPlayer.id == player.id}>
-        <h3 class="total-score">
-          <input
-            class="player-name"
-            type="text"
-            bind:value={player.name}
-            placeholder={player.name}
-            on:click={highlight}
-            on:blur={() => setPlayersToLS(player)} />
+  {#await state then state}
+    <div class="scoreboard-container">
+      {#each players as player}
+        <div
+          class="scoreboard-totals"
+          class:highlighted={currentPlayer.id == player.id}>
+          <h3 class="total-score">
+            <input
+              class="player-name"
+              type="text"
+              bind:value={player.name}
+              placeholder={player.name}
+              on:click={highlight}
+              on:blur={() => setPlayersToLS(player)} />
 
-          <input
-            class="player-marker"
-            type="text"
-            bind:value={player.marker}
-            placeholder={player.marker}
-            maxlength="1"
-            on:click={highlight}
-            on:blur={() => setPlayersToLS(player)} />
-          <div class="total-score-number">{player.totalScore}</div>
-        </h3>
-        <div class="scoreboard-player">
-          {#each player.scores as direction, i}
-            <div class="scoreboard-direction">
-              <div class="direction-score-section">
-                <img
-                  class="direction-icon"
-                  src={direction.iconSrc}
-                  width="20"
-                  height="20"
-                  alt="Icon for direction {direction.name}" />
-                <!-- <div class="direction-name">{direction.name}:</div> -->
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+            <input
+              class="player-marker"
+              type="text"
+              bind:value={player.marker}
+              placeholder={player.marker}
+              maxlength="1"
+              on:click={highlight}
+              on:blur={() => setPlayersToLS(player)} />
+            <div class="total-score-number">{player.totalScore}</div>
+          </h3>
+          <div class="scoreboard-player">
+            {#each player.scores as direction, i}
+              <div class="scoreboard-direction">
+                <div class="direction-score-section">
+                  <img
+                    class="direction-icon"
+                    src={direction.iconSrc}
+                    width="20"
+                    height="20"
+                    alt="Icon for direction {direction.name}" />
+                  <!-- <div class="direction-name">{direction.name}:</div> -->
+                  <div class="direction-score">
+                    {player.dirScoresByIndex[i]}
+                  </div>
+                </div>
               </div>
-            </div>
-          {/each}
+            {/each}
+          </div>
         </div>
-      </div>
-    {/each}
-  </div>
+      {/each}
+    </div>
+  {/await}
 {/await}
