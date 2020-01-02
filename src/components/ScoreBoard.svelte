@@ -28,8 +28,10 @@
   }
 
   function setPlayersToLS(player) {
-    console.log(`ScoreBoard input on:blur, marker ${player.marker}`);
+    console.log(`ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `, state.currentPlayer);
     localStorage.setItem("players", JSON.stringify(players));
+    
+    localStorage.setItem("currentPlayer", JSON.stringify(players[state.currentPlayer.id]));
     dispatch("playerNameOrMarkerUpdate", players);
   }
 </script>

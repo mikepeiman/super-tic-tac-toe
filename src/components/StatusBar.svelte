@@ -4,7 +4,7 @@
   export let state, players;
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-  $: currentPlayer = {}
+  $: currentPlayer = {};
   $: () => {
     console.log(`StatusBar on players change`, players);
     loadGame();
@@ -18,7 +18,6 @@
     // console.log(`players[0] `, players[0]);
     // console.log(`state.currentPlayer: `, state.currentPlayer);
   });
-
 
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
@@ -92,22 +91,15 @@
 </style>
 
 {#await players then players}
-  <div
-    class="player-indicator player-0"
-    style={`--custom-bg: ${currentPlayer.bgColor}`}>
-    {#await state}
-
-      <h1>...waiting for state in ScoreBoard...</h1>
-    {:then state}
-
-      <h2 class="player-indicator-heading">
-        Player: {state.currentPlayer.name}
-      </h2>
+  {#await state then state}
+    <div
+      class="player-indicator player-0"
+      style={`--custom-bg: ${currentPlayer.bgColor}`}>
+      <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
       <h2 class="player-indicator-heading">
         Turn Moves: {state.movesRemaining}
       </h2>
       <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
-
       <div class="buttons-wrapper">
         <button class="control-button" id="reset-game-button" on:click={reset}>
           Reset game
@@ -125,10 +117,6 @@
           Load game
         </button>
       </div>
-
-      <!-- {:catch error}
-    <h1>Error! Message: {error}</h1> -->
-    {/await}
-
-  </div>
+    </div>
+  {/await}
 {/await}
