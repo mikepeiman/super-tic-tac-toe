@@ -9,7 +9,7 @@
   $: settings = JSON.parse(localStorage.getItem('settings'))
 
   onMount(() => {
-    console.log(`CountPoints onMount(), players, gameboardMapped`);
+    console.log(`CountPoints onMount(), players, settings`, players, settings);
     // console.log(players, gameboardMapped);
   });
 
@@ -70,7 +70,32 @@
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
-      let lineBonus = settings.bonusForCompleteRow;
+      let rows = settings.rows
+      let columns = settings.columns
+      let bonusForCompleteRow = settings.bonusForCompleteRow
+      let longerDimension = rows > columns ? rows : columns
+      let shorterDimension = rows < columns ? rows : columns
+      let len = line.length
+      // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
+      console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
+      let equalSides = rows === columns ? rows : false
+      // console.log(`has equal sides? ${equalSides}`)
+      let lineBonus = bonusForCompleteRow;
+       if (len >= longerDimension) {
+
+        lineBonus = bonusForCompleteRow 
+        console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
+
+      } else if(len >= shorterDimension) {
+        
+        lineBonus = Math.ceil(bonusForCompleteRow / (longerDimension / shorterDimension))
+        console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
+
+      } else {
+
+        lineBonus = 0
+        console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
+      }
       line.forEach(move => {
         // console.log(`scoring ${move.id}`, move);
         let p = move.player;
