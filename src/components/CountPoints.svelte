@@ -6,11 +6,12 @@
   // export let gameboardMapped
 
   $: gameboardMapped = [];
-  $: settings = JSON.parse(localStorage.getItem('settings'))
+  // $: settings = JSON.parse(localStorage.getItem('settings'))
+  $: settings = {}
 
   onMount(() => {
     console.log(`CountPoints onMount(), players, settings`, players, settings);
-    // console.log(players, gameboardMapped);
+    settings = JSON.parse(localStorage.getItem('settings'))
   });
 
   function countPoints() {

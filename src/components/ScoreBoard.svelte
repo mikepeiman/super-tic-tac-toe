@@ -93,13 +93,10 @@
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;
-    // width: 100%;
     max-width: 5ch;
+    min-width: 3ch;
     color: var(--custom-bg);
-    // border: 2px solid var(--custom-bg);
-    // padding: 0.25rem;
-    display: flex;
-    align-items: center;
+    text-align: right;
   }
   .player-name {
     background: black;

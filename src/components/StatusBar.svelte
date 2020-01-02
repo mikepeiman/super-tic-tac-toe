@@ -3,13 +3,15 @@
   const dispatch = createEventDispatcher();
   export let state, players;
 
-  // $: state;
+  // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+  $: currentPlayer = {}
   $: () => {
     console.log(`StatusBar on players change`, players);
     loadGame();
   };
 
   onMount(() => {
+    currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     // console.log(`StatusBar onMount(), state, players`, state, players);
     // players = JSON.parse(localStorage.getItem("players"));
     // state.currentPlayer = players[0];
@@ -17,18 +19,12 @@
     // console.log(`state.currentPlayer: `, state.currentPlayer);
   });
 
-  // afterUpdate(() => {
-  //   console.log(`StatusBar afterUpdate(), state, players`, state, players);
-  //   players = JSON.parse(localStorage.getItem("players"));
-  //   state.currentPlayer = players[0];
-  //   console.log(`players[0] `, players[0]);
-  //   console.log(`state.currentPlayer: `, state.currentPlayer);
-  // });
 
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
     dispatch("tally", true);
   }
+
   function saveGame() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
   }
@@ -44,14 +40,14 @@
     localStorage.setItem("diagonalDownRight", []);
     localStorage.setItem("topToBottom", []);
     localStorage.setItem("leftToRight", []);
-    
+
     localStorage.setItem("lines", []);
     localStorage.setItem("state", "");
     localStorage.setItem("gameInProgress", false);
 
     players.forEach(player => {
-      player.lines = []
-    })
+      player.lines = [];
+    });
     localStorage.setItem("players", players);
     location.reload();
     dispatch("reset", true);
@@ -95,12 +91,15 @@
   }
 </style>
 
-<div class="player-indicator player-0">
-  {#await state}
+{#await players then players}
+  <div
+    class="player-indicator player-0"
+    style={`--custom-bg: ${currentPlayer.bgColor}`}>
+    {#await state}
 
-    <h1>...waiting for state in ScoreBoard...</h1>
-  {:then state}
-    {#await players then players}
+      <h1>...waiting for state in ScoreBoard...</h1>
+    {:then state}
+
       <h2 class="player-indicator-heading">
         Player: {state.currentPlayer.name}
       </h2>
@@ -126,8 +125,10 @@
           Load game
         </button>
       </div>
+
+      <!-- {:catch error}
+    <h1>Error! Message: {error}</h1> -->
     {/await}
-  {:catch error}
-    <h1>Error! Message: {error}</h1>
-  {/await}
-</div>
+
+  </div>
+{/await}
