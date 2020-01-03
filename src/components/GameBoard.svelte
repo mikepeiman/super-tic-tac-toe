@@ -91,6 +91,7 @@
     settings = $storeSettings
     currentPlayer = $storeCurrentPlayer
     gameHistory = $storeMovesPlayedHistory
+    state = $storeState
     buildGameBoard(
       settings.rows,
       settings.columns,
@@ -639,6 +640,17 @@
     justify-content: flex-start;
     align-items: center;
   }
+  
+  .debug {
+    display: flex;
+  }
+
+  .debug-section {
+    margin: 1rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 1);
+    border: 3px solid rgba(255, 155, 200, 0.5);
+  }
 </style>
 
 <div class="component-wrapper">
@@ -655,4 +667,38 @@
     </div>
   {/each}
 
+</div>
+
+<div class="debug">
+  <div class="debug-section">
+    <h2>storeState</h2>
+    <div>.movesRemaining: {$storeState.movesRemaining}</div>
+    <div>.clickCount: {$storeState.clickCount}</div>
+    <div>.currentPlayer.name: {$storeState.currentPlayer.name}</div>
+    <div>.reset: {$storeState.reset}</div>
+  </div>
+  <div class="debug-section">
+    <h2>storeSettings</h2>
+    <div>.rows: {$storeSettings.rows}</div>
+    <div>.columns: {$storeSettings.columns}</div>
+    <div>.numberOfPlayers: {$storeSettings.numberOfPlayers}</div>
+    <div>.cellsToScore: {$storeSettings.cellsToScore}</div>
+  </div>
+  <div class="debug-section">
+    <h2>storePlayers</h2>
+    {#each $storePlayers as player}
+      <div>.id: {player.id}</div>
+      <div>.name: {player.name}</div>
+      <div>.bgColor: {player.bgColor}</div>
+      <div>.totalScore: {player.totalScore}</div>
+    {/each}
+  </div>
+  <div class="debug-section">
+    <h2>storeMovesPlayedHistory</h2>
+    {#each $storeMovesPlayedHistory as turn}
+      {#each turn as move}
+        <div>{move.id}-{move.player.name}</div>
+      {/each}
+    {/each}
+  </div>
 </div>
