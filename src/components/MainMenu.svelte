@@ -2,9 +2,20 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   export let players, settings;
+  import { writable } from "svelte/store";
+  const xSettings = writable(0);
+  const xState = writable(0);
+  xSettings.subscribe(value => {
+    console.log(`MainMenu => xSettings.subscribe value => `, value);
+  });
+  xState.subscribe(value => {
+    console.log(`MainMenu => xState.subscribe value => `, value);
+  });
 
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
+  $: state = xState
+
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`);
@@ -30,6 +41,7 @@
 </style>
 
 <h2>Layout and Game Options</h2>
+{state.clickCount}
 <div class="form-wrap">
   <label for="players">
     # Of Players:

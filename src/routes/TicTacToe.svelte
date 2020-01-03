@@ -4,29 +4,12 @@
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
+  import { writable } from "svelte/store";
+	import { xState, xSettings } from './stores.js';
 
-  $: settings = {
-    numberOfPlayers: 3,
-    movesPerTurn: 3,
-    cellsToScore: 3,
-    bonusForCompleteRow: 5,
-    rows: 5,
-    columns: 15,
-    size: 24,
-    gutter: 0
-  };
+  $: settings = $xSettings;
 
-  $: state = {
-    lastTicked: "",
-    currentPlayer: {},
-    movesRemaining: 0,
-    turn: 0,
-    gameHistory: [],
-    turnHistory: [],
-    clickCount: 0,
-    moveNumber: 0,
-    reset: false
-  };
+  $: state = $xState;
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: players = [];
@@ -83,7 +66,7 @@
       players = JSON.parse(localStorage.getItem("players"));
       reloadPlayers();
     } else {
-      reloadPlayers();
+      initializePlayers();
       if (!state.currentPlayer.name == "undefined") {
         state.currentPlayer = players[0];
         console.log(
@@ -91,7 +74,6 @@
           players,
           state.currentPlayer.name
         );
-        // localStorage.setItem("state", JSON.stringify(state));
         console.log(
           `TicTacToe => onMount playerDetails FALSE moveRemaining ${state.movesRemaining} state: `,
           state
@@ -110,6 +92,9 @@
     }
     state.movesRemaining = settings.movesPerTurn;
     localStorage.setItem("state", JSON.stringify(state));
+    xState.set(state)
+    // let testSettings = xSettings
+    console.log(`xSettings from state: `, $xSettings)
 
     setTimeout(() => {
       addStyles();
@@ -145,30 +130,6 @@
     localStorage.setItem("settings", JSON.stringify(settings));
   }
 
-  function saveGame() {
-    localStorage.setItem(
-      "savedGame",
-      JSON.stringify({ gameboard: gameboardMapped, players: players })
-    );
-
-    let test = localStorage.getItem("savedGame");
-    console.log("saveGame calling LS: ");
-    console.log(JSON.parse(test));
-  }
-
-  function loadGame() {
-    let saved = JSON.parse(localStorage.getItem("gameHistory"));
-    let settings = JSON.parse(localStorage.getItem("settings"));
-    let ps = JSON.parse(localStorage.getItem("players"));
-    console.log(
-      `check for saved game: gameHistory, players, settings: `,
-      saved,
-      ps,
-      settings
-    );
-    renderGameBoardReload();
-  }
-
   function addStyles() {
     let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
     console.log(
@@ -193,6 +154,7 @@
             0}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
+          marker: "x",
           dirScoresByIndex: [0, 0, 0, 0]
         }
       ];

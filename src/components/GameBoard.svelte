@@ -1,5 +1,15 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
+  import { writable } from "svelte/store";
+  const xSettings = writable(0);
+  const xState = writable(0);
+
+  xSettings.subscribe(value => {
+    console.log(`GameBoard => xSettings.subscribe value => `, value);
+  });
+  xState.subscribe(value => {
+    console.log(`GameBoard => xState.subscribe value => `, value);
+  });
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -18,7 +28,7 @@
     `GameBoard state updateGameSettings: `,
     state.updateGameSettings
   );
-    // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
@@ -461,6 +471,7 @@
   function playMove(cell) {
     state = JSON.parse(localStorage.getItem("state"));
     state.clickCount++;
+    xState.set(state);
     console.log(
       `### playMove clickCount: ${state.clickCount}, ### currentPlayer, movesRemaining ${state.movesRemaining}, state, : ${state.currentPlayer.name}`,
       state

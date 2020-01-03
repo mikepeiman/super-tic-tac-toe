@@ -3,6 +3,19 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   export let state, players, highlighted;
+  import { writable } from "svelte/store";
+  const xSettings = writable(0);
+  const xState = writable(0);
+
+  xSettings.subscribe(value => {
+    console.log(`ScoreBoard => xSettings.subscribe value => `, value);
+  });
+  xState.subscribe(value => {
+    console.log(`ScoreBoard => xState.subscribe value => `, value);
+  });
+
+
+  xState.set("ScoreBoard");
 
   $: players = [];
   $: state = {};
@@ -33,6 +46,7 @@
       players,
       state
     );
+      xSettings.set(state);
     currentPlayer = state.currentPlayer;
     players = players;
   });
@@ -40,11 +54,12 @@
   function updateState(e) {
     console.log(
       `ScoreBoard => updateState triggered due to scoring from CountPoints`,
-      state, e.detail
+      state,
+      e.detail
     );
     players = JSON.parse(localStorage.getItem("players"));
     state = JSON.parse(localStorage.getItem("state"));
-    dispatch("updateState")
+    dispatch("updateState");
   }
 
   function playersScored(e) {
