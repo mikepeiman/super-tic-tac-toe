@@ -123,6 +123,7 @@
 
 <!-- {#await players then players} -->
 <!-- {#await state then state} -->
+{#if currentPlayer.name}
 <div
   class="player-indicator player-0"
   style={`--custom-bg: ${currentPlayer.bgColor}`}>
@@ -142,5 +143,12 @@
     </button>
   </div>
 </div>
+{:else}
+<div
+  class="player-indicator player-0"
+  style={`--custom-bg: hsla(170, 50%, 50%, 1);`}>
+  <h2 class="player-indicator-heading">Loading players data...</h2>
+</div>
+{/if}
 <!-- {/await} -->
 <!-- {/await} -->

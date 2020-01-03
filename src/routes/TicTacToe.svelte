@@ -35,9 +35,9 @@
     console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
   });
 
-  $: state = {};
-  $: players = {};
-  $: settings = {};
+  $: state = null
+  $: players = null
+  $: settings = null
   $: gameboardMapped = [];
 
   onMount(() => {
@@ -224,7 +224,7 @@
 <h1>Tic Tac Toe</h1>
 
 <div class="page-container">
-  <!-- {#await players then players} -->
+  {#await players then players}
   <!-- {#await state then state} -->
   <ScoreBoard on:playerNameOrMarkerUpdate={storePlayers} />
   <div class="gameboard-container">
@@ -236,5 +236,5 @@
       on:move={moveNotification} />
   </div>
   <!-- {/await} -->
-  <!-- {/await} -->
+  {/await}
 </div>
