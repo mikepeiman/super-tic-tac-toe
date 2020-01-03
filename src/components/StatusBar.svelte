@@ -21,19 +21,18 @@
   onMount(() => {
     players = $storePlayers;
     state = $storeState;
-    currentPlayer = state.currentPlayer;
+    currentPlayer = $storeCurrentPlayer;
     console.log(`//////////////     StatusBar => onMount() `, state, players);
 
-    if (!(state.currentPlayer.length > 0)) {
+    if (!(currentPlayer.length > 0)) {
       currentPlayer = players[0];
     }
+    storeCurrentPlayer.set(currentPlayer)
+    
   });
 
   afterUpdate(() => {
-    // console.log(
-    //   "StatusBar => aterUpdate() fired #1, currentPlayer ",
-    //   state.currentPlayer.length
-    // );
+
   });
 
   function playersScored(e) {

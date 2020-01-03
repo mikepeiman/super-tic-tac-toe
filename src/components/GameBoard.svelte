@@ -21,7 +21,7 @@
 
   // $: players.forEach(player => { console.log(`GameBoard watching for player.markers update: `, player.marker)})
   $: gameboardMapped = [];
-  $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
   $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
   $: console.log(
@@ -75,7 +75,7 @@
   $: cellStyles = [];
   $: cellClasses = [];
   $: grid = [];
-  $: player = {};
+  $: currentPlayer = {};
   $: ticked = false;
 
   function moveNotification(e) {
@@ -87,6 +87,7 @@
   onMount(() => {
     console.log(`GameBoard component mounted`);
     settings = $storeSettings
+    currentPlayer = $storeCurrentPlayer
     buildGameBoard(
       settings.rows,
       settings.columns,
@@ -124,8 +125,8 @@
     players = players;
     localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
-    // let id = state.currentPlayer.id;
-    state.currentPlayer = players[0];
+    // let id = currentPlayer.id;
+    currentPlayer = players[0];
     playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
@@ -423,10 +424,9 @@
   }
 
   function playMove(cell) {
-    state = JSON.parse(localStorage.getItem("state"));
     state.clickCount++;
     console.log(
-      `########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${state.currentPlayer.name}`
+      `########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${currentPlayer.name}`
     );
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
@@ -436,7 +436,7 @@
     cell.setAttribute("playerid", "empty");
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
-    cell.setAttribute("data-marker", state.currentPlayer.marker);
+    cell.setAttribute("data-marker", currentPlayer.marker);
     // let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
     // cell.style = customBg;
     // console.log(`click from ${cell.id}`, cell, customBg);
@@ -470,22 +470,22 @@
   }
 
   function tickThis(cell) {
-    // console.log("tickThis(cell)", cell, state.currentPlayer);
+    // console.log("tickThis(cell)", cell, currentPlayer);
     let id = cell.id;
     let row = id[1];
     let column = id[3];
     state.lastTicked = {
       row: row,
       column: column,
-      playerId: state.currentPlayer.id,
-      playerName: state.currentPlayer.name
+      playerId: currentPlayer.id,
+      playerName: currentPlayer.name
     };
     cell.classList.add("ticked");
     cell.dataset.ticked = true;
-    cell.setAttribute("player-id", state.currentPlayer.id);
-    cell.setAttribute("player-name", state.currentPlayer.name);
-    cell.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
-    cell.setAttribute("data-marker", state.currentPlayer.marker);
+    cell.setAttribute("player-id", currentPlayer.id);
+    cell.setAttribute("player-name", currentPlayer.name);
+    cell.style = `--custom-bg: ${currentPlayer.bgColor}`;
+    cell.setAttribute("data-marker", currentPlayer.marker);
   }
 
   function untickThis(cell) {
@@ -517,8 +517,8 @@
         if (move.id == cellId) {
           console.log(`if(move.id == cellId) ${cellId}`);
           move.player = {
-            id: state.currentPlayer.id,
-            name: state.currentPlayer.name
+            id: currentPlayer.id,
+            name: currentPlayer.name
           };
           move.move = state.moveNumber;
         }
@@ -549,27 +549,27 @@
       gameboard.classList.remove("player-change");
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
-    playerIndicator.classList.remove(`player-${state.currentPlayer.id}`);
-    let id = state.currentPlayer.id;
+    playerIndicator.classList.remove(`player-${currentPlayer.id}`);
+    let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-      state.currentPlayer = players[0];
+      currentPlayer = players[0];
       // playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
-      playerIndicator.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
+      playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
-      state.currentPlayer = players[id + 1];
+      currentPlayer = players[id + 1];
       // playerIndicator.style = `--custom-bg: ${players[id + 1].bgColor}`;
-      playerIndicator.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
+      playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;
     localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("currentPlayer", JSON.stringify(state.currentPlayer));
+    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     console.log(
-      `playerChanges, state.currentPlayer.id AFTER change:`,
-      state.currentPlayer.id
+      `playerChanges, currentPlayer.id AFTER change:`,
+      currentPlayer.id
     );
     console.log(`playerIndicator`, playerIndicator);
-    playerIndicator.classList.add(`player-${state.currentPlayer.id}`);
+    playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
 
   function setTurnHistory(cell) {
@@ -578,8 +578,8 @@
     move["id"] = cell.id;
     move["clickCount"] = state.clickCount;
     move["player"] = {
-      id: state.currentPlayer.id,
-      name: state.currentPlayer.name
+      id: currentPlayer.id,
+      name: currentPlayer.name
     };
     console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
     // let history = state.turnHistory;

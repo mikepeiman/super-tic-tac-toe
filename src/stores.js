@@ -6033,7 +6033,8 @@ export const storeDirectionArrays = {
   subscribe: directionArrays.subscribe
 };
 export const storeCurrentPlayer = {
-  subscribe: currentPlayer.subscribe
+  subscribe: currentPlayer.subscribe,
+  set: (player) => { currentPlayer.set(player) }
 };
 export const storeGameInProgress = {
   subscribe: gameInProgress.subscribe
