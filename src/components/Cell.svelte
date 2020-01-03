@@ -15,7 +15,7 @@
 
   const dispatch = createEventDispatcher();
   onMount(() => {
-    let settings = JSON.parse(localStorage.getItem("settings"));
+    let settings = $storeSettings;
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
