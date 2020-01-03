@@ -87,8 +87,6 @@
   onMount(() => {
     console.log(`GameBoard component mounted`);
     settings = $storeSettings
-    console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
-    console.log(gameboardMapped, settings, state, players);
     buildGameBoard(
       settings.rows,
       settings.columns,

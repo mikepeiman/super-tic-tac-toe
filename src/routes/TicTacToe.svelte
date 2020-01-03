@@ -226,19 +226,13 @@
 <div class="page-container">
   <!-- {#await players then players} -->
   <!-- {#await state then state} -->
-  <ScoreBoard {state} {players} on:playerNameOrMarkerUpdate={storePlayers} />
+  <ScoreBoard on:playerNameOrMarkerUpdate={storePlayers} />
   <div class="gameboard-container">
     <StatusBar
-      {state}
-      {players}
       on:reset={resetNotification}
       on:playersScored={storePlayers} />
-    <MainMenu on:updateGameSettings={updateGameSettings} {players} {settings} />
+    <MainMenu on:updateGameSettings={updateGameSettings} />
     <GameBoard
-      {gameboardMapped}
-      {settings}
-      {state}
-      {players}
       on:move={moveNotification} />
   </div>
   <!-- {/await} -->

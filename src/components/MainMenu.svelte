@@ -13,6 +13,7 @@
     storePreservePlayerDetails
   } from "../stores.js";
 
+  $: settings = {};
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
