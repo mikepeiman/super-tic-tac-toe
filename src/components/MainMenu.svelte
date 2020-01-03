@@ -3,15 +3,8 @@
   const dispatch = createEventDispatcher();
   export let players, settings;
   import { writable } from "svelte/store";
-  const xSettings = writable(0);
-  const xState = writable(0);
-  xSettings.subscribe(value => {
-    console.log(`MainMenu => xSettings.subscribe value => `, value);
-  });
-  xState.subscribe(value => {
-    console.log(`MainMenu => xState.subscribe value => `, value);
-  });
-
+  import { xState, xSettings, xLines } from '../stores.js';
+  
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
   $: state = xState

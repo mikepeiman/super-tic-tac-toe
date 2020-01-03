@@ -1,12 +1,16 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 export const xSettings = writable(0);
 export const xState = writable(0);
+export const xLines = writable(0);
 
 xSettings.subscribe(value => {
   console.log(`TicTacToe => xSettings.subscribe value => `, value);
 });
 xState.subscribe(value => {
   console.log(`TicTacToe => xState.subscribe value => `, value);
+});
+xLines.subscribe(value => {
+  console.log(`TicTacToe => xLines.subscribe value => `, value);
 });
 
 xSettings.set({
@@ -31,3 +35,10 @@ xState.set({
   moveNumber: 0,
   reset: false
 });
+
+xLines.set({
+  leftToRight: [],
+  topToBottom: [],
+  diagonalDownLeft: [],
+  diagonalDownRight: []
+})

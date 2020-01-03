@@ -5,11 +5,11 @@
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
   import { writable } from "svelte/store";
-	import { xState, xSettings } from './stores.js';
+	import { xState, xSettings, xLines } from '../stores.js';
 
   $: settings = $xSettings;
 
-  $: state = $xState;
+  $: state = {}
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: players = [];
@@ -173,6 +173,7 @@
   }
 
   function reloadPlayers() {
+    console.log(`looking for state xLines `, $xLines)
     players = JSON.parse(localStorage.getItem("players"));
     console.log(
       `reloadPlayers #1, from LS: players, state.currentPlayer.name `,
@@ -363,6 +364,9 @@
         theseLines.push(newLine);
       }
       lines.leftToRight = theseLines;
+      // xLines.leftToRight = theseLines;
+      xLines.update(obj => obj.leftToRight = theseLines)
+      
     }
 
     if (dir == 2) {
@@ -375,6 +379,7 @@
         theseLines.push(newLine);
       }
       lines.topToBottom = theseLines;
+      $xLines.topToBottom = theseLines;
     }
 
     if (dir == 3) {
@@ -396,6 +401,7 @@
         theseLines.push(newLine);
       }
       lines.diagonalDownRight = theseLines;
+      $xLines.diagonalDownRight = theseLines;
     }
 
     if (dir == 4) {
@@ -417,6 +423,7 @@
         theseLines.push(newLine);
       }
       lines.diagonalDownLeft = theseLines;
+      $xLines.diagonalDownLeft = theseLines;
     }
   }
 
@@ -841,4 +848,7 @@
       </div>
     {/await}
   {/await}
+  {#each $xLines as line}
+  {line}
+  {/each}
 </div>
