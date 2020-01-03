@@ -7,17 +7,18 @@
 
   $: gameboardMapped = [];
   $: settings = {} // JSON.parse(localStorage.getItem('settings'))
-  // $: settings = {}
+  $: state = {}
 
   onMount(() => {
     console.log(`CountPoints onMount(), players, settings`, players, settings);
     settings = JSON.parse(localStorage.getItem('settings'))
+    state = JSON.parse(localStorage.getItem('state'))
   });
 
   function countPoints() {
     // let settings = JSON.parse(localStorage.getItem('settings'))
     console.log(
-      "*************__________countPoints called________**************, settings ", settings
+      "*************__________countPoints called________**************, state ", state
     );
     console.log(
       "players from countPoints before checking localStorage: ",
@@ -47,7 +48,11 @@
     });
     players = players;
     localStorage.setItem(`players`, JSON.stringify(players));
+        console.log(
+      "*************__________countPoints closing_______ **************, state ", state
+    );
     dispatch("playersScored", players);
+    dispatch("updateState", state);
   }
 
   function score(settings, direction, player, idx) {

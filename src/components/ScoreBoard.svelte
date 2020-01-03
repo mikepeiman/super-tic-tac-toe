@@ -6,7 +6,7 @@
 
   $: players = [];
   $: state = {};
-  $: currentPlayer = {}
+  $: currentPlayer = {};
   // $: players, state, updateState()
   // $: state.reset ? updateState() : (state.reset = false);
 
@@ -15,20 +15,36 @@
   });
 
   afterUpdate(() => {
-    console.log(`ScoreBoard => afterUpdate() #1, players, state `, players, state);
+    console.log(
+      `ScoreBoard => afterUpdate() #1, players, state `,
+      players,
+      state
+    );
+    if (localStorage.getItem("state")) {
+      state = JSON.parse(localStorage.getItem("state"));
+    }
+    if (localStorage.getItem("players")) {
+      players = JSON.parse(localStorage.getItem("players"));
+    }
     // players = JSON.parse(localStorage.getItem("players"));
-    state = JSON.parse(localStorage.getItem("state"));
-    console.log(`ScoreBoard => afterUpdate() #2, players, state `, players, state);
-    currentPlayer = state.currentPlayer
+
+    console.log(
+      `ScoreBoard => afterUpdate() #2, players, state `,
+      players,
+      state
+    );
+    currentPlayer = state.currentPlayer;
+    players = players;
   });
 
-  function updateState() {
+  function updateState(e) {
     console.log(
-      `ScoreBoard => updateState triggered due to players change from TicTacToe => ScoreBoard`,
-      players
+      `ScoreBoard => updateState triggered due to scoring from CountPoints`,
+      state, e.detail
     );
     players = JSON.parse(localStorage.getItem("players"));
     state = JSON.parse(localStorage.getItem("state"));
+    dispatch("updateState")
   }
 
   function playersScored(e) {

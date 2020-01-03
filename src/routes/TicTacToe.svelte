@@ -77,27 +77,39 @@
 
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("playerDetails");
-    if (gameInProgress == "true") {
-      state = JSON.parse(localStorage.getItem("state"));
-      console.log(
-        "TicTacToe => onMount - Current players, state: ",
-        players,
-        state
-      );
-    }
+
     if (playerDetails == "true") {
       console.log("TicTacToe => onMount playerDetails true ");
       players = JSON.parse(localStorage.getItem("players"));
       reloadPlayers();
-      // state.currentPlayer = players[0];
-      // localStorage.setItem("state", JSON.stringify(state));
     } else {
       reloadPlayers();
+      if (!state.currentPlayer.name == "undefined") {
+        state.currentPlayer = players[0];
+        console.log(
+          `reloadPlayers #2, from LS: players, state.currentPlayer.name `,
+          players,
+          state.currentPlayer.name
+        );
+        // localStorage.setItem("state", JSON.stringify(state));
+        console.log(
+          `TicTacToe => onMount playerDetails FALSE moveRemaining ${state.movesRemaining} state: `,
+          state
+        );
+      }
+    }
+    if (gameInProgress == "true") {
+      state = JSON.parse(localStorage.getItem("state"));
+      console.log(
+        "TicTacToe => onMount - gameInProgress == 'true' - Current state.currentPlayer.name, players: ",
+        state.currentPlayer.name,
+        players
+      );
+    } else {
       state.currentPlayer = players[0];
-      localStorage.setItem("state", JSON.stringify(state));
-      console.log("TicTacToe => onMount playerDetails FALSE ");
     }
     state.movesRemaining = settings.movesPerTurn;
+    localStorage.setItem("state", JSON.stringify(state));
 
     setTimeout(() => {
       addStyles();
@@ -111,8 +123,6 @@
   function resetNotification() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     state.reset = true;
-    // initializePlayers();
-    // location.reload()
     setTimeout(() => {
       state.reset = false;
     }, 10);
@@ -202,8 +212,19 @@
 
   function reloadPlayers() {
     players = JSON.parse(localStorage.getItem("players"));
-    console.log(`reloadPlayers, from LS: `, players);
-    state.currentPlayer = players[0];
+    console.log(
+      `reloadPlayers #1, from LS: players, state.currentPlayer.name `,
+      players,
+      state.currentPlayer.name
+    );
+    if (!state.currentPlayer.name == "undefined") {
+      state.currentPlayer = players[0];
+      console.log(
+        `reloadPlayers #2, from LS: players, state.currentPlayer.name `,
+        players,
+        state.currentPlayer.name
+      );
+    }
 
     players.forEach(player => {
       player.scores.forEach(direction => {
@@ -649,13 +670,39 @@
 
   function storePlayers() {
     console.log(
-      `TicTacToe => storePLayers on ScoreBoard input event, update LS players and state now`
+      `TicTacToe => storePLayers #1 on ScoreBoard input event, update LS players and state now `,
+      players,
+      state.currentPlayer.name
     );
     players = players;
+    state = JSON.parse(localStorage.getItem("state"));
+    // let id = state.currentPlayer.id;
+    // state.currentPlayer = players[id];
+    localStorage.setItem("players", JSON.stringify(players));
+    // localStorage.setItem("state", JSON.stringify(state));
+    console.log(
+      `TicTacToe => storePLayers #2 on ScoreBoard input event, update LS players and state now `,
+      players,
+      state.currentPlayer.name
+    );
+  }
+
+  function updateState() {
+    console.log(
+      `TicTacToe => updateState #1 on ScoreBoard input event, update LS players and state now `,
+      players,
+      state.currentPlayer.name
+    );
+    state = state;
     let id = state.currentPlayer.id;
     state.currentPlayer = players[id];
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("state", JSON.stringify(state));
+    console.log(
+      `TicTacToe => updateState #2 on ScoreBoard input event, update LS players and state.currentPlayer.name now `,
+      players,
+      state.currentPlayer.name
+    );
   }
 </script>
 
@@ -809,13 +856,16 @@
       <ScoreBoard
         {state}
         {players}
-        on:playerNameOrMarkerUpdate={storePlayers} />
+        on:playerNameOrMarkerUpdate={storePlayers}
+        on:updateState={updateState} />
       <div class="gameboard-container">
         <StatusBar
           {state}
           {players}
+          {settings}
           on:reset={resetNotification}
-          on:playersScored={storePlayers} />
+          on:playersScored={storePlayers}
+          on:updateState={updateState} />
         <MainMenu
           on:updateGameSettings={updateGameSettings}
           {players}

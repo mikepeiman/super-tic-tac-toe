@@ -18,6 +18,7 @@
     `GameBoard state updateGameSettings: `,
     state.updateGameSettings
   );
+    // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
@@ -75,15 +76,24 @@
   }
 
   onMount(() => {
-    console.log(`GameBoard component mounted`);
-    console.log(`props: gameboardMapped[], settings{}, state{}, players[]`);
+    console.log(`GameBoard => onMount()`);
+    console.log(
+      `GameBoard props #1: gameboardMapped[], settings{}, state{}, players[]`
+    );
     console.log(gameboardMapped, settings, state, players);
+    if (localStorage.getItem("state")) {
+      state = JSON.parse(localStorage.getItem("state"));
+    }
     buildGameBoard(
       settings.rows,
       settings.columns,
       settings.size,
       settings.gutter
     );
+    console.log(
+      `GameBoard props #2: gameboardMapped[], settings{}, state{}, players[]`
+    );
+    console.log(gameboardMapped, settings, state, players);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("playerDetails");
     // console.log(
@@ -417,17 +427,11 @@
         settings.gutter
       );
       createDirectionArrays();
-      // initializePlayers();
-      // console.log(
-      //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,
-      //   state,
-      //   players
-      // );
     }, 1);
     state = {
       lastTicked: "",
       currentPlayer: players[0],
-      movesRemaining: 0,
+      movesRemaining: settings.movesPerTurn,
       turn: 0,
       gameHistory: [],
       turnHistory: [],
@@ -435,8 +439,7 @@
       moveNumber: 0,
       reset: false
     };
-    state.movesRemaining = settings.movesPerTurn;
-    state = state;
+    // state = state;
     console.log(
       `GameBoard just ran a reset, now state, players `,
       state,
@@ -456,9 +459,12 @@
   }
 
   function playMove(cell) {
-    state = JSON.parse(localStorage.getItem('state'))
+    state = JSON.parse(localStorage.getItem("state"));
     state.clickCount++;
-    console.log(`########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${state.currentPlayer.name}`);
+    console.log(
+      `### playMove clickCount: ${state.clickCount}, ### currentPlayer, movesRemaining ${state.movesRemaining}, state, : ${state.currentPlayer.name}`,
+      state
+    );
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
     // cell.setAttribute("row", id[1]);
@@ -497,7 +503,7 @@
       setPlayerMove(cell.id);
       state.movesRemaining--;
     }
-    localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem("state", JSON.stringify(state));
   }
 
   function tickThis(cell) {
@@ -584,11 +590,9 @@
     let id = state.currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
       state.currentPlayer = players[0];
-      // playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
       playerIndicator.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
     } else {
       state.currentPlayer = players[id + 1];
-      // playerIndicator.style = `--custom-bg: ${players[id + 1].bgColor}`;
       playerIndicator.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
     }
 

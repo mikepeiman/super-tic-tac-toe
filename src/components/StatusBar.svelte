@@ -2,12 +2,12 @@
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let state, players, gameboardMapped;
+  export let state, players, settings, gameboardMapped;
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
   $: currentPlayer = {}
   // $: players
-  $: state
+  $: state = {}
   // console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
 
   onMount(() => {
@@ -16,13 +16,13 @@
   });
 
   afterUpdate(() => {
-    console.log("StatusBar => aterUpdate() fired #1, currentPlayer ", state.currentPlayer);
-    if (localStorage.getItem("state").length > 0) {
+    console.log("StatusBar => aterUpdate() fired #1, state ", state);
+    if (localStorage.getItem("state")) {
       state = JSON.parse(localStorage.getItem("state"));
       currentPlayer = state.currentPlayer;
       // currentPlayer = state.currentPlayer;
     }
-    console.log("StatusBar => aterUpdate() fired #2, currentPlayer ", state.currentPlayer);
+    console.log("StatusBar => aterUpdate() fired #2, state ", state);
   });
 
   function countPoints() {
@@ -30,30 +30,14 @@
     dispatch("tally", true);
   }
 
-  // function updateCurrentPlayer() {
-  //   console.log(
-  //     `updateCurrentPlayer() run, currentPlayer: `,
-  //     state.currentPlayer
-  //   );
-  //   let id = currentPlayer.id;
-  //   console.log(`updateCurrentPlayer() run, currentPlayer id: `, id);
-  //   state.currentPlayer = players[id];
-  //   console.log(
-  //     `updateCurrentPlayer() updated, currentPlayer: `,
-  //     state.currentPlayer
-  //   );
-  // }
-
-  function saveGame() {
-    console.log(`StatusBar component, clicked to test countPoints: `, players);
-  }
-  function loadGame() {
-    console.log(`StatusBar component, clicked to test countPoints: `, players);
-  }
+function saveGame() {}
+function loadGame () {}
 
   function playersScored(e) {
-    console.log(`StatusBar receiving dispatch of playersScored, `, e.detail);
+    console.log(`StatusBar receiving dispatch of playersScored from CountPoints, `, e.detail);
+    console.log(`StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `, state.currentPlayer);
     players = e.detail;
+    localStorage.setItem('state', JSON.stringify(state))
     dispatch("playersScored");
   }
 
@@ -61,24 +45,19 @@
     localStorage.setItem("gameboard", []);
     localStorage.setItem("gameHistory", []);
     localStorage.setItem("gameboardMapped", []);
-    localStorage.setItem("diagonalDownLeft", []);
-    localStorage.setItem("diagonalDownRight", []);
-    localStorage.setItem("topToBottom", []);
-    localStorage.setItem("leftToRight", []);
-
     localStorage.setItem("lines", []);
     let currentPlayerId = state.currentPlayer.id;
-    localStorage.setItem("state", {
+    localStorage.setItem("state", JSON.stringify({
       lastTicked: "",
-      currentPlayer: {},
-      movesRemaining: 0,
+      currentPlayer: players[0],
+      movesRemaining: settings.movesPerTurn,
       turn: 0,
       gameHistory: [],
       turnHistory: [],
       clickCount: 0,
       moveNumber: 0,
       reset: false
-    });
+    }));
     localStorage.setItem("gameInProgress", false);
 
     players.forEach(player => {
@@ -89,12 +68,6 @@
     localStorage.setItem("players", JSON.stringify(players));
     location.reload();
     dispatch("reset", true);
-    // let settings = JSON.parse(localStorage.getItem('gameSettings'))
-    // settings.columns = document.getElementById("columns").value;
-    // settings.rows = document.getElementById("rows").value;
-    // settings.size = document.getElementById("size").value;
-    // settings.gutter = document.getElementById("gutter").value;
-    // localStorage.setItem('gameSettings', settings)
   }
 </script>
 
