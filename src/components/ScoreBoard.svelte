@@ -4,19 +4,28 @@
   import CountPoints from "./CountPoints.svelte";
   export let state, players, highlighted;
   import { writable } from "svelte/store";
-  const xSettings = writable(0);
-  const xState = writable(0);
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
-  xSettings.subscribe(value => {
-    console.log(`ScoreBoard => xSettings.subscribe value => `, value);
+  storeState.subscribe(value => {
+    console.log(`ScoreBoard => storeState.subscribe value => `, value);
+    // state = value
   });
-  xState.subscribe(value => {
-    console.log(`ScoreBoard => xState.subscribe value => `, value);
+  storeSettings.subscribe(value => {
+    console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
   });
 
-
-  xState.set("ScoreBoard");
-
+  storeGameInProgress.subscribe(value => {
+    console.log(`ScoreBoard => storeGameInProgress subscribed`, value);
+  });
   $: players = [];
   $: state = {};
   $: currentPlayer = {};
@@ -46,9 +55,10 @@
       players,
       state
     );
-      xSettings.set(state);
+    storeState.set(state);
     currentPlayer = state.currentPlayer;
     players = players;
+    console.log(`ScoreBoard => afterUpdate() #3, storeState `, storeState);
   });
 
   function updateState(e) {

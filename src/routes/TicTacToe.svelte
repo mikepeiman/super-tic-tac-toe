@@ -1,15 +1,42 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
   import { writable } from "svelte/store";
-	import { xState, xSettings, xLines } from '../stores.js';
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
-  $: settings = $xSettings;
+  storeState.subscribe(value => {
+    console.log(`TicTacToe => storeState.subscribe value => `, value);
+    // state = value
+  });
+  storeSettings.subscribe(value => {
+    console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+  });
 
-  $: state = {}
+  storeGameInProgress.subscribe(value => {
+    console.log(`TicTacToe => storeGameInProgress subscribed`, value);
+  });
+  const unsubState = storeState.subscribe(value => {
+    console.log(`TicTacToe => storeState unsubscribe value => `, value);
+    // state = value
+  });
+  const unsubSettings = storeSettings.subscribe(value => {
+    console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
+  });
+
+  $: settings = {};
+  $: state = {};
   $: gameboardMapped = [];
   $: tickedArray = [];
   $: players = [];
@@ -57,6 +84,7 @@
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);
+    initializePlayers();
 
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("playerDetails");
@@ -68,6 +96,8 @@
     } else {
       initializePlayers();
       if (!state.currentPlayer.name == "undefined") {
+        initState();
+        initSettings();
         state.currentPlayer = players[0];
         console.log(
           `reloadPlayers #2, from LS: players, state.currentPlayer.name `,
@@ -92,9 +122,9 @@
     }
     state.movesRemaining = settings.movesPerTurn;
     localStorage.setItem("state", JSON.stringify(state));
-    xState.set(state)
-    // let testSettings = xSettings
-    console.log(`xSettings from state: `, $xSettings)
+    storeState.set(state);
+    // let testSettings = storeSettings
+    console.log(`storeSettings from state: `, storeSettings);
 
     setTimeout(() => {
       addStyles();
@@ -104,6 +134,38 @@
     console.log(`TicTacToe onMount(): gameboardMapped, players`);
     console.log(gameboardMapped, players);
   });
+
+  onDestroy(() => {
+    unsubState();
+    unsubSettings();
+  });
+
+  function initState() {
+    storeState.set({
+      lastTicked: "",
+      currentPlayer: {},
+      movesRemaining: 0,
+      turn: 0,
+      gameHistory: [],
+      turnHistory: [],
+      clickCount: 0,
+      moveNumber: 0,
+      reset: false
+    });
+  }
+
+  function initSettings() {
+    storeSettings.set({
+      numberOfPlayers: 3,
+      movesPerTurn: 3,
+      cellsToScore: 3,
+      bonusForCompleteRow: 5,
+      rows: 5,
+      columns: 15,
+      size: 24,
+      gutter: 0
+    });
+  }
 
   function resetNotification() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
@@ -173,7 +235,10 @@
   }
 
   function reloadPlayers() {
-    console.log(`looking for state xLines `, $xLines)
+    console.log(
+      `looking for state storeDirectionArrays `,
+      storeDirectionArrays
+    );
     players = JSON.parse(localStorage.getItem("players"));
     console.log(
       `reloadPlayers #1, from LS: players, state.currentPlayer.name `,
@@ -364,9 +429,8 @@
         theseLines.push(newLine);
       }
       lines.leftToRight = theseLines;
-      // xLines.leftToRight = theseLines;
-      xLines.update(obj => obj.leftToRight = theseLines)
-      
+      // storeDirectionArrays.leftToRight = theseLines;
+      storeDirectionArrays.update(obj => (obj.leftToRight = theseLines));
     }
 
     if (dir == 2) {
@@ -379,7 +443,7 @@
         theseLines.push(newLine);
       }
       lines.topToBottom = theseLines;
-      $xLines.topToBottom = theseLines;
+      storeDirectionArrays.topToBottom = theseLines;
     }
 
     if (dir == 3) {
@@ -401,7 +465,7 @@
         theseLines.push(newLine);
       }
       lines.diagonalDownRight = theseLines;
-      $xLines.diagonalDownRight = theseLines;
+      storeDirectionArrays.diagonalDownRight = theseLines;
     }
 
     if (dir == 4) {
@@ -423,7 +487,7 @@
         theseLines.push(newLine);
       }
       lines.diagonalDownLeft = theseLines;
-      $xLines.diagonalDownLeft = theseLines;
+      storeDirectionArrays.diagonalDownLeft = theseLines;
     }
   }
 
@@ -637,9 +701,9 @@
     console.log(e.target.style.width);
   }
 
-  function storePlayers() {
+  function setPlayersToStore() {
     console.log(
-      `TicTacToe => storePLayers #1 on ScoreBoard input event, update LS players and state now `,
+      `TicTacToe => setPlayersToStore #1 on ScoreBoard input event, update LS players and state now `,
       players,
       state.currentPlayer.name
     );
@@ -650,7 +714,7 @@
     localStorage.setItem("players", JSON.stringify(players));
     // localStorage.setItem("state", JSON.stringify(state));
     console.log(
-      `TicTacToe => storePLayers #2 on ScoreBoard input event, update LS players and state now `,
+      `TicTacToe => setPlayersToStore #2 on ScoreBoard input event, update LS players and state now `,
       players,
       state.currentPlayer.name
     );
@@ -825,7 +889,7 @@
       <ScoreBoard
         {state}
         {players}
-        on:playerNameOrMarkerUpdate={storePlayers}
+        on:playerNameOrMarkerUpdate={setPlayersToStore}
         on:updateState={updateState} />
       <div class="gameboard-container">
         <StatusBar
@@ -833,7 +897,7 @@
           {players}
           {settings}
           on:reset={resetNotification}
-          on:playersScored={storePlayers}
+          on:playersScored={setPlayersToStore}
           on:updateState={updateState} />
         <MainMenu
           on:updateGameSettings={updateGameSettings}
@@ -848,7 +912,5 @@
       </div>
     {/await}
   {/await}
-  {#each $xLines as line}
-  {line}
-  {/each}
+  {#each $storeDirectionArrays as line}{line}{/each}
 </div>
