@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const storeSettings = writable({
+let settings = writable({
   numberOfPlayers: 3,
   movesPerTurn: 3,
   cellsToScore: 3,
@@ -10,7 +10,7 @@ export const storeSettings = writable({
   size: 24,
   gutter: 0
 });
-export const storeState = writable({
+let state = writable({
   lastTicked: "",
   currentPlayer: {},
   movesRemaining: 0,
@@ -21,14 +21,14 @@ export const storeState = writable({
   moveNumber: 0,
   reset: false
 });
-export let storeDirectionArrays = writable([]);
-export let storeCurrentPlayer = writable({});
-export let storeGameInProgress = writable(false);
-export let storePreservePlayerDetails = writable(false);
-export let storeMovesPlayedHistory = writable([]);
-export let storePlayers = writable([]);
+let directionArrays = writable([]);
+let currentPlayer = writable({});
+let gameInProgress = writable(false);
+let preservePlayerDetails = writable(false);
+// let movesPlayedHistory = writable([]);
+// let players = writable([]);
 
-storePlayers = [
+let players = writable([
   {
     id: 0,
     name: "Player 1",
@@ -5918,8 +5918,8 @@ storePlayers = [
     ],
     dirScoresByIndex: [1, 1, 1, 0]
   }
-];
-storeMovesPlayedHistory = [
+]);
+let movesPlayedHistory = writable([
   [
     { move: 1, id: "R0C0", clickCount: 1, player: { id: 0, name: "Player 1" } },
     { move: 2, id: "R1C1", clickCount: 2, player: { id: 0, name: "Player 1" } },
@@ -6015,7 +6015,33 @@ storeMovesPlayedHistory = [
       player: { id: 2, name: "Player 3" }
     }
   ]
-];
+]);
+
+export const storePlayers = {
+  subscribe: players.subscribe
+};
+export const storeMovesPlayedHistory = {
+  subscribe: movesPlayedHistory.subscribe
+};
+export const storeSettings = {
+  subscribe: settings.subscribe
+};
+export const storeState = {
+  subscribe: state.subscribe
+};
+export const storeDirectionArrays = {
+  subscribe: directionArrays.subscribe
+};
+export const storeCurrentPlayer = {
+  subscribe: currentPlayer.subscribe
+};
+export const storeGameInProgress = {
+  subscribe: gameInProgress.subscribe
+};
+export const storePreservePlayerDetails = {
+  subscribe: preservePlayerDetails.subscribe
+};
+
 // storeSettings, storeState, storePlayers, storeCurrentPlayer, storeDirectionArrays, storeGameInProgress, storeMovesPlayedHistory, storePreservePlayerDetails
 
 // export let storeSettings = {

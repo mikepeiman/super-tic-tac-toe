@@ -15,26 +15,25 @@
   } from "../stores.js";
 
   $: currentPlayer = {};
-  $: state;
+  $: state = {};
+  $: players = {};
+
   onMount(() => {
-    console.log(`//////////////     StatusBar => onMount()`);
+    players = $storePlayers;
+    state = $storeState;
     currentPlayer = state.currentPlayer;
+    console.log(`//////////////     StatusBar => onMount() `, state, players);
+
+    if (!(state.currentPlayer.length > 0)) {
+      currentPlayer = players[0];
+    }
   });
 
   afterUpdate(() => {
-    console.log(
-      "StatusBar => aterUpdate() fired #1, currentPlayer ",
-      state.currentPlayer
-    );
-    if (localStorage.getItem("state").length > 0) {
-      state = JSON.parse(localStorage.getItem("state"));
-      currentPlayer = state.currentPlayer;
-      // currentPlayer = state.currentPlayer;
-    }
-    console.log(
-      "StatusBar => aterUpdate() fired #2, currentPlayer ",
-      state.currentPlayer
-    );
+    // console.log(
+    //   "StatusBar => aterUpdate() fired #1, currentPlayer ",
+    //   state.currentPlayer.length
+    // );
   });
 
   function playersScored(e) {
