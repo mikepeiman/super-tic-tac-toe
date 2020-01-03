@@ -78,6 +78,7 @@
   $: currentPlayer = {};
   $: ticked = false;
   $: gameHistory = []
+  $: turnHistory = []
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -584,21 +585,21 @@
       name: currentPlayer.name
     };
     console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
-    // let history = state.turnHistory;
-    if (state.turnHistory.filter(turn => turn.id == cell.id).length > 0) {
+    // let history = turnHistory;
+    if (turnHistory.filter(turn => turn.id == cell.id).length > 0) {
       // console.log(
       //   `turnHistory already contains this move - that means we should remove it!`
       // );
-      state.turnHistory = state.turnHistory.filter(turn => turn.id !== cell.id);
+      turnHistory = turnHistory.filter(turn => turn.id !== cell.id);
     } else {
       // console.log(
-      //   `apparently we have not made this move yet, let's add it to state.turnHistory`
+      //   `apparently we have not made this move yet, let's add it to turnHistory`
       // );
-      state.turnHistory = [...state.turnHistory, move];
+      turnHistory = [...turnHistory, move];
       gameboardMapped = [...gameboardMapped, move];
       localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
     }
-    // console.log(state.turnHistory);
+    // console.log(turnHistory);
   }
 
   function setGameHistory() {
@@ -606,8 +607,8 @@
     if (localStorage.getItem("gameHistory")) {
       gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
     }
-    gameHistory = [...gameHistory, state.turnHistory];
-    state.turnHistory.forEach((turn, index) => {
+    gameHistory = [...gameHistory, turnHistory];
+    turnHistory.forEach((turn, index) => {
       let pid = turn.player.id;
       let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
@@ -621,7 +622,7 @@
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
-    state.turnHistory = [];
+    turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
     localStorage.setItem("gameInProgress", true);
   }
