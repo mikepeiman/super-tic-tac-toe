@@ -1,26 +1,35 @@
 <script>
   import { onMount } from "svelte";
+  import GameBoard from "./../components/GameBoard.svelte";
+  import ScoreBoard from "./../components/ScoreBoard.svelte";
+  import StatusBar from "./../components/StatusBar.svelte";
+  import MainMenu from "./../components/MainMenu.svelte";
 
-  $: console.log(`currentPlayer ${currentPlayer.id} changed: `, currentPlayer);
-  $: numberOfPlayers = 3;
-  $: movesPerTurn = 5;
-  $: cellsToScore = 3;
-  $: bonusForCompleteRow = 5;
-  $: lastTicked = {};
-  $: rows = 6;
-  $: columns = 6;
-  $: size = 24;
-  $: gutter = 0;
-  $: currentPlayer = {};
-  $: movesRemaining = 0;
-  $: turn = 0;
-  $: gameHistory = [];
-  $: turnHistory = [];
-  $: clickCount = 0;
-  $: moveNumber = 0;
+  $: settings = {
+    numberOfPlayers: 3,
+    movesPerTurn: 3,
+    cellsToScore: 3,
+    bonusForCompleteRow: 5,
+    rows: 5,
+    columns: 15,
+    size: 24,
+    gutter: 0
+  };
+
+  $: state = {
+    lastTicked: "",
+    currentPlayer: {},
+    movesRemaining: 0,
+    turn: 0,
+    gameHistory: [],
+    turnHistory: [],
+    clickCount: 0,
+    moveNumber: 0,
+    reset: false
+  };
   $: gameboardMapped = [];
   $: tickedArray = [];
-  $: scoredPlayers = [];
+  $: players = [];
   $: scoreDirections = [
     {
       id: 1,
@@ -64,98 +73,114 @@
   $: scores = [];
 
   onMount(() => {
-    // let storedPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
+    console.log(`TicTacToe.svelte onMount`);
 
-    // console.log("onMount, stored scoredPlayers length: ", storedPlayers.length);
-    if (scoredPlayers.length < 1) {
-      console.log("onMount called initializePlayers()");
-      initializePlayers();
-      renderGameBoard(rows, columns, size, gutter);
-      createDirectionArrays();
-    } else {
-      console.log("onMount called reloadPlayers()");
-      reloadPlayers();
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    let playerDetails = localStorage.getItem("playerDetails");
+    if (gameInProgress == "true") {
+      state = JSON.parse(localStorage.getItem("state"));
+      console.log(
+        "TicTacToe => onMount - Current players, state: ",
+        players,
+        state
+      );
     }
+    if (playerDetails == "true") {
+      console.log("TicTacToe => onMount playerDetails true ");
+      players = JSON.parse(localStorage.getItem("players"));
+      reloadPlayers();
+      // state.currentPlayer = players[0];
+      // localStorage.setItem("state", JSON.stringify(state));
+    } else {
+      reloadPlayers();
+      state.currentPlayer = players[0];
+      localStorage.setItem("state", JSON.stringify(state));
+      console.log("TicTacToe => onMount playerDetails FALSE ");
+    }
+    state.movesRemaining = settings.movesPerTurn;
 
-    movesRemaining = movesPerTurn;
-    currentPlayer = scoredPlayers[0];
     setTimeout(() => {
       addStyles();
     }, 1);
     setGameSettings();
-    renderGameBoardReload();
+    // renderGameBoardReload();
+    console.log(`TicTacToe onMount(): gameboardMapped, players`);
+    console.log(gameboardMapped, players);
   });
 
+  function resetNotification() {
+    console.log(`TicTacToe => reset bubbled from StatusBar`);
+    state.reset = true;
+    // initializePlayers();
+    // location.reload()
+    setTimeout(() => {
+      state.reset = false;
+    }, 10);
+  }
+
+  function updateGameSettings(e) {
+    console.log(`TicTacToe => reset bubbled from MainMenu settings change`, e);
+    settings = e.detail;
+    resetNotification();
+    state.updateGameSettings = true;
+  }
+
+  function moveNotification(cell) {
+    console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
+    state = state;
+  }
+
   function setGameSettings() {
-    localStorage.setItem("gameSettings", "");
-    let settings = {
-      rows: rows,
-      columns: columns,
-      numberOfPlayers: numberOfPlayers,
-      movesPerTurn: movesPerTurn,
-      cellsToScore: cellsToScore,
-      bonusForCompleteRow: bonusForCompleteRow,
-      size: size,
-      gutter: gutter
-    };
-    localStorage.setItem("gameSettings", JSON.stringify(settings));
+    localStorage.setItem("settings", {});
+    localStorage.setItem("settings", JSON.stringify(settings));
   }
 
   function saveGame() {
     localStorage.setItem(
       "savedGame",
-      JSON.stringify({ gameboard: gameboardMapped, players: scoredPlayers })
+      JSON.stringify({ gameboard: gameboardMapped, players: players })
     );
+
     let test = localStorage.getItem("savedGame");
     console.log("saveGame calling LS: ");
     console.log(JSON.parse(test));
   }
 
-  function checkForSavedGame() {
+  function loadGame() {
     let saved = JSON.parse(localStorage.getItem("gameHistory"));
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
-    console.log(`check for saved game`, saved, settings);
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    let ps = JSON.parse(localStorage.getItem("players"));
+    console.log(
+      `check for saved game: gameHistory, players, settings: `,
+      saved,
+      ps,
+      settings
+    );
     renderGameBoardReload();
   }
 
   function addStyles() {
-    let scoreHeadings = document.querySelectorAll(".total-score");
+    let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
     console.log(
       `addStyle function, scoreHeadings for total-score: `,
       scoreHeadings
     );
     scoreHeadings.forEach((h, i) => {
-      h.style = `--custom-bg: ${scoredPlayers[i].bgColor}`;
+      h.style = `--custom-bg: ${players[i].bgColor}`;
     });
   }
 
-  function reset() {
-    localStorage.setItem("gameboard", "");
-    localStorage.setItem("gameHistory", "");
-    localStorage.setItem("gameboardMapped", "");
-    localStorage.setItem("diagonalDownLeft", "");
-    localStorage.setItem("diagonalDownRight", "");
-    localStorage.setItem("topToBottom", "");
-    localStorage.setItem("leftToRight", "");
-    localStorage.setItem("scoredPlayers", "");
-    columns = document.getElementById("columns").value;
-    rows = document.getElementById("rows").value;
-    size = document.getElementById("size").value;
-    gutter = document.getElementById("gutter").value;
-    renderGameBoard(rows, columns, size, gutter);
-  }
-
   function initializePlayers() {
-    scoredPlayers = [];
-    for (let i = 0; i < numberOfPlayers; i++) {
-      scoredPlayers = [
-        ...scoredPlayers,
+    players = [];
+    for (let i = 0; i < settings.numberOfPlayers; i++) {
+      players = [
+        ...players,
         {
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          bgColor: `hsla(${(i + 1) * (360 / numberOfPlayers) +
-            30}, 50%, 50%, .75)`,
+          bgColor: `hsla(${(i + 1) * (360 / settings.numberOfPlayers) +
+            0}, 50%, 50%, .75)`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -163,31 +188,39 @@
       ];
 
       scoreDirections.forEach((direction, index) => {
-        scoredPlayers[i]["scores"].push(direction);
-        scoredPlayers[i]["scores"][index]["lines"] = lines[direction.name];
+        players[i]["scores"].push(direction);
+        players[i]["scores"][index]["lines"] = lines[direction.name];
       });
     }
-    scoredPlayers = scoredPlayers;
-    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    players = players;
+    // localStorage.setItem("players", JSON.stringify(players));
     let playerIndicator = document.querySelector(".player-indicator");
-    let id = currentPlayer.id;
-    playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
+    state.currentPlayer = players[0];
+    state.movesRemaining = settings.movesPerTurn;
+    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
   function reloadPlayers() {
-    scoredPlayers = JSON.parse(localStorage.getItem("scoredPlayers"));
-    currentPlayer = scoredPlayers[0];
+    players = JSON.parse(localStorage.getItem("players"));
+    console.log(`reloadPlayers, from LS: `, players);
+    state.currentPlayer = players[0];
 
-    scoredPlayers.forEach(player => {
+    players.forEach(player => {
       player.scores.forEach(direction => {
         direction.lines.forEach(line => {
           line.forEach(move => {
             let player = getMoveFromHistory(move.id);
             move.player = player;
-            // console.log("reloadPlayers loop, each getMoveFromHistory player: ", player);
+            // console.log(
+            //   "reloadPlayers loop, each getMoveFromHistory player: ",
+            //   player
+            // );
             // console.log("reloadPlayers loop, each move's player: ", move);
             move = move;
-            // console.log("reloadPlayers loop, each move's player: ", move.player);
+            // console.log(
+            //   "reloadPlayers loop, each move's player: ",
+            //   move.player
+            // );
           });
           line = line;
         });
@@ -195,46 +228,59 @@
       });
       player = player;
     });
-    scoredPlayers = scoredPlayers;
+    players = players;
 
-    localStorage.setItem("scoredPlayers", JSON.stringify(scoredPlayers));
+    // localStorage.setItem("players", JSON.stringify(players));
   }
 
   function getMoveFromHistory(id) {
-    let payload = "empty";
-    let game = JSON.parse(localStorage.getItem("gameboardMapped"));
-    game.forEach(move => {
-      if (move.id == id) {
-        payload = move.player;
-      }
-    });
+    let payload = { id: "zzz", name: "zzz" };
+    if (localStorage.getItem("gameboardMapped")) {
+      let game = JSON.parse(localStorage.getItem("gameboardMapped"));
+      game.forEach(move => {
+        if (move.id == id) {
+          payload = move.player;
+        }
+      });
+    }
     return payload;
   }
 
-  function triggerGameBoardUpdate(e) {
-    reset();
-    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
-    localStorage.setItem("gameHistory", []);
-  }
-
-  function updateGameSettings() {
-    movesRemaining = movesPerTurn;
+  function updateGameState() {
+    state.movesRemaining = settings.movesPerTurn;
   }
 
   function countPoints() {
     console.log(
       "*************__________countPoints called________**************"
     );
-    console.log("scoredPlayers from countPoints: ", scoredPlayers);
-    localStorage.setItem("gameboard", JSON.stringify(gameboardMapped));
+    console.log(
+      "players from countPoints before checking localStorage: ",
+      players
+    );
+    // let players = JSON.parse(localStorage.getItem('players'))
 
-    scoredPlayers.forEach(player => {
+    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+    let players = players;
+    if (localStorage.getItem("players")) {
+      players = JSON.parse(localStorage.getItem("players"));
+      console.log("using localStorage");
+    }
+    console.log(
+      "players from countPoints after checking localStorage, before loop: ",
+      players
+    );
+    console.log(
+      "gameboardMapped from countPoints from localStorage before loop: ",
+      gameboardMapped
+    );
+    players.forEach(player => {
       player.scores.forEach((direction, index) => {
-        console.log(
-          `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
-        );
+        // console.log(
+        //   `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`
+        // );
         let thisScore = score(direction, player, index);
-        console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
+        // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
         player["scores"][index]["dirScore"] = thisScore;
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
@@ -244,18 +290,18 @@
           JSON.stringify(lines[direction.name])
         );
       });
-      scoredPlayers = scoredPlayers;
     });
-    localStorage.setItem(`scoredPlayers`, JSON.stringify(scoredPlayers));
+    players = players;
+    // localStorage.setItem(`players`, JSON.stringify(players));
   }
 
   function score(direction, player, idx) {
-    // $: cellsToScore
-    console.log(
-      `score called with direction and player and idx ${idx}`,
-      direction,
-      player
-    );
+    // $: settings.cellsToScore
+    // console.log(
+    //   `score called with direction and player and idx ${idx}`,
+    //   direction,
+    //   player
+    // );
 
     let dirLines = [];
     let dirScore = 0;
@@ -267,76 +313,41 @@
       let points = 0;
       line.forEach(move => {
         console.log(`scoring ${move.id}`, move);
-        let p = getPlayerFromCell(move.id);
-        move.player = {
-          name: p.name,
-          id: p.id
-        };
+        let p = move.player;
+        console.log(`scoring p = move.player, `, p);
+        p = getPlayerFromCellInGameboardMapped(move.id);
+        console.log(`scoring p = getPlayerFromCellInGameboardMapped, `, p);
+        // move.player = {
+        //   name: p.name,
+        //   id: p.id
+        // };
         if (p.name !== "none" && p.id === player.id) {
           countInLoop++;
         }
         if (p.id !== player.id) {
-          if (countInLoop >= cellsToScore) {
-            points += countInLoop - (cellsToScore - 1);
+          if (countInLoop >= settings.cellsToScore) {
+            points += countInLoop - (settings.cellsToScore - 1);
           }
           countInLine += countInLoop;
           countInLoop = 0;
         }
       });
-      if (countInLoop >= cellsToScore) {
-        points += countInLoop - (cellsToScore - 1);
+      if (countInLoop >= settings.cellsToScore) {
+        points += countInLoop - (settings.cellsToScore - 1);
       }
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    // direction.dirScore = dirScore
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
-    scoredPlayers = scoredPlayers;
-    // console.log(`score closing with direction score ${dirScore} | ${direction.dirScore}`, direction);
+    players = players;
     console.log(
       `score closing with direction score ${dirScore} | player: `,
       player
     );
-    console.log(
-      `player.scores[idx] ${idx} .dirScore: `,
-      player.scores[idx].dirScore
-    );
-    // player.scores[idx].dirScore = dirScore
-    // player.scores[idx].dirLines = dirLines
     return dirScore;
   }
 
-  function setPlayerMove(squareId) {
-    gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
-        move.player = {
-          id: currentPlayer.id,
-          name: currentPlayer.name
-        };
-        move.move = moveNumber;
-      }
-    });
-    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-  }
-
-  function removePlayerMove(squareId) {
-    gameboardMapped.forEach(move => {
-      if (move.id == squareId) {
-        console.log(`if(move.id == squareId) ${squareId}`);
-        move.player = {
-          id: null,
-          name: null
-        };
-        move.move = null;
-      }
-      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
-    });
-  }
-
-  function getPlayerFromCell(id) {
+  function getPlayerFromCellInGameboardMapped(id) {
     let payload;
     gameboardMapped.forEach(move => {
       if (move.id == id) {
@@ -347,37 +358,23 @@
   }
 
   function createDirectionArrays() {
-    let leftToRight = {
-      id: 1
-    };
-    let topToBottom = {
-      id: 2
-    };
-    let diagonalDownRight = {
-      id: 3
-    };
-    let diagonalDownLeft = {
-      id: 4
-    };
-    makeLinesFrom(leftToRight);
-    makeLinesFrom(topToBottom);
-    makeLinesFrom(diagonalDownRight);
-    makeLinesFrom(diagonalDownLeft);
-    localStorage.setItem("LINES", JSON.stringify(lines));
+    for (let i = 1; i === 4; i++) {
+      makeLinesFrom(i);
+    }
     initializePlayers();
   }
 
-  function makeLinesFrom(direction) {
+  function makeLinesFrom(dir) {
     let start,
       pattern = {};
     let theseLines = [],
       newLine = [];
 
-    if (direction.id == 1) {
+    if (dir == 1) {
       start = { row: 0, column: 0 };
       pattern = { row: 0, column: +1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.row++;
         theseLines.push(newLine);
@@ -385,11 +382,11 @@
       lines.leftToRight = theseLines;
     }
 
-    if (direction.id == 2) {
+    if (dir == 2) {
       start = { row: 0, column: 0 };
       pattern = { row: +1, column: 0 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
         theseLines.push(newLine);
@@ -397,11 +394,11 @@
       lines.topToBottom = theseLines;
     }
 
-    if (direction.id == 3) {
-      start = { row: rows, column: 0 };
+    if (dir == 3) {
+      start = { row: settings.rows, column: 0 };
       pattern = { row: +1, column: +1 };
 
-      for (let i = 0; i < rows; i++) {
+      for (let i = 0; i < settings.rows; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
@@ -410,7 +407,7 @@
       start = { row: 0, column: 1 };
       pattern = { row: +1, column: +1 };
 
-      for (let i = 1; i < columns; i++) {
+      for (let i = 1; i < settings.columns; i++) {
         newLine = makeLineFrom(start, pattern);
         start.column++;
         theseLines.push(newLine);
@@ -418,20 +415,20 @@
       lines.diagonalDownRight = theseLines;
     }
 
-    if (direction.id == 4) {
-      start = { row: rows, column: columns - 1 };
+    if (dir == 4) {
+      start = { row: settings.rows, column: settings.columns - 1 };
       pattern = { row: +1, column: -1 };
 
-      for (let i = 0; i < columns; i++) {
+      for (let i = 0; i < settings.columns; i++) {
         start.row--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
       }
 
-      start = { row: 0, column: columns - 1 };
+      start = { row: 0, column: settings.columns - 1 };
       pattern = { row: +1, column: -1 };
 
-      for (let i = 1; i < columns; i++) {
+      for (let i = 1; i < settings.columns; i++) {
         start.column--;
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
@@ -470,10 +467,10 @@
       player: { id: null, name: "none" }
     };
 
-    if (nextRow >= rows) {
+    if (nextRow >= settings.rows) {
       return line;
     }
-    if (nextColumn >= columns || nextColumn < 0) {
+    if (nextColumn >= settings.columns || nextColumn < 0) {
       return line;
     }
 
@@ -488,7 +485,7 @@
   }
 
   function renderGameBoardReload() {
-    let settings = JSON.parse(localStorage.getItem("gameSettings"));
+    let settings = JSON.parse(localStorage.getItem("settings"));
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {
@@ -500,28 +497,17 @@
       settings.size,
       settings.gutter
     );
-    let history = JSON.parse(localStorage.getItem("gameHistory"));
-
-    let players = JSON.parse(localStorage.getItem("scoredPlayers"));
-    localStorage.setItem("reloadedGameboard", "");
+    let history = state.gameHistory;
+    let players = players;
     let amount, number;
     let len = history.length;
-    scoredPlayers = players;
-    console.log("scoredPlayers", scoredPlayers);
-
-    // history.forEach(turn => {
-    //   turn.forEach(move => {
-    //     console.log(`each move in history: `, move);
-    //   });
-    // });
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
       });
     };
-
-    async function loop() {
+    async function loop(history) {
       for (let i = 0; i < len; i++) {
         let turn = history[i];
         // console.log(`building reload function, this turn is: `, turn);
@@ -532,153 +518,71 @@
           // console.log(`building reload function, this player is: `, p);
           let square = document.getElementById(move.squareId);
           square.style = `--custom-bg: ${players[p].bgColor}`;
-          square.style.margin = gutter + "px";
-          square.style.width = size + "px";
-          square.style.height = size + "px";
-
-          let cell = {};
-          // cell["id"] = `R${i}C${j}`;
-          // cell["row"] = i;
-          // cell["col"] = j;
-          cell = move;
-
-          // {
-          //   id: p,
-          //   name: players[p].name
-          // };
-          // gameboardMapped = [...gameboardMapped, cell];
-
+          square.style.margin = settings.gutter + "px";
+          square.style.width = settings.size + "px";
+          square.style.height = settings.size + "px";
+          square.setAttribute("data-marker", "O");
+          square.setAttribute("data-ticked", true);
+          square.classList.add("locked", "ticked");
+          square.setAttribute("locked", true);
+          square.style.border = "1px solid rgba(0,0,0,0.5)";
           await delay(5);
         }
       }
 
     }
-    loop();
-  }
 
-  // console.log(`rows: ${rows} columns: ${columns}`);
-
-  function renderGameBoard(rows, columns, size, gutter) {
-    gameboardMapped = [];
-    let gameboard = document.getElementById("gameboard-board");
-    while (gameboard.firstChild) {
-      gameboard.removeChild(gameboard.firstChild);
+    if (localStorage.getItem("gameHistory")) {
+      history = JSON.parse(localStorage.getItem("gameHistory"));
+      // players = JSON.parse(localStorage.getItem("players"));
+      loop(history);
     }
-    // console.log(`rows: ${rows} columns: ${columns}`);
-    for (let rowNum = 0; rowNum < rows; rowNum++) {
-      // console.log(`row: ${rowNum}`);
-      let row = document.createElement("div");
-      row.classList = "game-row";
-      gameboard.appendChild(row);
-
-      for (let colNum = 0; colNum < columns; colNum++) {
-        // console.log(`row: ${rowNum} column: ${colNum}`);
-        let square = document.createElement("div");
-        square.classList = "game-square";
-        square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
-        square.style.margin = gutter + "px";
-        square.style.width = size + "px";
-        square.style.height = size + "px";
-        square.id = `R${rowNum}C${colNum}`;
-        let cell = {};
-        cell["id"] = `R${rowNum}C${colNum}`;
-        cell["row"] = rowNum;
-        cell["col"] = colNum;
-        cell["player"] = {
-          id: "none",
-          name: "none"
-        };
-        gameboardMapped = [...gameboardMapped, cell];
-        square.setAttribute("data-ticked", false);
-        square.setAttribute("data-marker", "X");
-
-        row.appendChild(square);
-        square.addEventListener("click", () => playMove(event));
-      }
-    }
-    console.log(
-      `inside renderGameBoard, called createDirectionArrays(), lines: `,
-      lines
-    );
+    players = players;
+    console.log(`history length: ${len}, players`, players);
   }
 
   function setTurnHistory(square) {
     let move = {};
     let id = square.id;
-    move["move"] = moveNumber;
+    move["move"] = state.moveNumber;
     move["squareId"] = square.id;
-    move["clickCount"] = clickCount;
+    move["clickCount"] = state.clickCount;
     move["player"] = {
-      id: currentPlayer.id,
-      name: currentPlayer.name
+      id: state.currentPlayer.id,
+      name: state.currentPlayer.name
     };
-    if (turnHistory.filter(turn => turn.squareId == id).length > 0) {
+    if (state.turnHistory.filter(turn => turn.squareId == id).length > 0) {
       // console.log(
       //   `turnHistory already contains this move - that means we should remove it!`
       // );
-      turnHistory = turnHistory.filter(turn => turn.squareId !== id);
+      state.turnHistory = state.turnHistory.filter(
+        turn => turn.squareId !== id
+      );
     } else {
       // console.log(
-      //   `apparently we have not made this move yet, let's add it to turnHistory`
+      //   `apparently we have not made this move yet, let's add it to state.turnHistory`
       // );
-      turnHistory = [...turnHistory, move];
+      state.turnHistory = [...state.turnHistory, move];
     }
-    console.log(turnHistory);
+    console.log(state.turnHistory);
   }
 
   function setGameHistory(square) {
-    gameHistory = [...gameHistory, turnHistory];
-    turnHistory.forEach((turn, index) => {
+    state.gameHistory = [...state.gameHistory, state.turnHistory];
+    state.turnHistory.forEach((turn, index) => {
       let move = document.getElementById(`${turn.squareId}`);
-      let thisMoveNum = moveNumber - movesPerTurn + index + 1;
-      // console.log(
-      //   `############### setGameHistory, locking moves ${turn.squareId}`
-      // );
+      let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
+      move.setAttribute("data-marker", "O");
       turn.move = thisMoveNum;
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
-    turnHistory = [];
-    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
-  }
-
-  function playMove(e) {
-    localStorage.setItem(`currentPlayer`, JSON.stringify(currentPlayer));
-    clickCount++;
-    let square = e.target;
-    let ticked = square.dataset.ticked == "true";
-    // console.log(
-    //   `ticked status ::: ${ticked} ::: movesRemaining ||| ${movesRemaining} |||`
-    // );
-
-    if (ticked) {
-      if (!square.hasAttribute("locked")) {
-        setTurnHistory(square);
-        untickThis(square);
-        removePlayerMove(square.id);
-        moveNumber--;
-      } else {
-        console.log(`It seems you tried to untick a locked move!`);
-      }
-    } else {
-      if (movesRemaining == 1) {
-        moveNumber++;
-        setTurnHistory(square);
-        setGameHistory();
-        tickThis(square);
-        setPlayerMove(square.id);
-        playerChange();
-        return;
-      }
-      moveNumber++;
-      setTurnHistory(square);
-      tickThis(square);
-      setPlayerMove(square.id);
-      movesRemaining--;
-    }
-    // console.log("playMove call from square click");
-    // console.log(square);
+    state.turnHistory = [];
+    localStorage.setItem(
+      "state.gameHistory",
+      JSON.stringify(state.gameHistory)
+    );
   }
 
   function tickThis(square) {
@@ -689,26 +593,26 @@
     lastTicked = {
       row: row,
       column: column,
-      playerId: currentPlayer.id,
-      playerName: currentPlayer.name
+      playerId: state.currentPlayer.id,
+      playerName: state.currentPlayer.name
     };
     square.classList.add("ticked");
     square.dataset.ticked = true;
-    square.setAttribute("player-id", currentPlayer.id);
-    square.setAttribute("player-name", currentPlayer.name);
-    square.style = `--custom-bg: ${currentPlayer.bgColor}`;
+    square.setAttribute("player-id", state.currentPlayer.id);
+    square.setAttribute("player-name", state.currentPlayer.name);
+    square.style = `--custom-bg: ${state.currentPlayer.bgColor}`;
     square.setAttribute("data-marker", "O");
   }
 
   function untickThis(square) {
     console.log(`------------untickThis(square)`);
     square.classList.remove("ticked");
-    square.style = "--custom-bg: rgba(150, 150, 255, 0.75)";
+    square.style = "--custom-bg: rgba(150, 150, 255, 0.25)";
     square.dataset.ticked = false;
     square.removeAttribute("player-id");
     square.removeAttribute("player-name");
     // removeFromScoringArray(square)
-    movesRemaining++;
+    state.movesRemaining++;
   }
 
   function playerChange() {
@@ -718,26 +622,23 @@
       gameboard.classList.remove("player-change");
     }, 250);
     let playerIndicator = document.querySelector(".player-indicator");
-    playerIndicator.classList.remove(`player-${currentPlayer.id}`);
-
-    let id = currentPlayer.id;
-    // id === 0 ? playerIndicator.style = `--custom-bg: ${scoredPlayers[scoredPlayers.length].bgColor}` : playerIndicator.style = `--custom-bg: ${scoredPlayers[id].bgColor}`
-
-    if (id >= numberOfPlayers - 1) {
-      currentPlayer = scoredPlayers[0];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[0].bgColor}`;
+    playerIndicator.classList.remove(`player-${state.currentPlayer.id}`);
+    let id = state.currentPlayer.id;
+    if (id >= settings.numberOfPlayers - 1) {
+      state.currentPlayer = players[0];
+      playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
     } else {
-      currentPlayer = scoredPlayers[id + 1];
-      playerIndicator.style = `--custom-bg: ${scoredPlayers[id + 1].bgColor}`;
+      state.currentPlayer = players[id + 1];
+      playerIndicator.style = `--custom-bg: ${players[id + 1].bgColor}`;
     }
 
-    movesRemaining = movesPerTurn;
+    state.movesRemaining = settings.movesPerTurn;
     console.log(
-      `playerChanges, currentPlayer.id AFTER change:`,
-      currentPlayer.id
+      `playerChanges, state.currentPlayer.id AFTER change:`,
+      state.currentPlayer.id
     );
     console.log(`playerIndicator`, playerIndicator);
-    playerIndicator.classList.add(`player-${currentPlayer.id}`);
+    playerIndicator.classList.add(`player-${state.currentPlayer.id}`);
   }
 
   function setWidthByChars(e) {
@@ -745,6 +646,17 @@
     // let len = e.target.value.toString().length
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(e.target.style.width);
+  }
+
+  function storePlayers() {
+    console.log(
+      `TicTacToe => storePLayers on ScoreBoard input event, update LS players and state now`
+    );
+    players = players;
+    let id = state.currentPlayer.id;
+    state.currentPlayer = players[id];
+    localStorage.setItem("players", JSON.stringify(players));
+    localStorage.setItem("state", JSON.stringify(state));
   }
 </script>
 
@@ -764,35 +676,6 @@
     align-items: start;
     height: 90vh;
     overflow: hidden;
-  }
-
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
-
-  $title-margin: 1rem;
-  $title-padding-horizontal: 1rem;
-  $title-padding-vertical: 0.5rem;
-  $calc-padding: 2 * $title-padding-horizontal;
-
-  .player-indicator {
-    width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: var(--custom-bg);
-    transition: all 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding: $title-padding-vertical $title-padding-horizontal;
-    border-radius: 5px;
-    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
-
-    & h2 {
-      margin: 0;
-    }
   }
 
   .form-wrap {
@@ -839,7 +722,7 @@
   }
 
   .gameboard-board {
-    margin: 2rem;
+    margin: 0.25rem;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -917,208 +800,34 @@
       background: rgba(0, 25, 75, 0.5);
     }
   }
-  .dir-1 {
-    display: flex;
-    flex-direction: column;
-  }
-  .scores-wrap {
-    display: flex;
-    flex-direction: column;
-    background: #1a1a1a;
-  }
-  .scores-block {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .scores-section {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .scoreboard-container {
-    // position: absolute;
-    // left: 0;
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-headings {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-totals {
-    background: rgba(0, 0, 155, 0.1);
-  }
-  .scoreboard-direction {
-    background: rgba(0, 0, 155, 0.1);
-    display: flex;
-    // padding: .25rem;
-  }
-
-  .direction-icon {
-    margin-left: 0.5rem;
-    // background: #1a1a1a;
-  }
-  .direction-score-section {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .direction-score {
-    justify-self: flex-end;
-    margin-right: 0.5rem;
-  }
-
-  .total-score {
-    background: var(--custom-bg);
-    padding: 0.25rem;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .total-score-number {
-    border: 2px solid white;
-    padding: 0.25rem;
-  }
 </style>
 
 <h1>Tic Tac Toe</h1>
+
 <div class="page-container">
-  <div class="scoreboard-container">
-    {#each scoredPlayers as player}
-      <div class="scoreboard-totals">
-        <h3 class="total-score">
-          <div>{player.name}:</div>
-          <div class="total-score-number">{player.totalScore}</div>
-        </h3>
-        <div class="scoreboard-player">
-          {#each player.scores as direction, i}
-            <div class="scoreboard-direction">
-              <div class="direction-score-section">
-                <img
-                  class="direction-icon"
-                  src={direction.iconSrc}
-                  width="20"
-                  height="20"
-                  alt="Icon for direction {direction.name}" />
-                <div class="direction-name">{direction.name}:</div>
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
-              </div>
-            </div>
-          {/each}
-        </div>
+  {#await players then players}
+    {#await state then state}
+      <ScoreBoard
+        {state}
+        {players}
+        on:playerNameOrMarkerUpdate={storePlayers} />
+      <div class="gameboard-container">
+        <StatusBar
+          {state}
+          {players}
+          on:reset={resetNotification}
+          on:playersScored={storePlayers} />
+        <MainMenu
+          on:updateGameSettings={updateGameSettings}
+          {players}
+          {settings} />
+        <GameBoard
+          {gameboardMapped}
+          {settings}
+          {state}
+          {players}
+          on:move={moveNotification} />
       </div>
-    {/each}
-  </div>
-
-  <div class="gameboard-container">
-    <div class="player-indicator player-0">
-      <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-      <h2 class="player-indicator-heading">Turn Moves: {movesRemaining}</h2>
-      <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
-
-      <div class="buttons-wrapper">
-        <button class="control-button" id="next-turn-button">End turn</button>
-        <button
-          class="control-button"
-          id="tally-game-button"
-          on:click={countPoints}>
-          Tally points
-        </button>
-        <button class="control-button" id="reset-game-button" on:click={reset}>
-          Reset game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={saveGame}>
-          Save game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={checkForSavedGame}>
-          Load game
-        </button>
-      </div>
-    </div>
-
-    <h2>Layout and Game Options</h2>
-    <div class="form-wrap">
-      <label for="players">
-        # Of Players:
-        <input
-          id="players"
-          name="players"
-          type="number"
-          placeholder={numberOfPlayers}
-          bind:value={numberOfPlayers}
-          on:input={initializePlayers}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="rows">
-        Rows:
-        <input
-          id="rows"
-          name="rows"
-          type="number"
-          placeholder={rows}
-          value={rows}
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="columns">
-        Columns:
-        <input
-          id="columns"
-          name="columns"
-          type="number"
-          placeholder={columns}
-          value={columns}
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="size">
-        Square size (px):
-        <input
-          id="size"
-          name="size"
-          type="number"
-          placeholder="24"
-          value={size}
-          step="4"
-          on:input={triggerGameBoardUpdate}
-          style="width: 2.5ch;" />
-      </label>
-      <label for="gutter">
-        Gutter (px):
-        <input
-          id="gutter"
-          name="gutter"
-          type="number"
-          placeholder={gutter}
-          value={gutter}
-          on:input={triggerGameBoardUpdate}
-          style="width: 1.5ch;" />
-      </label>
-      <label for="movesPerTurn">
-        Moves Per Turn:
-        <input
-          id="movesPerTurn"
-          name="movesPerTurn"
-          type="number"
-          placeholder={movesPerTurn}
-          bind:value={movesPerTurn}
-          on:input={updateGameSettings}
-          style="width: 1.5ch;" />
-      </label>
-
-    </div>
-    <!-- 
-    <div class="form-wrap">
-      <h2>GAME OPTIONS</h2>
-  
-    </div> -->
-
-    <div id="gameboard-board" class="gameboard-board" />
-  </div>
-
+    {/await}
+  {/await}
 </div>
