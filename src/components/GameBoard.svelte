@@ -1,5 +1,22 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
+
+  storePlayers.subscribe(value => {
+    console.log(`GameBoard => storePlayers.subscribe value => `, value);
+  });
+  storeCurrentPlayer.subscribe(value => {
+    console.log(`GameBoard => storeCurrentPlayer.subscribe value => `, value);
+  });
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -11,6 +28,7 @@
 
   // $: players.forEach(player => { console.log(`GameBoard watching for player.markers update: `, player.marker)})
   $: gameboardMapped = [];
+  $: state, storeState.set(state);
   $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
   $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
@@ -18,7 +36,7 @@
     `GameBoard state updateGameSettings: `,
     state.updateGameSettings
   );
-    // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
+  // $: console.log(`GameBoard state currentPlayer: `, state.currentPlayer);
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
@@ -671,6 +689,17 @@
     justify-content: flex-start;
     align-items: center;
   }
+
+  .debug {
+    display: flex;
+  }
+
+  .debug-section {
+    margin: 1rem;
+    padding: .5rem;
+    background: rgba(0,0,0,1);
+    border: 3px solid rgba(255,155,200,.5);
+  }
 </style>
 
 <div class="component-wrapper">
@@ -686,5 +715,36 @@
       {/each}
     </div>
   {/each}
+</div>
 
+<div class="debug">
+  <div class="debug-section">
+    <h2>storeState</h2>
+    <div>.movesRemaining: {$storeState.movesRemaining}</div>
+    <div>.clickCount: {$storeState.clickCount}</div>
+    <div>.currentPlayer.name: {$storeState.currentPlayer.name}</div>
+    <div>.reset: {$storeState.reset}</div>
+  </div>
+  <div class="debug-section">
+    <h2>storeSettings</h2>
+    <div>.rows: {$storeSettings.rows}</div>
+    <div>.columns: {$storeSettings.columns}</div>
+    <div>.numberOfPlayers: {$storeSettings.numberOfPlayers}</div>
+    <div>.cellsToScore: {$storeSettings.cellsToScore}</div>
+  </div>
+  <div class="debug-section">
+    <h2>storePlayers</h2>
+    {#each $storePlayers as player}
+      <div>.id: {player.id}</div>
+      <div>.name: {player.name}</div>
+      <div>.bgColor: {player.bgColor}</div>
+      <div>.totalScore: {player.totalScore}</div>
+    {/each}
+  </div>
+  <div class="debug-section">
+    <h2>storeMovesPlayedHistory</h2>
+    {#each $storeMovesPlayedHistory as move}
+      <div>{move}</div>
+    {/each}
+  </div>
 </div>

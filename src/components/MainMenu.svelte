@@ -1,14 +1,54 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   export let players, settings;
+  import { writable } from "svelte/store";
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
+  const unsubState = storeState.subscribe(value => {
+    console.log(`MainMenu => storeState unsubscribe value => `, value);
+    // state = value
+  });
+  const unsubSettings = storeSettings.subscribe(value => {
+    console.log(`MainMenu => storeSettings unsubscribe value => `, value);
+  });
+
+  storeState.subscribe(value => {
+    console.log(`MainMenu => storeState.subscribe value => `, value);
+    // state = value
+  });
+  storeSettings.subscribe(value => {
+    console.log(`MainMenu => storeSettings.subscribe value => `, value);
+    // storeSettings.set(settings);
+    // localStorage.setItem("settings", JSON.stringify(settings));
+  });
+
+  storeGameInProgress.subscribe(value => {
+    console.log(`MainMenu => storeGameInProgress subscribed`, value);
+  });
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`);
     console.log(settings);
+    console.log(`MainMenu onMount(), store settings`);
+    storeSettings.set(settings);
+    console.log($storeSettings);
+  });
+
+  onDestroy(() => {
+    // unsubSettings();
+    console.log(`MainMenu => onDestroy()`);
   });
 
   function initializePlayers() {

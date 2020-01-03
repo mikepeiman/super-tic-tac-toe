@@ -4,7 +4,37 @@
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
+  // import { writable } from "svelte/store";
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
+  storeState.subscribe(value => {
+    console.log(`TicTacToe => storeState.subscribe value => `, value);
+    console.log(`storeState test: `, Boolean(value.length > 0))
+  });
+  storeSettings.subscribe(value => {
+    console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+  });
+  storePlayers.subscribe(value => {
+    console.log(`TicTacToe => storePlayers.subscribe value => `, value);
+  });
+  storeGameInProgress.subscribe(value => {
+    console.log(`TicTacToe => storeGameInProgress subscribed`, value);
+  });
+  const unsubState = storeState.subscribe(value => {
+    console.log(`TicTacToe => storeState unsubscribe value => `, value);
+  });
+  const unsubSettings = storeSettings.subscribe(value => {
+    console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
+  });
   $: settings = {
     numberOfPlayers: 3,
     movesPerTurn: 3,
@@ -668,9 +698,9 @@
     console.log(e.target.style.width);
   }
 
-  function storePlayers() {
+  function setPlayersToStore() {
     console.log(
-      `TicTacToe => storePLayers #1 on ScoreBoard input event, update LS players and state now `,
+      `TicTacToe => setPlayersToStore #1 on ScoreBoard input event, update LS players and state now `,
       players,
       state.currentPlayer.name
     );
@@ -681,7 +711,7 @@
     localStorage.setItem("players", JSON.stringify(players));
     // localStorage.setItem("state", JSON.stringify(state));
     console.log(
-      `TicTacToe => storePLayers #2 on ScoreBoard input event, update LS players and state now `,
+      `TicTacToe => setPlayersToStore #2 on ScoreBoard input event, update LS players and state now `,
       players,
       state.currentPlayer.name
     );
@@ -856,7 +886,7 @@
       <ScoreBoard
         {state}
         {players}
-        on:playerNameOrMarkerUpdate={storePlayers}
+        on:playerNameOrMarkerUpdate={setPlayersToStore}
         on:updateState={updateState} />
       <div class="gameboard-container">
         <StatusBar
@@ -864,7 +894,7 @@
           {players}
           {settings}
           on:reset={resetNotification}
-          on:playersScored={storePlayers}
+          on:playersScored={setPlayersToStore}
           on:updateState={updateState} />
         <MainMenu
           on:updateGameSettings={updateGameSettings}
