@@ -3,6 +3,16 @@
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   export let gameboardMapped;
   export let settings = {};
@@ -84,50 +94,10 @@
       settings.size,
       settings.gutter
     );
-    let gameInProgress = localStorage.getItem("gameInProgress");
-    let playerDetails = localStorage.getItem("playerDetails");
-    // console.log(
-    //   `gameInProgress as boolean: `,
-    //   gameInProgress,
-    //   gameInProgress == "true"
-    // );
-    if (!(playerDetails == "true")) {
-      console.log(
-        "GameBoard onMount says that player details are ***:::NOT:::*** present"
-      );
-      createDirectionArrays();
-      initializePlayers();
-      console.log("createDirectionArrays completed, lines, ", lines);
-      localStorage.setItem("lines", JSON.stringify(lines));
-    }
-    if (gameInProgress == "true") {
-      state.gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
-      console.log("GameBoard onMount says that game is in progress");
-      let redrawInterval = (1000 / (settings.rows * settings.columns)).toFixed(
-        2
-      );
-      console.log(`onMount, redrawInterval ${redrawInterval}`);
-      setTimeout(() => {
-        renderGameBoardReload(redrawInterval);
-      }, 50);
-    } else {
-      console.log(
-        "GameBoard onMount says that game is ***:::NOT:::*** in progress"
-      );
-    }
   });
-  function updateGameSettings() {
-    let settings = JSON.parse(localStorage.getItem("settings"));
-    console.log(
-      `GameBoard => updateGameSettings() about to resetGameBoard(), settings `,
-      settings
-    );
-    resetGameBoard();
-  }
 
   function initializePlayers() {
     let hueOffset = 140;
-    // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
@@ -184,7 +154,6 @@
     let len = history.length;
 
     while (gameboard.firstChild) {
-      // console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
     buildGameBoard(
@@ -193,7 +162,6 @@
       settings.size,
       settings.gutter
     );
-    // settings.rows, settings.columns, settings.size, settings.gutter;
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
@@ -456,9 +424,11 @@
   }
 
   function playMove(cell) {
-    state = JSON.parse(localStorage.getItem('state'))
+    state = JSON.parse(localStorage.getItem("state"));
     state.clickCount++;
-    console.log(`########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${state.currentPlayer.name}`);
+    console.log(
+      `########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${state.currentPlayer.name}`
+    );
     let id = cell.id;
     // cell["id"] = `R${rowNum}C${colNum}`;
     // cell.setAttribute("row", id[1]);
@@ -497,7 +467,7 @@
       setPlayerMove(cell.id);
       state.movesRemaining--;
     }
-    localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem("state", JSON.stringify(state));
   }
 
   function tickThis(cell) {

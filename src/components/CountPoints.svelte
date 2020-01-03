@@ -1,23 +1,34 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   export let players;
   // export let gameboardMapped
 
   $: gameboardMapped = [];
-  $: settings = {} // JSON.parse(localStorage.getItem('settings'))
+  $: settings = {}; // JSON.parse(localStorage.getItem('settings'))
   // $: settings = {}
 
   onMount(() => {
     console.log(`CountPoints onMount(), players, settings`, players, settings);
-    settings = JSON.parse(localStorage.getItem('settings'))
+    settings = JSON.parse(localStorage.getItem("settings"));
   });
 
   function countPoints() {
     // let settings = JSON.parse(localStorage.getItem('settings'))
     console.log(
-      "*************__________countPoints called________**************, settings ", settings
+      "*************__________countPoints called________**************, settings ",
+      settings
     );
     console.log(
       "players from countPoints before checking localStorage: ",
@@ -25,7 +36,7 @@
     );
     if (localStorage.getItem("gameHistory")) {
       let gh = JSON.parse(localStorage.getItem("gameHistory"));
-      console.log(`countPoints, gameHistory from LS: `, gh)
+      console.log(`countPoints, gameHistory from LS: `, gh);
     }
 
     players.forEach(player => {
@@ -71,30 +82,27 @@
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
-      let rows = settings.rows
-      let columns = settings.columns
-      let bonusForCompleteRow = settings.bonusForCompleteRow
-      let longerDimension = rows > columns ? rows : columns
-      let shorterDimension = rows < columns ? rows : columns
-      let len = line.length
+      let rows = settings.rows;
+      let columns = settings.columns;
+      let bonusForCompleteRow = settings.bonusForCompleteRow;
+      let longerDimension = rows > columns ? rows : columns;
+      let shorterDimension = rows < columns ? rows : columns;
+      let len = line.length;
       // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
       // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
-      let equalSides = rows === columns ? rows : false
+      let equalSides = rows === columns ? rows : false;
       // console.log(`has equal sides? ${equalSides}`)
       let lineBonus = bonusForCompleteRow;
-       if (len >= longerDimension) {
-
-        lineBonus = bonusForCompleteRow 
+      if (len >= longerDimension) {
+        lineBonus = bonusForCompleteRow;
         // console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
-
-      } else if(len >= shorterDimension) {
-        
-        lineBonus = Math.ceil(bonusForCompleteRow / (longerDimension / shorterDimension))
+      } else if (len >= shorterDimension) {
+        lineBonus = Math.ceil(
+          bonusForCompleteRow / (longerDimension / shorterDimension)
+        );
         // console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
-
       } else {
-
-        lineBonus = 0
+        lineBonus = 0;
         // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
@@ -140,9 +148,9 @@
       if (countInLoop >= settings.cellsToScore) {
         points += countInLoop - (settings.cellsToScore - 1);
       }
-      
+
       // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
-      points += lineBonus
+      points += lineBonus;
       // console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)

@@ -2,6 +2,16 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   export let players, settings;
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
@@ -11,10 +21,9 @@
     console.log(settings);
   });
 
-  function initializePlayers() {
+  function updatePlayers() {
     console.log(`MainMenu component, clicked to test countPoints: `, players);
   }
-
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
     localStorage.setItem("settings", JSON.stringify(settings));
@@ -39,7 +48,7 @@
       type="number"
       placeholder={settings.numberOfPlayers}
       bind:value={settings.numberOfPlayers}
-      on:input={initializePlayers}
+      on:input={updatePlayers}
       style="width: 2.5ch;" />
   </label>
   <label for="rows">

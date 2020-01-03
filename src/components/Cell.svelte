@@ -2,13 +2,23 @@
   import { onMount, createEventDispatcher } from "svelte";
   // import { createEventDispatcher } from 'svelte';
   export let id, row, column, player, ticked, cellClasses, cellStyles, customBg;
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   const dispatch = createEventDispatcher();
   onMount(() => {
     let settings = JSON.parse(localStorage.getItem("settings"));
-    let rowFactor = 60 / settings.rows
-    let colFactor = settings.columns / 100
-    let hue =  rowFactor  * row + 210;
+    let rowFactor = 60 / settings.rows;
+    let colFactor = settings.columns / 100;
+    let hue = rowFactor * row + 210;
     let alpha = parseFloat((column + 1) / 200 / colFactor).toFixed(2);
     customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha})`;
     // console.log(`------------Cell => onMount() ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
@@ -62,8 +72,8 @@
 
 <div
   class="game-square"
-  row={row}
-  column={column}
+  {row}
+  {column}
   {id}
   on:click={moveNotification}
   data-ticked={ticked}

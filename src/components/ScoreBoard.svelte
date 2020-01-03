@@ -3,58 +3,41 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   export let state, players, highlighted;
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   $: players = [];
   $: state = {};
-  $: currentPlayer = {}
-  // $: players, state, updateState()
-  // $: state.reset ? updateState() : (state.reset = false);
+  $: currentPlayer = {};
 
   onMount(() => {
     console.log(`ScoreBoard => onMount(), players, state `, players, state);
   });
 
   afterUpdate(() => {
-    console.log(`ScoreBoard => afterUpdate() #1, players, state `, players, state);
-    // players = JSON.parse(localStorage.getItem("players"));
-    state = JSON.parse(localStorage.getItem("state"));
-    console.log(`ScoreBoard => afterUpdate() #2, players, state `, players, state);
-    currentPlayer = state.currentPlayer
+    console.log(
+      `ScoreBoard => afterUpdate() #1, players, state `,
+      players,
+      state
+    );
+
+    state = $storeState;
+    currentPlayer = state.currentPlayer;
+
+    console.log(
+      `ScoreBoard => afterUpdate() #2, players, state `,
+      players,
+      state
+    );
   });
-
-  function updateState() {
-    console.log(
-      `ScoreBoard => updateState triggered due to players change from TicTacToe => ScoreBoard`,
-      players
-    );
-    players = JSON.parse(localStorage.getItem("players"));
-    state = JSON.parse(localStorage.getItem("state"));
-  }
-
-  function playersScored(e) {
-    console.log(`ScoreBoard receiving dispatch of playersScored, `, e.detail);
-    players = e.detail;
-  }
-
-  function highlight() {
-    document.execCommand("selectall", null, false);
-  }
-
-  function setPlayersToLS(player) {
-    console.log(
-      `ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `,
-      state.currentPlayer
-    );
-    localStorage.setItem("players", JSON.stringify(players));
-    localStorage.setItem("state", JSON.stringify(state));
-    // localStorage.setItem("gameInProgress", true);
-    localStorage.setItem("playerDetails", true);
-    localStorage.setItem(
-      "currentPlayer",
-      JSON.stringify(players[state.currentPlayer.id])
-    );
-    dispatch("playerNameOrMarkerUpdate", players);
-  }
 </script>
 
 <style lang="scss">
