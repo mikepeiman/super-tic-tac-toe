@@ -3,15 +3,33 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   export let state, players, settings, gameboardMapped;
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   // $: currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-  $: currentPlayer = {}
+  $: currentPlayer = {};
   // $: players
-  $: state = {}
+  $: state = {};
+  $: playerIndicator = {};
   // console.log(`StatusBar state change, currentplayer `, state.currentPlayer);
-
+  storePlayers.subscribe(value => {
+    console.log(`StatusBar => storePlayers.subscribe value => `, value);
+    if (value.length > 0) {
+      console.log(`StatusBar => subscribe(), ($storePlayers.length > 0) true`);
+      players = value;
+    }
+  });
   onMount(() => {
-    console.log(`//////////////     StatusBar => onMount()`)
+    playerIndicator = document.querySelector(".player-indicator");
+    console.log(`//////////////     StatusBar => onMount()`);
     currentPlayer = state.currentPlayer;
   });
 
@@ -25,19 +43,33 @@
     console.log("StatusBar => aterUpdate() fired #2, state ", state);
   });
 
+  function setStyle() {
+    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
+  }
+
   function countPoints() {
     console.log(`StatusBar component, clicked to test countPoints: `, players);
     dispatch("tally", true);
   }
 
-function saveGame() {}
-function loadGame () {}
+  function saveGame() {
+    storeGameInProgress.set(true);
+  }
+  function loadGame() {
+    storeGameInProgress.set(false);
+  }
 
   function playersScored(e) {
-    console.log(`StatusBar receiving dispatch of playersScored from CountPoints, `, e.detail);
-    console.log(`StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `, state.currentPlayer);
+    console.log(
+      `StatusBar receiving dispatch of playersScored from CountPoints, `,
+      e.detail
+    );
+    console.log(
+      `StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `,
+      state.currentPlayer
+    );
     players = e.detail;
-    localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem("state", JSON.stringify(state));
     dispatch("playersScored");
   }
 
@@ -47,17 +79,20 @@ function loadGame () {}
     localStorage.setItem("gameboardMapped", []);
     localStorage.setItem("lines", []);
     let currentPlayerId = state.currentPlayer.id;
-    localStorage.setItem("state", JSON.stringify({
-      lastTicked: "",
-      currentPlayer: players[0],
-      movesRemaining: settings.movesPerTurn,
-      turn: 0,
-      gameHistory: [],
-      turnHistory: [],
-      clickCount: 0,
-      moveNumber: 0,
-      reset: false
-    }));
+    localStorage.setItem(
+      "state",
+      JSON.stringify({
+        lastTicked: "",
+        currentPlayer: players[0],
+        movesRemaining: settings.movesPerTurn,
+        turn: 0,
+        gameHistory: [],
+        turnHistory: [],
+        clickCount: 0,
+        moveNumber: 0,
+        reset: false
+      })
+    );
     localStorage.setItem("gameInProgress", false);
 
     players.forEach(player => {
@@ -102,37 +137,35 @@ function loadGame () {}
   }
 </style>
 
+<!-- {#if currentPlayer.id} -->
 {#await players then players}
   <!-- {#await state then state} -->
-    <div
-      class="player-indicator player-0"
-      style={`--custom-bg: ${currentPlayer.bgColor}`}>
-      <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-      <h2 class="player-indicator-heading">
-        Turn Moves: {state.movesRemaining}
-      </h2>
-      <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
-      <div class="buttons-wrapper">
-        <CountPoints
-          {players}
-          {gameboardMapped}
-          on:playersScored={playersScored} />
-        <button class="control-button" id="reset-game-button" on:click={reset}>
-          Reset game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={saveGame}>
-          Save game
-        </button>
-        <button
-          class="control-button"
-          id="save-game-button"
-          on:click={loadGame}>
-          Load game
-        </button>
-      </div>
+  <div
+    class="player-indicator player-0"
+    style={`--custom-bg: ${currentPlayer.bgColor}`}>
+    <!-- {#if $storeGameInProgress}
+      <div>Test if storeGameInProgress</div>
+    {/if} -->
+    <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
+
+    <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
+    <div class="buttons-wrapper">
+      <CountPoints
+        {players}
+        {gameboardMapped}
+        on:playersScored={playersScored} />
+      <button class="control-button" id="reset-game-button" on:click={reset}>
+        Reset game
+      </button>
+      <button class="control-button" id="save-game-button" on:click={saveGame}>
+        Save game
+      </button>
+      <button class="control-button" id="save-game-button" on:click={loadGame}>
+        Load game
+      </button>
     </div>
+  </div>
   <!-- {/await} -->
 {/await}
+<!-- {/if} -->

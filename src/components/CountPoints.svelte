@@ -82,10 +82,11 @@
       let longerDimension = rows > columns ? rows : columns
       let shorterDimension = rows < columns ? rows : columns
       let len = line.length
-      // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
-      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
+      console.log('')
+      console.log(` -*-*-*-*-*-*-*    longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
+      console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
       let equalSides = rows === columns ? rows : false
-      // console.log(`has equal sides? ${equalSides}`)
+      console.log(`has equal sides? ${equalSides}`)
       let lineBonus = bonusForCompleteRow;
        if (len >= longerDimension) {
 
@@ -101,6 +102,9 @@
 
         lineBonus = 0
         // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
+      }
+      if(equalSides) {
+        // lineBonus = bonusForCompleteRow
       }
       line.forEach(move => {
         // console.log(`scoring ${move.id}`, move);
@@ -146,18 +150,18 @@
         points += countInLoop - (settings.cellsToScore - 1);
       }
       
-      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
+      console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
       points += lineBonus
-      // console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
+      console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
     });
     players = players;
-    // console.log(
-    //   `score closing with direction score ${dirScore} | player: `,
-    //   player
-    // );
+    console.log(
+      `score closing with direction score ${dirScore} | player: `,
+      player
+    );
     return dirScore;
   }
 

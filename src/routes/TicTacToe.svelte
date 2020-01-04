@@ -29,19 +29,14 @@
   storeGameInProgress.subscribe(value => {
     console.log(`TicTacToe => storeGameInProgress subscribed`, value);
   });
-  const unsubState = storeState.subscribe(value => {
-    console.log(`TicTacToe => storeState unsubscribe value => `, value);
-  });
-  const unsubSettings = storeSettings.subscribe(value => {
-    console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
-  });
+
   $: settings = {
     numberOfPlayers: 3,
-    movesPerTurn: 3,
-    cellsToScore: 3,
-    bonusForCompleteRow: 5,
-    rows: 5,
-    columns: 15,
+    movesPerTurn: 8,
+    cellsToScore: 4,
+    bonusForCompleteRow: 10,
+    rows: 12,
+    columns: 20,
     size: 24,
     gutter: 0
   };
@@ -103,7 +98,7 @@
   $: scores = [];
 
   onMount(() => {
-    console.log(`TicTacToe.svelte onMount`);
+    console.log(`TicTacToe.svelte => onMount()`);
 
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("playerDetails");
@@ -117,7 +112,7 @@
       if (!state.currentPlayer.name == "undefined") {
         state.currentPlayer = players[0];
         console.log(
-          `reloadPlayers #2, from LS: players, state.currentPlayer.name `,
+          `TicTacToe.svelte => onMount() => (!state.currentPlayer.name == "undefined") from LS: players, state.currentPlayer.name `,
           players,
           state.currentPlayer.name
         );

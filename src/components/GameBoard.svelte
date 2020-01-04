@@ -156,7 +156,7 @@
   function initializePlayers() {
     let hueOffset = 140;
     // let hueInterval = (360 / settings.numberOfPlayers)
-    let hueInterval = 180 / settings.numberOfPlayers;
+    let hueInterval = 360 / settings.numberOfPlayers;
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players = [
@@ -182,10 +182,8 @@
     }
     players = players;
     localStorage.setItem("players", JSON.stringify(players));
-    let playerIndicator = document.querySelector(".player-indicator");
-    // let id = state.currentPlayer.id;
+    storePlayers.set(players);
     state.currentPlayer = players[0];
-    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
   }
 
   function renderGameBoardReload(delayMS) {
@@ -674,7 +672,9 @@
     });
     state.turnHistory = [];
     localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
+    storeMovesPlayedHistory.set(state.gameHistory);
     localStorage.setItem("gameInProgress", true);
+    storeGameInProgress.set(true);
   }
 </script>
 
@@ -696,9 +696,9 @@
 
   .debug-section {
     margin: 1rem;
-    padding: .5rem;
-    background: rgba(0,0,0,1);
-    border: 3px solid rgba(255,155,200,.5);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 1);
+    border: 3px solid rgba(255, 155, 200, 0.5);
   }
 </style>
 
@@ -743,8 +743,10 @@
   </div>
   <div class="debug-section">
     <h2>storeMovesPlayedHistory</h2>
-    {#each $storeMovesPlayedHistory as move}
-      <div>{move}</div>
+    {#each $storeMovesPlayedHistory as turn}
+      {#each turn as move}
+        <div>{move.id}-{move.player.name}</div>
+      {/each}
     {/each}
   </div>
 </div>

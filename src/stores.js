@@ -21,12 +21,12 @@ export const storeState = writable({
   moveNumber: 0,
   reset: false
 });
-export const storeDirectionArrays = writable([]);
-export const storeCurrentPlayer = writable({});
+export const storeDirectionArrays = writable(false);
+export const storeCurrentPlayer = writable(false);
 export const storeGameInProgress = writable(false);
 export const storePreservePlayerDetails = writable(false);
-export const storeMovesPlayedHistory = writable([]);
-export const storePlayers = writable([]);
+export const storeMovesPlayedHistory = writable(false);
+export const storePlayers = writable(false);
 
 // storeSettings, storeState, storePlayers, storeCurrentPlayer, storeDirectionArrays, storeGameInProgress, storeMovesPlayedHistory, storePreservePlayerDetails
 

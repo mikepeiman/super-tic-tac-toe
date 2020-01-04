@@ -3,36 +3,74 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   export let state, players, highlighted;
+  import {
+    storeSettings,
+    storeState,
+    storePlayers,
+    storeCurrentPlayer,
+    storeDirectionArrays,
+    storeGameInProgress,
+    storeMovesPlayedHistory,
+    storePreservePlayerDetails
+  } from "../stores.js";
 
   $: players = [];
   $: state = {};
+  $: currentPlayer = {};
 
-  $: players, console.log(`ScoreBoard reactive log, players updated`); // updateState()
-  $: state, console.log(`ScoreBoard reactive log, state updated`); // updateState()
-  // $: state, console.log(`ScoreBoard reactive log, state updated`)
-  $: state.reset ? updateState() : (state.reset = false);
-  $: currentPlayer = state.currentPlayer;
-  $: currentPlayer, console.log(
-      `ScoreBoard reactive log, currentPlayer updated `,
-      currentPlayer
-    ); // updateState();
-
+  // $: players, state, updateState()
+  // $: state.reset ? updateState() : (state.reset = false);
+  storePlayers.subscribe(value => {
+    console.log(`ScoreBoard => storePlayers.subscribe value => `, value);
+    if (value.length > 0) {
+      console.log(`ScoreBoard => subscribe(), ($storePlayers.length > 0) true`);
+      players = value;
+    }
+  });
   onMount(() => {
-    console.log(`ScoreBoard onMount(), players, state `, players, state);
+    console.log(`ScoreBoard => onMount(), players, state `, players, state);
+    if ($storePlayers.length > 0) {
+      console.log(`ScoreBoard => onMount(), ($storePlayers.length > 0) true`);
+    }
+    console.log(
+      `ScoreBoard => onMount(), ($storePlayers.length > 0)?`,
+      $storePlayers.length,
+      $storePlayers
+    );
   });
 
   afterUpdate(() => {
+    console.log(
+      `ScoreBoard => afterUpdate() #1, players, state `,
+      players,
+      state
+    );
+    if (localStorage.getItem("state")) {
+      state = JSON.parse(localStorage.getItem("state"));
+    }
+    if (localStorage.getItem("players")) {
+      players = JSON.parse(localStorage.getItem("players"));
+    }
     // players = JSON.parse(localStorage.getItem("players"));
-    // state = JSON.parse(localStorage.getItem("state"));
+
+    console.log(
+      `ScoreBoard => afterUpdate() #2, players, state `,
+      players,
+      state
+    );
+    currentPlayer = state.currentPlayer;
+    players = players;
   });
 
-  function updateState() {
+  function updateState(e) {
     console.log(
-      `ScoreBoard => updateState triggered due to reset trigger change from TicTacToe => ScoreBoard`,
-      players
+      `ScoreBoard => updateState triggered due to scoring from CountPoints`,
+      state,
+      e.detail
     );
     players = JSON.parse(localStorage.getItem("players"));
     state = JSON.parse(localStorage.getItem("state"));
+    dispatch("updateState");
   }
 
   function playersScored(e) {
@@ -46,16 +84,18 @@
 
   function setPlayersToLS(player) {
     console.log(
-      `ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
-      currentPlayer
+      `ScoreBoard => setPlayersToLS: input on:blur, marker ${player.marker}, state.currentPlayer: ${state.currentPlayer.name} `,
+      state.currentPlayer
     );
     localStorage.setItem("players", JSON.stringify(players));
+    storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
+    storeState.set(state);
     // localStorage.setItem("gameInProgress", true);
     localStorage.setItem("playerDetails", true);
     localStorage.setItem(
       "currentPlayer",
-      JSON.stringify(players[currentPlayer.id])
+      JSON.stringify(players[state.currentPlayer.id])
     );
     dispatch("playerNameOrMarkerUpdate", players);
   }
@@ -160,12 +200,6 @@
 {#await players then players}
   {#await state then state}
     <div class="scoreboard-container">
-      <!-- <div class="scoreboard-controls">
-      <CountPoints
-        {players}
-        {gameboardMapped}
-        on:playersScored={playersScored} />
-    </div> -->
       {#each players as player}
         <div
           class="scoreboard-totals"
