@@ -62,6 +62,7 @@
     console.log(`GameInit => onMount()`);
     // players = $storePlayers;
     settings = $storeSettings;
+    state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = $storeGameInProgress;
     let playerDetails = localStorage.getItem("storePreservePlayerDetails");
@@ -72,6 +73,7 @@
       );
     } else {
       state.movesRemaining = settings.movesPerTurn
+      console.log(`GameInit => onMount(), state `, state)
       storeState.set(state)
     }
 
@@ -83,15 +85,6 @@
     } else {
       initializePlayers();
     }
-    // players = $storePlayers;
-    // state = $storeState;
-    // currentPlayer = $storeCurrentPlayer;
-    // console.log(`//////////////     StatusBar => onMount() `, state, players);
-
-    // if (!(currentPlayer.length > 0)) {
-    //   currentPlayer = players[0];
-    // }
-    // storeCurrentPlayer.set(currentPlayer)
   });
 
   afterUpdate(() => {});

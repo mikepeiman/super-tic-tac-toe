@@ -29,7 +29,9 @@
       currentPlayer = value;
     });
     players = $storePlayers;
+    console.log(`StatusBar => onMount(() #1 state`, state);
     state = $storeState;
+    console.log(`StatusBar => onMount(() #2 state`, state);
     // currentPlayer = $storeCurrentPlayer;
     console.log(`//////////////     StatusBar => onMount() `, state, players);
 
@@ -40,7 +42,9 @@
   });
 
   afterUpdate(() => {
+    console.log(`StatusBar => afterUpdate(() #1 state`, state);
     state = $storeState;
+    console.log(`StatusBar => afterUpdate(() #2 state`, state);
   });
 
   function playersScored(e) {
