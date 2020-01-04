@@ -88,6 +88,7 @@
   onMount(() => {
     console.log(`GameBoard component mounted`);
     settings = $storeSettings;
+    players = $storePlayers
     currentPlayer = $storeCurrentPlayer;
     gameHistory = $storeMovesPlayedHistory;
     state = $storeState;
@@ -415,6 +416,7 @@
       state.movesRemaining--;
     }
     localStorage.setItem("state", JSON.stringify(state));
+    storeState.set(state)
   }
 
   function tickThis(cell) {
@@ -569,8 +571,8 @@
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
       console.log(
-        `GameBoard => setGameHistory, turn => turn.player `,
-        turn.player
+        `GameBoard => setGameHistory, pid ${pid}, turn => turn.player, players `,
+        turn.player, players
       );
       move.setAttribute("data-marker", players[pid].marker);
       turn.move = thisMoveNum;

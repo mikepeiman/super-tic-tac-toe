@@ -70,6 +70,9 @@
       console.log(
         `//////////////     GameInit => onMount(), gameInProgress true`
       );
+    } else {
+      state.movesRemaining = settings.movesPerTurn
+      storeState.set(state)
     }
 
     if (playerDetails) {

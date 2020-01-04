@@ -30,7 +30,9 @@
     storeCurrentPlayer.set(currentPlayer);
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => {
+    state = $storeState
+  });
 
   function playersScored(e) {
     console.log(
