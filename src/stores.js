@@ -1,9 +1,9 @@
 import { writable } from "svelte/store";
 
-if (typeof window !== 'undefined') {
-  console.log('we are running on the client')
+if (typeof window !== "undefined") {
+  console.log("we are running on the client");
 } else {
-  console.log('we are running on the server');
+  console.log("we are running on the server");
 }
 
 let settings = writable({
@@ -33,8 +33,8 @@ let gameInProgress = writable(0);
 let preservePlayerDetails = writable(0);
 let gameBoardMoveHistoryFlatArray = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
-let players = writable(0)
-let movesPlayedHistory = writable([
+let players = writable(0);
+let gameHistory = writable([
   [
     { move: 1, id: "R0C0", clickCount: 1, player: { id: 0, name: "Player 1" } },
     { move: 2, id: "R1C1", clickCount: 2, player: { id: 0, name: "Player 1" } },
@@ -134,37 +134,63 @@ let movesPlayedHistory = writable([
 
 export const storePlayers = {
   subscribe: players.subscribe,
-  set: (updatedPlayers) => { players.set(updatedPlayers) }
+  set: updatedPlayers => {
+    players.set(updatedPlayers);
+  }
 };
-export const storeMovesPlayedHistory = {
-  subscribe: movesPlayedHistory.subscribe,
-  set: (val) => { movesPlayedHistory.set(val) }
+export const storeGameHistory = {
+  subscribe: gameHistory.subscribe,
+  set: val => {
+    gameHistory.set(val);
+    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
+  }
 };
 export const storeSettings = {
   subscribe: settings.subscribe,
-  set: (val) => { settings.set(val) }
+  set: val => {
+    settings.set(val);
+  }
 };
 export const storeState = {
   subscribe: state.subscribe,
-  set: (val) => { state.set(val) }
+  set: val => {
+    state.set(val);
+    localStorage.setItem("state", JSON.stringify(state));
+  }
 };
 export const storeDirectionArrays = {
   subscribe: directionArrays.subscribe,
-  set: (val) => { directionArrays.set(val) }
+  set: val => {
+    directionArrays.set(val);
+  }
 };
 export const storeCurrentPlayer = {
   subscribe: currentPlayer.subscribe,
-  set: (player) => { currentPlayer.set(player) }
+  set: player => {
+    currentPlayer.set(player);
+    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+  }
 };
 export const storeGameInProgress = {
   subscribe: gameInProgress.subscribe,
-  set: (val) => { gameInProgress.set(val) }
+  set: val => {
+    gameInProgress.set(val);
+    localStorage.setItem("gameInProgress", true);
+  }
 };
 export const storePreservePlayerDetails = {
   subscribe: preservePlayerDetails.subscribe,
-  set: (details) => { preservePlayerDetails.set(details) }
+  set: details => {
+    preservePlayerDetails.set(details);
+  }
 };
 export const storeGameBoardMoveHistoryFlatArray = {
   subscribe: gameBoardMoveHistoryFlatArray.subscribe,
-  set: (history) => { gameBoardMoveHistoryFlatArray.set(history) }
+  set: history => {
+    gameBoardMoveHistoryFlatArray.set(history);
+    localStorage.setItem(
+      "gameBoardMoveHistoryFlatArray",
+      JSON.stringify(gameBoardMoveHistoryFlatArray)
+    );
+  }
 };

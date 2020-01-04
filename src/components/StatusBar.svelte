@@ -10,18 +10,27 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeMovesPlayedHistory,
+    storeGameHistory,
     storePreservePlayerDetails
   } from "../stores.js";
 
   $: currentPlayer = {};
   $: state = {};
   $: players = {};
+  $: currentPlayer,
+    console.log(
+      `StatusBar reactive logging currentPlayer, `,
+      currentPlayer.name
+    );
 
   onMount(() => {
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      currentPlayer = value;
+    });
     players = $storePlayers;
     state = $storeState;
-    currentPlayer = $storeCurrentPlayer;
+    // currentPlayer = $storeCurrentPlayer;
     console.log(`//////////////     StatusBar => onMount() `, state, players);
 
     if (!(currentPlayer.length > 0)) {
@@ -31,7 +40,7 @@
   });
 
   afterUpdate(() => {
-    state = $storeState
+    state = $storeState;
   });
 
   function playersScored(e) {
@@ -81,7 +90,7 @@
   }
 
   function resetPlayers() {
-    storePreservePlayerDetails.set(false)
+    storePreservePlayerDetails.set(false);
     localStorage.removeItem("storePreservePlayerDetails");
     localStorage.removeItem("players");
     location.reload();

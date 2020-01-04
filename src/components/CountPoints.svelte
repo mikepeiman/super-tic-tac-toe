@@ -8,7 +8,7 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeMovesPlayedHistory,
+    storeGameHistory,
     storePreservePlayerDetails
   } from "../stores.js";
 

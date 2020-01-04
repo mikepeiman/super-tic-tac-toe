@@ -10,18 +10,12 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeMovesPlayedHistory,
+    storeGameHistory,
     storePreservePlayerDetails,
     storeGameBoardMoveHistoryFlatArray
   } from "../stores.js";
 
   $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
-  $: console.log(`GameBoard state reset: `, state.reset);
-  $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
-  $: console.log(
-    `GameBoard state updateGameSettings: `,
-    state.updateGameSettings
-  );
 
   $: settings = {};
   $: state = {};
@@ -90,7 +84,7 @@
     settings = $storeSettings;
     players = $storePlayers
     currentPlayer = $storeCurrentPlayer;
-    gameHistory = $storeMovesPlayedHistory;
+    gameHistory = $storeGameHistory;
     state = $storeState;
     buildGameBoard(
       settings.rows,
@@ -518,8 +512,10 @@
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+    storeState.set(state)
+    storeCurrentPlayer.set(currentPlayer)
+    
+
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
       currentPlayer.id
@@ -550,10 +546,6 @@
       // );
       turnHistory = [...turnHistory, move];
       gameBoardMoveHistoryFlatArray = [...gameBoardMoveHistoryFlatArray, move];
-      localStorage.setItem(
-        "gameBoardMoveHistoryFlatArray",
-        JSON.stringify(gameBoardMoveHistoryFlatArray)
-      );
       storeGameBoardMoveHistoryFlatArray.set(gameBoardMoveHistoryFlatArray);
     }
     // console.log(turnHistory);
@@ -580,8 +572,8 @@
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
     turnHistory = [];
-    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
-    localStorage.setItem("gameInProgress", true);
+    
+    storeGameInProgress.set(true)
   }
 </script>
 
@@ -657,8 +649,8 @@
     <div>storeGameInProgress: {$storeGameInProgress}</div>
   </div>
   <div class="debug-section">
-    <h2>storeMovesPlayedHistory</h2>
-    {#each $storeMovesPlayedHistory as turn}
+    <h2>storeGameHistory</h2>
+    {#each $storeGameHistory as turn}
       {#each turn as move}
         <div>{move.id}-{move.player.name}</div>
       {/each}
