@@ -81,7 +81,8 @@
   function resetPlayers() {
     storePreservePlayerDetails.set(false)
     localStorage.removeItem("storePreservePlayerDetails");
-    // location.reload();
+    localStorage.removeItem("players");
+    location.reload();
     dispatch("resetGame", true);
   }
 
