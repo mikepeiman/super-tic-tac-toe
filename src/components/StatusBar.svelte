@@ -54,7 +54,7 @@
     );
     players = e.detail;
     localStorage.setItem("state", JSON.stringify(state));
-    dispatch("playersScored");
+    dispatch("playersScored", players);
   }
 
   function resetGame() {

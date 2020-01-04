@@ -386,7 +386,7 @@
     let id = cell.id;
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
-    cell.setAttribute("data-marker", currentPlayer.marker);
+
 
     if (ticked) {
       if (!cell.hasAttribute("locked")) {

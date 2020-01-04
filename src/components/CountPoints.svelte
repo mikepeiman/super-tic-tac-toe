@@ -20,9 +20,9 @@
   // $: settings = {}
 
   onMount(() => {
-    console.log(`CountPoints onMount(), players, settings`, players, settings);
     // settings = JSON.parse(localStorage.getItem("settings"));
-    settings = $storeSettings
+    settings = $storeSettings;
+    console.log(`CountPoints onMount(), players, settings`, players, settings);
   });
 
   function countPoints() {
@@ -74,9 +74,9 @@
     let dirLines = [];
     let dirScore = 0;
     let name = direction.name;
-    // console.log(
-    //   `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
-    // );
+    console.log(
+      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
+    );
 
     direction.lines.forEach((line, index) => {
       // console.log(`each line ${index}`, line);
@@ -152,7 +152,7 @@
 
       // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
       points += lineBonus;
-      // console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
+      console.log(`END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`);
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
