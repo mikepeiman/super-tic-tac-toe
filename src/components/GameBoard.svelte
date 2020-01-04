@@ -443,7 +443,7 @@
     // console.log(`------------untickThis(cell)`, cell);
     // console.log(`------------untickThis(cell) row ${row} column ${column} `);
     cell.classList.remove("ticked");
-    let settings = JSON.parse(localStorage.getItem("settings"));
+    // let settings = JSON.parse(localStorage.getItem("settings"));
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
