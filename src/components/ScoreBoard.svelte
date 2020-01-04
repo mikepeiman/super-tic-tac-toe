@@ -27,24 +27,28 @@
   //   players = value;
   // });
 
-
   onMount(() => {
     players = $storePlayers;
     state = $storeState;
     currentPlayer = $storeCurrentPlayer;
-      storeCurrentPlayer.subscribe(value => {
-    console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
-    currentPlayer = value
-  });
-  storePlayers.subscribe(value => {
-    console.log(`ScoreBoard => storePlayers subscribed value, players `, value, players);
-    // players = value
-  });
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      currentPlayer = value;
+    });
+    storePlayers.subscribe(value => {
+      console.log(
+        `ScoreBoard => storePlayers subscribed value, players `,
+        value,
+        players
+      );
+      // players = value
+    });
+    setTimeout(() => {
+      addStyles();
+    }, 1);
   });
 
-  afterUpdate(() => {
-
-  });
+  afterUpdate(() => {});
 
   function updateStoredPlayers(player) {
     console.log(
@@ -66,6 +70,17 @@
 
   function highlight() {
     document.execCommand("selectall", null, false);
+  }
+
+  function addStyles() {
+    let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
+    console.log(
+      `addStyle function, scoreHeadings for total-score: `,
+      scoreHeadings
+    );
+    scoreHeadings.forEach((h, i) => {
+      h.style = `--custom-bg: ${players[i].bgColor}`;
+    });
   }
 </script>
 
@@ -165,52 +180,50 @@
   }
 </style>
 
-{#await players then players}
-  {#await state then state}
-    <div class="scoreboard-container">
-      {#each players as player}
-        <div
-          class="scoreboard-totals"
-          class:highlighted={currentPlayer.id == player.id}>
-          <h3 class="total-score">
-            <input
-              class="player-name"
-              type="text"
-              bind:value={player.name}
-              placeholder={player.name}
-              on:click={highlight}
-              on:blur={() => updateStoredPlayers(player)} />
+<!-- {#await players then players}
+  {#await state then state} -->
+<div class="scoreboard-container">
+  {#each players as player}
+    <div
+      class="scoreboard-totals"
+      class:highlighted={currentPlayer.id == player.id}>
+      <h3 class="total-score">
+        <input
+          class="player-name"
+          type="text"
+          bind:value={player.name}
+          placeholder={player.name}
+          on:click={highlight}
+          on:blur={() => updateStoredPlayers(player)} />
 
-            <input
-              class="player-marker"
-              type="text"
-              bind:value={player.marker}
-              placeholder={player.marker}
-              maxlength="1"
-              on:click={highlight}
-              on:blur={() => updateStoredPlayers(player)} />
-            <div class="total-score-number">{player.totalScore}</div>
-          </h3>
-          <div class="scoreboard-player">
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div class="direction-score-section">
-                  <img
-                    class="direction-icon"
-                    src={direction.iconSrc}
-                    width="20"
-                    height="20"
-                    alt="Icon for direction {direction.name}" />
-                  <!-- <div class="direction-name">{direction.name}:</div> -->
-                  <div class="direction-score">
-                    {player.dirScoresByIndex[i]}
-                  </div>
-                </div>
-              </div>
-            {/each}
+        <input
+          class="player-marker"
+          type="text"
+          bind:value={player.marker}
+          placeholder={player.marker}
+          maxlength="1"
+          on:click={highlight}
+          on:blur={() => updateStoredPlayers(player)} />
+        <div class="total-score-number">{player.totalScore}</div>
+      </h3>
+      <div class="scoreboard-player">
+        {#each player.scores as direction, i}
+          <div class="scoreboard-direction">
+            <div class="direction-score-section">
+              <img
+                class="direction-icon"
+                src={direction.iconSrc}
+                width="20"
+                height="20"
+                alt="Icon for direction {direction.name}" />
+              <!-- <div class="direction-name">{direction.name}:</div> -->
+              <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+            </div>
           </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     </div>
-  {/await}
-{/await}
+  {/each}
+</div>
+<!-- {/await}
+{/await} -->
