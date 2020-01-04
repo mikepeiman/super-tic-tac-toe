@@ -20,24 +20,36 @@
 
   onMount(() => {
     console.log(`ScoreBoard => onMount(), players, state `, players, state);
+    players = $storePlayers;
+    state = $storeState;
+    currentPlayer = state.currentPlayer;
   });
 
   afterUpdate(() => {
-    console.log(
-      `ScoreBoard => afterUpdate() #1, players, state `,
-      players,
-      state
-    );
-
-    state = $storeState;
-    currentPlayer = state.currentPlayer;
-
-    console.log(
-      `ScoreBoard => afterUpdate() #2, players, state `,
-      players,
-      state
-    );
+    // storePlayers.set(players)
   });
+
+    function updateStoredPlayers(player) {
+    console.log(
+      `ScoreBoard => updateStoredPlayers: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
+      currentPlayer
+    );
+    storePlayers.set(players)
+    localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("players", JSON.stringify(players));
+    localStorage.setItem("playerDetails", true);
+    localStorage.setItem(
+      "currentPlayer",
+      JSON.stringify(players[currentPlayer.id])
+    );
+    dispatch("playerNameOrMarkerUpdate", players);
+    storePreservePlayerDetails.set(true)
+    localStorage.setItem("storePreservePlayerDetails", JSON.stringify(true));
+  }
+
+  function highlight() {
+    document.execCommand("selectall", null, false);
+  }
 </script>
 
 <style lang="scss">
@@ -150,7 +162,7 @@
               bind:value={player.name}
               placeholder={player.name}
               on:click={highlight}
-              on:blur={() => setPlayersToLS(player)} />
+              on:blur={() => updateStoredPlayers(player)} />
 
             <input
               class="player-marker"
@@ -159,7 +171,7 @@
               placeholder={player.marker}
               maxlength="1"
               on:click={highlight}
-              on:blur={() => setPlayersToLS(player)} />
+              on:blur={() => updateStoredPlayers(player)} />
             <div class="total-score-number">{player.totalScore}</div>
           </h3>
           <div class="scoreboard-player">

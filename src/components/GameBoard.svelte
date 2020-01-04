@@ -11,16 +11,10 @@
     storeDirectionArrays,
     storeGameInProgress,
     storeMovesPlayedHistory,
-    storePreservePlayerDetails
+    storePreservePlayerDetails,
+    storeGameBoardMoveHistoryFlatArray
   } from "../stores.js";
 
-  export let gameboardMapped;
-  export let settings = {};
-  export let state = {};
-  export let players = [];
-
-  // $: players.forEach(player => { console.log(`GameBoard watching for player.markers update: `, player.marker)})
-  $: gameboardMapped = [];
   $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   $: console.log(`GameBoard state reset: `, state.reset);
   $: console.log(`GameBoard state gameInProgress: `, state.gameInProgress);
@@ -28,6 +22,10 @@
     `GameBoard state updateGameSettings: `,
     state.updateGameSettings
   );
+
+  $: settings = {};
+  $: state = {};
+  $: players = [];
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
@@ -77,8 +75,9 @@
   $: grid = [];
   $: currentPlayer = {};
   $: ticked = false;
-  $: gameHistory = []
-  $: turnHistory = []
+  $: gameHistory = [];
+  $: turnHistory = [];
+  $: gameBoardMoveHistoryFlatArray = [];
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -88,10 +87,10 @@
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
-    settings = $storeSettings
-    currentPlayer = $storeCurrentPlayer
-    gameHistory = $storeMovesPlayedHistory
-    state = $storeState
+    settings = $storeSettings;
+    currentPlayer = $storeCurrentPlayer;
+    gameHistory = $storeMovesPlayedHistory;
+    state = $storeState;
     buildGameBoard(
       settings.rows,
       settings.columns,
@@ -100,45 +99,8 @@
     );
   });
 
-  function initializePlayers() {
-    let hueOffset = 140;
-    let hueInterval = 180 / settings.numberOfPlayers;
-    players = [];
-    for (let i = 0; i < settings.numberOfPlayers; i++) {
-      players = [
-        ...players,
-        {
-          id: i,
-          name: `Player ${i + 1}`,
-          totalScore: 0,
-          marker: "x",
-          bgColor: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
-          moves: 0,
-          scores: [],
-          dirScoresByIndex: [0, 0, 0, 0]
-        }
-      ];
-
-      scoreDirections.forEach((direction, index) => {
-        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
-        players[i]["scores"].push(direction);
-        players[i]["scores"][index]["lines"] = lines[direction.name];
-        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `, players[i]["scores"][index])
-      });
-    }
-    players = players;
-    localStorage.setItem("players", JSON.stringify(players));
-    let playerIndicator = document.querySelector(".player-indicator");
-    // let id = currentPlayer.id;
-    currentPlayer = players[0];
-    playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
-  }
-
   function renderGameBoardReload(delayMS) {
-    console.log(
-      `renderGameBoardReload => gameHistory::: `,
-      gameHistory
-    );
+    console.log(`renderGameBoardReload => gameHistory::: `, gameHistory);
     let settings = JSON.parse(localStorage.getItem("settings"));
     let players = JSON.parse(localStorage.getItem("players"));
     let gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
@@ -148,10 +110,7 @@
       players
     );
 
-    console.log(
-      `renderGameBoardReload => gameHistory::: `,
-      gameHistory
-    );
+    console.log(`renderGameBoardReload => gameHistory::: `, gameHistory);
     // localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
@@ -337,8 +296,10 @@
 
   function getMoveFromHistory(id) {
     let payload = { id: "zzz", name: "zzz" };
-    if (localStorage.getItem("gameboardMapped")) {
-      let game = JSON.parse(localStorage.getItem("gameboardMapped"));
+    if (localStorage.getItem("gameBoardMoveHistoryFlatArray")) {
+      let game = JSON.parse(
+        localStorage.getItem("gameBoardMoveHistoryFlatArray")
+      );
       game.forEach(move => {
         if (move.id == id) {
           payload = move.player;
@@ -389,12 +350,6 @@
         settings.gutter
       );
       createDirectionArrays();
-      // initializePlayers();
-      // console.log(
-      //   `GameBoard just ran a reset, now state, players INSIDE TIMEOUT `,
-      //   state,
-      //   players
-      // );
     }, 1);
     state = {
       lastTicked: "",
@@ -429,21 +384,10 @@
 
   function playMove(cell) {
     state.clickCount++;
-    console.log(
-      `########        playMove clickCount: ${state.clickCount}, #######      current player (state): ${currentPlayer.name}`
-    );
     let id = cell.id;
-    // cell["id"] = `R${rowNum}C${colNum}`;
-    // cell.setAttribute("row", id[1]);
-    // cell.setAttribute("col", id[3]);
-    cell.setAttribute("playername", "empty");
-    cell.setAttribute("playerid", "empty");
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
     cell.setAttribute("data-marker", currentPlayer.marker);
-    // let customBg = `--custom-bg: hsla(${id[3] * 20 + 120}, 50%, 50%, 1)`;
-    // cell.style = customBg;
-    // console.log(`click from ${cell.id}`, cell, customBg);
 
     if (ticked) {
       if (!cell.hasAttribute("locked")) {
@@ -516,8 +460,8 @@
   }
 
   function setPlayerMove(cellId) {
-    if (gameboardMapped.length > 0) {
-      gameboardMapped.forEach(move => {
+    if (gameBoardMoveHistoryFlatArray.length > 0) {
+      gameBoardMoveHistoryFlatArray.forEach(move => {
         if (move.id == cellId) {
           console.log(`if(move.id == cellId) ${cellId}`);
           move.player = {
@@ -529,11 +473,14 @@
       });
     }
 
-    localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+    localStorage.setItem(
+      "gameBoardMoveHistoryFlatArray",
+      JSON.stringify(gameBoardMoveHistoryFlatArray)
+    );
   }
 
   function removePlayerMove(cellId) {
-    gameboardMapped.forEach(move => {
+    gameBoardMoveHistoryFlatArray.forEach(move => {
       if (move.id == cellId) {
         console.log(`if(move.id == cellId) ${cellId}`);
         move.player = {
@@ -542,7 +489,10 @@
         };
         move.move = null;
       }
-      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+      localStorage.setItem(
+        "gameBoardMoveHistoryFlatArray",
+        JSON.stringify(gameBoardMoveHistoryFlatArray)
+      );
     });
   }
 
@@ -597,8 +547,12 @@
       //   `apparently we have not made this move yet, let's add it to turnHistory`
       // );
       turnHistory = [...turnHistory, move];
-      gameboardMapped = [...gameboardMapped, move];
-      localStorage.setItem("gameboardMapped", JSON.stringify(gameboardMapped));
+      gameBoardMoveHistoryFlatArray = [...gameBoardMoveHistoryFlatArray, move];
+      localStorage.setItem(
+        "gameBoardMoveHistoryFlatArray",
+        JSON.stringify(gameBoardMoveHistoryFlatArray)
+      );
+      storeGameBoardMoveHistoryFlatArray.set(gameBoardMoveHistoryFlatArray);
     }
     // console.log(turnHistory);
   }
@@ -640,7 +594,7 @@
     justify-content: flex-start;
     align-items: center;
   }
-  
+
   .debug {
     display: flex;
   }
@@ -676,6 +630,8 @@
     <div>.clickCount: {$storeState.clickCount}</div>
     <div>.currentPlayer.name: {$storeState.currentPlayer.name}</div>
     <div>.reset: {$storeState.reset}</div>
+    <div>.reset: {$storeState.reset}</div>
+    <div>.reset: {$storeState.reset}</div>
   </div>
   <div class="debug-section">
     <h2>storeSettings</h2>
@@ -692,6 +648,11 @@
       <div>.bgColor: {player.bgColor}</div>
       <div>.totalScore: {player.totalScore}</div>
     {/each}
+  </div>
+  <div class="debug-section">
+    <h2>Flags</h2>
+    <div>storePreservePlayerDetails: {$storePreservePlayerDetails}</div>
+    <div>storeGameInProgress: {$storeGameInProgress}</div>
   </div>
   <div class="debug-section">
     <h2>storeMovesPlayedHistory</h2>

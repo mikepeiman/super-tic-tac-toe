@@ -27,13 +27,10 @@
     if (!(currentPlayer.length > 0)) {
       currentPlayer = players[0];
     }
-    storeCurrentPlayer.set(currentPlayer)
-    
+    storeCurrentPlayer.set(currentPlayer);
   });
 
-  afterUpdate(() => {
-
-  });
+  afterUpdate(() => {});
 
   function playersScored(e) {
     console.log(
@@ -49,7 +46,7 @@
     dispatch("playersScored");
   }
 
-  function reset() {
+  function resetGame() {
     localStorage.setItem("gameboard", []);
     localStorage.setItem("gameHistory", []);
     localStorage.setItem("gameboardMapped", []);
@@ -78,7 +75,14 @@
     });
     localStorage.setItem("players", JSON.stringify(players));
     location.reload();
-    dispatch("reset", true);
+    dispatch("resetGame", true);
+  }
+
+  function resetPlayers() {
+    storePreservePlayerDetails.set(false)
+    localStorage.removeItem("storePreservePlayerDetails");
+    // location.reload();
+    dispatch("resetGame", true);
   }
 
   function saveGame() {
@@ -123,31 +127,41 @@
 <!-- {#await players then players} -->
 <!-- {#await state then state} -->
 {#if currentPlayer.name}
-<div
-  class="player-indicator player-0"
-  style={`--custom-bg: ${currentPlayer.bgColor}`}>
-  <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-  <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
-  <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
-  <div class="buttons-wrapper">
-    <CountPoints {players} {gameboardMapped} on:playersScored={playersScored} />
-    <button class="control-button" id="reset-game-button" on:click={reset}>
-      Reset game
-    </button>
-    <button class="control-button" id="save-game-button" on:click={saveGame}>
-      Save game
-    </button>
-    <button class="control-button" id="save-game-button" on:click={loadGame}>
-      Load game
-    </button>
+  <div
+    class="player-indicator player-0"
+    style={`--custom-bg: ${currentPlayer.bgColor}`}>
+    <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
+    <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
+    <div class="buttons-wrapper">
+      <CountPoints
+        {players}
+        {gameboardMapped}
+        on:playersScored={playersScored} />
+      <button class="control-button" id="new-game-button" on:click={resetGame}>
+        New Game
+      </button>
+      <button class="control-button" id="save-game-button" on:click={saveGame}>
+        Save game
+      </button>
+      <button class="control-button" id="save-game-button" on:click={loadGame}>
+        Load game
+      </button>
+
+      <button
+        class="control-button"
+        id="reset-players-button"
+        on:click={resetPlayers}>
+        Reset players
+      </button>
+    </div>
   </div>
-</div>
 {:else}
-<div
-  class="player-indicator player-0"
-  style={`--custom-bg: hsla(170, 50%, 50%, 1);`}>
-  <h2 class="player-indicator-heading">Loading players data...</h2>
-</div>
+  <div
+    class="player-indicator player-0"
+    style={`--custom-bg: hsla(170, 50%, 50%, 1);`}>
+    <h2 class="player-indicator-heading">Loading players data...</h2>
+  </div>
 {/if}
 <!-- {/await} -->
 <!-- {/await} -->

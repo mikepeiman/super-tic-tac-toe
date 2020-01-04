@@ -4,6 +4,7 @@
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
+  import GameInit from "./../components/GameInit.svelte";
   import { writable } from "svelte/store";
   import {
     storeSettings,
@@ -23,9 +24,14 @@
   storeSettings.subscribe(value => {
     console.log(`TicTacToe => storeSettings.subscribe value => `, value);
   });
-
   storeGameInProgress.subscribe(value => {
     console.log(`TicTacToe => storeGameInProgress subscribed`, value);
+  });
+  storePlayers.subscribe(value => {
+    console.log(`TicTacToe => storePlayers subscribed`, value);
+  });
+  storePreservePlayerDetails.subscribe(value => {
+    console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
   const unsubState = storeState.subscribe(value => {
     console.log(`TicTacToe => storeState unsubscribe value => `, value);
@@ -35,9 +41,9 @@
     console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
   });
 
-  $: state = null
-  $: players = null
-  $: settings = null
+  $: state = null;
+  $: players = null;
+  $: settings = null;
   $: gameboardMapped = [];
 
   onMount(() => {
@@ -58,7 +64,7 @@
     // else, initialize players array
   });
 
-  function resetNotification() {
+  function resetGame() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
     // state.reset = true;
     setTimeout(() => {
@@ -69,13 +75,25 @@
   function updateGameSettings(e) {
     console.log(`TicTacToe => reset bubbled from MainMenu settings change`, e);
     settings = e.detail;
-    // resetNotification();
+    // resetGame();
     // state.updateGameSettings = true;
   }
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
     state = state;
+  }
+
+  function setPlayersToStore(e) {
+    console.log(
+      `TicTacToe => setPlayersToStore triggered by player init or detail change`,
+      e.detail
+    );
+    players = e.detail;
+    players.forEach(player => {
+      console.log(player.name, player.marker);
+    });
+    storePlayers.set(players);
   }
 </script>
 
@@ -225,16 +243,16 @@
 
 <div class="page-container">
   {#await players then players}
-  <!-- {#await state then state} -->
-  <ScoreBoard on:playerNameOrMarkerUpdate={storePlayers} />
-  <div class="gameboard-container">
-    <StatusBar
-      on:reset={resetNotification}
-      on:playersScored={storePlayers} />
-    <MainMenu on:updateGameSettings={updateGameSettings} />
-    <GameBoard
-      on:move={moveNotification} />
-  </div>
-  <!-- {/await} -->
+    <GameInit on:playersInitialized={setPlayersToStore} />
+    <!-- {#await state then state} -->
+    <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
+    <div class="gameboard-container">
+      <StatusBar
+        on:resetGame={resetGame}
+        on:playersScored={setPlayersToStore} />
+      <MainMenu on:updateGameSettings={updateGameSettings} />
+      <GameBoard on:move={moveNotification} />
+    </div>
+    <!-- {/await} -->
   {/await}
 </div>
