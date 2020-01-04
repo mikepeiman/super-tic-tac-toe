@@ -134,9 +134,11 @@ let gameHistory = writable([
 
 export const storePlayers = {
   subscribe: players.subscribe,
-  set: updatedPlayers => {
-    players.set(updatedPlayers);
-    localStorage.setItem("players", JSON.stringify(players));
+  set: val => {
+    players.set(val);
+    // localStorage.setItem("players", JSON.stringify(players));
+    // let p = JSON.parse(localStorage.getItem('players'))
+    // console.log(`inside Stores.js, storePlayers.set called, players `, p)
   }
 };
 export const storeGameHistory = {

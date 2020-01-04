@@ -59,13 +59,13 @@
   };
 
   onMount(() => {
-    console.log(`onMount() => GameInit`);
-    players = $storePlayers;
+    console.log(`GameInit => onMount()`);
+    // players = $storePlayers;
     settings = $storeSettings;
-    console.log(`onMount() settings = `, settings);
+    console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = $storeGameInProgress;
     let playerDetails = localStorage.getItem("storePreservePlayerDetails");
-    console.log(`onMount() playerDetails = `, playerDetails);
+    console.log(`GameInit => onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
       console.log(
         `GameInit => onMount(), gameInProgress true`
@@ -77,8 +77,7 @@
 
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      console.log(`onMount() playerDetails, players `, playerDetails, players);
-      console.log(players);
+      console.log(`GameInit => onMount() playerDetails, players `, playerDetails, players);
       storePlayers.set(players);
       state.currentPlayer = players[0];
     } else {

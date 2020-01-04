@@ -43,7 +43,7 @@
   });
 
   afterUpdate(() => {
-    // storePlayers.set(players)
+
   });
 
   function updateStoredPlayers(player) {
