@@ -21,7 +21,8 @@
 
   onMount(() => {
     console.log(`CountPoints onMount(), players, settings`, players, settings);
-    settings = JSON.parse(localStorage.getItem("settings"));
+    // settings = JSON.parse(localStorage.getItem("settings"));
+    settings = $storeSettings
   });
 
   function countPoints() {

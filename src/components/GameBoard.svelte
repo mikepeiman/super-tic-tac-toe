@@ -15,8 +15,6 @@
     storeGameBoardMoveHistoryFlatArray
   } from "../stores.js";
 
-  $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
-
   $: settings = {};
   $: state = {};
   $: players = [];
@@ -73,6 +71,9 @@
   $: turnHistory = [];
   $: gameBoardMoveHistoryFlatArray = [];
 
+  $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
+  $: console.log(`GameBoard state settings: `, settings);
+
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
     playMove(getCellById(e.detail));
@@ -81,8 +82,11 @@
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
-    settings = $storeSettings;
-    players = $storePlayers
+    storeSettings.subscribe(value => {
+      console.log(`GameBoard => storeSettings.subscribe value => `, value);
+      settings = value;
+    });
+    players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
     gameHistory = $storeGameHistory;
     state = $storeState;
@@ -410,7 +414,7 @@
       state.movesRemaining--;
     }
     localStorage.setItem("state", JSON.stringify(state));
-    storeState.set(state)
+    storeState.set(state);
   }
 
   function tickThis(cell) {
@@ -512,9 +516,8 @@
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    storeState.set(state)
-    storeCurrentPlayer.set(currentPlayer)
-    
+    storeState.set(state);
+    storeCurrentPlayer.set(currentPlayer);
 
     console.log(
       `playerChanges, currentPlayer.id AFTER change:`,
@@ -564,7 +567,8 @@
       move.setAttribute("locked", true);
       console.log(
         `GameBoard => setGameHistory, pid ${pid}, turn => turn.player, players `,
-        turn.player, players
+        turn.player,
+        players
       );
       move.setAttribute("data-marker", players[pid].marker);
       turn.move = thisMoveNum;
@@ -572,8 +576,8 @@
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
     turnHistory = [];
-    
-    storeGameInProgress.set(true)
+
+    storeGameInProgress.set(true);
   }
 </script>
 

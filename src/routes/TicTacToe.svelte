@@ -33,13 +33,13 @@
   storePreservePlayerDetails.subscribe(value => {
     console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
-  const unsubState = storeState.subscribe(value => {
-    console.log(`TicTacToe => storeState unsubscribe value => `, value);
-    // state = value
-  });
-  const unsubSettings = storeSettings.subscribe(value => {
-    console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
-  });
+  // const unsubState = storeState.subscribe(value => {
+  //   console.log(`TicTacToe => storeState unsubscribe value => `, value);
+  //   // state = value
+  // });
+  // const unsubSettings = storeSettings.subscribe(value => {
+  //   console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
+  // });
 
   $: state = null;
   $: players = null;

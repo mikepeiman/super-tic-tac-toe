@@ -18,23 +18,40 @@
   $: state = {};
   $: currentPlayer = {};
 
+  // storePlayers.subscribe(value => {
+  //   console.log(`ScoreBoard => storePlayers subscribed`, value);
+  //   players = value;
+  // });
+  // storeState.subscribe(value => {
+  //   console.log(`ScoreBoard => storeState subscribed`, value);
+  //   players = value;
+  // });
+
+
   onMount(() => {
-    console.log(`ScoreBoard => onMount(), players, state `, players, state);
     players = $storePlayers;
     state = $storeState;
-    currentPlayer = state.currentPlayer;
+    currentPlayer = $storeCurrentPlayer;
+      storeCurrentPlayer.subscribe(value => {
+    console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+    currentPlayer = value
+  });
+  storePlayers.subscribe(value => {
+    console.log(`ScoreBoard => storePlayers subscribed value, players `, value, players);
+    // players = value
+  });
   });
 
   afterUpdate(() => {
     // storePlayers.set(players)
   });
 
-    function updateStoredPlayers(player) {
+  function updateStoredPlayers(player) {
     console.log(
       `ScoreBoard => updateStoredPlayers: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
       currentPlayer
     );
-    storePlayers.set(players)
+    storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("playerDetails", true);
@@ -43,7 +60,7 @@
       JSON.stringify(players[currentPlayer.id])
     );
     dispatch("playerNameOrMarkerUpdate", players);
-    storePreservePlayerDetails.set(true)
+    storePreservePlayerDetails.set(true);
     localStorage.setItem("storePreservePlayerDetails", JSON.stringify(true));
   }
 

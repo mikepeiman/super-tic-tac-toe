@@ -68,7 +68,7 @@
     console.log(`onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
       console.log(
-        `//////////////     GameInit => onMount(), gameInProgress true`
+        `GameInit => onMount(), gameInProgress true`
       );
     } else {
       state.movesRemaining = settings.movesPerTurn
@@ -76,9 +76,8 @@
     }
 
     if (playerDetails) {
-      playerDetails = JSON.parse(playerDetails);
       players = JSON.parse(localStorage.getItem("players"));
-      console.log(`onMount() playerDetails = `, playerDetails);
+      console.log(`onMount() playerDetails, players `, playerDetails, players);
       console.log(players);
       storePlayers.set(players);
       state.currentPlayer = players[0];
@@ -128,13 +127,12 @@
         );
       });
     }
-    // players = players;
-    localStorage.setItem("players", JSON.stringify(players));
+    // players = players 
     storePlayers.set(players);
     state.currentPlayer = players[0];
     storeCurrentPlayer.set(players[0]);
     dispatch("playersInitialized", players);
-    console.log(`GameInit => initialized players done`);
+    console.log(`GameInit => initialized players done`, players);
   }
 </script>
 

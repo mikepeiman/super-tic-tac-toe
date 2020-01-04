@@ -136,6 +136,7 @@ export const storePlayers = {
   subscribe: players.subscribe,
   set: updatedPlayers => {
     players.set(updatedPlayers);
+    localStorage.setItem("players", JSON.stringify(players));
   }
 };
 export const storeGameHistory = {
@@ -149,6 +150,7 @@ export const storeSettings = {
   subscribe: settings.subscribe,
   set: val => {
     settings.set(val);
+    localStorage.setItem("settings", JSON.stringify(settings));
   }
 };
 export const storeState = {
@@ -162,6 +164,7 @@ export const storeDirectionArrays = {
   subscribe: directionArrays.subscribe,
   set: val => {
     directionArrays.set(val);
+    localStorage.setItem("directionArrays", JSON.stringify(directionArrays));
   }
 };
 export const storeCurrentPlayer = {
@@ -182,6 +185,7 @@ export const storePreservePlayerDetails = {
   subscribe: preservePlayerDetails.subscribe,
   set: details => {
     preservePlayerDetails.set(details);
+    localStorage.setItem("preservePlayerDetails", JSON.stringify(preservePlayerDetails));
   }
 };
 export const storeGameBoardMoveHistoryFlatArray = {

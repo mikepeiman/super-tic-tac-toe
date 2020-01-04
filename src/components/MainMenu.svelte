@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  export let players, settings;
+
   import {
     storeSettings,
     storeState,
@@ -13,13 +13,25 @@
     storePreservePlayerDetails
   } from "../stores.js";
 
-  $: settings = {};
+  $: settings = {
+    numberOfPlayers: 3,
+    movesPerTurn: 3,
+    cellsToScore: 3,
+    bonusForCompleteRow: 5,
+    rows: 5,
+    columns: 15,
+    size: 24,
+    gutter: 0
+  };
   $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   onMount(() => {
-    console.log(`MainMenu onMount(), settings`);
-    console.log(settings);
+    console.log(`MainMenu onMount(), settings`, settings);
+  });
+
+  storeSettings.subscribe(value => {
+    console.log(`MainMenu => storeSettings.subscribe value => `, value);
   });
 
   function updatePlayers() {
@@ -27,7 +39,7 @@
   }
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    localStorage.setItem("settings", JSON.stringify(settings));
+    storeSettings.set(settings)
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(
       `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `
@@ -49,7 +61,7 @@
       type="number"
       placeholder={settings.numberOfPlayers}
       bind:value={settings.numberOfPlayers}
-      on:input={updatePlayers}
+      on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
   </label>
   <label for="rows">
@@ -96,28 +108,28 @@
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
   </label>
+  <label for="bonus">
+    Line bonus:
+    <input
+      id="bonusForCompleteRow"
+      name="bonusForCompleteRow"
+      type="number"
+      placeholder={settings.bonusForCompleteRow}
+      bind:value={settings.bonusForCompleteRow}
+      on:input={triggerGameBoardUpdate}
+      style="width: 1.5ch;" />
+  </label>
   <label for="size">
     Square size (px):
     <input
       id="size"
       name="size"
       type="number"
-      placeholder="24"
+      placeholder={settings.size}
       bind:value={settings.size}
       step="4"
       on:input={triggerGameBoardUpdate}
       style="width: 2.5ch;" />
-  </label>
-  <label for="gutter">
-    Gutter (px):
-    <input
-      id="gutter"
-      name="gutter"
-      type="number"
-      placeholder={settings.gutter}
-      bind:value={settings.gutter}
-      on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
   </label>
 
 </div>
