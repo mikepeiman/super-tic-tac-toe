@@ -71,7 +71,7 @@ export const storeCurrentPlayer = {
   subscribe: currentPlayer.subscribe,
   set: player => {
     currentPlayer.set(player);
-    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+    // localStorage.setItem("currentPlayer", JSON.stringify(player));
   }
 };
 export const storeGameInProgress = {

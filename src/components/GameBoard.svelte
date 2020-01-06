@@ -23,7 +23,7 @@
       state.currentPlayer
     );
   $: players = [];
-  $: state.reset ? resetGameBoard() : (state.reset = false);
+  // $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
     ? updateGameSettings()
     : (state.updateGameSettings = false);
@@ -449,7 +449,7 @@
   }
 
   function clearGameBoard() {
-    console.log(`clearGameBoard called from resetGameBoard`);
+    console.log(`clearGameBoard called`);
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {
@@ -574,6 +574,8 @@
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
+          console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
+      currentPlayer = players[0];`)
       currentPlayer = players[0];
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
