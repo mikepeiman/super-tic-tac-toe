@@ -239,12 +239,54 @@
     // );
   }
 
-  function createDirectionArrays() {
-    console.log("createDirectionArrays called");
+  async function createDirectionArrays() {
+    console.log(
+      "createDirectionArrays called, players, lines ",
+      players,
+      lines
+    );
     for (let i = 1; i <= 4; i++) {
       // console.log(`makeLinesFrom ${i}`);
-      makeLinesFrom(i);
+      await makeLinesFrom(i);
     }
+  }
+
+  function addDirectionArraysToPlayerObjects1() {
+    console.log(
+      "addDirectionArraysToPlayerObjects called, players, lines ",
+      players,
+      lines
+    );
+    let justCreatedDirectionArrays = createDirectionArrays();
+    justCreatedDirectionArrays.then(() => {
+      for (let i = 0; i < settings.numberOfPlayers; i++) {
+        for (let x = 0; x <= 3; x++) {
+          players[i]["scores"][x].id = x + 1;
+          players[i].scores[x].name = scoreDirections[x].name;
+
+          players[i].scores[x]["lines"] = lines[scoreDirections[x].name]
+        }
+      }
+    });
+    // console.log(
+    //   "addDirectionArraysToPlayerObjects called, players, lines ",
+    //   players,
+    //   lines
+    // );
+    localStorage.setItem("players", JSON.stringify(players))
+    storePlayers.set(players)
+  }
+  function addDirectionArraysToPlayerObjects() {
+      for (let i = 0; i < settings.numberOfPlayers; i++) {
+        for (let x = 0; x <= 3; x++) {
+          players[i]["scores"][x].id = x + 1;
+          players[i].scores[x].name = scoreDirections[x].name;
+
+          players[i].scores[x]["lines"] = lines[scoreDirections[x].name]
+        }
+      }
+    localStorage.setItem("players", JSON.stringify(players))
+    storePlayers.set(players)
   }
 
   function makeLinesFrom(dir) {
@@ -326,8 +368,11 @@
       }
       lines.diagonalDownLeft = theseLines;
     }
+    lines = lines
     storeDirectionArrays.set(lines);
-    // localStorage.setItem("lines", JSON.stringify(lines));
+    // console.log(`\nAt end of createDirectionArrays, here they are: `, lines, `\n`)
+    localStorage.setItem("directionArrays", JSON.stringify(lines));
+    addDirectionArraysToPlayerObjects();
   }
 
   function makeLineFrom(start, pattern) {
@@ -408,6 +453,7 @@
     }
     // console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
     createDirectionArrays();
+    addDirectionArraysToPlayerObjects();
     // console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
     return grid;
@@ -536,7 +582,7 @@
     if (gameHistoryFlat.length > 0) {
       gameHistoryFlat.forEach(move => {
         if (move.id == cellId) {
-          console.log(`if(move.id == cellId) ${cellId}`);
+          console.log(`setPlayerMove(cellId) => if (move.id ${move.id} == cellId ${cellId}) TRUE`);
           move.player = {
             id: currentPlayer.id,
             name: currentPlayer.name
@@ -574,8 +620,8 @@
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-          console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
-      currentPlayer = players[0];`)
+      console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
+      currentPlayer = players[0];`);
       currentPlayer = players[0];
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {

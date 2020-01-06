@@ -2,17 +2,7 @@
   import { onMount, createEventDispatcher } from "svelte";
   // import { createEventDispatcher } from 'svelte';
   export let id, row, column, player, ticked, cellClasses, cellStyles, customBg;
-  import {
-    storeSettings,
-    storeState,
-    storePlayers,
-    storeCurrentPlayer,
-    storeDirectionArrays,
-    storeGameInProgress,
-    storeGameHistoryTurns,
-    storePreservePlayerDetails,
-    storeGameHistoryFlat
-  } from "../stores.js";
+  import { storeSettings } from "../stores.js";
 
   const dispatch = createEventDispatcher();
   onMount(() => {

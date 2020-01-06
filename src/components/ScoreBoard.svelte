@@ -42,7 +42,7 @@
         value,
         players
       );
-      // players = value
+      players = value
     });
     setTimeout(() => {
       addStyles();
