@@ -9,8 +9,9 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeGameHistory,
-    storePreservePlayerDetails
+    storeGameHistoryTurns,
+    storePreservePlayerDetails,
+    storeGameHistoryFlat
   } from "../stores.js";
 
   $: currentPlayer = {};
@@ -58,30 +59,38 @@
     diagonalDownRight: []
   };
 
+  storeCurrentPlayer.subscribe(value => {
+    console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+  });
+
   onMount(() => {
     console.log(`GameInit => onMount()`);
     // players = $storePlayers;
     settings = $storeSettings;
     state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);
-    let gameInProgress = $storeGameInProgress;
-    let playerDetails = localStorage.getItem("storePreservePlayerDetails");
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    let playerDetails = localStorage.getItem("preservePlayerDetails");
     console.log(`GameInit => onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
-      console.log(
-        `GameInit => onMount(), gameInProgress true`
-      );
+      console.log(`GameInit => onMount(), gameInProgress true`);
     } else {
-      state.movesRemaining = settings.movesPerTurn
-      console.log(`GameInit => onMount(), state `, state)
-      storeState.set(state)
+      state.movesRemaining = settings.movesPerTurn;
+      console.log(`GameInit => onMount(), state `, state);
+      storeState.set(state);
     }
 
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      console.log(`GameInit => onMount() playerDetails, players `, playerDetails, players);
+      console.log(
+        `GameInit => onMount() playerDetails, players `,
+        playerDetails,
+        players
+      );
       storePlayers.set(players);
-      state.currentPlayer = players[0];
+      if (!gameInProgress) {
+        state.currentPlayer = players[0];
+      }
     } else {
       initializePlayers();
     }
@@ -113,13 +122,13 @@
         // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
-        console.log(
-          `GameInit => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `,
-          players[i]["scores"][index]
-        );
+        // console.log(
+        //   `GameInit => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `,
+        //   players[i]["scores"][index]
+        // );
       });
     }
-    // players = players 
+    // players = players
     storePlayers.set(players);
     state.currentPlayer = players[0];
     storeCurrentPlayer.set(players[0]);

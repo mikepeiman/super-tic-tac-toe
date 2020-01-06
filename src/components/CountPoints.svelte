@@ -8,8 +8,9 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeGameHistory,
-    storePreservePlayerDetails
+    storeGameHistoryTurns,
+    storePreservePlayerDetails,
+    storeGameHistoryFlat
   } from "../stores.js";
 
   export let players;

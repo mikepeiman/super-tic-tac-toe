@@ -10,13 +10,15 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeGameHistory,
-    storePreservePlayerDetails
+    storeGameHistoryTurns,
+    storePreservePlayerDetails,
+    storeGameHistoryFlat
   } from "../stores.js";
 
   $: currentPlayer = {};
   $: state = {};
   $: players = {};
+  $: settings = {};
   $: currentPlayer,
     console.log(
       `StatusBar reactive logging currentPlayer, `,
@@ -32,8 +34,9 @@
     console.log(`StatusBar => onMount(() #1 state`, state);
     state = $storeState;
     console.log(`StatusBar => onMount(() #2 state`, state);
+    settings = $storeSettings;
     // currentPlayer = $storeCurrentPlayer;
-    console.log(`//////////////     StatusBar => onMount() `, state, players);
+    // console.log(`//////////////     StatusBar => onMount() `, state, players);
 
     if (!(currentPlayer.length > 0)) {
       currentPlayer = players[0];
@@ -42,9 +45,11 @@
   });
 
   afterUpdate(() => {
-    console.log(`StatusBar => afterUpdate(() #1 state`, state);
+    // console.log(`StatusBar => afterUpdate(() #1 state`, state);
     state = $storeState;
-    console.log(`StatusBar => afterUpdate(() #2 state`, state);
+    // console.log(`StatusBar => afterUpdate(() #2 state`, state);
+    let history = $storeGameHistoryTurns
+    console.log(`StatusBar => afterUpdate(() gameHistoryTurns from store `, history);
   });
 
   function playersScored(e) {
@@ -62,10 +67,11 @@
   }
 
   function resetGame() {
-    localStorage.setItem("gameboard", []);
-    localStorage.setItem("gameHistory", []);
-    localStorage.setItem("gameboardMapped", []);
-    localStorage.setItem("lines", []);
+    localStorage.removeItem("gameboard");
+    localStorage.removeItem("gameHistoryFlat");
+    localStorage.removeItem("gameHistoryTurns");
+    localStorage.removeItem("lines");
+    localStorage.removeItem("state");
     let currentPlayerId = state.currentPlayer.id;
     localStorage.setItem(
       "state",
@@ -81,7 +87,7 @@
         reset: false
       })
     );
-    localStorage.setItem("gameInProgress", false);
+    localStorage.removeItem("gameInProgress");
 
     players.forEach(player => {
       player.lines = [];

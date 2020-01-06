@@ -17,6 +17,11 @@
 
   $: settings = {};
   $: state = {};
+  $: state.currentPlayer,
+    console.log(
+      `REACTIVE LOG state.currentPlayer at top of GameBoard`,
+      state.currentPlayer
+    );
   $: players = [];
   $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
@@ -28,6 +33,7 @@
     diagonalDownLeft: [],
     diagonalDownRight: []
   };
+  $: gameInProgress = $storeGameInProgress;
   $: scoreDirections = [
     {
       id: 1,
@@ -71,8 +77,23 @@
   $: turnHistory = [];
   $: gameHistoryFlat = [];
 
+  storeGameHistoryFlat.subscribe(value => {
+    console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
+  });
+  storeGameHistoryTurns.subscribe(value => {
+    console.log(`GameBoard => storeGameHistoryTurns subscribed`, value);
+  });
+  storeCurrentPlayer.subscribe(value => {
+    console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+  });
+
   $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
-  $: console.log(`GameBoard state settings: `, settings);
+  // $: console.log(`GameBoard state settings: `, settings);
+  $: console.log(`GameBoard state gameHistoryTurns: `, gameHistoryTurns);
+  $: console.log(
+    `GameBoard state gameHistoryTurns array? `,
+    Array.isArray(gameHistoryTurns)
+  );
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -82,13 +103,17 @@
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
+
     // let settings = JSON.parse(localStorage.getItem("settings"));
     // let players = JSON.parse(localStorage.getItem("players"));
     // let gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+
+    // is this subscription necessary to place here, below?
     storeSettings.subscribe(value => {
-      console.log(`GameBoard => storeSettings.subscribe value => `, value);
+      // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       settings = value;
     });
+
     let gameboard = document.querySelector("#gameboard-board");
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
@@ -103,19 +128,35 @@
       settings.size,
       settings.gutter
     );
-    console.log(
-      `GameBoard => onMount() before buildGameBoard, el: `,
-      gameboard
-    );
+    // console.log(
+    //   `GameBoard => onMount() before buildGameBoard, el: `,
+    //   gameboard
+    // );
     if (gameInProgress) {
       newBoard.then(() => {
         renderGameBoardReload(delayMS);
       });
+      gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+      storeCurrentPlayer.set(
+        JSON.parse(localStorage.getItem("currentPlayer")) || {}
+      );
+      console.log(`storeCurrentPlayer.set: `, $storeCurrentPlayer);
+      currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+      // storeGameHistoryTurns.set(gameHistoryTurns)
 
-      console.log(`GameBoard => onMount(), gameInProgress true`);
+      console.log(
+        `GameBoard => onMount(), gameInProgress TRUE, gameHistoryTurns, currentPlayer `,
+        gameHistoryTurns,
+        currentPlayer
+      );
     } else {
+      console.log(
+        `GameBoard => onMount(), gameInProgress FALSE, gameHistoryTurns `,
+        gameHistoryTurns
+      );
+      state.currentPlayer = players[0];
       state.movesRemaining = settings.movesPerTurn;
-      console.log(`GameBoard => onMount(), state `, state);
+      // console.log(`GameBoard => onMount(), state `, state);
       buildGameBoard(
         settings.rows,
         settings.columns,
@@ -126,21 +167,16 @@
     }
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      console.log(
-        `GameBoard => onMount() playerDetails, players `,
-        playerDetails,
-        players
-      );
       storePlayers.set(players);
-      state.currentPlayer = players[0];
+      // state.currentPlayer = players[0];
     } else {
     }
-    console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
+    // console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
   });
 
   afterUpdate(() => {
-    let gameboard = document.querySelector("#gameboard-board");
-    console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
+    // let gameboard = document.querySelector("#gameboard-board");
+    // console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
   });
 
   function renderGameBoardReload(delayMS) {
@@ -149,14 +185,14 @@
       gameHistoryTurns
     );
 
-    console.log(`renderGameBoardReload =>  settings ::: `, settings);
+    // console.log(`renderGameBoardReload =>  settings ::: `, settings);
 
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
     let len = gameHistoryTurns.length;
-    console.log(`gameboard el: `, gameboard);
+    // console.log(`gameboard el: `, gameboard);
     while (gameboard.firstChild) {
-      console.log(`renderGameBoardReload::: removing a DOM child el`);
+      // console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
     buildGameBoard(
@@ -165,54 +201,6 @@
       settings.size,
       settings.gutter
     );
-    console.log(`gameboard el: `, gameboard);
-
-    // https://swizec.com/blog/how-to-properly-wait-for-dom-elements-to-show-up-in-modern-browsers/swizec/6663
-    // does not work for me. endless loop, exceeds callstack limit
-
-    // function elementLoaded() {
-    //   if (!gameboard.firstChild) {
-    //     window.requestAnimationFrame(elementLoaded);
-    //             console.log(
-    //       `gameboard el from requestAnimationFrame listener: `,
-    //       gameboard
-    //     );
-    //   } else {
-    //     console.log(
-    //       `gameboard el from requestAnimationFrame listener: `,
-    //       gameboard
-    //     );
-    //   }
-    // }
-
-    // elementLoaded()
-    // END https://swizec.com/blog/how-to-properly-wait-for-dom-elements-to-show-up-in-modern-browsers/swizec/6663
-
-    // https://stackoverflow.com/questions/16149431/make-function-wait-until-element-exists/47776379
-    // not working for me either
-
-    // function rafAsync() {
-    //   return new Promise(resolve => {
-    //     requestAnimationFrame(resolve); //faster than set time out
-    //   });
-    // }
-    // async function checkElement(selector) {
-    //   const querySelector = document.querySelector(selector).firstChild;
-    //   console.log(`checkElement running, gameboard first child `, querySelector)
-    //   while (querySelector === null) {
-    //     await rafAsync();
-    //   }
-    //   return querySelector;
-    // }
-
-    // checkElement(".gameboard-board") //use whichever selector you want
-    //   .then(element => {
-    //     console.info(element);
-    //     console.log(`found the gameboard, does it have children?`, element);
-    //     //Do whatever you want now the element is there
-    //   });
-
-    // END https://stackoverflow.com/questions/16149431/make-function-wait-until-element-exists/47776379
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
@@ -222,14 +210,14 @@
     async function loop(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
-        console.log(`building reload function, this turn is: `, turn);
+        // console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
           let p = move.player.id;
-          console.log(`building reload function, this move is: `, move.id);
-          console.log(`building reload function, this player is: `, p);
+          // console.log(`building reload function, this move is: `, move.id);
+          // console.log(`building reload function, this player is: `, p);
           let cell = document.getElementById(move.id);
-          console.log(`building reload function, this cell is: `, cell);
+          // console.log(`building reload function, this cell is: `, cell);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = settings.size + "px";
@@ -245,10 +233,10 @@
     }
     loop(gameHistoryTurns, delayMS);
     players = players;
-    console.log(
-      `renderGameBoardReload after cells are reloaded   :::   gameHistoryTurns length: ${len}, players`,
-      players
-    );
+    // console.log(
+    //   `renderGameBoardReload after cells are reloaded   :::   gameHistoryTurns length: ${len}, players`,
+    //   players
+    // );
   }
 
   function createDirectionArrays() {
@@ -338,7 +326,8 @@
       }
       lines.diagonalDownLeft = theseLines;
     }
-    localStorage.setItem("lines", JSON.stringify(lines));
+    storeDirectionArrays.set(lines);
+    // localStorage.setItem("lines", JSON.stringify(lines));
   }
 
   function makeLineFrom(start, pattern) {
@@ -384,7 +373,7 @@
   }
 
   function getMoveFromHistory(id) {
-    let payload = { id: "zzz", name: "zzz" };
+    let payload = { id: null, name: null };
     if (localStorage.getItem("gameHistoryFlat")) {
       let game = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       game.forEach(move => {
@@ -417,9 +406,9 @@
         // grid[r].push()
       }
     }
-    console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
+    // console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
     createDirectionArrays();
-    console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
+    // console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
     return grid;
   }
@@ -502,7 +491,7 @@
       state.movesRemaining--;
     }
     console.log(`GameBoard => playMove, state `, state);
-    localStorage.setItem("state", JSON.stringify(state));
+    // localStorage.setItem("state", JSON.stringify(state));
     storeState.set(state);
     console.log(`GameBoard => playMove, state `, state);
   }
@@ -556,7 +545,7 @@
         }
       });
     }
-
+    storeGameHistoryFlat.set(gameHistoryFlat);
     localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
   }
 
@@ -570,7 +559,8 @@
         };
         move.move = null;
       }
-      localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
+      storeGameHistoryFlat.set(gameHistoryFlat);
+      // localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
     });
   }
 
@@ -585,28 +575,33 @@
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
       currentPlayer = players[0];
-      // playerIndicator.style = `--custom-bg: ${players[0].bgColor}`;
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
       currentPlayer = players[id + 1];
-      // playerIndicator.style = `--custom-bg: ${players[id + 1].bgColor}`;
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;
+    state.currentPlayer = currentPlayer;
     console.log(`GameBoard => playerChange, state `, state);
     storeState.set(state);
     storeCurrentPlayer.set(currentPlayer);
+    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
 
     console.log(
-      `playerChanges, currentPlayer.id AFTER change:`,
-      currentPlayer.id
+      `playerChanges, currentPlayer AFTER change:`,
+      currentPlayer.name
     );
     console.log(`playerIndicator`, playerIndicator);
     playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
 
   function setTurnHistory(cell) {
+    console.log(
+      `at start: gameHistoryTurns and isArray? `,
+      Array.isArray(gameHistoryTurns),
+      gameHistoryTurns
+    );
     let move = {};
     move["move"] = state.moveNumber;
     move["id"] = cell.id;
@@ -629,36 +624,61 @@
       turnHistory = [...turnHistory, move];
       gameHistoryFlat = [...gameHistoryFlat, move];
       storeGameHistoryFlat.set(gameHistoryFlat);
+
+      // there appears to be a bug or error in how I'm using Stores; although I set to LS inside the exported
+      // const, it is not settings to LS reliably.... it's working for boolean flags, but not arrays and objects
+      localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
     }
     // console.log(turnHistory);
   }
 
   function setGameHistoryTurns() {
     console.log(`GameBoard => setGameHistory running`);
-    if (localStorage.getItem("gameHistoryTurns").length > 0) {
-      console.log(`if (localStorage.getItem("gameHistoryTurns")) `);
+    console.log(
+      `at start: gameHistoryTurns and isArray? `,
+      Array.isArray(gameHistoryTurns),
+
+      gameHistoryTurns
+    );
+
+    if (gameInProgress) {
+      console.log(`if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `);
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+      console.log(
+        `from LS gameHistoryTurns, `,
+        gameHistoryTurns.length,
+        gameHistoryTurns
+      );
     }
+    // else {
+    //   console.log(
+    //     `if (localStorage.getItem("gameHistoryTurns")) *****ELSE*****`
+    //   );
+    //   gameHistoryTurns = [];
+    //   localStorage.setItem(
+    //     "gameHistoryTurns",
+    //     JSON.stringify(gameHistoryTurns)
+    //   );
+    // }
 
     turnHistory.forEach((turn, index) => {
       let pid = turn.player.id;
       let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
-      console.log(
-        `GameBoard => setGameHistoryTurns, pid ${pid}, turn => turn.player, players `,
-        turn.player,
-        players
-      );
       move.setAttribute("data-marker", players[pid].marker);
       turn.move = thisMoveNum;
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
+    console.log(`failing to iterate gameHistoryTurns #1, `, gameHistoryTurns);
+    console.log(`gameHistoryTurns array? `, Array.isArray(gameHistoryTurns));
     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
-    turnHistory = [];
     storeGameHistoryTurns.set(gameHistoryTurns);
+    localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
+    console.log(`failing to iterate gameHistoryTurns #2, `, gameHistoryTurns);
+    turnHistory = [];
   }
 </script>
 
@@ -735,7 +755,7 @@
   </div>
   <div class="debug-section">
     <h2>storeGameHistoryTurns</h2>
-    {#each $storeGameHistoryTurns as turn}
+    {#each gameHistoryTurns as turn}
       {#each turn as move}
         <div>{move.id}-{move.player.name}</div>
       {/each}
