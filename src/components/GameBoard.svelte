@@ -1,5 +1,5 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -10,9 +10,9 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
-    storeGameHistory,
+    storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameBoardMoveHistoryFlatArray
+    storeGameHistoryFlat
   } from "../stores.js";
 
   $: settings = {};
@@ -67,9 +67,9 @@
   $: grid = [];
   $: currentPlayer = {};
   $: ticked = false;
-  $: gameHistory = [];
+  $: gameHistoryTurns = [];
   $: turnHistory = [];
-  $: gameBoardMoveHistoryFlatArray = [];
+  $: gameHistoryFlat = [];
 
   $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   $: console.log(`GameBoard state settings: `, settings);
@@ -82,40 +82,81 @@
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
+    // let settings = JSON.parse(localStorage.getItem("settings"));
+    // let players = JSON.parse(localStorage.getItem("players"));
+    // let gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
     storeSettings.subscribe(value => {
       console.log(`GameBoard => storeSettings.subscribe value => `, value);
       settings = value;
     });
+    let gameboard = document.querySelector("#gameboard-board");
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
-    gameHistory = $storeGameHistory;
+    gameHistoryTurns = $storeGameHistoryTurns;
     state = $storeState;
-    buildGameBoard(
+    let delayMS = 25;
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    let playerDetails = localStorage.getItem("storePreservePlayerDetails");
+    let newBoard = buildGameBoard(
       settings.rows,
       settings.columns,
       settings.size,
       settings.gutter
     );
+    console.log(
+      `GameBoard => onMount() before buildGameBoard, el: `,
+      gameboard
+    );
+    if (gameInProgress) {
+      newBoard.then(() => {
+        renderGameBoardReload(delayMS);
+      });
+
+      console.log(`GameBoard => onMount(), gameInProgress true`);
+    } else {
+      state.movesRemaining = settings.movesPerTurn;
+      console.log(`GameBoard => onMount(), state `, state);
+      buildGameBoard(
+        settings.rows,
+        settings.columns,
+        settings.size,
+        settings.gutter
+      );
+      storeState.set(state);
+    }
+    if (playerDetails) {
+      players = JSON.parse(localStorage.getItem("players"));
+      console.log(
+        `GameBoard => onMount() playerDetails, players `,
+        playerDetails,
+        players
+      );
+      storePlayers.set(players);
+      state.currentPlayer = players[0];
+    } else {
+    }
+    console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
+  });
+
+  afterUpdate(() => {
+    let gameboard = document.querySelector("#gameboard-board");
+    console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
   });
 
   function renderGameBoardReload(delayMS) {
-    console.log(`renderGameBoardReload => gameHistory::: `, gameHistory);
-    let settings = JSON.parse(localStorage.getItem("settings"));
-    let players = JSON.parse(localStorage.getItem("players"));
-    let gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
     console.log(
-      `renderGameBoardReload => LS gameHistory, players::: `,
-      gameHistory,
-      players
+      `renderGameBoardReload => gameHistoryTurns::: `,
+      gameHistoryTurns
     );
 
-    console.log(`renderGameBoardReload => gameHistory::: `, gameHistory);
-    // localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
+    console.log(`renderGameBoardReload =>  settings ::: `, settings);
+
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
-    let len = gameHistory.length;
-
+    let len = gameHistoryTurns.length;
+    console.log(`gameboard el: `, gameboard);
     while (gameboard.firstChild) {
+      console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
     buildGameBoard(
@@ -124,22 +165,71 @@
       settings.size,
       settings.gutter
     );
+    console.log(`gameboard el: `, gameboard);
+
+    // https://swizec.com/blog/how-to-properly-wait-for-dom-elements-to-show-up-in-modern-browsers/swizec/6663
+    // does not work for me. endless loop, exceeds callstack limit
+
+    // function elementLoaded() {
+    //   if (!gameboard.firstChild) {
+    //     window.requestAnimationFrame(elementLoaded);
+    //             console.log(
+    //       `gameboard el from requestAnimationFrame listener: `,
+    //       gameboard
+    //     );
+    //   } else {
+    //     console.log(
+    //       `gameboard el from requestAnimationFrame listener: `,
+    //       gameboard
+    //     );
+    //   }
+    // }
+
+    // elementLoaded()
+    // END https://swizec.com/blog/how-to-properly-wait-for-dom-elements-to-show-up-in-modern-browsers/swizec/6663
+
+    // https://stackoverflow.com/questions/16149431/make-function-wait-until-element-exists/47776379
+    // not working for me either
+
+    // function rafAsync() {
+    //   return new Promise(resolve => {
+    //     requestAnimationFrame(resolve); //faster than set time out
+    //   });
+    // }
+    // async function checkElement(selector) {
+    //   const querySelector = document.querySelector(selector).firstChild;
+    //   console.log(`checkElement running, gameboard first child `, querySelector)
+    //   while (querySelector === null) {
+    //     await rafAsync();
+    //   }
+    //   return querySelector;
+    // }
+
+    // checkElement(".gameboard-board") //use whichever selector you want
+    //   .then(element => {
+    //     console.info(element);
+    //     console.log(`found the gameboard, does it have children?`, element);
+    //     //Do whatever you want now the element is there
+    //   });
+
+    // END https://stackoverflow.com/questions/16149431/make-function-wait-until-element-exists/47776379
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
         setTimeout(resolve, amount);
       });
     };
-    async function loop(gameHistory, delayMS) {
+    async function loop(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
-        let turn = gameHistory[i];
-        // console.log(`building reload function, this turn is: `, turn);
+        let turn = gameHistoryTurns[i];
+        console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
           let p = move.player.id;
-          // console.log(`building reload function, this move is: `, move);
-          // console.log(`building reload function, this player is: `, p);
+          console.log(`building reload function, this move is: `, move.id);
+          console.log(`building reload function, this player is: `, p);
           let cell = document.getElementById(move.id);
+          console.log(`building reload function, this cell is: `, cell);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = settings.size + "px";
@@ -153,10 +243,10 @@
         }
       }
     }
-    loop(gameHistory, delayMS);
+    loop(gameHistoryTurns, delayMS);
     players = players;
     console.log(
-      `renderGameBoardReload after cells are reloaded   :::   gameHistory length: ${len}, players`,
+      `renderGameBoardReload after cells are reloaded   :::   gameHistoryTurns length: ${len}, players`,
       players
     );
   }
@@ -295,10 +385,8 @@
 
   function getMoveFromHistory(id) {
     let payload = { id: "zzz", name: "zzz" };
-    if (localStorage.getItem("gameBoardMoveHistoryFlatArray")) {
-      let game = JSON.parse(
-        localStorage.getItem("gameBoardMoveHistoryFlatArray")
-      );
+    if (localStorage.getItem("gameHistoryFlat")) {
+      let game = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       game.forEach(move => {
         if (move.id == id) {
           payload = move.player;
@@ -313,7 +401,7 @@
     return cell;
   }
 
-  function buildGameBoard(rows, columns, size, gutter) {
+  async function buildGameBoard(rows, columns, size, gutter) {
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
@@ -333,6 +421,7 @@
     createDirectionArrays();
     console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
+    return grid;
   }
 
   function resetGameBoard() {
@@ -355,7 +444,7 @@
       currentPlayer: players[0],
       movesRemaining: 0,
       turn: 0,
-      gameHistory: [],
+      gameHistoryTurns: [],
       turnHistory: [],
       clickCount: 0,
       moveNumber: 0,
@@ -387,7 +476,6 @@
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
 
-
     if (ticked) {
       if (!cell.hasAttribute("locked")) {
         setTurnHistory(cell);
@@ -401,7 +489,7 @@
       if (state.movesRemaining == 1) {
         state.moveNumber++;
         setTurnHistory(cell);
-        setGameHistory();
+        setGameHistoryTurns();
         tickThis(cell);
         setPlayerMove(cell.id);
         playerChange();
@@ -413,10 +501,10 @@
       setPlayerMove(cell.id);
       state.movesRemaining--;
     }
-    console.log(`GameBoard => playMove, state `, state)
+    console.log(`GameBoard => playMove, state `, state);
     localStorage.setItem("state", JSON.stringify(state));
     storeState.set(state);
-    console.log(`GameBoard => playMove, state `, state)
+    console.log(`GameBoard => playMove, state `, state);
   }
 
   function tickThis(cell) {
@@ -456,8 +544,8 @@
   }
 
   function setPlayerMove(cellId) {
-    if (gameBoardMoveHistoryFlatArray.length > 0) {
-      gameBoardMoveHistoryFlatArray.forEach(move => {
+    if (gameHistoryFlat.length > 0) {
+      gameHistoryFlat.forEach(move => {
         if (move.id == cellId) {
           console.log(`if(move.id == cellId) ${cellId}`);
           move.player = {
@@ -469,14 +557,11 @@
       });
     }
 
-    localStorage.setItem(
-      "gameBoardMoveHistoryFlatArray",
-      JSON.stringify(gameBoardMoveHistoryFlatArray)
-    );
+    localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
   }
 
   function removePlayerMove(cellId) {
-    gameBoardMoveHistoryFlatArray.forEach(move => {
+    gameHistoryFlat.forEach(move => {
       if (move.id == cellId) {
         console.log(`if(move.id == cellId) ${cellId}`);
         move.player = {
@@ -485,10 +570,7 @@
         };
         move.move = null;
       }
-      localStorage.setItem(
-        "gameBoardMoveHistoryFlatArray",
-        JSON.stringify(gameBoardMoveHistoryFlatArray)
-      );
+      localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
     });
   }
 
@@ -512,7 +594,7 @@
     }
 
     state.movesRemaining = settings.movesPerTurn;
-    console.log(`GameBoard => playerChange, state `, state)
+    console.log(`GameBoard => playerChange, state `, state);
     storeState.set(state);
     storeCurrentPlayer.set(currentPlayer);
 
@@ -545,25 +627,26 @@
       //   `apparently we have not made this move yet, let's add it to turnHistory`
       // );
       turnHistory = [...turnHistory, move];
-      gameBoardMoveHistoryFlatArray = [...gameBoardMoveHistoryFlatArray, move];
-      storeGameBoardMoveHistoryFlatArray.set(gameBoardMoveHistoryFlatArray);
+      gameHistoryFlat = [...gameHistoryFlat, move];
+      storeGameHistoryFlat.set(gameHistoryFlat);
     }
     // console.log(turnHistory);
   }
 
-  function setGameHistory() {
+  function setGameHistoryTurns() {
     console.log(`GameBoard => setGameHistory running`);
-    if (localStorage.getItem("gameHistory")) {
-      gameHistory = JSON.parse(localStorage.getItem("gameHistory"));
+    if (localStorage.getItem("gameHistoryTurns").length > 0) {
+      console.log(`if (localStorage.getItem("gameHistoryTurns")) `);
+      gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
     }
-    gameHistory = [...gameHistory, turnHistory];
+
     turnHistory.forEach((turn, index) => {
       let pid = turn.player.id;
       let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = state.moveNumber - settings.movesPerTurn + index + 1;
       move.setAttribute("locked", true);
       console.log(
-        `GameBoard => setGameHistory, pid ${pid}, turn => turn.player, players `,
+        `GameBoard => setGameHistoryTurns, pid ${pid}, turn => turn.player, players `,
         turn.player,
         players
       );
@@ -572,8 +655,9 @@
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
+    gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     turnHistory = [];
-
+    storeGameHistoryTurns.set(gameHistoryTurns);
     storeGameInProgress.set(true);
   }
 </script>
@@ -650,8 +734,8 @@
     <div>storeGameInProgress: {$storeGameInProgress}</div>
   </div>
   <div class="debug-section">
-    <h2>storeGameHistory</h2>
-    {#each $storeGameHistory as turn}
+    <h2>storeGameHistoryTurns</h2>
+    {#each $storeGameHistoryTurns as turn}
       {#each turn as move}
         <div>{move.id}-{move.player.name}</div>
       {/each}

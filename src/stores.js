@@ -21,7 +21,7 @@ let state = writable({
   currentPlayer: {},
   movesRemaining: 0,
   turn: 0,
-  gameHistory: [],
+  gameHistoryTurns: [],
   turnHistory: [],
   clickCount: 0,
   moveNumber: 0,
@@ -31,10 +31,10 @@ let directionArrays = writable(false);
 let currentPlayer = writable(false);
 let gameInProgress = writable(0);
 let preservePlayerDetails = writable(0);
-let gameBoardMoveHistoryFlatArray = writable(false);
+let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(0);
-let gameHistory = writable([
+let gameHistoryTurns = writable([
   [
     { move: 1, id: "R0C0", clickCount: 1, player: { id: 0, name: "Player 1" } },
     { move: 2, id: "R1C1", clickCount: 2, player: { id: 0, name: "Player 1" } },
@@ -141,13 +141,7 @@ export const storePlayers = {
     // console.log(`inside Stores.js, storePlayers.set called, players `, p)
   }
 };
-export const storeGameHistory = {
-  subscribe: gameHistory.subscribe,
-  set: val => {
-    gameHistory.set(val);
-    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
-  }
-};
+
 export const storeSettings = {
   subscribe: settings.subscribe,
   set: val => {
@@ -187,16 +181,23 @@ export const storePreservePlayerDetails = {
   subscribe: preservePlayerDetails.subscribe,
   set: details => {
     preservePlayerDetails.set(details);
-    localStorage.setItem("preservePlayerDetails", JSON.stringify(preservePlayerDetails));
+    localStorage.setItem(
+      "preservePlayerDetails",
+      JSON.stringify(preservePlayerDetails)
+    );
   }
 };
-export const storeGameBoardMoveHistoryFlatArray = {
-  subscribe: gameBoardMoveHistoryFlatArray.subscribe,
+export const storeGameHistoryTurns = {
+  subscribe: gameHistoryTurns.subscribe,
+  set: val => {
+    gameHistoryTurns.set(val);
+    localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
+  }
+};
+export const storeGameHistoryFlat = {
+  subscribe: gameHistoryFlat.subscribe,
   set: history => {
-    gameBoardMoveHistoryFlatArray.set(history);
-    localStorage.setItem(
-      "gameBoardMoveHistoryFlatArray",
-      JSON.stringify(gameBoardMoveHistoryFlatArray)
-    );
+    gameHistoryFlat.set(history);
+    localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
   }
 };

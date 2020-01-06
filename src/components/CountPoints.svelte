@@ -35,9 +35,9 @@
       "players from countPoints before checking localStorage: ",
       players
     );
-    if (localStorage.getItem("gameHistory")) {
-      let gh = JSON.parse(localStorage.getItem("gameHistory"));
-      console.log(`countPoints, gameHistory from LS: `, gh);
+    if (localStorage.getItem("gameHistoryFlat")) {
+      let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
+      console.log(`countPoints, gameHistoryFlat from LS: `, gh);
     }
 
     players.forEach(player => {
@@ -58,6 +58,7 @@
       });
     });
     players = players;
+    storePlayers.set(players)
     localStorage.setItem(`players`, JSON.stringify(players));
     dispatch("playersScored", players);
   }
@@ -110,8 +111,8 @@
         // console.log(`scoring ${move.id}`, move);
         let p = move.player;
         // console.log(`scoring p = move.player, `, p);
-        if (localStorage.getItem("gameHistory")) {
-          let gh = JSON.parse(localStorage.getItem("gameHistory"));
+        if (localStorage.getItem("gameHistoryFlat")) {
+          let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
           p = getPlayerFromCellInGameHistory(move.id);
         }
 
@@ -166,7 +167,7 @@
   }
 
   function getPlayerFromCellInGameHistory(id) {
-    let gh = JSON.parse(localStorage.getItem("gameHistory"));
+    let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
     let payload;
     gh.forEach(turn => {
       turn.forEach(move => {
