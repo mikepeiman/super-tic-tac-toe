@@ -57,7 +57,7 @@ export const storeState = {
   subscribe: state.subscribe,
   set: val => {
     state.set(val);
-    localStorage.setItem("state", JSON.stringify(state));
+    // localStorage.setItem("state", JSON.stringify(state));
   }
 };
 export const storeDirectionArrays = {

@@ -19,6 +19,7 @@
   $: state = {};
   $: players = {};
   $: settings = {};
+  $: moveNumber = 0;
   // $: currentPlayer,
   //   console.log(
   //     `StatusBar reactive logging currentPlayer, `,
@@ -35,6 +36,9 @@
     state = $storeState;
     // console.log(`StatusBar => onMount(() #2 state`, state);
     settings = $storeSettings;
+    if (localStorage.getItem("gameInProgress")) {
+      moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+    }
     // currentPlayer = $storeCurrentPlayer;
     // console.log(`//////////////     StatusBar => onMount() `, state, players);
 
@@ -46,7 +50,7 @@
 
   afterUpdate(() => {
     // console.log(`StatusBar => afterUpdate(() #1 state`, state);
-    state = $storeState;
+    // state = $storeState;
     // console.log(`StatusBar => afterUpdate(() #2 state`, state);
     // let history = $storeGameHistoryTurns
     // console.log(`StatusBar => afterUpdate(() gameHistoryTurns from store `, history);
@@ -72,6 +76,7 @@
     localStorage.removeItem("gameHistoryTurns");
     localStorage.removeItem("lines");
     localStorage.removeItem("state");
+    localStorage.removeItem("moveNumber");
     let currentPlayerId = state.currentPlayer.id;
     localStorage.setItem(
       "state",
@@ -154,7 +159,7 @@
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
     <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
     <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
-    <h2 class="player-indicator-heading">Total Moves: {state.moveNumber}</h2>
+    <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
     <div class="buttons-wrapper">
       <CountPoints
         {players}

@@ -82,7 +82,7 @@
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
-    state = state;
+    // state = state;
   }
 
   function setPlayersToStore(e) {
