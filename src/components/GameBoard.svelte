@@ -18,11 +18,11 @@
   $: settings = {};
   $: state = {};
   $: moveNumber = 0;
-  $: state.currentPlayer,
-    console.log(
-      `REACTIVE LOG state.currentPlayer at top of GameBoard`,
-      state.currentPlayer
-    );
+  // $: state.currentPlayer,
+  //   console.log(
+  //     `REACTIVE LOG state.currentPlayer at top of GameBoard`,
+  //     state.currentPlayer
+  //   );
   $: players = [];
   // $: state.reset ? resetGameBoard() : (state.reset = false);
   $: state.updateGameSettings
@@ -93,7 +93,7 @@
     });
     storeCurrentPlayer.subscribe(value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
-      localStorage.setItem("currentPlayer", JSON.stringify(value));
+      // localStorage.setItem("currentPlayer", JSON.stringify(value));
     });
   } else {
     console.log("we are running on the server");
@@ -161,11 +161,11 @@
         storeGameInProgress.set(false);
         localStorage.removeItem("gameInProgress");
       }
-      storeCurrentPlayer.set(
-        JSON.parse(localStorage.getItem("currentPlayer")) || {}
-      );
-      console.log(`storeCurrentPlayer.set: `, $storeCurrentPlayer);
-      currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+      // storeCurrentPlayer.set(
+      //   JSON.parse(localStorage.getItem("currentPlayer")) || {}
+      // );
+      console.log(`GameBoard => storeCurrentPlayer: `, $storeCurrentPlayer);
+      // currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
       // storeGameHistoryTurns.set(gameHistoryTurns)
 
       console.log(
@@ -173,12 +173,24 @@
         gameHistoryTurns,
         currentPlayer
       );
+      if (currentPlayer === false) {
+        console.log(
+          `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE`,
+          currentPlayer
+        );
+        currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+        storeCurrentPlayer.set(currentPlayer);
+        console.log(
+          `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE, set to LS `,
+          currentPlayer
+        );
+      }
     } else {
       console.log(
         `GameBoard => onMount(), gameInProgress FALSE, gameHistoryTurns `,
         gameHistoryTurns
       );
-      state.currentPlayer = players[0];
+      // state.currentPlayer = players[0];
       state.movesRemaining = settings.movesPerTurn;
       // console.log(`GameBoard => onMount(), state `, state);
       buildGameBoard(
@@ -205,13 +217,6 @@
   });
 
   function renderGameBoardReload(delayMS) {
-    console.log(
-      `renderGameBoardReload => gameHistoryTurns::: `,
-      gameHistoryTurns
-    );
-
-    // console.log(`renderGameBoardReload =>  settings ::: `, settings);
-
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
     if (gameHistoryTurns) {
@@ -280,7 +285,7 @@
 
         let p = move.player.id;
         // console.log(`building reload function, this move is: `, move.id);
-        // console.log(`building reload function, this player is: `, p);
+        console.log(`building reload function, this player is: `, p);
         let cell = document.getElementById(move.id);
         // console.log(`building reload function, this cell is: `, cell);
         cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -562,7 +567,8 @@
   }
 
   function tickThis(cell) {
-    // console.log("tickThis(cell)", cell, currentPlayer);
+    // console.log("tickThis(cell)", cell);
+    console.log("tickThis(cell) currentPlayer", currentPlayer);
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -749,10 +755,12 @@
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
+    storePreservePlayerDetails.set(true);
     turnHistory = [];
   }
 
   function playerChange() {
+    localStorage.setItem("playerDetails", true);
     turnHistory = [];
     let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");

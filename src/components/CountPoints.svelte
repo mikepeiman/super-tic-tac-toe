@@ -119,7 +119,7 @@
         // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
-        console.log(`scoring ${move.id}`);
+        // console.log(`scoring ${move.id}`);
         let p = move.player;
         // console.log(`scoring p = move.player, `, p.name);
         if (localStorage.getItem("gameHistoryFlat")) {

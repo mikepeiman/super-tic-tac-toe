@@ -31,10 +31,14 @@
   onMount(() => {
     players = $storePlayers;
     state = $storeState;
-    currentPlayer = $storeCurrentPlayer;
+    // currentPlayer = $storeCurrentPlayer;
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
+      if (value === null) {
+        console.log(`yep, value ull, no currentPLayer`);
+        currentPlayer = players[0];
+      }
     });
     storePlayers.subscribe(value => {
       // console.log(
@@ -42,7 +46,7 @@
       //   value,
       //   players
       // );
-      players = value
+      players = value;
     });
     setTimeout(() => {
       addStyles();
@@ -181,50 +185,50 @@
   }
 </style>
 
-<!-- {#await players then players}
-  {#await state then state} -->
-<div class="scoreboard-container">
-  {#each players as player}
-    <div
-      class="scoreboard-totals"
-      class:highlighted={currentPlayer.id == player.id}>
-      <h3 class="total-score">
-        <input
-          class="player-name"
-          type="text"
-          bind:value={player.name}
-          placeholder={player.name}
-          on:click={highlight}
-          on:blur={() => updateStoredPlayers(player)} />
+{#await players then players}
+  <!-- {#await state then state} -->
+  <div class="scoreboard-container">
+    {#each players as player}
+      <div
+        class="scoreboard-totals"
+        class:highlighted={currentPlayer.id == player.id}>
+        <h3 class="total-score">
+          <input
+            class="player-name"
+            type="text"
+            bind:value={player.name}
+            placeholder={player.name}
+            on:click={highlight}
+            on:blur={() => updateStoredPlayers(player)} />
 
-        <input
-          class="player-marker"
-          type="text"
-          bind:value={player.marker}
-          placeholder={player.marker}
-          maxlength="1"
-          on:click={highlight}
-          on:blur={() => updateStoredPlayers(player)} />
-        <div class="total-score-number">{player.totalScore}</div>
-      </h3>
-      <div class="scoreboard-player">
-        {#each player.scores as direction, i}
-          <div class="scoreboard-direction">
-            <div class="direction-score-section">
-              <img
-                class="direction-icon"
-                src={direction.iconSrc}
-                width="20"
-                height="20"
-                alt="Icon for direction {direction.name}" />
-              <!-- <div class="direction-name">{direction.name}:</div> -->
-              <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+          <input
+            class="player-marker"
+            type="text"
+            bind:value={player.marker}
+            placeholder={player.marker}
+            maxlength="1"
+            on:click={highlight}
+            on:blur={() => updateStoredPlayers(player)} />
+          <div class="total-score-number">{player.totalScore}</div>
+        </h3>
+        <div class="scoreboard-player">
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              <div class="direction-score-section">
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
+                <!-- <div class="direction-name">{direction.name}:</div> -->
+                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+              </div>
             </div>
-          </div>
-        {/each}
+          {/each}
+        </div>
       </div>
-    </div>
-  {/each}
-</div>
-<!-- {/await}
-{/await} -->
+    {/each}
+  </div>
+{/await}
+<!-- {/await}  -->

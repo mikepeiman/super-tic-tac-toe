@@ -28,10 +28,14 @@
 
   onMount(() => {
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
-        storeState.subscribe(value => {
+
+    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
+    currentPlayer = ls;
+    console.log(`StatusBar => onMount() currentPlayer LS`, ls);
+    storeState.subscribe(value => {
       console.log(`StatusBar => storeState subscribed`, value);
       state = value;
     });
@@ -45,11 +49,11 @@
     }
     // currentPlayer = $storeCurrentPlayer;
     // console.log(`//////////////     StatusBar => onMount() `, state, players);
-
-    if (!(currentPlayer.length > 0)) {
+    if (!currentPlayer) {
+      console.log(`StatusBar => if (!(currentPlayer.id)), set to players[0]`);
       currentPlayer = players[0];
+      storeCurrentPlayer.set(currentPlayer);
     }
-    storeCurrentPlayer.set(currentPlayer);
   });
 
   afterUpdate(() => {
@@ -163,7 +167,9 @@
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
     <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
     <h2 class="player-indicator-heading">Moves Left: {state.movesRemaining}</h2>
-    <h2 class="player-indicator-heading">Game Progress: {moveNumber}/{settings.rows * settings.columns}</h2>
+    <h2 class="player-indicator-heading">
+      Game Progress: {moveNumber}/{settings.rows * settings.columns}
+    </h2>
     <div class="buttons-wrapper">
       <CountPoints
         {players}

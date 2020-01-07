@@ -59,20 +59,54 @@
     diagonalDownRight: []
   };
 
-  storeCurrentPlayer.subscribe(value => {
-    console.log(`GameInit => storeCurrentPlayer subscribed`, value);
-    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
-    console.log(`GameInit => storeCurrentPlayer LS`, ls);
-    if (value !== false) {
-      console.log(`GameInit => storeCurrentPlayer subscribed, value !== false`);
-      localStorage.setItem("currentPlayer", JSON.stringify(value));
-    } else {
-      storeCurrentPlayer.set(ls)
-    }
-  });
+  if (typeof window !== "undefined") {
+    console.log("we are running on the client");
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`GameInit => storeCurrentPlayer subscribed`, value);
+      let ls = JSON.parse(localStorage.getItem("currentPlayer"));
+      console.log(`GameInit => storeCurrentPlayer LS`, ls);
+      // if (value !== false) {
+      //   console.log(
+      //     `GameInit => storeCurrentPlayer subscribed, value !== false`,
+      //     value
+      //   );
+      //   if (ls !== null) {
+      //     console.log(
+      //       `currentPlayer from store: ${value.name}, currentPlayer from ls: ${ls.name},`
+      //     );
+      //     if(value.id !== ls.id) {
+      //       storeCurrentPlayer.set(ls);
+      //     }
+      //   }
+
+      //   // localStorage.setItem("currentPlayer", JSON.stringify(value));
+      // } else {
+      //   console.log(
+      //     `GameInit => storeCurrentPlayer subscribed, value === false, setting to LS currentPlayer`
+      //   );
+      //   storeCurrentPlayer.set(ls);
+      // }
+
+      //       if (ls) {
+      //   console.log(
+      //     `GameInit => storeCurrentPlayer subscribed, ls IS`
+      //   );
+      //   // localStorage.setItem("currentPlayer", JSON.stringify(value));
+      // } else {
+      //   console.log(
+      //     `GameInit => storeCurrentPlayer subscribed, ls IS NOT`
+      //   );
+      //   storeCurrentPlayer.set(ls);
+      // }
+    });
+  } else {
+    console.log("we are running on the server");
+  }
 
   onMount(() => {
     console.log(`GameInit => onMount()`);
+    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
+    console.log(`GameInit => onMount() currentPlayer LS`, ls);
     // players = $storePlayers;
     settings = $storeSettings;
     state = $storeState;
@@ -105,6 +139,7 @@
           `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
         );
         state.currentPlayer = players[0];
+        storeCurrentPlayer.set(players[0]);
       }
     } else {
       initializePlayers();
@@ -145,10 +180,25 @@
     }
     // players = players
     storePlayers.set(players);
+
     state.currentPlayer = players[0];
     storeCurrentPlayer.set(players[0]);
+    console.log(`GameInit => initializePlayers run (currentPlayer reset to 0)`);
     dispatch("playersInitialized", players);
     console.log(`GameInit => initialized players done`, players);
+  }
+
+  function setCurrentPlayer() {
+    console.log(`GameInit => setCurrentPlayer subscribed`, value);
+    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
+    console.log(`GameInit => setCurrentPlayer LS`, ls);
+    if (value !== false) {
+      console.log(`GameInit => setCurrentPlayer subscribed, value !== false`);
+      localStorage.setItem("currentPlayer", JSON.stringify(value));
+    } else {
+      console.log(`GameInit => setCurrentPlayer subscribed, value === false`);
+      setCurrentPlayer.set(ls);
+    }
   }
 </script>
 

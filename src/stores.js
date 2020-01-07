@@ -1,10 +1,12 @@
 import { writable } from "svelte/store";
 
-if (typeof window !== "undefined") {
-  console.log("we are running on the client");
-} else {
-  console.log("we are running on the server");
-}
+// if (typeof window !== "undefined") {
+//   console.log("we are running on the client");
+//   let cpls = JSON.parse(localStorage.getItem("currentPlayer"))
+//   console.log(`Checking for running LS on client via stores.js, here's currentPlayer from ls: `, cpls)
+// } else {
+//   console.log("we are running on the server");
+// }
 
 let settings = writable({
   numberOfPlayers: 4,
