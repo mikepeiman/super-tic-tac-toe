@@ -626,6 +626,7 @@
   }
 
   function playerChange() {
+    turnHistory = []
     let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");
     setTimeout(() => {
@@ -651,6 +652,7 @@
     storeCurrentPlayer.set(currentPlayer);
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
 
     console.log(
       `playerChanges, currentPlayer AFTER change:`,

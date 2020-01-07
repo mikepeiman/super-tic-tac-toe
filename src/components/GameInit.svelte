@@ -60,7 +60,7 @@
   };
 
   storeCurrentPlayer.subscribe(value => {
-    console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+    console.log(`GameInit => storeCurrentPlayer subscribed`, value);
   });
 
   onMount(() => {
@@ -73,15 +73,17 @@
     let playerDetails = localStorage.getItem("preservePlayerDetails");
     console.log(`GameInit => onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
-      state.movesRemaining = settings.movesPerTurn;
+      let turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
+
       state = JSON.parse(localStorage.getItem("state"));
+      state.movesRemaining = settings.movesPerTurn - turnHistory.length;
       console.log(`GameInit => onMount(), gameInProgress true`);
     } else {
       state.movesRemaining = settings.movesPerTurn;
       console.log(`GameInit => onMount(), state `, state);
-      storeState.set(state);
     }
-
+    storeState.set(state);
+    localStorage.setItem("state", JSON.stringify(state));
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
       console.log(

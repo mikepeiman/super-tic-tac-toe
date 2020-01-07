@@ -31,6 +31,10 @@
       // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
+        storeState.subscribe(value => {
+      console.log(`StatusBar => storeState subscribed`, value);
+      state = value;
+    });
     players = $storePlayers;
     // console.log(`StatusBar => onMount(() #1 state`, state);
     state = $storeState;
@@ -158,8 +162,8 @@
     class="player-indicator player-0"
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
     <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-    <h2 class="player-indicator-heading">Turn Moves: {state.movesRemaining}</h2>
-    <h2 class="player-indicator-heading">Total Moves: {moveNumber}</h2>
+    <h2 class="player-indicator-heading">Moves Left: {state.movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Game Progress: {moveNumber}/{settings.rows * settings.columns}</h2>
     <div class="buttons-wrapper">
       <CountPoints
         {players}
