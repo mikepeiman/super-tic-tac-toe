@@ -189,6 +189,11 @@
     let gameboard = document.getElementById("gameboard-board");
     let amount, number;
     let len = gameHistoryTurns.length;
+    turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
+    console.log(
+      `renderGameBoardReload => turnHistory from LS is `,
+      turnHistory
+    );
     // console.log(`gameboard el: `, gameboard);
     while (gameboard.firstChild) {
       // console.log(`renderGameBoardReload::: removing a DOM child el`);
@@ -206,14 +211,14 @@
         setTimeout(resolve, amount);
       });
     };
-    async function loop(gameHistoryTurns, delayMS) {
+    async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
         // console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
           let p = move.player.id;
-          // console.log(`building reload function, this move is: `, move.id);
+          // console.log(`loopAndLockTurns => this move is: `, move.id);
           // console.log(`building reload function, this player is: `, p);
           let cell = document.getElementById(move.id);
           // console.log(`building reload function, this cell is: `, cell);
@@ -230,12 +235,33 @@
         }
       }
     }
-    loop(gameHistoryTurns, delayMS);
+    async function loopAndUnlockLastTurn(turnHistory, delayMS) {
+      for (let i = 0; i < turnHistory.length; i++) {
+        let move = turnHistory[i];
+        // console.log(`building reload function, this turn is: `, turn);
+
+        let p = move.player.id;
+        // console.log(`building reload function, this move is: `, move.id);
+        // console.log(`building reload function, this player is: `, p);
+        let cell = document.getElementById(move.id);
+        // console.log(`building reload function, this cell is: `, cell);
+        cell.style = `--custom-bg: ${players[p].bgColor}`;
+        cell.style.margin = settings.gutter + "px";
+        cell.style.width = settings.size + "px";
+        cell.style.height = settings.size + "px";
+        cell.setAttribute("data-marker", players[p].marker);
+        cell.setAttribute("data-ticked", true);
+        cell.classList.add("ticked");
+        cell.setAttribute("locked", false);
+        cell.style.border = "1px solid rgba(0,0,0,0.5)";
+        await delay(delayMS);
+      }
+    }
+    loopAndLockTurns(gameHistoryTurns, delayMS).then(next => {
+      loopAndUnlockLastTurn(turnHistory, delayMS);
+    });
+
     players = players;
-    // console.log(
-    //   `renderGameBoardReload after cells are reloaded   :::   gameHistoryTurns length: ${len}, players`,
-    //   players
-    // );
   }
 
   async function createDirectionArrays() {
