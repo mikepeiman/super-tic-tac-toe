@@ -87,17 +87,17 @@
         value.length
       );
     });
+
+    storeGameHistoryTurns.subscribe(value => {
+      console.log(`GameBoard => storeGameHistoryTurns subscribed`, value);
+    });
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+      localStorage.setItem("currentPlayer", JSON.stringify(value));
+    });
   } else {
     console.log("we are running on the server");
   }
-
-  storeGameHistoryTurns.subscribe(value => {
-    console.log(`GameBoard => storeGameHistoryTurns subscribed`, value);
-  });
-  storeCurrentPlayer.subscribe(value => {
-    console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
-    localStorage.setItem("currentPlayer", JSON.stringify(value));
-  });
 
   // $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   // $: console.log(`GameBoard state settings: `, settings);
@@ -150,6 +150,9 @@
       });
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+      if (!gameHistoryTurns) {
+        gameHistoryTurns = [];
+      }
       gameHistoryFlat = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       if (gameHistoryFlat.length > 0) {
         storeGameInProgress.set(true);
@@ -214,7 +217,9 @@
     if (gameHistoryTurns) {
       console.log("renderGameBoardReload() => if (gameHistoryTurns) exists");
       if (gameHistoryTurns.length) {
-      console.log("renderGameBoardReload() => if (gameHistoryTurns.length) exists");
+        console.log(
+          "renderGameBoardReload() => if (gameHistoryTurns.length) exists"
+        );
         len = gameHistoryTurns.length;
         console.log(
           `renderGameBoardReload() => if (gameHistoryTurns) TRUE ${len}  `,
@@ -710,13 +715,21 @@
     console.log(`GameBoard => setGameHistoryTurns running`);
     let turnsPlayed = localStorage.getItem("gameHistoryTurns");
     if (turnsPlayed) {
-      console.log(`if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `);
-      gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-      console.log(
-        `from LS gameHistoryTurns, `,
-        gameHistoryTurns.length,
-        gameHistoryTurns
-      );
+      if (turnsPlayed.length > 0) {
+        console.log(
+          `if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `,
+          gameHistoryTurns.length,
+          gameHistoryTurns
+        );
+        // gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+        // console.log(
+        //   `from LS gameHistoryTurns, `,
+        //   gameHistoryTurns.length,
+        //   gameHistoryTurns
+        // );
+      } else {
+        gameHistoryTurns = [];
+      }
     }
 
     turnHistory.forEach((turn, index) => {

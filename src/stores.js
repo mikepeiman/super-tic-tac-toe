@@ -94,6 +94,7 @@ export const storePreservePlayerDetails = {
 export const storeGameHistoryTurns = {
   subscribe: gameHistoryTurns.subscribe,
   set: turns => {
+    console.log(`storeGameHistoryTurns.set turns => `, turns)
     gameHistoryTurns.set(turns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
   }

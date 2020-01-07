@@ -61,6 +61,14 @@
 
   storeCurrentPlayer.subscribe(value => {
     console.log(`GameInit => storeCurrentPlayer subscribed`, value);
+    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
+    console.log(`GameInit => storeCurrentPlayer LS`, ls);
+    if (value !== false) {
+      console.log(`GameInit => storeCurrentPlayer subscribed, value !== false`);
+      localStorage.setItem("currentPlayer", JSON.stringify(value));
+    } else {
+      storeCurrentPlayer.set(ls)
+    }
   });
 
   onMount(() => {
