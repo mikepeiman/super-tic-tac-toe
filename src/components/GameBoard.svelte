@@ -110,6 +110,10 @@
       // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       settings = value;
     });
+    storePlayers.subscribe(value => {
+      console.log(`GameBoard => storePlayers.subscribe value => `, value);
+      // settings = value;
+    });
 
     let gameboard = document.querySelector("#gameboard-board");
     players = $storePlayers;
@@ -626,7 +630,7 @@
   }
 
   function playerChange() {
-    turnHistory = []
+    turnHistory = [];
     let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");
     setTimeout(() => {

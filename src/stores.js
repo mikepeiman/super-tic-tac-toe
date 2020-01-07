@@ -7,11 +7,11 @@ if (typeof window !== "undefined") {
 }
 
 let settings = writable({
-  numberOfPlayers: 3,
-  movesPerTurn: 3,
+  numberOfPlayers: 4,
+  movesPerTurn: 5,
   cellsToScore: 3,
-  bonusForCompleteRow: 5,
-  rows: 5,
+  bonusForCompleteRow: 10,
+  rows: 12,
   columns: 15,
   size: 24,
   gutter: 0

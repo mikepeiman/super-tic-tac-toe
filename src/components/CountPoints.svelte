@@ -50,6 +50,8 @@
     );
     if (localStorage.getItem("gameHistoryFlat")) {
       let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
+      // players = JSON.parse(localStorage.getItem("players"))
+      players = $storePlayers
       console.log(`countPoints, gameHistoryFlat from LS: `, gh);
     }
 
@@ -61,7 +63,7 @@
           direction
         );
         let thisScore = score(settings, direction, player, index);
-        // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
+        console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
         player["scores"][index]["dirScore"] = thisScore;
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
@@ -117,7 +119,7 @@
         // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
-        // console.log(`scoring ${move.id}`);
+        console.log(`scoring ${move.id}`);
         let p = move.player;
         // console.log(`scoring p = move.player, `, p.name);
         if (localStorage.getItem("gameHistoryFlat")) {
