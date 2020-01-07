@@ -19,20 +19,20 @@
   } from "../stores.js";
 
   storeState.subscribe(value => {
-    console.log(`TicTacToe => storeState.subscribe value => `, value);
+    // console.log(`TicTacToe => storeState.subscribe value => `, value);
     // state = value
   });
   storeSettings.subscribe(value => {
-    console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+    // console.log(`TicTacToe => storeSettings.subscribe value => `, value);
   });
   storeGameInProgress.subscribe(value => {
-    console.log(`TicTacToe => storeGameInProgress subscribed`, value);
+    // console.log(`TicTacToe => storeGameInProgress subscribed`, value);
   });
   storePlayers.subscribe(value => {
-    console.log(`TicTacToe => storePlayers subscribed`, value);
+    // console.log(`TicTacToe => storePlayers subscribed`, value);
   });
   storePreservePlayerDetails.subscribe(value => {
-    console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
+    // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
   // const unsubState = storeState.subscribe(value => {
   //   console.log(`TicTacToe => storeState unsubscribe value => `, value);

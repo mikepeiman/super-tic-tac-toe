@@ -87,13 +87,9 @@
     console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
   });
 
-  $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
+  // $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   // $: console.log(`GameBoard state settings: `, settings);
-  $: console.log(`GameBoard state gameHistoryTurns: `, gameHistoryTurns);
-  $: console.log(
-    `GameBoard state gameHistoryTurns array? `,
-    Array.isArray(gameHistoryTurns)
-  );
+  // $: console.log(`GameBoard state gameHistoryTurns: `, gameHistoryTurns);
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -418,7 +414,7 @@
   }
 
   function getMoveFromHistory(id) {
-    let payload = { id: null, name: null };
+    let payload = { id: null, name: "none" };
     if (localStorage.getItem("gameHistoryFlat")) {
       let game = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       game.forEach(move => {
@@ -506,6 +502,12 @@
   }
 
   function playMove(cell) {
+    console.log(`playMove ${cell.id}, gameHistoryFlat before operation: `, gameHistoryFlat)
+    if(localStorage.getItem('gameHistoryFlat')) {
+      gameHistoryFlat = JSON.parse(localStorage.getItem('gameHistoryFlat'))
+    }
+    console.log(`playMove ${cell.id}, gameHistoryFlat after LS before operation: `, gameHistoryFlat)
+    // localStorage.setItem('gameInProgress', JSON.stringify(true))
     state.clickCount++;
     let id = cell.id;
     let ticked = cell.dataset.ticked == "true";
@@ -526,18 +528,18 @@
         setTurnHistory(cell);
         setGameHistoryTurns();
         tickThis(cell);
-        setPlayerMove(cell.id);
+        // setPlayerMove(cell.id);
         playerChange();
         return;
       }
       state.moveNumber++;
       setTurnHistory(cell);
       tickThis(cell);
-      setPlayerMove(cell.id);
+      // setPlayerMove(cell.id);
       state.movesRemaining--;
     }
     console.log(`GameBoard => playMove, state `, state);
-    // localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("state", JSON.stringify(state));
     storeState.set(state);
     console.log(`GameBoard => playMove, state `, state);
   }
@@ -579,6 +581,7 @@
   }
 
   function setPlayerMove(cellId) {
+    console.log(`setPlayerMove, gameHistoryFlat before operation: `, gameHistoryFlat)
     if (gameHistoryFlat.length > 0) {
       gameHistoryFlat.forEach(move => {
         if (move.id == cellId) {
@@ -591,6 +594,8 @@
         }
       });
     }
+    console.log(`setPlayerMove, gameHistoryFlat after operation: `, gameHistoryFlat)
+    // gameHistoryFlat = gameHistoryFlat
     storeGameHistoryFlat.set(gameHistoryFlat);
     localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
   }
@@ -606,7 +611,7 @@
         move.move = null;
       }
       storeGameHistoryFlat.set(gameHistoryFlat);
-      // localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
+      localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
     });
   }
 
@@ -645,11 +650,6 @@
   }
 
   function setTurnHistory(cell) {
-    console.log(
-      `at start: gameHistoryTurns and isArray? `,
-      Array.isArray(gameHistoryTurns),
-      gameHistoryTurns
-    );
     let move = {};
     move["move"] = state.moveNumber;
     move["id"] = cell.id;
@@ -658,7 +658,7 @@
       id: currentPlayer.id,
       name: currentPlayer.name
     };
-    console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
+    // console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
     // let history = turnHistory;
     if (turnHistory.filter(turn => turn.id == cell.id).length > 0) {
       // console.log(
@@ -666,18 +666,26 @@
       // );
       turnHistory = turnHistory.filter(turn => turn.id !== cell.id);
     } else {
-      // console.log(
-      //   `apparently we have not made this move yet, let's add it to turnHistory`
-      // );
+      console.log(
+        `apparently we have not made this move yet, let's add it to turnHistory`
+      );
       turnHistory = [...turnHistory, move];
+      // if(gameInProgress) {
+      //   gameHistoryTurns.forEach(turn => {
+      //     turn.forEach(move => {
+      //       gameHistoryFlat = [...gameHistoryFlat, move];
+      //     })
+      //   })
+      // }
       gameHistoryFlat = [...gameHistoryFlat, move];
-      storeGameHistoryFlat.set(gameHistoryFlat);
+      // storeGameHistoryFlat.set(gameHistoryFlat);
 
       // there appears to be a bug or error in how I'm using Stores; although I set to LS inside the exported
       // const, it is not settings to LS reliably.... it's working for boolean flags, but not arrays and objects
       localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
+      localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
     }
-    // console.log(turnHistory);
+    console.log(turnHistory, gameHistoryFlat);
   }
 
   function setGameHistoryTurns() {

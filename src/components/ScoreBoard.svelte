@@ -33,15 +33,15 @@
     state = $storeState;
     currentPlayer = $storeCurrentPlayer;
     storeCurrentPlayer.subscribe(value => {
-      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
     storePlayers.subscribe(value => {
-      console.log(
-        `ScoreBoard => storePlayers subscribed value, players `,
-        value,
-        players
-      );
+      // console.log(
+      //   `ScoreBoard => storePlayers subscribed value, players `,
+      //   value,
+      //   players
+      // );
       players = value
     });
     setTimeout(() => {

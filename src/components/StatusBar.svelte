@@ -19,21 +19,21 @@
   $: state = {};
   $: players = {};
   $: settings = {};
-  $: currentPlayer,
-    console.log(
-      `StatusBar reactive logging currentPlayer, `,
-      currentPlayer.name
-    );
+  // $: currentPlayer,
+  //   console.log(
+  //     `StatusBar reactive logging currentPlayer, `,
+  //     currentPlayer.name
+  //   );
 
   onMount(() => {
     storeCurrentPlayer.subscribe(value => {
-      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
     players = $storePlayers;
-    console.log(`StatusBar => onMount(() #1 state`, state);
+    // console.log(`StatusBar => onMount(() #1 state`, state);
     state = $storeState;
-    console.log(`StatusBar => onMount(() #2 state`, state);
+    // console.log(`StatusBar => onMount(() #2 state`, state);
     settings = $storeSettings;
     // currentPlayer = $storeCurrentPlayer;
     // console.log(`//////////////     StatusBar => onMount() `, state, players);
@@ -48,8 +48,8 @@
     // console.log(`StatusBar => afterUpdate(() #1 state`, state);
     state = $storeState;
     // console.log(`StatusBar => afterUpdate(() #2 state`, state);
-    let history = $storeGameHistoryTurns
-    console.log(`StatusBar => afterUpdate(() gameHistoryTurns from store `, history);
+    // let history = $storeGameHistoryTurns
+    // console.log(`StatusBar => afterUpdate(() gameHistoryTurns from store `, history);
   });
 
   function playersScored(e) {
