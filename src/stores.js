@@ -9,12 +9,12 @@ import { writable } from "svelte/store";
 // }
 
 let settings = writable({
-  numberOfPlayers: 4,
-  movesPerTurn: 5,
+  numberOfPlayers: 5,
+  movesPerTurn: 2,
   cellsToScore: 3,
   bonusForCompleteRow: 10,
-  rows: 12,
-  columns: 15,
+  rows: 5,
+  columns: 6,
   size: 24,
   gutter: 0
 });

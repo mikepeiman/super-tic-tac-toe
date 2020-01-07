@@ -116,6 +116,7 @@
     storePreservePlayerDetails.set(false);
     localStorage.removeItem("storePreservePlayerDetails");
     localStorage.removeItem("players");
+    resetGame();
     location.reload();
     dispatch("resetGame", true);
   }

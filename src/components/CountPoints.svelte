@@ -39,31 +39,31 @@
 
   function countPoints() {
     // let settings = JSON.parse(localStorage.getItem('settings'))
-    console.log(
-      "*************__________countPoints called________**************, settings, lines ",
-      settings,
-      lines
-    );
-    console.log(
-      "players from countPoints before checking localStorage: ",
-      players
-    );
+    // console.log(
+    //   "*************__________countPoints called________**************, settings, lines ",
+    //   settings,
+    //   lines
+    // );
+    // console.log(
+    //   "players from countPoints before checking localStorage: ",
+    //   players
+    // );
     if (localStorage.getItem("gameHistoryFlat")) {
       let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       // players = JSON.parse(localStorage.getItem("players"))
-      players = $storePlayers
-      console.log(`countPoints, gameHistoryFlat from LS: `, gh);
+      players = $storePlayers;
+      // console.log(`countPoints, gameHistoryFlat from LS: `, gh);
     }
 
     players.forEach(player => {
-      console.log(`CountPoints => players.forEach player, lines: `, lines);
+      // console.log(`CountPoints => players.forEach player, lines: `, lines);
       player.scores.forEach((direction, index) => {
-        console.log(
-          `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
-          direction
-        );
+        // console.log(
+        //   `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
+        //   direction
+        // );
         let thisScore = score(settings, direction, player, index);
-        console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
+        // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
         player["scores"][index]["dirScore"] = thisScore;
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
@@ -84,14 +84,14 @@
     let dirLines = [];
     let dirScore = 0;
     let name = direction.name;
-    console.log(
-      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name} and lines`,
-      player,
-      lines
-    );
+    // console.log(
+    //   `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name} and lines`,
+    //   player,
+    //   lines
+    // );
 
     direction.lines.forEach((line, index) => {
-      console.log(`each line ${index}`, line);
+      // console.log(`each line ${index}`, line);
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
@@ -128,13 +128,13 @@
         }
 
         if (p) {
-          console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
+          // console.log(`scoring p = getPlayerFromCellInGameHistory, `, p);
           // console.log(
           //   `there is a p = getPlayerFromCellInGameHistory(${move.id})`
           // );
           if (p.name !== "none" && p.id === player.id) {
             countInLoop++;
-            console.log(`${move.id} count: ${countInLoop}`);
+            // console.log(`${move.id} count: ${countInLoop}`);
           }
           if (p.id !== player.id) {
             lineBonus = 0;
@@ -143,7 +143,7 @@
             // );
             if (countInLoop >= settings.cellsToScore) {
               points += countInLoop - (settings.cellsToScore - 1);
-              console.log(`${move.id} points: ${points}`);
+              // console.log(`${move.id} points: ${points}`);
             }
             countInLine += countInLoop;
             countInLoop = 0;
@@ -164,9 +164,9 @@
 
       // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
       points += lineBonus;
-      console.log(
-        `END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`
-      );
+      // console.log(
+      //   `END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`
+      // );
       dirLines.push({ countInLine: countInLine, points: points });
       // console.log(`dirLines `, dirLines)
       dirScore += points;
@@ -188,14 +188,14 @@
       let move = gh[i];
       // console.log(`getPlayerFromCellInGameHistory FOR-LOOP for ${id}, move `, move);
       if (move.id == id) {
-        console.log(
-          `getPlayerFromCellInGameHistory -----------MATCH-------------- `
-        );
+        // console.log(
+        //   `getPlayerFromCellInGameHistory -----------MATCH-------------- `
+        // );
         payload = move.player;
-        console.log(
-          `: : : : : : : : : :  PAYLOAD  : : : : : : : : : `,
-          payload
-        );
+        // console.log(
+        //   `: : : : : : : : : :  PAYLOAD  : : : : : : : : : `,
+        //   payload
+        // );
       }
     }
 

@@ -89,7 +89,11 @@
     });
 
     storeGameHistoryTurns.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryTurns subscribed`, value);
+      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      let ghls = localStorage.getItem("gameHistoryTurns");
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
+      let parsedGhls = JSON.parse(ghls);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
     storeCurrentPlayer.subscribe(value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
@@ -101,7 +105,10 @@
 
   // $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
   // $: console.log(`GameBoard state settings: `, settings);
-  // $: console.log(`GameBoard state gameHistoryTurns: `, gameHistoryTurns);
+  $: console.log(
+    `REACTIVE LOG GameBoard => gameHistoryTurns: `,
+    gameHistoryTurns
+  );
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -285,7 +292,7 @@
 
         let p = move.player.id;
         // console.log(`building reload function, this move is: `, move.id);
-        console.log(`building reload function, this player is: `, p);
+        // console.log(`building reload function, this player is: `, p);
         let cell = document.getElementById(move.id);
         // console.log(`building reload function, this cell is: `, cell);
         cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -518,17 +525,17 @@
   }
 
   function playMove(cell) {
-    console.log(
-      `playMove ${cell.id}, gameHistoryFlat before operation: `,
-      gameHistoryFlat
-    );
+    // console.log(
+    //   `playMove ${cell.id}, gameHistoryFlat before operation: `,
+    //   gameHistoryFlat
+    // );
     if (localStorage.getItem("gameHistoryFlat")) {
       gameHistoryFlat = JSON.parse(localStorage.getItem("gameHistoryFlat"));
     }
-    console.log(
-      `playMove ${cell.id}, gameHistoryFlat after LS before operation: `,
-      gameHistoryFlat
-    );
+    // console.log(
+    //   `playMove ${cell.id}, gameHistoryFlat after LS before operation: `,
+    //   gameHistoryFlat
+    // );
     localStorage.setItem("gameInProgress", true);
     state.clickCount++;
     let id = cell.id;
@@ -542,7 +549,7 @@
         removePlayerMove(cell.id);
         moveNumber--;
       } else {
-        console.log(`It seems you tried to untick a locked move!`);
+        // console.log(`It seems you tried to untick a locked move!`);
       }
     } else {
       if (state.movesRemaining == 1) {
@@ -559,11 +566,11 @@
       tickThis(cell);
       state.movesRemaining--;
     }
-    console.log(`GameBoard => playMove, state `, state);
+    // console.log(`GameBoard => playMove, state `, state);
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
     storeState.set(state);
-    console.log(`GameBoard => playMove, state `, state);
+    // console.log(`GameBoard => playMove, state `, state);
   }
 
   function tickThis(cell) {
