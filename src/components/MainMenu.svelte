@@ -29,6 +29,12 @@
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
+    storeSettings.subscribe(value => {
+      console.log(`MainMenu => storeSettings.subscribe value => `, value);
+      // settings = value;
+    });
+
+    // settings.numberOfPlayers;
   });
 
   storeSettings.subscribe(value => {
@@ -40,7 +46,7 @@
   }
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    storeSettings.set(settings)
+    storeSettings.set(settings);
     e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
     console.log(
       `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `

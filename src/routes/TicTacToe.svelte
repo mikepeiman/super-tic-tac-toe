@@ -73,12 +73,7 @@
     }, 10);
   }
 
-  function updateGameSettings(e) {
-    console.log(`TicTacToe => reset bubbled from MainMenu settings change`, e);
-    settings = e.detail;
-    // resetGame();
-    // state.updateGameSettings = true;
-  }
+
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
@@ -251,7 +246,6 @@
       <StatusBar
         on:resetGame={resetGame}
         on:playersScored={setPlayersToStore} />
-      <MainMenu on:updateGameSettings={updateGameSettings} />
       <GameBoard on:move={moveNotification} />
     </div>
     <!-- {/await} -->

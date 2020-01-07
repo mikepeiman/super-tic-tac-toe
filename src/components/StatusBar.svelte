@@ -27,6 +27,10 @@
   //   );
 
   onMount(() => {
+    storeSettings.subscribe(value => {
+      console.log(`StatusBar => storeSettings.subscribe value => `, value);
+      settings = value;
+    });
     storeCurrentPlayer.subscribe(value => {
       console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;

@@ -1,5 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
+  import MainMenu from "./MainMenu.svelte";
   const dispatch = createEventDispatcher();
   import { writable } from "svelte/store";
   import {
@@ -200,6 +201,13 @@
       setCurrentPlayer.set(ls);
     }
   }
+
+  function updateGameSettings(e) {
+    console.log(`GameInit => reset bubbled from MainMenu settings change`, e);
+    settings = e.detail;
+    // resetGame();
+    // state.updateGameSettings = true;
+  }
 </script>
 
 <style lang="scss">
@@ -232,3 +240,5 @@
     background: rgba(155, 55, 255, 0.75);
   }
 </style>
+
+<MainMenu on:updateGameSettings={updateGameSettings} />

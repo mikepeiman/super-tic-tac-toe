@@ -21,6 +21,10 @@
   $: settings = {};
 
   onMount(() => {
+    storeSettings.subscribe(value => {
+      console.log(`CountPoints => storeSettings.subscribe value => `, value);
+      // settings = value;
+    });
     storeDirectionArrays.subscribe(val => {
       // console.log(
       //   `CountPoints store subscription to storeDirectionArrays: `,
