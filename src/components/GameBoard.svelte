@@ -94,31 +94,14 @@
     console.log("we are running on the server");
   }
 
-  // $: ({rows} = settings) && resetGameBoard();
-  // $: ({columns} = settings) && resetGameBoard();
-  // $: rows
-  // $: columns
-  // $: settings.rows, settings.columns, resetGameBoard();
-  let rows, columns, cellsToScore;
-  ({ cellsToScore, rows, columns } = settings);
-  // $: console.dir(({ cellsToScore, rows, columns } = settings))
-  
-  // ({ columns } = settings);
-  $: rows && resetGameBoard();
-  $: columns && resetGameBoard();
+  let rows, columns, size;
+  ({ size, rows, columns } = settings);
+  $: rows, columns,size && resetGameBoard();
+  // $: columns && resetGameBoard();
 
   $: console.log(
-    `\n DESTRUCTURED ROWS ******************* ${rows}, columns ${columns} cellsToScore ${cellsToScore} \n`
+    `\n DESTRUCTURED ROWS ******************* ${rows}, columns ${columns} cellsToScore ${size} \n`
   );
-  // $: rows, resetGameBoard()
-  // $: ({ rows } = settings), resetGameBoard();
-  // $: ({ columns } = settings) && resetGameBoard();
-
-  function moveNotification(e) {
-    console.log(`GameBoard moveNOtification: `, e);
-    playMove(getCellById(e.detail));
-    dispatch("move", e.detail);
-  }
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
@@ -128,8 +111,8 @@
       // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       // this one is important!!! below
       settings = value;
-      ({ rows } = settings);
-      ({ columns } = settings);
+      ({ rows, columns, size } = settings);
+      // ({ columns } = settings);
       //  resetGameBoard();
     });
 
@@ -170,38 +153,12 @@
         storeGameInProgress.set(false);
         localStorage.removeItem("gameInProgress");
       }
-      // storeCurrentPlayer.set(
-      //   JSON.parse(localStorage.getItem("currentPlayer")) || {}
-      // );
-      // console.log(`GameBoard => storeCurrentPlayer: `, $storeCurrentPlayer);
-      // currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-      // storeGameHistoryTurns.set(gameHistoryTurns)
-
-      // console.log(
-      //   `GameBoard => onMount(), gameInProgress TRUE, gameHistoryTurns, currentPlayer `,
-      //   gameHistoryTurns,
-      //   currentPlayer
-      // );
       if (currentPlayer === false) {
-        // console.log(
-        //   `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE`,
-        //   currentPlayer
-        // );
         currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
         storeCurrentPlayer.set(currentPlayer);
-        // console.log(
-        //   `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE, set to LS `,
-        //   currentPlayer
-        // );
       }
     } else {
-      // console.log(
-      //   `GameBoard => onMount(), gameInProgress FALSE, gameHistoryTurns `,
-      //   gameHistoryTurns
-      // );
-      // state.currentPlayer = players[0];
       state.movesRemaining = settings.movesPerTurn;
-      // console.log(`GameBoard => onMount(), state `, state);
       buildGameBoard(
         settings.rows,
         settings.columns,
@@ -209,21 +166,18 @@
         settings.gutter
       );
       storeState.set(state);
-      // localStorage.setItem("state", JSON.stringify(state));
     }
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
       storePlayers.set(players);
-      // state.currentPlayer = players[0];
-    } else {
-    }
-    // console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
+    } 
   });
 
-  afterUpdate(() => {
-    // let gameboard = document.querySelector("#gameboard-board");
-    // console.log(`GameBoard => onMount() after buildGameBoard, el: `, gameboard);
-  });
+  function moveNotification(e) {
+    console.log(`GameBoard moveNOtification: `, e);
+    playMove(getCellById(e.detail));
+    dispatch("move", e.detail);
+  }
 
   function renderGameBoardReload(delayMS) {
     let gameboard = document.getElementById("gameboard-board");
