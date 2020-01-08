@@ -26,10 +26,10 @@
       settings = value;
     });
     storeDirectionArrays.subscribe(val => {
-      console.log(
-        `CountPoints store subscription to storeDirectionArrays: `,
-        val
-      );
+      // console.log(
+      //   `CountPoints store subscription to storeDirectionArrays: `,
+      //   val
+      // );
       lines = val;
     });
     // settings = $storeSettings;

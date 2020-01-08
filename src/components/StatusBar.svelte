@@ -21,7 +21,7 @@
   $: settings = {};
   $: moveNumber = 0;
   // $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
-  $: settings.movesPerTurn, console.log('\n' + 'REACTIVE LOGGING settings.movesPerTurn' + '\n')
+  // $: settings.movesPerTurn, console.log('\n' + 'REACTIVE LOGGING settings.movesPerTurn' + '\n')
 
   onMount(() => {
     storeSettings.subscribe(value => {
@@ -37,8 +37,9 @@
     currentPlayer = ls;
     // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
-      // console.log(`StatusBar => storeState subscribed`, value);
+      console.log(`StatusBar => storeState subscribed - move: ${state.moveNumber}`, value);
       state = value;
+      moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     });
     players = $storePlayers;
     // console.log(`StatusBar => onMount(() #1 state`, state);

@@ -101,7 +101,7 @@
   // $: settings.rows, settings.columns, resetGameBoard();
   let rows, columns, cellsToScore;
   ({ cellsToScore, rows, columns } = settings);
-  $: console.dir(({ cellsToScore, rows, columns } = settings))
+  // $: console.dir(({ cellsToScore, rows, columns } = settings))
   
   // ({ columns } = settings);
   $: rows && resetGameBoard();
@@ -129,6 +129,7 @@
       // this one is important!!! below
       settings = value;
       ({ rows } = settings);
+      ({ columns } = settings);
       //  resetGameBoard();
     });
 
@@ -549,12 +550,16 @@
   async function resetGameBoard() {
     console.log(`\n resetGameBoard() called \n`);
     await clearGameBoard();
-    buildGameBoard(
+    await buildGameBoard(
       settings.rows,
       settings.columns,
       settings.size,
       settings.gutter
     );
+    console.log(`gameInProgress? `, gameInProgress)
+    if(gameInProgress) {
+      renderGameBoardReload(1);
+    }
   }
 
   function playMove(cell) {

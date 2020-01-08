@@ -45,6 +45,10 @@ export const storeSettings = {
     settings.set(val);
     localStorage.setItem("settings", JSON.stringify(val));
   }
+  // test: test => {
+  //   console.log(`test storeSettings subscribe method `, test)
+  //   settings.subscribe
+  // }
 };
 export const storeState = {
   subscribe: state.subscribe,
