@@ -286,7 +286,10 @@
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);
           cell.style.border = "1px solid rgba(0,0,0,0.5)";
+          if(delayMS > 0) {
           await delay(delayMS);
+          }
+
         }
       }
     }
@@ -309,7 +312,9 @@
         cell.classList.add("ticked");
         cell.removeAttribute("locked");
         cell.style.border = "1px solid rgba(0,0,0,0.5)";
-        await delay(delayMS);
+                  if(delayMS > 0) {
+          await delay(delayMS);
+          }
       }
     }
     if (gameHistoryTurns) {
@@ -558,7 +563,7 @@
     );
     console.log(`gameInProgress? `, gameInProgress)
     if(gameInProgress) {
-      renderGameBoardReload(1);
+      renderGameBoardReload(0);
     }
   }
 
