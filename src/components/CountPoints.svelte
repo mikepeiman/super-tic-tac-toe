@@ -22,18 +22,18 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`CountPoints => storeSettings.subscribe value => `, value);
-      // settings = value;
+      console.log(`CountPoints => storeSettings.subscribe value #1 inside => `, value);
+      settings = value;
     });
     storeDirectionArrays.subscribe(val => {
-      // console.log(
-      //   `CountPoints store subscription to storeDirectionArrays: `,
-      //   val
-      // );
+      console.log(
+        `CountPoints store subscription to storeDirectionArrays: `,
+        val
+      );
       lines = val;
     });
-    settings = $storeSettings;
-
+    // settings = $storeSettings;
+// console.log(`CountPoints => storeSettings.subscribe value #2 => `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
@@ -43,11 +43,11 @@
 
   function countPoints() {
     // let settings = JSON.parse(localStorage.getItem('settings'))
-    // console.log(
-    //   "*************__________countPoints called________**************, settings, lines ",
-    //   settings,
-    //   lines
-    // );
+    console.log(
+      "*************__________countPoints called________**************, settings, lines ",
+      settings,
+      lines
+    );
     // console.log(
     //   "players from countPoints before checking localStorage: ",
     //   players
@@ -62,10 +62,10 @@
     players.forEach(player => {
       // console.log(`CountPoints => players.forEach player, lines: `, lines);
       player.scores.forEach((direction, index) => {
-        // console.log(
-        //   `!!!!!! player.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
-        //   direction
-        // );
+        console.log(
+          `||| player ||| ${player.name} |||.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
+          direction
+        );
         let thisScore = score(settings, direction, player, index);
         // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
         player["dirScoresByIndex"][index] = thisScore;
@@ -101,6 +101,7 @@
       let points = 0;
       let rows = settings.rows;
       let columns = settings.columns;
+      // console.log(`||||| score(settings, direction, player, idx) |||||| inside of scoring function, settings rows ${rows} columns ${columns}`)
       let bonusForCompleteRow = settings.bonusForCompleteRow;
       let longerDimension = rows > columns ? rows : columns;
       let shorterDimension = rows < columns ? rows : columns;

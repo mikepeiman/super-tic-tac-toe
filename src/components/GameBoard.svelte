@@ -68,7 +68,6 @@
   $: gameHistoryTurns = [];
   $: turnHistory = [];
   $: gameHistoryFlat = [];
-  // $: settings.rows, settings.columns, resetGameBoard()
 
   if (typeof window !== "undefined") {
     console.log("we are running on the client");
@@ -100,10 +99,18 @@
   // $: rows
   // $: columns
   // $: settings.rows, settings.columns, resetGameBoard();
-  let rows, columns;
-  ({ rows } = settings)
-  // $: console.log(`DESTRUCTURED ROWS ******************* ${rows}`)
-  $: rows, resetGameBoard()
+  let rows, columns, cellsToScore;
+  ({ cellsToScore, rows, columns } = settings);
+  $: console.dir(({ cellsToScore, rows, columns } = settings))
+  
+  // ({ columns } = settings);
+  $: rows && resetGameBoard();
+  $: columns && resetGameBoard();
+
+  $: console.log(
+    `\n DESTRUCTURED ROWS ******************* ${rows}, columns ${columns} cellsToScore ${cellsToScore} \n`
+  );
+  // $: rows, resetGameBoard()
   // $: ({ rows } = settings), resetGameBoard();
   // $: ({ columns } = settings) && resetGameBoard();
 
@@ -121,7 +128,7 @@
       // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       // this one is important!!! below
       settings = value;
-      ({ rows } = settings)
+      ({ rows } = settings);
       //  resetGameBoard();
     });
 
@@ -135,7 +142,7 @@
     currentPlayer = $storeCurrentPlayer;
     gameHistoryTurns = $storeGameHistoryTurns;
     state = $storeState;
-    let delayMS = 25;
+    let delayMS = 1000 / (settings.rows * settings.columns);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("storePreservePlayerDetails");
     let newBoard = buildGameBoard(
@@ -165,32 +172,32 @@
       // storeCurrentPlayer.set(
       //   JSON.parse(localStorage.getItem("currentPlayer")) || {}
       // );
-      console.log(`GameBoard => storeCurrentPlayer: `, $storeCurrentPlayer);
+      // console.log(`GameBoard => storeCurrentPlayer: `, $storeCurrentPlayer);
       // currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
       // storeGameHistoryTurns.set(gameHistoryTurns)
 
-      console.log(
-        `GameBoard => onMount(), gameInProgress TRUE, gameHistoryTurns, currentPlayer `,
-        gameHistoryTurns,
-        currentPlayer
-      );
+      // console.log(
+      //   `GameBoard => onMount(), gameInProgress TRUE, gameHistoryTurns, currentPlayer `,
+      //   gameHistoryTurns,
+      //   currentPlayer
+      // );
       if (currentPlayer === false) {
-        console.log(
-          `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE`,
-          currentPlayer
-        );
+        // console.log(
+        //   `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE`,
+        //   currentPlayer
+        // );
         currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
         storeCurrentPlayer.set(currentPlayer);
-        console.log(
-          `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE, set to LS `,
-          currentPlayer
-        );
+        // console.log(
+        //   `GameBoard => onMount(), gameInProgress TRUE, currentPlayer === FALSE, set to LS `,
+        //   currentPlayer
+        // );
       }
     } else {
-      console.log(
-        `GameBoard => onMount(), gameInProgress FALSE, gameHistoryTurns `,
-        gameHistoryTurns
-      );
+      // console.log(
+      //   `GameBoard => onMount(), gameInProgress FALSE, gameHistoryTurns `,
+      //   gameHistoryTurns
+      // );
       // state.currentPlayer = players[0];
       state.movesRemaining = settings.movesPerTurn;
       // console.log(`GameBoard => onMount(), state `, state);
@@ -221,29 +228,31 @@
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
     if (gameHistoryTurns) {
-      console.log("renderGameBoardReload() => if (gameHistoryTurns) exists");
+      // console.log("renderGameBoardReload() => if (gameHistoryTurns) exists");
       if (gameHistoryTurns.length) {
-        console.log(
-          "renderGameBoardReload() => if (gameHistoryTurns.length) exists"
-        );
+        // console.log(
+        //   "renderGameBoardReload() => if (gameHistoryTurns.length) exists"
+        // );
         len = gameHistoryTurns.length;
-        console.log(
-          `renderGameBoardReload() => if (gameHistoryTurns) TRUE ${len}  `,
-          gameHistoryTurns,
-          turnHistory
-        );
+        // console.log(
+        //   `renderGameBoardReload() => if (gameHistoryTurns) TRUE ${len}  `,
+        //   gameHistoryTurns,
+        //   turnHistory
+        // );
       }
     }
 
     turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
-    console.log(
-      `renderGameBoardReload => turnHistory from LS is `,
-      turnHistory
-    );
+    // console.log(
+    //   `renderGameBoardReload => turnHistory from LS is `,
+    //   turnHistory
+    // );
 
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
+
+    // console.log(`renderGameBoardReload => settings `, settings);
     buildGameBoard(
       settings.rows,
       settings.columns,
@@ -314,11 +323,17 @@
   }
 
   async function createDirectionArrays() {
-    console.log(
-      "createDirectionArrays called, players, lines ",
-      players,
-      lines
-    );
+    // console.log(
+    //   "GameBoard => createDirectionArrays called, players, lines ",
+    //   players,
+    //   lines
+    // );
+    // console.log(
+    //   `GameBoard => createDirectionArrays completed, rows, columns, settings `,
+    //   rows,
+    //   columns,
+    //   settings
+    // );
     for (let i = 1; i <= 4; i++) {
       // console.log(`makeLinesFrom ${i}`);
       await makeLinesFrom(i);
@@ -339,13 +354,16 @@
   }
 
   function makeLinesFrom(dir) {
-    // console.log(
-    //   `GameBoard => makeLinesFrom(dir) - settings rows ${settings.rows} & columns ${settings.columns} to set player.lines for scoring: `,
-    //   settings
-    // );
     let rows = settings.rows;
     let columns = settings.columns;
     // console.log('makeLinesFrom called')
+    // console.log(
+    //   `GameBoard => makeLinesFrom completed, rows, columns, settings, dir `,
+    //   rows,
+    //   columns,
+    //   settings,
+    //   dir
+    // );
     let start,
       pattern = {};
     let theseLines = [],
@@ -500,18 +518,27 @@
         // grid[r].push()
       }
     }
-    // console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
+    // console.log(
+    //   `GameBoard => buildGameBoard completed, rows, columns, settings `,
+    //   rows,
+    //   columns,
+    //   settings
+    // );
     await createDirectionArrays();
-    addDirectionArraysToPlayerObjects();
+    // console.log(
+    //   `GameBoard => buildGameBoard completed, settings, direcctionArrays `,
+    //   settings,
+    //   lines
+    // );
+    await addDirectionArraysToPlayerObjects();
     // console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
     return grid;
   }
 
   async function clearGameBoard() {
-    // console.log(`clearGameBoard called`);
     let gameboard = document.getElementById("gameboard-board");
-
+    // console.log(`clearGameBoard called, document issue? `, gameboard);
     while (gameboard.firstChild) {
       // console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
@@ -520,7 +547,7 @@
   }
 
   async function resetGameBoard() {
-    console.log(`\n resetGameBoard() called \n`)
+    console.log(`\n resetGameBoard() called \n`);
     await clearGameBoard();
     buildGameBoard(
       settings.rows,
@@ -581,7 +608,7 @@
 
   function tickThis(cell) {
     // console.log("tickThis(cell)", cell);
-    console.log("tickThis(cell) currentPlayer", currentPlayer);
+    // console.log("tickThis(cell) currentPlayer", currentPlayer);
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -617,16 +644,16 @@
   }
 
   function setPlayerMove(cellId) {
-    console.log(
-      `setPlayerMove, gameHistoryFlat before operation: `,
-      gameHistoryFlat
-    );
+    // console.log(
+    //   `setPlayerMove, gameHistoryFlat before operation: `,
+    //   gameHistoryFlat
+    // );
     if (gameHistoryFlat.length > 0) {
       gameHistoryFlat.forEach(move => {
         if (move.id == cellId) {
-          console.log(
-            `setPlayerMove(cellId) => if (move.id ${move.id} == cellId ${cellId}) TRUE`
-          );
+          // console.log(
+          //   `setPlayerMove(cellId) => if (move.id ${move.id} == cellId ${cellId}) TRUE`
+          // );
           move.player = {
             id: currentPlayer.id,
             name: currentPlayer.name
@@ -635,10 +662,10 @@
         }
       });
     }
-    console.log(
-      `setPlayerMove, gameHistoryFlat after operation: `,
-      gameHistoryFlat
-    );
+    // console.log(
+    //   `setPlayerMove, gameHistoryFlat after operation: `,
+    //   gameHistoryFlat
+    // );
     // gameHistoryFlat = gameHistoryFlat
     storeGameHistoryFlat.set(gameHistoryFlat);
     localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
@@ -649,21 +676,21 @@
     if (gameHistoryFlat.filter(move => move.id == id).length > 0) {
       // let filtered = gameHistoryFlat.filter(move => move.id === id);
       const thisIndex = gameHistoryFlat.map(e => e.id).indexOf(id);
-      console.log(
-        `gameHistoryFlat already contains this move ${id} @index ${thisIndex} - that means we should remove it!`
-      );
+      // console.log(
+      //   `gameHistoryFlat already contains this move ${id} @index ${thisIndex} - that means we should remove it!`
+      // );
       gameHistoryFlat.forEach((move, index) => {
-        console.log(
-          `removePlayerMove => just filtered gameHistoryFlat, now need to reassign moveNumbers `
-        );
-        console.log(
-          `removePlayerMove ${move.id} @index ${index} => moveNumber: ${move.move}, `
-        );
+        // console.log(
+        //   `removePlayerMove => just filtered gameHistoryFlat, now need to reassign moveNumbers `
+        // );
+        // console.log(
+        //   `removePlayerMove ${move.id} @index ${index} => moveNumber: ${move.move}, `
+        // );
         if (index > thisIndex) {
           move.move--;
-          console.log(
-            `removePlayerMove ${move.id} @index ${index} => moveNumber: ${move.move}`
-          );
+          // console.log(
+          //   `removePlayerMove ${move.id} @index ${index} => moveNumber: ${move.move}`
+          // );
         }
       });
 
@@ -702,7 +729,7 @@
   }
 
   function setTurnHistory(cell) {
-    console.log(`setTurnHistory => moveNumber ${moveNumber}`);
+    // console.log(`setTurnHistory => moveNumber ${moveNumber}`);
     let move = {};
     move["move"] = moveNumber;
     move["id"] = cell.id;
@@ -714,14 +741,14 @@
     // console.log(`setTurnHistory(cell) ${cell.id}`, cell, state);
     // let history = turnHistory;
     if (turnHistory.filter(turn => turn.id == cell.id).length > 0) {
-      console.log(
-        `turnHistory already contains this move - that means we should remove it!`
-      );
+      // console.log(
+      //   `turnHistory already contains this move - that means we should remove it!`
+      // );
       turnHistory = turnHistory.filter(turn => turn.id !== cell.id);
     } else {
-      console.log(
-        `apparently we have not made this move yet, let's add it to turnHistory`
-      );
+      // console.log(
+      //   `apparently we have not made this move yet, let's add it to turnHistory`
+      // );
       turnHistory = [...turnHistory, move];
       gameHistoryFlat = [...gameHistoryFlat, move];
       storeGameHistoryFlat.set(gameHistoryFlat);
@@ -731,15 +758,15 @@
   }
 
   function setGameHistoryTurns() {
-    console.log(`GameBoard => setGameHistoryTurns running`);
+    // console.log(`GameBoard => setGameHistoryTurns running`);
     let turnsPlayed = localStorage.getItem("gameHistoryTurns");
     if (turnsPlayed) {
       if (turnsPlayed.length > 0) {
-        console.log(
-          `if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `,
-          gameHistoryTurns.length,
-          gameHistoryTurns
-        );
+        // console.log(
+        //   `if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `,
+        //   gameHistoryTurns.length,
+        //   gameHistoryTurns
+        // );
         // gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
         // console.log(
         //   `from LS gameHistoryTurns, `,
@@ -755,9 +782,9 @@
       let pid = turn.player.id;
       let move = document.getElementById(`${turn.id}`);
       let thisMoveNum = moveNumber - settings.movesPerTurn + index + 1;
-      console.log(
-        `thisMoveNum ${thisMoveNum} = moveNumber ${moveNumber} - settings.movesPerTurn ${settings.movesPerTurn} + index ${index} + 1;`
-      );
+      // console.log(
+      //   `thisMoveNum ${thisMoveNum} = moveNumber ${moveNumber} - settings.movesPerTurn ${settings.movesPerTurn} + index ${index} + 1;`
+      // );
       move.setAttribute("locked", true);
       move.setAttribute("data-marker", players[pid].marker);
       turn.move = thisMoveNum;
@@ -784,8 +811,8 @@
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-      console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
-      currentPlayer = players[0];`);
+      // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
+      // currentPlayer = players[0];`);
       currentPlayer = players[0];
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
@@ -795,18 +822,18 @@
 
     state.movesRemaining = settings.movesPerTurn;
     state.currentPlayer = currentPlayer;
-    console.log(`GameBoard => playerChange, state `, state);
+    // console.log(`GameBoard => playerChange, state `, state);
     storeState.set(state);
     storeCurrentPlayer.set(currentPlayer);
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
 
-    console.log(
-      `playerChanges, currentPlayer AFTER change:`,
-      currentPlayer.name
-    );
-    console.log(`playerIndicator`, playerIndicator);
+    // console.log(
+    //   `playerChanges, currentPlayer AFTER change:`,
+    //   currentPlayer.name
+    // );
+    // console.log(`playerIndicator`, playerIndicator);
     playerIndicator.classList.add(`player-${currentPlayer.id}`);
   }
 </script>
@@ -850,44 +877,3 @@
   {/each}
 
 </div>
-
-<!-- <div class="debug">
-  <div class="debug-section">
-    <h2>storeState</h2>
-    <div>.movesRemaining: {$storeState.movesRemaining}</div>
-    <div>.clickCount: {$storeState.clickCount}</div>
-    <div>.currentPlayer.name: {$storeState.currentPlayer.name}</div>
-    <div>.reset: {$storeState.reset}</div>
-    <div>.reset: {$storeState.reset}</div>
-    <div>.reset: {$storeState.reset}</div>
-  </div>
-  <div class="debug-section">
-    <h2>storeSettings</h2>
-    <div>.rows: {$storeSettings.rows}</div>
-    <div>.columns: {$storeSettings.columns}</div>
-    <div>.numberOfPlayers: {$storeSettings.numberOfPlayers}</div>
-    <div>.cellsToScore: {$storeSettings.cellsToScore}</div>
-  </div>
-  <div class="debug-section">
-    <h2>storePlayers</h2>
-    {#each $storePlayers as player}
-      <div>.id: {player.id}</div>
-      <div>.name: {player.name}</div>
-      <div>.bgColor: {player.bgColor}</div>
-      <div>.totalScore: {player.totalScore}</div>
-    {/each}
-  </div>
-  <div class="debug-section">
-    <h2>Flags</h2>
-    <div>storePreservePlayerDetails: {$storePreservePlayerDetails}</div>
-    <div>storeGameInProgress: {$storeGameInProgress}</div>
-  </div>
-  <div class="debug-section">
-    <h2>storeGameHistoryTurns</h2>
-    {#each gameHistoryTurns as turn}
-      {#each turn as move}
-        <div>{move.id}-{move.player.name}</div>
-      {/each}
-    {/each}
-  </div>
-</div> -->

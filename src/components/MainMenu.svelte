@@ -16,11 +16,11 @@
 
   $: settings = {
     numberOfPlayers: 3,
-    movesPerTurn: 3,
+    movesPerTurn: 8,
     cellsToScore: 3,
-    bonusForCompleteRow: 5,
-    rows: 5,
-    columns: 15,
+    bonusForCompleteRow: 15,
+    rows: 12,
+    columns: 20,
     size: 24,
     gutter: 0
   };
@@ -28,18 +28,15 @@
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   onMount(() => {
-    // console.log(`MainMenu onMount(), settings`, settings);
+    console.log(`MainMenu onMount(), settings`, settings);
+    storeSettings.set(settings)
     storeSettings.subscribe(value => {
-      // console.log(`MainMenu => storeSettings.subscribe value => `, value);
+      console.log(`MainMenu => storeSettings.subscribe value => `, value);
       // settings = value;
     });
-    storeSettings.set(settings)
+    
 
     // settings.numberOfPlayers;
-  });
-
-  storeSettings.subscribe(value => {
-    console.log(`MainMenu => storeSettings.subscribe value => `, value);
   });
 
   function updatePlayers() {
