@@ -21,6 +21,7 @@
   $: settings = {};
   $: moveNumber = 0;
   // $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
+  $: settings.movesPerTurn, console.log('\n' + 'REACTIVE LOGGING settings.movesPerTurn' + '\n')
 
   onMount(() => {
     storeSettings.subscribe(value => {

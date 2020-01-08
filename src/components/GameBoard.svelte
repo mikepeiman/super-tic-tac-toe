@@ -15,17 +15,10 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  $: settings = {};
+  let settings = {};
   $: state = {};
   $: moveNumber = 0;
-  // $: state.currentPlayer,
-  //   console.log(
-  //     `REACTIVE LOG state.currentPlayer at top of GameBoard`,
-  //     state.currentPlayer
-  //   );
   $: players = [];
-  // $: state.reset ? resetGameBoard() : (state.reset = false);
-
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -102,7 +95,17 @@
     console.log("we are running on the server");
   }
 
-  $: settings.rows, settings.columns, resetGameBoard();
+  // $: ({rows} = settings) && resetGameBoard();
+  // $: ({columns} = settings) && resetGameBoard();
+  // $: rows
+  // $: columns
+  // $: settings.rows, settings.columns, resetGameBoard();
+  let rows, columns;
+  ({ rows } = settings)
+  // $: console.log(`DESTRUCTURED ROWS ******************* ${rows}`)
+  $: rows, resetGameBoard()
+  // $: ({ rows } = settings), resetGameBoard();
+  // $: ({ columns } = settings) && resetGameBoard();
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -118,6 +121,8 @@
       // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       // this one is important!!! below
       settings = value;
+      ({ rows } = settings)
+      //  resetGameBoard();
     });
 
     storePlayers.subscribe(value => {
@@ -504,17 +509,18 @@
   }
 
   async function clearGameBoard() {
-    console.log(`clearGameBoard called`);
+    // console.log(`clearGameBoard called`);
     let gameboard = document.getElementById("gameboard-board");
 
     while (gameboard.firstChild) {
-      console.log(`renderGameBoardReload::: removing a DOM child el`);
+      // console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
     grid = [];
   }
 
   async function resetGameBoard() {
+    console.log(`\n resetGameBoard() called \n`)
     await clearGameBoard();
     buildGameBoard(
       settings.rows,
