@@ -29,10 +29,7 @@
 
   onMount(() => {
     // console.log(`MainMenu onMount(), settings`, settings);
-    storeSettings.subscribe(value => {
-      // console.log(`MainMenu => storeSettings.subscribe value => `, value);
-      // settings = value;
-    });
+    storeSettings.set(settings)
 
     // settings.numberOfPlayers;
   });

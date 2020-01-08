@@ -20,11 +20,7 @@
   $: players = {};
   $: settings = {};
   $: moveNumber = 0;
-  // $: currentPlayer,
-  //   console.log(
-  //     `StatusBar reactive logging currentPlayer, `,
-  //     currentPlayer.name
-  //   );
+  $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
 
   onMount(() => {
     storeSettings.subscribe(value => {

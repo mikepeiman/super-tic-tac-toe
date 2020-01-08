@@ -8,16 +8,7 @@ import { writable } from "svelte/store";
 //   console.log("we are running on the server");
 // }
 
-let settings = writable({
-  numberOfPlayers: 5,
-  movesPerTurn: 2,
-  cellsToScore: 3,
-  bonusForCompleteRow: 10,
-  rows: 5,
-  columns: 6,
-  size: 24,
-  gutter: 0
-});
+let settings = writable({});
 let state = writable({
   lastTicked: "",
   currentPlayer: {},
@@ -52,7 +43,7 @@ export const storeSettings = {
   subscribe: settings.subscribe,
   set: val => {
     settings.set(val);
-    localStorage.setItem("settings", JSON.stringify(settings));
+    localStorage.setItem("settings", JSON.stringify(val));
   }
 };
 export const storeState = {
@@ -71,41 +62,41 @@ export const storeDirectionArrays = {
 };
 export const storeCurrentPlayer = {
   subscribe: currentPlayer.subscribe,
-  set: player => {
-    currentPlayer.set(player);
-    // localStorage.setItem("currentPlayer", JSON.stringify(player));
+  set: val => {
+    currentPlayer.set(val);
+    localStorage.setItem("currentPlayer", JSON.stringify(val));
   }
 };
 export const storeGameInProgress = {
   subscribe: gameInProgress.subscribe,
   set: val => {
     gameInProgress.set(val);
-    localStorage.setItem("gameInProgress", true);
+    localStorage.setItem("gameInProgress", val);
   }
 };
 export const storePreservePlayerDetails = {
   subscribe: preservePlayerDetails.subscribe,
-  set: details => {
-    preservePlayerDetails.set(details);
+  set: val => {
+    preservePlayerDetails.set(val);
     localStorage.setItem(
       "preservePlayerDetails",
-      JSON.stringify(preservePlayerDetails)
+      JSON.stringify(val)
     );
   }
 };
 export const storeGameHistoryTurns = {
   subscribe: gameHistoryTurns.subscribe,
-  set: turns => {
-    console.log(`storeGameHistoryTurns.set turns => `, turns)
-    gameHistoryTurns.set(turns);
-    localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
+  set: val => {
+    console.log(`storeGameHistoryTurns.set val => `, val)
+    gameHistoryTurns.set(val);
+    localStorage.setItem("gameHistoryTurns", JSON.stringify(val));
   }
 };
 export const storeGameHistoryFlat = {
   subscribe: gameHistoryFlat.subscribe,
-  set: history => {
-    gameHistoryFlat.set(history);
-    localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
+  set: val => {
+    gameHistoryFlat.set(val);
+    localStorage.setItem("gameHistoryFlat", JSON.stringify(val));
   }
 };
 

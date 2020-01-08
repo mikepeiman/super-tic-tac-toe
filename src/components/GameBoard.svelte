@@ -118,16 +118,6 @@
       // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       // this one is important!!! below
       settings = value;
-      // let gameboard = document.getElementById("gameboard-board");
-      // while (gameboard.firstChild) {
-      //   gameboard.removeChild(gameboard.firstChild);
-      // }
-      // buildGameBoard(
-      //   settings.rows,
-      //   settings.columns,
-      //   settings.size,
-      //   settings.gutter
-      // );
     });
 
     storePlayers.subscribe(value => {
