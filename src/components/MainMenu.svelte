@@ -24,13 +24,13 @@
     size: 24,
     gutter: 0
   };
-  $: console.log(`MainMenu settings.rows: ${settings.rows}`);
-  $: console.log(`MainMenu settings.columns: ${settings.columns}`);
+  // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
+  // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   onMount(() => {
-    console.log(`MainMenu onMount(), settings`, settings);
+    // console.log(`MainMenu onMount(), settings`, settings);
     storeSettings.subscribe(value => {
-      console.log(`MainMenu => storeSettings.subscribe value => `, value);
+      // console.log(`MainMenu => storeSettings.subscribe value => `, value);
       // settings = value;
     });
 

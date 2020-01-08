@@ -30,7 +30,7 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+      // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       // settings = value;
     });
     players = $storePlayers;

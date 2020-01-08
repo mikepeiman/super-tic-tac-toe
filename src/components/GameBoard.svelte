@@ -25,9 +25,7 @@
   //   );
   $: players = [];
   // $: state.reset ? resetGameBoard() : (state.reset = false);
-  $: state.updateGameSettings
-    ? updateGameSettings()
-    : (state.updateGameSettings = false);
+
   $: lines = {
     leftToRight: [],
     topToBottom: [],
@@ -77,6 +75,7 @@
   $: gameHistoryTurns = [];
   $: turnHistory = [];
   $: gameHistoryFlat = [];
+  // $: settings.rows, settings.columns, resetGameBoard()
 
   if (typeof window !== "undefined") {
     console.log("we are running on the client");
@@ -103,12 +102,7 @@
     console.log("we are running on the server");
   }
 
-  // $: console.log(`GameBoard state currentPlayer: `, currentPlayer);
-  // $: console.log(`GameBoard state settings: `, settings);
-  $: console.log(
-    `REACTIVE LOG GameBoard => gameHistoryTurns: `,
-    gameHistoryTurns
-  );
+  $: settings.rows, settings.columns, resetGameBoard();
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -119,26 +113,23 @@
   onMount(() => {
     console.log(`GameBoard component mounted`);
 
-    // let settings = JSON.parse(localStorage.getItem("settings"));
-    // let players = JSON.parse(localStorage.getItem("players"));
-    // let gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-
     // is this subscription necessary to place here, below?
     storeSettings.subscribe(value => {
-      console.log(`GameBoard => storeSettings.subscribe value => `, value);
+      // console.log(`GameBoard => storeSettings.subscribe value => `, value);
       // this one is important!!! below
       settings = value;
-      let gameboard = document.getElementById("gameboard-board");
-      while (gameboard.firstChild) {
-        gameboard.removeChild(gameboard.firstChild);
-      }
-      buildGameBoard(
-        settings.rows,
-        settings.columns,
-        settings.size,
-        settings.gutter
-      );
+      // let gameboard = document.getElementById("gameboard-board");
+      // while (gameboard.firstChild) {
+      //   gameboard.removeChild(gameboard.firstChild);
+      // }
+      // buildGameBoard(
+      //   settings.rows,
+      //   settings.columns,
+      //   settings.size,
+      //   settings.gutter
+      // );
     });
+
     storePlayers.subscribe(value => {
       // console.log(`GameBoard => storePlayers.subscribe value => `, value);
       // this is a good place to look for redundant code execution; this logs at least 10 times on reload
@@ -158,10 +149,7 @@
       settings.size,
       settings.gutter
     );
-    // console.log(
-    //   `GameBoard => onMount() before buildGameBoard, el: `,
-    //   gameboard
-    // );
+
     if (gameInProgress) {
       newBoard.then(() => {
         renderGameBoardReload(delayMS);
@@ -518,14 +506,14 @@
       }
     }
     // console.log(`GameBoard => buildGameBoard completed, grid: `, grid);
-    createDirectionArrays();
+    await createDirectionArrays();
     addDirectionArraysToPlayerObjects();
     // console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
     return grid;
   }
 
-  function clearGameBoard() {
+  async function clearGameBoard() {
     console.log(`clearGameBoard called`);
     let gameboard = document.getElementById("gameboard-board");
 
@@ -534,6 +522,16 @@
       gameboard.removeChild(gameboard.firstChild);
     }
     grid = [];
+  }
+
+  async function resetGameBoard() {
+    await clearGameBoard();
+    buildGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
   }
 
   function playMove(cell) {

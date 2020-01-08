@@ -28,19 +28,19 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      console.log(`StatusBar => storeSettings.subscribe value => `, value);
+      // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
     });
     storeCurrentPlayer.subscribe(value => {
-      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
     let ls = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = ls;
-    console.log(`StatusBar => onMount() currentPlayer LS`, ls);
+    // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
-      console.log(`StatusBar => storeState subscribed`, value);
+      // console.log(`StatusBar => storeState subscribed`, value);
       state = value;
     });
     players = $storePlayers;
@@ -54,7 +54,7 @@
     // currentPlayer = $storeCurrentPlayer;
     // console.log(`//////////////     StatusBar => onMount() `, state, players);
     if (!currentPlayer) {
-      console.log(`StatusBar => if (!(currentPlayer.id)), set to players[0]`);
+      console.log(`StatusBar => if (!(currentPlayer)), set to players[0]`);
       currentPlayer = players[0];
       storeCurrentPlayer.set(currentPlayer);
     }
