@@ -552,7 +552,7 @@
         // console.log(`It seems you tried to untick a locked move!`);
       }
     } else {
-      if (state.movesRemaining == 1) {
+      if (state.movesRemaining <= 1) {
         moveNumber++;
         localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
         setTurnHistory(cell);

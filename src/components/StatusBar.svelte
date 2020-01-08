@@ -20,7 +20,7 @@
   $: players = {};
   $: settings = {};
   $: moveNumber = 0;
-  $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
+  // $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
 
   onMount(() => {
     storeSettings.subscribe(value => {
