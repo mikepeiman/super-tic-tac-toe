@@ -14,7 +14,10 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  $: settings = {
+
+
+
+  let settings = {
     numberOfPlayers: 3,
     movesPerTurn: 8,
     cellsToScore: 3,
@@ -27,7 +30,13 @@
   $: settings, initializeSettings();
   // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
-
+  if(typeof window !== "undefined") {
+    if(localStorage.getItem("settings")) {
+      let ls = JSON.parse(localStorage.getItem("settings"))
+      console.log(`client operation, settings exists `, ls)
+      settings = ls
+    }
+  }
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     initializeSettings();
