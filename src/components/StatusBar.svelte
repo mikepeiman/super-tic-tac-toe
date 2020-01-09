@@ -146,8 +146,7 @@
     align-items: center;
     margin-bottom: 1.5rem;
     padding: $title-padding-vertical $title-padding-horizontal;
-    border-radius: 5px;
-    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
+    border-bottom: 5px solid white;
 
     & h2 {
       margin: 0;

@@ -130,11 +130,34 @@
     // background: #1a1a1a;
     color: white;
   }
+  .settings-menu-heading {
+    padding: 1rem 1rem 0 1rem;
+    color: #a1a1a1;
+    font-size: 1rem;
+  }
+
+  .form-wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    & label {
+      display: flex;
+      align-items: center;
+      // margin: 0.5rem 0;
+      padding: 0.5rem;
+      color: #a1a1a1;
+    }
+  }
+
+  .settings-menu {
+  }
 </style>
 
-<h2>Layout and Game Options</h2>
+<div class="settings-menu-heading">
+  <h2>Layout and Game Options</h2>
+</div>
 {#if initialized}
-  <div class="form-wrap">
+  <div class="form-wrap settings-menu">
     <label for="players">
       # Of Players:
       <input

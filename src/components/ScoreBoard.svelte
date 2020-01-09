@@ -121,6 +121,8 @@
   .scoreboard-totals {
     background: var(--custom-bg);
     margin: 1rem;
+    transition: all .25s;
+    border: 5px solid #1a1a1a;
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -185,6 +187,17 @@
   .highlighted {
     // border: 10px solid var(--custom-bg);
     border: 5px solid white;
+    margin-left: 2rem;
+    margin-right: 0;
+    position: relative;
+    transition: all .25s;
+    // &::after {
+    //   content: ">";
+    //   color: white;
+    //   position: absolute;
+    //   left: 0;
+    //   top: 0;
+    // }
     // background: rgba(255, 255, 255, 0.5);
   }
 </style>

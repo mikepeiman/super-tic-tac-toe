@@ -73,8 +73,6 @@
     }, 10);
   }
 
-
-
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
     // state = state;
@@ -97,10 +95,10 @@
   .page-container {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    background: #1a1a1a;
   }
 
   .gameboard-container {
-    background: #1a1a1a;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -111,25 +109,6 @@
     overflow: hidden;
   }
 
-  .form-wrap {
-    display: flex;
-    // align-items: flex-start;
-
-    justify-content: space-between;
-    // flex-direction: column;
-    width: 100%;
-    & label {
-      display: flex;
-      align-items: center;
-      // justify-self: flex-end;
-      margin: 0.5rem;
-      padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.25);
-      & input {
-        // margin-left: 1rem;
-      }
-    }
-  }
 
   input {
     background: none;
@@ -237,10 +216,11 @@
 
 <h1>Tic Tac Toe</h1>
 
-<div class="page-container">
-  {#await players then players}
+{#await players then players}
+  <div class="page-container">
     <GameInit on:playersInitialized={setPlayersToStore} />
-    <!-- {#await state then state} -->
+  </div>
+  <div class="page-container">
     <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
     <div class="gameboard-container">
       <StatusBar
@@ -248,6 +228,5 @@
         on:playersScored={setPlayersToStore} />
       <GameBoard on:move={moveNotification} />
     </div>
-    <!-- {/await} -->
-  {/await}
-</div>
+  </div>
+{/await}

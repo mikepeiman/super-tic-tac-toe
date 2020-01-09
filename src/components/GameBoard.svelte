@@ -183,31 +183,17 @@
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
     if (gameHistoryTurns) {
-      // console.log("renderGameBoardReload() => if (gameHistoryTurns) exists");
       if (gameHistoryTurns.length) {
-        // console.log(
-        //   "renderGameBoardReload() => if (gameHistoryTurns.length) exists"
-        // );
         len = gameHistoryTurns.length;
-        // console.log(
-        //   `renderGameBoardReload() => if (gameHistoryTurns) TRUE ${len}  `,
-        //   gameHistoryTurns,
-        //   turnHistory
-        // );
       }
     }
 
     turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
-    // console.log(
-    //   `renderGameBoardReload => turnHistory from LS is `,
-    //   turnHistory
-    // );
 
     while (gameboard.firstChild) {
       gameboard.removeChild(gameboard.firstChild);
     }
 
-    // console.log(`renderGameBoardReload => settings `, settings);
     buildGameBoard(
       settings.rows,
       settings.columns,
@@ -223,14 +209,10 @@
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
-        // console.log(`building reload function, this turn is: `, turn);
         for (let j = 0; j < settings.movesPerTurn; j++) {
           let move = turn[j];
           let p = move.player.id;
-          // console.log(`loopAndLockTurns => this move is: `, move.id);
-          // console.log(`building reload function, this player is: `, p);
           let cell = document.getElementById(move.id);
-          // console.log(`building reload function, this cell is: `, cell);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = settings.size + "px";
@@ -250,13 +232,8 @@
     async function loopAndUnlockLastTurn(turnHistory, delayMS) {
       for (let i = 0; i < turnHistory.length; i++) {
         let move = turnHistory[i];
-        // console.log(`building reload function, this turn is: `, turn);
-
         let p = move.player.id;
-        // console.log(`building reload function, this move is: `, move.id);
-        // console.log(`building reload function, this player is: `, p);
         let cell = document.getElementById(move.id);
-        // console.log(`building reload function, this cell is: `, cell);
         cell.style = `--custom-bg: ${players[p].bgColor}`;
         cell.style.margin = settings.gutter + "px";
         cell.style.width = settings.size + "px";
@@ -266,9 +243,9 @@
         cell.classList.add("ticked");
         cell.removeAttribute("locked");
         cell.style.border = "1px solid rgba(0,0,0,0.5)";
-                  if(delayMS > 0) {
+        if(delayMS > 0) {
           await delay(delayMS);
-          }
+        }
       }
     }
     if (gameHistoryTurns) {
@@ -283,19 +260,7 @@
   }
 
   async function createDirectionArrays() {
-    // console.log(
-    //   "GameBoard => createDirectionArrays called, players, lines ",
-    //   players,
-    //   lines
-    // );
-    // console.log(
-    //   `GameBoard => createDirectionArrays completed, rows, columns, settings `,
-    //   rows,
-    //   columns,
-    //   settings
-    // );
     for (let i = 1; i <= 4; i++) {
-      // console.log(`makeLinesFrom ${i}`);
       await makeLinesFrom(i);
     }
   }
@@ -316,21 +281,12 @@
   function makeLinesFrom(dir) {
     let rows = settings.rows;
     let columns = settings.columns;
-    // console.log('makeLinesFrom called')
-    // console.log(
-    //   `GameBoard => makeLinesFrom completed, rows, columns, settings, dir `,
-    //   rows,
-    //   columns,
-    //   settings,
-    //   dir
-    // );
     let start,
       pattern = {};
     let theseLines = [],
       newLine = [];
 
     if (dir == 1) {
-      // console.log('makeLinesFrom dir == 1')
       start = { row: 0, column: 0 };
       pattern = { row: 0, column: +1 };
 
@@ -341,7 +297,6 @@
       }
       lines.leftToRight = theseLines;
     }
-
     if (dir == 2) {
       start = { row: 0, column: 0 };
       pattern = { row: +1, column: 0 };
@@ -353,7 +308,6 @@
       }
       lines.topToBottom = theseLines;
     }
-
     if (dir == 3) {
       start = { row: rows, column: 0 };
       pattern = { row: +1, column: +1 };
@@ -363,7 +317,6 @@
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
       }
-
       start = { row: 0, column: 1 };
       pattern = { row: +1, column: +1 };
 
@@ -374,7 +327,6 @@
       }
       lines.diagonalDownRight = theseLines;
     }
-
     if (dir == 4) {
       start = { row: rows, column: columns - 1 };
       pattern = { row: +1, column: -1 };
@@ -384,7 +336,6 @@
         newLine = makeLineFrom(start, pattern);
         theseLines.push(newLine);
       }
-
       start = { row: 0, column: columns - 1 };
       pattern = { row: +1, column: -1 };
 
@@ -397,7 +348,6 @@
     }
     lines = lines;
     storeDirectionArrays.set(lines);
-    // console.log(`\nAt end of createDirectionArrays, here they are: `, lines, `\n`)
     localStorage.setItem("directionArrays", JSON.stringify(lines));
     addDirectionArraysToPlayerObjects();
   }
@@ -475,32 +425,17 @@
           column: c
         };
         grid[r].push(cellAttributes);
-        // grid[r].push()
       }
     }
-    // console.log(
-    //   `GameBoard => buildGameBoard completed, rows, columns, settings `,
-    //   rows,
-    //   columns,
-    //   settings
-    // );
     await createDirectionArrays();
-    // console.log(
-    //   `GameBoard => buildGameBoard completed, settings, direcctionArrays `,
-    //   settings,
-    //   lines
-    // );
     await addDirectionArraysToPlayerObjects();
-    // console.log(`GameBoard => buildGameBoard completed, lines: `, lines);
     grid = grid;
     return grid;
   }
 
   async function clearGameBoard() {
     let gameboard = document.getElementById("gameboard-board");
-    // console.log(`clearGameBoard called, document issue? `, gameboard);
     while (gameboard.firstChild) {
-      // console.log(`renderGameBoardReload::: removing a DOM child el`);
       gameboard.removeChild(gameboard.firstChild);
     }
     grid = [];

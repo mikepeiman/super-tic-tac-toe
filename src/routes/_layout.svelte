@@ -23,6 +23,8 @@ height: 100%;
 		/* padding: 2em; */
 		margin: 0 auto;
 		box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 	}
 </style>
 
