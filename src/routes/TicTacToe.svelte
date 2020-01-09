@@ -93,22 +93,50 @@
 
 <style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
+  #topnav {
+    background: #1a1a1a;
+    color: #006f98;
+    border-bottom: 1px solid rgba(0,0,0,0);
+  }
 
-  .page-container {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
+  #layout-main {
     background: #1a1a1a;
   }
 
+  .page-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-areas:
+      "scoreboard statusbar statusbar"
+      "scoreboard gameboard mainmenu";
+    // background: #1a1a1a;
+    height: 100%;
+  }
+
   .gameboard-container {
-    // padding: 1rem;
+    grid-area: gameboard;
     display: flex;
     flex-direction: column;
     color: #eee;
     justify-content: start;
     align-items: start;
-    height: 90vh;
     overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .scoreboard-container {
+    grid-area: scoreboard;
+    margin: 1rem 0 0 0;
+  }
+  .statusbar-container {
+    grid-area: statusbar;
+  }
+  .mainmenu-container {
+    grid-area: mainmenu;
+    margin: 0 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: max-content;
   }
 
   input {
@@ -135,11 +163,9 @@
   }
 
   .gameboard-board {
-    margin: 0.25rem;
     display: flex;
     flex-direction: column;
     align-self: center;
-    border: 0px solid none;
   }
 
   .game-row {
@@ -183,7 +209,7 @@
     padding: 1rem;
     border-radius: 3px;
     border: none;
-    color: white;
+    color: #eeeeee;
     background: rgba(55, 255, 155, 0.5);
     &:hover {
       background: rgba(0, 25, 75, 1);
@@ -209,11 +235,11 @@
   .control-button {
     background: rgba(0, 25, 75, 0.25);
     // margin: 0.25rem;
-    color: #a1a1a1;
+    color: #eeeeee;
     // border: 1px solid $input-blue;
     &:hover {
       background: rgba(0, 25, 75, 0.5);
-      color: white;
+      color: #eeeeee;
     }
   }
 
@@ -222,33 +248,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #eeeeee;
     margin: 0;
-    padding: .25rem;
-    
+    padding: 0.25rem;
+
     & h1 {
       margin: 0;
-      padding: .5rem 0 0 0;
-      border-bottom: 2.5px solid #a1a1a1;
+      padding: 0.5rem 0 0 0;
+      border-bottom: 2.5px solid #eeeeee;
     }
   }
 </style>
 
-<div class="title-container">
+<!-- <div class="title-container">
   <h1>SUPER Tic Tac Toe!</h1>
-</div>
+</div> -->
 
 {#await players then players}
   <div class="page-container">
-    <GameInit on:playersInitialized={setPlayersToStore} />
-  </div>
-  <div class="page-container">
-    <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
-    <div class="gameboard-container">
+    <div class="mainmenu-container">
+      <GameInit on:playersInitialized={setPlayersToStore} />
+    </div>
+
+    <div class="scoreboard-container">
+      <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
+    </div>
+
+    <div class="statusbar-container">
       <StatusBar
         on:resetGame={resetGame}
         on:playersScored={setPlayersToStore} />
+    </div>
+    <div class="gameboard-container">
       <GameBoard on:move={moveNotification} />
     </div>
   </div>
+
 {/await}

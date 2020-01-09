@@ -19,17 +19,18 @@ height: 100%;
 	main {
 		position: relative;
 		/* max-width: 56em; */
-		background-color: white;
+		background-color: #eeeeee;
 		/* padding: 2em; */
 		margin: 0 auto;
 		box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    height: 90vh;
 	}
 </style>
 
 <Nav {segment}/>
 
-<main>
+<main id="layout-main">
 	<slot></slot>
 </main>

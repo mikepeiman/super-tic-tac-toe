@@ -78,7 +78,7 @@
 
       <div class="popup-modal shadow" data-popup-modal="one">
       <i
-        class="fas fa-2x fa-times text-white bg-primary p-3 popup-modal__close" />
+        class="fas fa-2x fa-times text-#eeeee bg-primary p-3 popup-modal__close" />
       <h1 class="font-weight-bold">Modal One Title</h1>
       <div>
         <div>Filename to Save As:</div>

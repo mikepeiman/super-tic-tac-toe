@@ -161,15 +161,16 @@
   $calc-padding: 2 * $title-padding-horizontal;
 
   .player-indicator {
+    color: #eee;
     width: calc(100% - (2 * #{$title-padding-horizontal}));
     background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5px 0 1.5rem 0;
+    margin: 1rem;
     padding: $title-padding-vertical $title-padding-horizontal;
-    // border: 2px solid white;
+    // border: 2px solid #eeeeee;
 
     & h2 {
       margin: 0;
@@ -222,7 +223,7 @@
 {:else}
   <div
     class="player-indicator player-0"
-    style={`--custom-bg: hsla(170, 50%, 50%, 1);`}>
+    style={`--custom-bg: #006f98;`}>
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
 {/if}

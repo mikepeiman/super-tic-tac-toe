@@ -6,10 +6,13 @@
 </script>
 
 <style lang="scss">
+$border-size: 1px;
 	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
+		border-bottom: $border-size solid rgba(255,62,0,0.1);
 		font-weight: 300;
 		padding: 0 1em;
+    height: 10vh;
+    background-color: #eeeeee;
 	}
 
 	ul {
@@ -51,7 +54,7 @@
 	}
 </style>
 
-<nav>
+<nav class="topnav" id="topnav">
 	<ul>
 		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
 		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>

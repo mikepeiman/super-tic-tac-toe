@@ -136,9 +136,6 @@
     flex-direction: column;
   }
 
-  .scoreboard-container {
-    background: #1a1a1a;
-  }
   .scoreboard-player {
     display: flex;
     justify-content: space-between;
@@ -213,7 +210,7 @@
     color: var(--custom-bg);
   }
   .highlighted {
-    border: 5px solid white;
+    border: 5px solid #eeeeee;
     position: relative;
     transition: all 0.25s;
     // transform: scale(1.025);
@@ -223,7 +220,7 @@
 
 {#await players then players}
   <!-- {#await state then state} -->
-  <div class="scoreboard-container">
+  <div class="scoreboard-container-inner">
     {#each players as player}
       <div
         class="scoreboard-totals"

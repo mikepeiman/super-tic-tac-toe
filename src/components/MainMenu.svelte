@@ -122,49 +122,81 @@
     storeSettings.set(settings);
     setSingleInputWidth(e.target);
   }
+
+  function highlight(e) {
+    e.target.select();
+  }
 </script>
 
 <style lang="scss">
+  $input-blue: rgba(50, 200, 255, 1);
+
   .loading-settings-message {
     padding: 1rem;
     // background: #1a1a1a;
-    color: white;
+    color: #eeeeee;
   }
   .settings-menu-heading {
-color: #a1a1a1;
-    font-size: .75rem;
+    color: #1a1a1a;
+    background: darken($input-blue, 30%);
+    font-size: 0.75rem;
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    margin-bottom: 0.5rem;
     & h2 {
-      padding: .5rem;
+      padding: 0.5rem 0.5rem 0 0.5rem;
     }
   }
 
   .form-wrap {
+    display: -webkit-box;
     display: flex;
+    flex-direction: column;
+    -webkit-box-pack: justify;
     justify-content: space-between;
     width: 100%;
     & label {
-      display: flex;
-      align-items: center;
-      // margin: 0.5rem 0;
-      padding: 0.5rem;
-      color: #a1a1a1;
-    }
-  }
+      display: grid;
+      grid-template-columns: 1fr 5fr;
+      grid-template-areas: "settings-input settings-label";
+      // display: -webkit-box;
+      font-size: 1rem;
+      // display: flex;
+      // flex-flow: row-reverse;
+      align-items: flex-start;
+      justify-content: flex-end;
 
-  .settings-menu {
+      & .label-content {
+        grid-area: settings-label;
+        margin-left: 0.75rem;
+        color: darken($input-blue, 30%);
+      }
+      & input {
+        grid-area: settings-input;
+        margin: 0;
+        outline: none;
+        border-bottom: 1px solid darken($input-blue, 30%);
+        &:focus {
+          border-bottom: 1px solid $input-blue;
+          outline: none;
+        }
+        &::selection {
+          color: white;
+          background: $input-blue;
+        }
+      }
+    }
   }
 </style>
 
 <div class="settings-menu-heading">
-  <h2>Layout and Game Options</h2>
+  <h2>Game Settings</h2>
 </div>
 {#if initialized}
   <div class="form-wrap settings-menu">
     <label for="players">
-      # Of Players:
+      <div class="label-content">players</div>
       <input
         id="players"
         name="players"
@@ -172,10 +204,11 @@ color: #a1a1a1;
         placeholder={settings.numberOfPlayers}
         bind:value={settings.numberOfPlayers}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="rows">
-      Rows:
+      <div class="label-content">rows</div>
       <input
         id="rows"
         name="rows"
@@ -183,10 +216,11 @@ color: #a1a1a1;
         placeholder={settings.rows}
         bind:value={settings.rows}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="columns">
-      Columns:
+      <div class="label-content">columns</div>
       <input
         id="columns"
         name="columns"
@@ -194,10 +228,11 @@ color: #a1a1a1;
         placeholder={settings.columns}
         bind:value={settings.columns}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="movesPerTurn">
-      Moves Per Turn:
+      <div class="label-content">moves per turn</div>
       <input
         id="movesPerTurn"
         name="movesPerTurn"
@@ -205,10 +240,11 @@ color: #a1a1a1;
         placeholder={settings.movesPerTurn}
         bind:value={settings.movesPerTurn}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="movesPerTurn">
-      Cells-in-a-row to score:
+      <div class="label-content">in a row to score</div>
       <input
         id="cellsToScore"
         name="cellsToScore"
@@ -216,10 +252,11 @@ color: #a1a1a1;
         placeholder={settings.cellsToScore}
         bind:value={settings.cellsToScore}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="bonus">
-      Line bonus:
+      <div class="label-content">bonus for complete line</div>
       <input
         id="bonusForCompleteRow"
         name="bonusForCompleteRow"
@@ -227,10 +264,11 @@ color: #a1a1a1;
         placeholder={settings.bonusForCompleteRow}
         bind:value={settings.bonusForCompleteRow}
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
     <label for="size">
-      Square size (px):
+      <div class="label-content">square size (px)</div>
       <input
         id="size"
         name="size"
@@ -239,6 +277,7 @@ color: #a1a1a1;
         bind:value={settings.size}
         step="4"
         on:input={triggerGameBoardUpdate}
+        on:click={highlight}
         style="width: 2.5ch;" />
     </label>
   </div>
