@@ -131,9 +131,14 @@
     color: white;
   }
   .settings-menu-heading {
-    padding: 1rem 1rem 0 1rem;
-    color: #a1a1a1;
-    font-size: 1rem;
+color: #a1a1a1;
+    font-size: .75rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    & h2 {
+      padding: .5rem;
+    }
   }
 
   .form-wrap {

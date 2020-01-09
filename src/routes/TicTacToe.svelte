@@ -101,7 +101,7 @@ $input-blue: rgba(50, 200, 255, 1);
   }
 
   .gameboard-container {
-    padding: 1rem;
+    // padding: 1rem;
     display: flex;
     flex-direction: column;
     color: #eee;

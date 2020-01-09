@@ -148,7 +148,7 @@
   // }
   .scoreboard-totals {
     background: var(--custom-bg);
-    margin: 1rem;
+    margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
   }
@@ -175,7 +175,7 @@
   }
 
   .total-score {
-    background: var(--custom-bg);
+    // background: var(--custom-bg);
     padding: 0.25rem;
     margin: 0 0.5rem;
     display: flex;
