@@ -14,9 +14,6 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-
-
-
   let settings = {
     numberOfPlayers: 3,
     movesPerTurn: 8,
