@@ -741,7 +741,7 @@
   .row {
     display: flex;
   }
-  .component-wrapper {
+  .gameboard-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -761,7 +761,7 @@
   }
 </style>
 
-<div class="component-wrapper">
+<div class="gameboard-wrapper">
   <div id="gameboard-board" class="gameboard-board" />
   {#each grid as row}
     <div class="row">

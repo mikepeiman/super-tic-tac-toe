@@ -101,14 +101,30 @@
   }
 
   .gameboard-container {
-    // padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    color: #eee;
-    justify-content: start;
-    align-items: start;
-    height: 90vh;
-    overflow: hidden;
+    // original settings:
+    // ...
+    // display: flex;
+    // flex-direction: column;
+    // color: #eee;
+    // justify-content: start;
+    // align-items: start;
+    // height: 90vh;
+    // overflow: hidden;
+    // ...
+    // new settings:
+    // ...
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "gameboard statusbar";
+    color: #a1a1a1;
+  }
+
+  .player-indicator {
+    grid-area: statusbar;
+  }
+
+  .gameboard-wrapper {
+    grid-area: gameboard;
   }
 
   input {
@@ -224,11 +240,11 @@
     justify-content: center;
     color: white;
     margin: 0;
-    padding: .25rem;
-    
+    padding: 0.25rem;
+
     & h1 {
       margin: 0;
-      padding: .5rem 0 0 0;
+      padding: 0.5rem 0 0 0;
       border-bottom: 2.5px solid #a1a1a1;
     }
   }
