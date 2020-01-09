@@ -24,6 +24,13 @@
   // $: settings.movesPerTurn, console.log('\n' + 'REACTIVE LOGGING settings.movesPerTurn' + '\n')
 
   onMount(() => {
+    console.log(`state.moveNumber `, state.moveNumber);
+    if (state.moveNumber) {
+      console.log(
+        `123672548345693746028462107630237627038462037683240324 it's undefined`
+      );
+      state.moveNumber = 0;
+    }
     storeSettings.subscribe(value => {
       // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
@@ -37,9 +44,25 @@
     currentPlayer = ls;
     // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
-      console.log(`StatusBar => storeState subscribed - move: ${state.moveNumber}`, value);
+      console.log(
+        `StatusBar => storeState subscribed - move: ${state.moveNumber}`,
+        value
+      );
       state = value;
+      console.log(
+        `StatusBar => storeState subscribed - move after state: ${state.moveNumber}`,
+        value
+      );
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+      if (!moveNumber) {
+        console.log(
+          `123672548345693746028462107630237627038462037683240324 it's undefined`
+        );
+        moveNumber = 0;
+      }
+      console.log(
+        `StatusBar => storeState subscribed - move after LS: ${moveNumber}`
+      );
     });
     players = $storePlayers;
     // console.log(`StatusBar => onMount(() #1 state`, state);
