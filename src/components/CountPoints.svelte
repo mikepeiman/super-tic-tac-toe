@@ -56,23 +56,14 @@
   }
 
   function score(settings, direction, player, idx) {
-    // console.log(`score function, settings `, settings)
-    // $: settings.cellsToScore
-    // console.log(
-    //   `score called with direction and player and idx ${idx}`,
-    //   direction,
-    //   player
-    // );
-
     let dirLines = [];
     let dirScore = 0;
     let name = direction.name;
-    // console.log(
-    //   `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
-    // );
-
+    console.log(
+      `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name}`, player
+    );
     direction.lines.forEach((line, index) => {
-      // console.log(`each line ${index}`, line);
+      console.log(`each line ${index}`, line);
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;

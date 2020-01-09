@@ -177,7 +177,7 @@
         // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
-        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `, players[i]["scores"][index])
+        console.log(`GameBoard => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `, players[i]["scores"][index])
       });
     }
     players = players;

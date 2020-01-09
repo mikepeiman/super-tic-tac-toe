@@ -32,11 +32,11 @@
 
   $: settings = {
     numberOfPlayers: 3,
-    movesPerTurn: 8,
-    cellsToScore: 4,
+    movesPerTurn: 6,
+    cellsToScore: 3,
     bonusForCompleteRow: 10,
     rows: 12,
-    columns: 20,
+    columns: 15,
     size: 24,
     gutter: 0
   };
