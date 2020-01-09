@@ -92,6 +92,8 @@
 </script>
 
 <style lang="scss" global>
+$input-blue: rgba(50, 200, 255, 1);
+
   .page-container {
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -113,12 +115,12 @@
   input {
     background: none;
     border: none;
-    color: rgba(50, 200, 255, 1);
+    color: $input-blue;
     font-family: "Muli";
     font-size: 1.1rem;
     padding-left: 0.25rem;
     width: 5ch;
-    border-bottom: 1px solid rgba(50, 200, 255, 1);
+    border-bottom: 1px solid $input-blue;
     margin: 0.5rem;
     justify-self: flex-end;
   }
@@ -207,9 +209,12 @@
 
   .control-button {
     background: rgba(0, 25, 75, 0.25);
-    margin: 0.25rem;
+    // margin: 0.25rem;
+    color: #a1a1a1;
+    // border: 1px solid $input-blue;
     &:hover {
       background: rgba(0, 25, 75, 0.5);
+      color: white;
     }
   }
 </style>

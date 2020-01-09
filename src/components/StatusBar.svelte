@@ -167,12 +167,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin: 5px 0 1.5rem 0;
     padding: $title-padding-vertical $title-padding-horizontal;
-    border-bottom: 5px solid white;
+    // border: 2px solid white;
 
     & h2 {
       margin: 0;
+      font-size: 1.25rem;
     }
   }
 

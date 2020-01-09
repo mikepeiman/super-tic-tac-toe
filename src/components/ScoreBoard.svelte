@@ -18,6 +18,10 @@
   $: players = [];
   $: state = {};
   $: currentPlayer = {};
+  $: moveNumber = 0;
+  $: totalMovesInGame = 0;
+  $: settings = {};
+  $: gameUnderway = false;
 
   // storePlayers.subscribe(value => {
   //   console.log(`ScoreBoard => storePlayers subscribed`, value);
@@ -30,8 +34,8 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
-      // settings = value;
+      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+      settings = value;
     });
     players = $storePlayers;
     state = $storeState;
@@ -57,7 +61,10 @@
     }, 1);
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => {
+    console.log(`afterUpdate()`)
+    addHighlightIfGameInProgress()
+  });
 
   function updateStoredPlayers(player) {
     console.log(
@@ -91,6 +98,27 @@
       h.style = `--custom-bg: ${players[i].bgColor}`;
     });
   }
+
+  function addHighlightIfGameInProgress() {
+    totalMovesInGame = settings.rows * settings.columns;
+    moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+    console.log(
+      `addHighlightIfGameInProgress! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
+    );
+    if (moveNumber >= totalMovesInGame || moveNumber < 1) {
+      gameUnderway = false
+      return false;
+      console.log(
+        `addHighlightIfGameInProgress! FALSE!!!! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
+      );
+    } else {
+      console.log(
+        `addHighlightIfGameInProgress! TRUE!!!!! ${moveNumber} totalMovesInGame ${totalMovesInGame}`
+      );
+      gameUnderway = true
+      return true;
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -121,7 +149,7 @@
   .scoreboard-totals {
     background: var(--custom-bg);
     margin: 1rem;
-    transition: all .25s;
+    transition: all 0.25s;
     border: 5px solid #1a1a1a;
   }
   .scoreboard-direction {
@@ -185,20 +213,11 @@
     color: var(--custom-bg);
   }
   .highlighted {
-    // border: 10px solid var(--custom-bg);
     border: 5px solid white;
-    margin-left: 2rem;
-    margin-right: 0;
     position: relative;
-    transition: all .25s;
-    // &::after {
-    //   content: ">";
-    //   color: white;
-    //   position: absolute;
-    //   left: 0;
-    //   top: 0;
-    // }
-    // background: rgba(255, 255, 255, 0.5);
+    transition: all 0.25s;
+    // transform: scale(1.025);
+    transform: translateX(1rem);
   }
 </style>
 
@@ -208,7 +227,7 @@
     {#each players as player}
       <div
         class="scoreboard-totals"
-        class:highlighted={currentPlayer.id == player.id}>
+        class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
         <h3 class="total-score">
           <input
             class="player-name"
