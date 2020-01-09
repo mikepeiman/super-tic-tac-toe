@@ -20,44 +20,40 @@
   $: players = {};
   $: settings = {};
   $: moveNumber = 0;
+  $: movesRemaining = 0;
   // $: settings.movesPerTurn, (state.movesRemaining = settings.movesPerTurn);
   // $: settings.movesPerTurn, console.log('\n' + 'REACTIVE LOGGING settings.movesPerTurn' + '\n')
 
   onMount(() => {
-    console.log(`state.moveNumber `, state.moveNumber);
-    if (state.moveNumber) {
-      console.log(
-        `123672548345693746028462107630237627038462037683240324 it's undefined`
-      );
-      state.moveNumber = 0;
-    }
     storeSettings.subscribe(value => {
       // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
+      let lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory")).length
+      console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory)
+      movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory
+      state.movesRemaining = movesRemaining
     });
     storeCurrentPlayer.subscribe(value => {
       // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
-    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
-    currentPlayer = ls;
+    let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+    currentPlayer = lsCurrentPlayer;
     // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
-      console.log(
-        `StatusBar => storeState subscribed - move: ${state.moveNumber}`,
-        value
-      );
       state = value;
       console.log(
-        `StatusBar => storeState subscribed - move after state: ${state.moveNumber}`,
+        `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
         value
       );
+            console.log(
+        `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
+        value
+      );
+      movesRemaining = state.movesRemaining
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
-        console.log(
-          `123672548345693746028462107630237627038462037683240324 it's undefined`
-        );
         moveNumber = 0;
       }
       console.log(
@@ -162,7 +158,7 @@
 
   .player-indicator {
     color: #eee;
-    width: calc(100% - (2 * #{$title-padding-horizontal}));
+    // width: calc(100% - (2 * #{$title-padding-horizontal}));
     background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
@@ -193,7 +189,7 @@
     class="player-indicator player-0"
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
     <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-    <h2 class="player-indicator-heading">Moves Left: {state.movesRemaining}</h2>
+    <h2 class="player-indicator-heading">Moves Left: {movesRemaining}</h2>
     <h2 class="player-indicator-heading">
       Game Progress: {moveNumber}/{settings.rows * settings.columns}
     </h2>

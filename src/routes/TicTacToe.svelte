@@ -120,7 +120,7 @@
     color: #eee;
     justify-content: start;
     align-items: start;
-    overflow: hidden;
+    // overflow: hidden;
     margin-bottom: 2rem;
   }
   .scoreboard-container {
@@ -129,6 +129,7 @@
   }
   .statusbar-container {
     grid-area: statusbar;
+    border-top: 5px solid rgba(0,0,0,0);
   }
   .mainmenu-container {
     grid-area: mainmenu;

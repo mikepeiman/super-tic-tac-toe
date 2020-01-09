@@ -11,7 +11,7 @@ $border-size: 1px;
 		border-bottom: $border-size solid rgba(255,62,0,0.1);
 		font-weight: 300;
 		padding: 0 1em;
-    height: 10vh;
+    height: calc(10vh - 1px);
     background-color: #eeeeee;
 	}
 

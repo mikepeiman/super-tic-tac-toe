@@ -62,7 +62,7 @@
   });
 
   afterUpdate(() => {
-    console.log(`afterUpdate()`)
+    // console.log(`afterUpdate()`)
     addHighlightIfGameInProgress()
   });
 
@@ -102,9 +102,6 @@
   function addHighlightIfGameInProgress() {
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
-    console.log(
-      `addHighlightIfGameInProgress! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
-    );
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
       gameUnderway = false
       return false;
