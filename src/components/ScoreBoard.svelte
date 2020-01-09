@@ -81,7 +81,7 @@
     );
     dispatch("playerNameOrMarkerUpdate", players);
     storePreservePlayerDetails.set(true);
-    localStorage.setItem("storePreservePlayerDetails", JSON.stringify(true));
+    localStorage.setItem("preservePlayerDetails", JSON.stringify(true));
   }
 
   function highlight() {

@@ -28,10 +28,17 @@
     storeSettings.subscribe(value => {
       // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
-      let lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory")).length
-      console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory)
-      movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory
-      state.movesRemaining = movesRemaining
+      let lsMovesFromTurnHistory = JSON.parse(
+        localStorage.getItem("turnHistory")
+      );
+      if (lsMovesFromTurnHistory) {
+        lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
+          .length;
+      }
+
+      console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
+      movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
+      state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
       // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
@@ -47,11 +54,11 @@
         `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
         value
       );
-            console.log(
+      console.log(
         `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
         value
       );
-      movesRemaining = state.movesRemaining
+      movesRemaining = state.movesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
@@ -135,7 +142,7 @@
 
   function resetPlayers() {
     storePreservePlayerDetails.set(false);
-    localStorage.removeItem("storePreservePlayerDetails");
+    localStorage.removeItem("preservePlayerDetails");
     localStorage.removeItem("players");
     resetGame();
     location.reload();
@@ -217,9 +224,7 @@
     </div>
   </div>
 {:else}
-  <div
-    class="player-indicator player-0"
-    style={`--custom-bg: #006f98;`}>
+  <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
 {/if}

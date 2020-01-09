@@ -34,13 +34,7 @@
   storePreservePlayerDetails.subscribe(value => {
     // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
-  // const unsubState = storeState.subscribe(value => {
-  //   console.log(`TicTacToe => storeState unsubscribe value => `, value);
-  //   // state = value
-  // });
-  // const unsubSettings = storeSettings.subscribe(value => {
-  //   console.log(`TicTacToe => storeSettings unsubscribe value => `, value);
-  // });
+
 
   $: state = null;
   $: players = null;
@@ -49,45 +43,26 @@
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);
-    // there are three things to deal with in getting a game ready to go:
-    // 1. Settings (game options and gameboard setup) => get these from the MainMenu
-    // 2. Players (if they have any custom details) => get this from store or LS
-    // 3. History (if a game is in progress, tracking turns and moves done and current player state) => get this from store or LS
-
-    // check if there is a game in progress via boolean flag or check data
-    // we want to preserve the games turns and moves history if it exists
-    // we also want to preserve player details if they exist (name, marker, colors)
-    //
-    // if gameHistory length is not zero:
-    //  reload the game from gamehistory
-    //  else, redraw gameboard from settings and check for existing players
-    // if players array exists, preserve it
-    // else, initialize players array
   });
 
   function resetGame() {
     console.log(`TicTacToe => reset bubbled from StatusBar`);
-    // state.reset = true;
-    setTimeout(() => {
-      // state.reset = false;
-    }, 10);
   }
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
-    // state = state;
   }
 
   function setPlayersToStore(e) {
-    console.log(
-      `TicTacToe => setPlayersToStore triggered by player init or detail change`,
-      e.detail
-    );
-    players = e.detail;
-    players.forEach(player => {
-      console.log(player.name, player.marker);
-    });
-    storePlayers.set(players);
+    // console.log(
+    //   `TicTacToe => setPlayersToStore triggered by player init or detail change`,
+    //   e.detail
+    // );
+    // players = e.detail;
+    // players.forEach(player => {
+    //   console.log(player.name, player.marker);
+    // });
+    // storePlayers.set(players);
   }
 </script>
 
