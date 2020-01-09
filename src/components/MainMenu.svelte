@@ -14,6 +14,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let initialized = false;
   let settings = {
     numberOfPlayers: 3,
     movesPerTurn: 8,
@@ -27,16 +28,17 @@
   $: settings, initializeSettings();
   // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
-  if(typeof window !== "undefined") {
-    if(localStorage.getItem("settings")) {
-      let ls = JSON.parse(localStorage.getItem("settings"))
-      console.log(`client operation, settings exists `, ls)
-      settings = ls
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("settings")) {
+      let ls = JSON.parse(localStorage.getItem("settings"));
+      console.log(`client operation, settings exists `, ls);
+      settings = ls;
     }
   }
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     initializeSettings();
+    setAllInputWidths();
     storeSettings.set(settings);
     storeSettings.subscribe(value => {
       console.log(`MainMenu => storeSettings.subscribe value => `, value);
@@ -67,16 +69,22 @@
       if (lsSet) {
         let lsJSet = JSON.parse(lsSet);
         if (lsJSet) {
+          console.log("settings.lineBonus: ", lsJSet.lineBonus);
+          if (lsJSet.lineBonus === "undefined") {
+            lsJSet.lineBonus = 0;
+          }
           if (lsJSet.rows) {
             console.log(
               `initSettings :PROMISE: => localStorage settings contains rows property`
             );
             storeSettings.set(lsJSet);
+            initialized = true;
             resolve(lsJSet);
           }
         }
       } else {
-        let reason = new Error("Initialized settings");
+        let reason = new Error("No localStorage, Initialized default settings");
+        initialized = true;
         reject(reason);
       }
     });
@@ -96,100 +104,118 @@
   function updatePlayers() {
     console.log(`MainMenu component, clicked to test countPoints: `, players);
   }
+
+  function setSingleInputWidth(input) {
+    input.style.width = `${input.value.toString().length + 0.5}ch`;
+  }
+
+  function setAllInputWidths() {
+    let inputs = document.querySelectorAll("input");
+    let len = inputs.length;
+    for (let i = 0; i < len; i++) {
+      setSingleInputWidth(inputs[i]);
+    }
+  }
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    console.log(`triggerGameBoardUpdate settings should write to LS: `, settings)
+    // console.log(`triggerGameBoardUpdate settings should write to LS: `, settings)
     storeSettings.set(settings);
-    e.target.style.width = `${e.target.value.toString().length + 0.5}ch`;
-    console.log(
-      `MainMenu => triggerGameBoardUpdate, check settings rows ${settings.rows}, columns ${settings.columns} `
-    );
+    setSingleInputWidth(e.target);
   }
 </script>
 
 <style lang="scss">
-
+  .loading-settings-message {
+    padding: 1rem;
+    // background: #1a1a1a;
+    color: white;
+  }
 </style>
 
 <h2>Layout and Game Options</h2>
-<div class="form-wrap">
-  <label for="players">
-    # Of Players:
-    <input
-      id="players"
-      name="players"
-      type="number"
-      placeholder={settings.numberOfPlayers}
-      bind:value={settings.numberOfPlayers}
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="rows">
-    Rows:
-    <input
-      id="rows"
-      name="rows"
-      type="number"
-      placeholder={settings.rows}
-      bind:value={settings.rows}
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="columns">
-    Columns:
-    <input
-      id="columns"
-      name="columns"
-      type="number"
-      placeholder={settings.columns}
-      bind:value={settings.columns}
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="movesPerTurn">
-    Moves Per Turn:
-    <input
-      id="movesPerTurn"
-      name="movesPerTurn"
-      type="number"
-      placeholder={settings.movesPerTurn}
-      bind:value={settings.movesPerTurn}
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="movesPerTurn">
-    Cells-in-a-row to score:
-    <input
-      id="cellsToScore"
-      name="cellsToScore"
-      type="number"
-      placeholder={settings.cellsToScore}
-      bind:value={settings.cellsToScore}
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="bonus">
-    Line bonus:
-    <input
-      id="bonusForCompleteRow"
-      name="bonusForCompleteRow"
-      type="number"
-      placeholder={settings.bonusForCompleteRow}
-      bind:value={settings.bonusForCompleteRow}
-      on:input={triggerGameBoardUpdate}
-      style="width: 1.5ch;" />
-  </label>
-  <label for="size">
-    Square size (px):
-    <input
-      id="size"
-      name="size"
-      type="number"
-      placeholder={settings.size}
-      bind:value={settings.size}
-      step="4"
-      on:input={triggerGameBoardUpdate}
-      style="width: 2.5ch;" />
-  </label>
-
-</div>
+{#if initialized}
+  <div class="form-wrap">
+    <label for="players">
+      # Of Players:
+      <input
+        id="players"
+        name="players"
+        type="number"
+        placeholder={settings.numberOfPlayers}
+        bind:value={settings.numberOfPlayers}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="rows">
+      Rows:
+      <input
+        id="rows"
+        name="rows"
+        type="number"
+        placeholder={settings.rows}
+        bind:value={settings.rows}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="columns">
+      Columns:
+      <input
+        id="columns"
+        name="columns"
+        type="number"
+        placeholder={settings.columns}
+        bind:value={settings.columns}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="movesPerTurn">
+      Moves Per Turn:
+      <input
+        id="movesPerTurn"
+        name="movesPerTurn"
+        type="number"
+        placeholder={settings.movesPerTurn}
+        bind:value={settings.movesPerTurn}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="movesPerTurn">
+      Cells-in-a-row to score:
+      <input
+        id="cellsToScore"
+        name="cellsToScore"
+        type="number"
+        placeholder={settings.cellsToScore}
+        bind:value={settings.cellsToScore}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="bonus">
+      Line bonus:
+      <input
+        id="bonusForCompleteRow"
+        name="bonusForCompleteRow"
+        type="number"
+        placeholder={settings.bonusForCompleteRow}
+        bind:value={settings.bonusForCompleteRow}
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="size">
+      Square size (px):
+      <input
+        id="size"
+        name="size"
+        type="number"
+        placeholder={settings.size}
+        bind:value={settings.size}
+        step="4"
+        on:input={triggerGameBoardUpdate}
+        style="width: 2.5ch;" />
+    </label>
+  </div>
+{:else}
+  <div>
+    <h1 class="loading-settings-message">Loading settings data...</h1>
+  </div>
+{/if}
