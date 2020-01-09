@@ -92,7 +92,7 @@
 </script>
 
 <style lang="scss" global>
-$input-blue: rgba(50, 200, 255, 1);
+  $input-blue: rgba(50, 200, 255, 1);
 
   .page-container {
     display: grid;
@@ -110,7 +110,6 @@ $input-blue: rgba(50, 200, 255, 1);
     height: 90vh;
     overflow: hidden;
   }
-
 
   input {
     background: none;
@@ -217,9 +216,27 @@ $input-blue: rgba(50, 200, 255, 1);
       color: white;
     }
   }
+
+  .title-container {
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0;
+    padding: .25rem;
+    
+    & h1 {
+      margin: 0;
+      padding: .5rem 0 0 0;
+      border-bottom: 2.5px solid #a1a1a1;
+    }
+  }
 </style>
 
-<h1>Tic Tac Toe</h1>
+<div class="title-container">
+  <h1>SUPER Tic Tac Toe!</h1>
+</div>
 
 {#await players then players}
   <div class="page-container">
