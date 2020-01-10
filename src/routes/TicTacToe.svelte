@@ -80,6 +80,7 @@
   .page-container {
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 8em auto;
     grid-template-areas:
       "scoreboard statusbar statusbar"
       "scoreboard gameboard mainmenu";
