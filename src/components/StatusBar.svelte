@@ -195,10 +195,10 @@
   <div
     class="player-indicator player-0"
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
-    <h2 class="player-indicator-heading">Player: {currentPlayer.name}</h2>
-    <h2 class="player-indicator-heading">Moves Left: {movesRemaining}</h2>
-    <h2 class="player-indicator-heading">
-      Game Progress: {moveNumber}/{settings.rows * settings.columns}
+    <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
+    <h2 class="moves-indicator-heading">Moves remaining in turn: {movesRemaining}</h2>
+    <h2 class="progress-indicator-heading">
+      Game Moves: {moveNumber}/{settings.rows * settings.columns}
     </h2>
     <div class="buttons-wrapper">
       <CountPoints

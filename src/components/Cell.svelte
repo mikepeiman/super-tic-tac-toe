@@ -37,7 +37,9 @@
     width: 24px;
     height: 24px;
     background: var(--custom-bg);
-    border: 1px solid black;
+    border: none;
+    border: 1px solid rgba(0,0,0,0.5);
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,9 +48,6 @@
     }
   }
   .ticked {
-    &.unlocked {
-      border: 1px solid red;
-    }
     &:hover {
       background: rgba(150, 150, 255, 0.5);
     }

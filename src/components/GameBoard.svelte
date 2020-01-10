@@ -70,46 +70,33 @@
   $: gameHistoryFlat = [];
 
   if (typeof window !== "undefined") {
-    console.log("we are running on the client");
+    console.log("GameBoard check: we are running on the client");
     storeGameHistoryFlat.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
-      console.log(
-        `GameBoard => storeGameHistoryFlat subscribed length: `,
-        value.length
-      );
+      // console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
+      // console.log(
+      //   `GameBoard => storeGameHistoryFlat subscribed length: `,
+      //   value.length
+      // );
     });
 
     storeGameHistoryTurns.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
-      let ghls = localStorage.getItem("gameHistoryTurns");
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
-      let parsedGhls = JSON.parse(ghls);
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      // let ghls = localStorage.getItem("gameHistoryTurns");
+      // // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
+      // let parsedGhls = JSON.parse(ghls);
+      // // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
     storeCurrentPlayer.subscribe(value => {
-      console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+      // console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       // localStorage.setItem("currentPlayer", JSON.stringify(value));
     });
   } else {
-    console.log("we are running on the server");
+    console.log("GameBoard check: we are running on the server");
   }
 
   let rows, columns, size, numberOfPlayers;
   ({ size, rows, columns } = settings);
-  $: rows, columns, numberOfPlayers && resetGameBoard();
-  $: {
-    size && clearGameBoard();
-    buildGameBoard(
-      settings.rows,
-      settings.columns,
-      settings.size,
-      settings.gutter
-    );
-  }
-
-  $: console.log(
-    `\n DESTRUCTURED ROWS ******************* ${rows}, columns ${columns} cellsToScore ${size} \n`
-  );
+  $: rows, columns, numberOfPlayers, size && resetGameBoard();
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
@@ -250,6 +237,24 @@
         }
       }
     }
+
+    async function resizeCells() {
+      for (let i = 0; i < grid.length; i++) {
+        let line = grid[i];
+        for (let j = 0; j < line.length; j++) {
+          let gridCell = line[j]
+          console.log(`New resizeCells() function, checking gridCell: `, gridCell)
+          let cell = document.getElementById(gridCell.id);
+          cell.style.margin = settings.gutter + "px";
+          cell.style.width = settings.size + "px";
+          cell.style.height = settings.size + "px";
+          if (delayMS > 0) {
+            await delay(delayMS);
+          }
+        }
+      }
+    }
+    resizeCells()
     if (gameHistoryTurns) {
       loopAndLockTurns(gameHistoryTurns, delayMS).then(next => {
         loopAndUnlockLastTurn(turnHistory, delayMS);
@@ -257,8 +262,10 @@
     } else {
       loopAndUnlockLastTurn(turnHistory, delayMS);
     }
+    
 
     players = players;
+    console.log(`grid array from inside renderGameBoardReload: `, grid);
   }
 
   async function createDirectionArrays() {
@@ -433,6 +440,7 @@
     await addDirectionArraysToPlayerObjects();
     grid = grid;
     return grid;
+    console.log(`grid array from inside buildGameBoard: `, grid);
   }
 
   async function clearGameBoard() {
