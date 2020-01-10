@@ -20,7 +20,7 @@
   $: currentPlayer = {};
   $: moveNumber = 0;
   $: totalMovesInGame = 0;
-  $: settings = {};
+  let settings = {};
   $: gameUnderway = false;
 
   // storePlayers.subscribe(value => {
@@ -32,14 +32,23 @@
   //   players = value;
   // });
 
-  //   let numberOfPlayers;
-  // ({ numberOfPlayers } = settings);
-  // $: numberOfPlayers && resetGameBoard();
+  let numberOfPlayers;
+  ({ numberOfPlayers } = settings);
+  $: {
+    numberOfPlayers &&
+      setTimeout(() => {
+        addStyles();
+      }, 1);
+    console.log(
+      `reactive logging destructured numberOfPlayers ---${numberOfPlayers}--- in ScoreBoard`
+    );
+  }
 
   onMount(() => {
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
+      ({ numberOfPlayers } = settings);
     });
     players = $storePlayers;
     state = $storeState;
@@ -53,11 +62,11 @@
       }
     });
     storePlayers.subscribe(value => {
-      // console.log(
-      //   `ScoreBoard => storePlayers subscribed value, players `,
-      //   value,
-      //   players
-      // );
+      console.log(
+        `ScoreBoard => storePlayers subscribed value of new players object, old players object `,
+        value,
+        players
+      );
       players = value;
     });
     setTimeout(() => {
@@ -67,7 +76,7 @@
 
   afterUpdate(() => {
     // console.log(`afterUpdate()`)
-    addHighlightIfGameInProgress()
+    addHighlightIfGameInProgress();
   });
 
   function updateStoredPlayers(player) {
@@ -107,7 +116,7 @@
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
-      gameUnderway = false
+      gameUnderway = false;
       return false;
       // console.log(
       //   `addHighlightIfGameInProgress! FALSE!!!! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
@@ -116,7 +125,7 @@
       // console.log(
       //   `addHighlightIfGameInProgress! TRUE!!!!! ${moveNumber} totalMovesInGame ${totalMovesInGame}`
       // );
-      gameUnderway = true
+      gameUnderway = true;
       return true;
     }
   }
