@@ -27,11 +27,12 @@ padding: 0;
 		box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    min-height: 90vh;
+    min-height: 100vh;
+    
 	}
 </style>
 
-<Nav {segment}/>
+<!-- <Nav {segment}/> -->
 
 <main id="layout-main">
 	<slot></slot>
