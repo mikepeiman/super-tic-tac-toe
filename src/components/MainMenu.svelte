@@ -15,16 +15,17 @@
   } from "../stores.js";
 
   let initialized = false;
-  let settings = {
+  let initialSettings = {
     numberOfPlayers: 3,
-    movesPerTurn: 8,
-    cellsToScore: 3,
-    bonusForCompleteRow: 15,
-    rows: 12,
-    columns: 20,
+    movesPerTurn: 3,
+    cellsToScore: 2,
+    bonusForCompleteRow: 10,
+    rows: 5,
+    columns: 6,
     size: 24,
     gutter: 0
   };
+  let settings = initialSettings;
   $: settings, initializeSettings();
   // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
@@ -51,16 +52,7 @@
   function initializeSettings() {
     let initSettings = new Promise((resolve, reject) => {
       if (!settings) {
-        let settings = {
-          numberOfPlayers: 3,
-          movesPerTurn: 8,
-          cellsToScore: 3,
-          bonusForCompleteRow: 15,
-          rows: 12,
-          columns: 20,
-          size: 24,
-          gutter: 0
-        };
+        let settings = initialSettings;
       }
       if (settings.rows) {
         settings = settings;

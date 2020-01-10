@@ -96,8 +96,16 @@
 
   let rows, columns, size, numberOfPlayers;
   ({ size, rows, columns } = settings);
-  $: rows, columns, size, numberOfPlayers && resetGameBoard();
-  // $: columns && resetGameBoard();
+  $: rows, columns, numberOfPlayers && resetGameBoard();
+  $: {
+    size && clearGameBoard();
+    buildGameBoard(
+      settings.rows,
+      settings.columns,
+      settings.size,
+      settings.gutter
+    );
+  }
 
   $: console.log(
     `\n DESTRUCTURED ROWS ******************* ${rows}, columns ${columns} cellsToScore ${size} \n`

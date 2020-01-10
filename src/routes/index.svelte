@@ -137,10 +137,25 @@
     margin: 2rem 0 0 0;
   }
 
-  span.note {
-    color: rgba(255, 140, 140, 0.75);
+  span {
     background: rgba(119, 94, 94, 0.25);
     font-weight: 300;
+    padding: 0 1ch;
+    &.nice {
+      color: rgba(140, 255, 140, 0.75);
+    }
+    &.note {
+      color: rgba(255, 140, 140, 0.75);
+    }
+    &.cool {
+      color: rgba(140, 140, 255, 0.75);
+    }
+    &.bold {
+      font-weight: 700;
+    }
+    &.underline {
+      border-bottom: 1px solidrgba(0, 0, 0, 0.75);
+    }
   }
 
   @media (min-width: 480px) {
@@ -201,7 +216,8 @@
       </p>
       <p>
         This game is made by myself, Mike Peiman, and playtested with love by my
-        six-year-old daughter and other family and friends.
+        six-year-old daughter and other family and friends. Coded from scratch
+        in Svelte/Sapper, with zero style libraries.
       </p>
     </div>
 
@@ -209,7 +225,9 @@
 
     <div class="text-content">
       <h2>HOW TO WIN:</h2>
-      <p>Score the most points! Easy, right?</p>
+      <h3>
+        <span class="nice">Score the most points! Easy, right?</span>
+      </h3>
     </div>
 
     <hr />
@@ -244,11 +262,11 @@
             <li>
               <span class="note">
                 NOTE: the full bonus only applies to the longer side if the
-                board is asymmetrical. Shorter side and diagonals receive (bonus
-                / (long / short)) points. For example, a line bonus of 15 on a
-                10x15 board means the longer line bonus = 15 while the shorter
-                line bonus = 10.
+                board is asymmetrical.
               </span>
+              Shorter side and diagonals receive (bonus / (long / short))
+              points. For example, a line bonus of 15 on a 10x15 board means the
+              longer line bonus = 15 while the shorter line bonus = 10.
             </li>
           </ul>
         </li>
@@ -257,6 +275,41 @@
           Score the game at any point, as often as you like - you can even
           change the moves-in-row or line bonus settings and see what the scores
           would be!
+        </li>
+      </ul>
+    </div>
+
+    <hr />
+
+    <div class="text-content">
+      <h2>GOTCHA'S / ISSUES</h2>
+      <p>Actually, it all works surprisingly well.</p>
+      <p>
+        <span class="note">
+          If you run into issues, reload, and if it breaks, clear localStorage
+          and reload.
+        </span>
+      </p>
+      <ul>
+        <li>
+          You can change number of players on-the-fly, but that obviously messes
+          with the scoring. Likewise with rows and columns. These functions are
+          surprisingly resilient though, and you can actually maintain some
+          semblence of continuity depending on your adjustments.
+          <p>
+            <span class="note">
+              TL;DR: Be careful not to change players, rows, columns on the fly!
+            </span>
+          </p>
+        </li>
+        <li>
+          <span class="cool">
+            Cool feature! ~ You <span class="bold">CAN</span> change the
+            number-of-moves-in-a-row-to-score, and the line bonus on the fly and
+            recalculate scoring!
+          </span>
+          We've discovered that there definitely are different winning
+          strategies based on different settings.
         </li>
       </ul>
     </div>
