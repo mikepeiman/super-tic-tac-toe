@@ -34,7 +34,7 @@
     border: 0;
     border-bottom: 3px solid rgba(50, 200, 255, 1);
     background: rgba(0, 0, 0, 0.5);
-    margin: 1rem;
+    margin: 2rem;
   }
 
   .page-title {
@@ -76,7 +76,7 @@
 
   #playnow {
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: calc(50% - (2rem + 5.5ch));
     transition: all 0.25s;
     z-index: 10;
@@ -187,7 +187,7 @@
       id="tictactoe-game"
       alt="A completed game of Super Tic Tac Toe"
       src="tictactoe-homepage.jpg" />
-    <figcaption>An example of a completed Super-Tic-Tac-Toe game</figcaption>
+    <figcaption>An example of a completed game</figcaption>
     <a class="tictactoe-button" id="playnow" href="TicTacToe">PLAY NOW!</a>
   </figure>
 
@@ -270,6 +270,7 @@
         <li>Different gameboard layouts beyond rectangular (crosses, rings)</li>
         <li>Save and load games via local file system</li>
         <li>User authentication/login, save games and profile to DB</li>
+        <li>Make solid mobile layout (currently designed for desktop)</li>
         <li>
           MULTI-DEVICE PLAY! Yes, making this a real multiplayer game, where you
           can set a lobby name and have friends join from their devices.
@@ -277,10 +278,14 @@
         <li>Publish in the app stores.</li>
       </ul>
     </div>
+
+    <hr />
+
+    <div class="text-content">
+      <h2>Go on, play already...!</h2>
+      <a class="tictactoe-button" id="final-button" href="TicTacToe">
+        PLAY NOW!
+      </a>
+    </div>
   </div>
-
-  <hr />
-
-  <h2>Go on, play already...!</h2>
-  <a class="tictactoe-button" id="final-button" href="TicTacToe">PLAY NOW!</a>
 </div>
