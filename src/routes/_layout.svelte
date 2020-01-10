@@ -21,7 +21,7 @@ padding: 0;
 	main {
 		position: relative;
 		/* max-width: 56em; */
-		background-color: #eeeeee;
+		background-color: #1a1a1a;
 		/* padding: 2em; */
 		margin: 0 auto;
 		box-sizing: border-box;

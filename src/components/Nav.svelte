@@ -1,7 +1,4 @@
 <script>
-
-// import tictactoe from '../components/TicTacToe.svelte'
-
 	export let segment;
 </script>
 
