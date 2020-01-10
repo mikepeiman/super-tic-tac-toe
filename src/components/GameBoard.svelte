@@ -94,9 +94,9 @@
     console.log("we are running on the server");
   }
 
-  let rows, columns, size;
+  let rows, columns, size, numberOfPlayers;
   ({ size, rows, columns } = settings);
-  $: rows, columns, size && resetGameBoard();
+  $: rows, columns, size, numberOfPlayers && resetGameBoard();
   // $: columns && resetGameBoard();
 
   $: console.log(
@@ -108,7 +108,7 @@
 
     storeSettings.subscribe(value => {
       settings = value;
-      ({ rows, columns, size } = settings);
+      ({ rows, columns, size, numberOfPlayers } = settings);
     });
 
     storePlayers.subscribe(value => {
