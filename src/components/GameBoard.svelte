@@ -86,10 +86,6 @@
       let parsedGhls = JSON.parse(ghls);
       // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
-    storeCurrentPlayer.subscribe(value => {
-      // console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
-      // localStorage.setItem("currentPlayer", JSON.stringify(value));
-    });
   } else {
     console.log("GameBoard check: we are running on the server");
   }
@@ -108,10 +104,14 @@
 
     storePlayers.subscribe(value => {
       players = value;
-      // console.log(`GameBoard => storePlayers.subscribe value => `, value);
+      console.log(`GameBoard => storePlayers.subscribe value => `, value);
       // this is a good place to look for redundant code execution; this logs at least 10 times on reload
     });
-
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+      currentPlayer = value;
+      // localStorage.setItem("currentPlayer", JSON.stringify(value));
+    });
     let gameboard = document.querySelector("#gameboard-board");
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
@@ -148,8 +148,13 @@
         localStorage.removeItem("gameInProgress");
       }
       if (currentPlayer === false) {
-        currentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
-        storeCurrentPlayer.set(currentPlayer);
+        let currentPlayerLS = JSON.parse(localStorage.getItem("currentPlayer"));
+        console.log(
+          `GameBoard if (currentPlayer === false) `,
+          currentPlayer,
+          currentPlayerLS
+        );
+        storeCurrentPlayer.set(currentPlayerLS);
       }
     } else {
       state.movesRemaining = settings.movesPerTurn;
@@ -176,7 +181,7 @@
   async function renderGameBoardReload(delayMS) {
     console.log(
       `\n\nGameBoard => renderGameBoardReload called! We should see our ${settings.movesPerTurn} moves....`,
-      gameHistoryTurns, 
+      gameHistoryTurns,
       `\n\n`
     );
     let gameboard = document.getElementById("gameboard-board");
@@ -210,17 +215,17 @@
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
         for (let j = 0; j < settings.movesPerTurn; j++) {
-              console.log(
-      `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
-      turn,
-      `\n\n`
-    );
+          //           console.log(
+          //   `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
+          //   turn,
+          //   `\n\n`
+          // );
           let move = turn[j];
-                        console.log(
-      `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
-      move,
-      `\n\n`
-    );
+          //                     console.log(
+          //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+          //   move,
+          //   `\n\n`
+          // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -263,7 +268,7 @@
         loopAndUnlockLastTurn(turnHistory, delayMS);
       });
     } else {
-      console.log(`no gameHistoryTurns, just doing turnHistory:::::::::`)
+      console.log(`no gameHistoryTurns, just doing turnHistory:::::::::`);
       loopAndUnlockLastTurn(turnHistory, delayMS);
     }
 
@@ -538,7 +543,11 @@
     //   settings,
     //   cell
     // );
-    // console.log("tickThis(cell) currentPlayer", currentPlayer);
+    console.log(
+      "tickThis(cell) players, currentPlayer",
+      players,
+      currentPlayer
+    );
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -720,7 +729,11 @@
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
-    console.log(`\n\n about to set gameHistoryTurns, is it good or null? `, gameHistoryTurns, `\n\n`)
+    console.log(
+      `\n\n about to set gameHistoryTurns, is it good or null? `,
+      gameHistoryTurns,
+      `\n\n`
+    );
     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));

@@ -85,13 +85,14 @@
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("playerDetails", true);
-    localStorage.setItem(
-      "currentPlayer",
-      JSON.stringify(players[currentPlayer.id])
-    );
+    storeCurrentPlayer.set(players[currentPlayer.id])
+    // localStorage.setItem(
+    //   "currentPlayer",
+    //   JSON.stringify(players[currentPlayer.id])
+    // );
     dispatch("playerNameOrMarkerUpdate", players);
     storePreservePlayerDetails.set(true);
-    localStorage.setItem("preservePlayerDetails", JSON.stringify(true));
+    // localStorage.setItem("preservePlayerDetails", JSON.stringify(true));
   }
 
   function highlight() {

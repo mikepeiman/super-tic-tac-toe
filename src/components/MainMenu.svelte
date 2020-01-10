@@ -17,12 +17,12 @@
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
-    movesPerTurn: 4,
+    movesPerTurn: 7,
     cellsToScore: 3,
-    bonusForCompleteRow: 10,
+    bonusForCompleteRow: 12,
     rows: 8,
-    columns: 10,
-    size: 32,
+    columns: 12,
+    size: 40,
     gutter: 0
   };
   let settings = initialSettings;

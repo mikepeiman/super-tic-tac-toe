@@ -184,7 +184,7 @@
       localStorage.setItem("currentPlayer", JSON.stringify(value));
     } else {
       console.log(`GameInit => setCurrentPlayer subscribed, value === false`);
-      setCurrentPlayer.set(ls);
+      storeCurrentPlayer.set(ls);
     }
   }
 

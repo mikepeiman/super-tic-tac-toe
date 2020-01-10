@@ -41,7 +41,7 @@
       state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
