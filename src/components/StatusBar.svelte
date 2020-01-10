@@ -186,14 +186,16 @@
 </style>
 
 <!-- {#await players then players} -->
-{#await currentPlayer then currentPlayer}
+
+
+<!-- {#await currentPlayer then currentPlayer}
 {#if !currentPlayer.name}
 
   <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
 
-{:else}
+{:else} -->
 
 <!-- {#await state then state} -->
 <!-- {#if currentPlayer.name} -->
@@ -235,6 +237,6 @@
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
 {/if} -->
-{/if}
+<!-- {/if} -->
 <!-- {/await} -->
-{/await}
+<!-- {/await} -->
