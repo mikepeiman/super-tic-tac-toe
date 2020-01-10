@@ -95,8 +95,8 @@
   }
 
   let rows, columns, size, numberOfPlayers;
-  ({ size, rows, columns } = settings);
-  $: rows, columns, numberOfPlayers, size && resetGameBoard();
+  ({ rows, columns, size, numberOfPlayers } = settings);
+  $: rows, columns, size, numberOfPlayers && resetGameBoard();
 
   onMount(() => {
     console.log(`GameBoard component mounted`);
@@ -169,7 +169,7 @@
     dispatch("move", e.detail);
   }
 
-  function renderGameBoardReload(delayMS) {
+  async function renderGameBoardReload(delayMS) {
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
     if (gameHistoryTurns) {
@@ -238,23 +238,6 @@
       }
     }
 
-    async function resizeCells() {
-      for (let i = 0; i < grid.length; i++) {
-        let line = grid[i];
-        for (let j = 0; j < line.length; j++) {
-          let gridCell = line[j]
-          console.log(`New resizeCells() function, checking gridCell: `, gridCell)
-          let cell = document.getElementById(gridCell.id);
-          cell.style.margin = settings.gutter + "px";
-          cell.style.width = settings.size + "px";
-          cell.style.height = settings.size + "px";
-          if (delayMS > 0) {
-            await delay(delayMS);
-          }
-        }
-      }
-    }
-    resizeCells()
     if (gameHistoryTurns) {
       loopAndLockTurns(gameHistoryTurns, delayMS).then(next => {
         loopAndUnlockLastTurn(turnHistory, delayMS);
@@ -262,12 +245,25 @@
     } else {
       loopAndUnlockLastTurn(turnHistory, delayMS);
     }
-    
 
     players = players;
     console.log(`grid array from inside renderGameBoardReload: `, grid);
   }
-
+  async function resizeCells() {
+    console.log(`New resizeCells() function just called `);
+    for (let i = 0; i < grid.length; i++) {
+      console.log(`New resizeCells() function first inner loop called `);
+      let line = grid[i];
+      for (let j = 0; j < line.length; j++) {
+        let gridCell = line[j];
+        // console.log(`New resizeCells() function, checking gridCell: `, gridCell)
+        let cell = document.getElementById(gridCell.id);
+        cell.style.margin = settings.gutter + "px";
+        cell.style.width = settings.size + "px";
+        cell.style.height = settings.size + "px";
+      }
+    }
+  }
   async function createDirectionArrays() {
     for (let i = 1; i <= 4; i++) {
       await makeLinesFrom(i);
@@ -452,7 +448,7 @@
   }
 
   async function resetGameBoard() {
-    console.log(`\n resetGameBoard() called \n`);
+    console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
     await clearGameBoard();
     await buildGameBoard(
       settings.rows,
@@ -460,6 +456,8 @@
       settings.size,
       settings.gutter
     );
+    console.log(`New resizeCells() function about to be called `);
+    await resizeCells();
     console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       renderGameBoardReload(0);
@@ -516,7 +514,11 @@
   }
 
   function tickThis(cell) {
-    // console.log("tickThis(cell)", cell);
+    console.log(
+      `tickThis(cell) BEFORE, settings.size ${settings.size} `,
+      settings,
+      cell
+    );
     // console.log("tickThis(cell) currentPlayer", currentPlayer);
     let id = cell.id;
     let row = id[1];
@@ -532,7 +534,16 @@
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
     cell.style = `--custom-bg: ${currentPlayer.bgColor}`;
+    cell.style.margin = settings.gutter + "px";
+    cell.style.width = settings.size + "px";
+    cell.style.height = settings.size + "px";
+
     cell.setAttribute("data-marker", currentPlayer.marker);
+    console.log(
+      `tickThis(cell) AFTER, settings.size ${settings.size} `,
+      settings,
+      cell
+    );
   }
 
   function untickThis(cell) {
