@@ -64,7 +64,7 @@
   ({ numberOfPlayers } = settings);
   $: {
     numberOfPlayers && initializePlayers();
-    storePreservePlayerDetails.set(false)
+    storePreservePlayerDetails.set(false);
   }
 
   onMount(() => {
@@ -110,8 +110,7 @@
         console.log(
           `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
         );
-        state.currentPlayer = players[0];
-        storeCurrentPlayer.set(players[0]);
+        initializeCurrentPlayer();
       }
     } else {
       initializePlayers();
@@ -156,11 +155,18 @@
     }
     // players = players
     storePlayers.set(players);
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    if (!gameInProgress) {
+      initializeCurrentPlayer();
+    }
+    dispatch("playersInitialized", players);
+    console.log(`GameInit => initialized players done`, players);
+  }
+
+  function initializeCurrentPlayer() {
     state.currentPlayer = players[0];
     storeCurrentPlayer.set(players[0]);
     console.log(`GameInit => initializePlayers run (currentPlayer reset to 0)`);
-    dispatch("playersInitialized", players);
-    console.log(`GameInit => initialized players done`, players);
   }
 
   function setCurrentPlayer() {

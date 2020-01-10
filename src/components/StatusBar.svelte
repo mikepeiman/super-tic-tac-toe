@@ -84,14 +84,6 @@
     }
   });
 
-  afterUpdate(() => {
-    // console.log(`StatusBar => afterUpdate(() #1 state`, state);
-    // state = $storeState;
-    // console.log(`StatusBar => afterUpdate(() #2 state`, state);
-    // let history = $storeGameHistoryTurns
-    // console.log(`StatusBar => afterUpdate(() gameHistoryTurns from store `, history);
-  });
-
   function playersScored(e) {
     console.log(
       `StatusBar receiving dispatch of playersScored from CountPoints, `,

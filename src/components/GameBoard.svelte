@@ -80,11 +80,11 @@
     });
 
     storeGameHistoryTurns.subscribe(value => {
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
-      // let ghls = localStorage.getItem("gameHistoryTurns");
-      // // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
-      // let parsedGhls = JSON.parse(ghls);
-      // // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
+      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      let ghls = localStorage.getItem("gameHistoryTurns");
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
+      let parsedGhls = JSON.parse(ghls);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
     storeCurrentPlayer.subscribe(value => {
       // console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
@@ -107,7 +107,7 @@
     });
 
     storePlayers.subscribe(value => {
-      players = value
+      players = value;
       // console.log(`GameBoard => storePlayers.subscribe value => `, value);
       // this is a good place to look for redundant code execution; this logs at least 10 times on reload
     });
@@ -128,6 +128,9 @@
     );
 
     if (gameInProgress) {
+      console.log(
+        `GameBoard => if (gameInProgress) we should be redrawing the moves...`
+      );
       newBoard.then(() => {
         renderGameBoardReload(delayMS);
       });
@@ -171,14 +174,14 @@
   }
 
   async function renderGameBoardReload(delayMS) {
+    console.log(
+      `\n\nGameBoard => renderGameBoardReload called! We should see our ${settings.movesPerTurn} moves....`,
+      gameHistoryTurns, 
+      `\n\n`
+    );
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
-    if (gameHistoryTurns) {
-      if (gameHistoryTurns.length) {
-        len = gameHistoryTurns.length;
-      }
-    }
-
+    gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
     turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
 
     while (gameboard.firstChild) {
@@ -197,11 +200,27 @@
         setTimeout(resolve, amount);
       });
     };
+
+    if (gameHistoryTurns) {
+      if (gameHistoryTurns.length) {
+        len = gameHistoryTurns.length;
+      }
+    }
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
         for (let j = 0; j < settings.movesPerTurn; j++) {
+              console.log(
+      `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
+      turn,
+      `\n\n`
+    );
           let move = turn[j];
+                        console.log(
+      `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+      move,
+      `\n\n`
+    );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -244,6 +263,7 @@
         loopAndUnlockLastTurn(turnHistory, delayMS);
       });
     } else {
+      console.log(`no gameHistoryTurns, just doing turnHistory:::::::::`)
       loopAndUnlockLastTurn(turnHistory, delayMS);
     }
 
@@ -269,7 +289,7 @@
   }
 
   function addDirectionArraysToPlayerObjects() {
-    console.log(`\n\n addDirectionArraysToPlayerObjects `, players, `\n\n`)
+    // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       for (let x = 0; x <= 3; x++) {
         players[i]["scores"][x].id = x + 1;
@@ -456,10 +476,10 @@
       settings.gutter
     );
     console.log(`New resizeCells() function about to be called `);
-    await resizeCells();
+    resizeCells();
     console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
-      renderGameBoardReload(0);
+      await renderGameBoardReload(10);
     }
   }
 
@@ -513,11 +533,11 @@
   }
 
   function tickThis(cell) {
-    console.log(
-      `tickThis(cell) BEFORE, settings.size ${settings.size} `,
-      settings,
-      cell
-    );
+    // console.log(
+    //   `tickThis(cell) BEFORE, settings.size ${settings.size} `,
+    //   settings,
+    //   cell
+    // );
     // console.log("tickThis(cell) currentPlayer", currentPlayer);
     let id = cell.id;
     let row = id[1];
@@ -537,11 +557,11 @@
     cell.style.width = settings.size + "px";
     cell.style.height = settings.size + "px";
     cell.setAttribute("data-marker", currentPlayer.marker);
-    console.log(
-      `tickThis(cell) AFTER, settings.size ${settings.size} `,
-      settings,
-      cell
-    );
+    // console.log(
+    //   `tickThis(cell) AFTER, settings.size ${settings.size} `,
+    //   settings,
+    //   cell
+    // );
   }
 
   function untickThis(cell) {
@@ -709,7 +729,7 @@
   }
 
   function playerChange() {
-    localStorage.setItem("playerDetails", true);
+    storePreservePlayerDetails.set(true);
     turnHistory = [];
     let gameboard = document.getElementById("gameboard-board");
     gameboard.classList.add("player-change");
@@ -720,8 +740,8 @@
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-      // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
-      // currentPlayer = players[0];`);
+      console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
+      currentPlayer = players[0];`);
       currentPlayer = players[0];
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
