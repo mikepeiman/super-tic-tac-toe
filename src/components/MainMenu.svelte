@@ -26,16 +26,20 @@
     gutter: 0
   };
   let settings = initialSettings;
-  $: settings, initializeSettings();
+  $: {
+    if (typeof window !== "undefined") {
+          settings, initializeSettings();
+      // if (localStorage.getItem("settings")) {
+      //   let ls = JSON.parse(localStorage.getItem("settings"));
+      //   console.log(`client operation, settings exists `, ls);
+      //   settings = ls;
+      // }
+    }
+
+  }
   // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
-  if (typeof window !== "undefined") {
-    if (localStorage.getItem("settings")) {
-      let ls = JSON.parse(localStorage.getItem("settings"));
-      console.log(`client operation, settings exists `, ls);
-      settings = ls;
-    }
-  }
+
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     initializeSettings();
