@@ -38,17 +38,17 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+      // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
     });
     players = $storePlayers;
     state = $storeState;
     // currentPlayer = $storeCurrentPlayer;
     storeCurrentPlayer.subscribe(value => {
-      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
       if (value === null) {
-        console.log(`yep, value ull, no currentPLayer`);
+        // console.log(`yep, value null, no currentPLayer`);
         currentPlayer = players[0];
       }
     });
@@ -71,10 +71,10 @@
   });
 
   function updateStoredPlayers(player) {
-    console.log(
-      `ScoreBoard => updateStoredPlayers: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
-      currentPlayer
-    );
+    // console.log(
+    //   `ScoreBoard => updateStoredPlayers: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
+    //   currentPlayer
+    // );
     storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
@@ -94,10 +94,10 @@
 
   function addStyles() {
     let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
-    console.log(
-      `addStyle function, scoreHeadings for total-score: `,
-      scoreHeadings
-    );
+    // console.log(
+    //   `addStyle function, scoreHeadings for total-score: `,
+    //   scoreHeadings
+    // );
     scoreHeadings.forEach((h, i) => {
       h.style = `--custom-bg: ${players[i].bgColor}`;
     });
@@ -109,13 +109,13 @@
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
       gameUnderway = false
       return false;
-      console.log(
-        `addHighlightIfGameInProgress! FALSE!!!! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
-      );
+      // console.log(
+      //   `addHighlightIfGameInProgress! FALSE!!!! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
+      // );
     } else {
-      console.log(
-        `addHighlightIfGameInProgress! TRUE!!!!! ${moveNumber} totalMovesInGame ${totalMovesInGame}`
-      );
+      // console.log(
+      //   `addHighlightIfGameInProgress! TRUE!!!!! ${moveNumber} totalMovesInGame ${totalMovesInGame}`
+      // );
       gameUnderway = true
       return true;
     }

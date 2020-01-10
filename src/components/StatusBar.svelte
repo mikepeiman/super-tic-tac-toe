@@ -36,7 +36,7 @@
           .length;
       }
 
-      console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
+      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
       state.movesRemaining = movesRemaining;
     });
@@ -50,22 +50,22 @@
     // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
       state = value;
-      console.log(
-        `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
-        value
-      );
-      console.log(
-        `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
-        value
-      );
+      // console.log(
+      //   `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
+      //   value
+      // );
+      // console.log(
+      //   `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
+      //   value
+      // );
       movesRemaining = state.movesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
-      console.log(
-        `StatusBar => storeState subscribed - move after LS: ${moveNumber}`
-      );
+      // console.log(
+      //   `StatusBar => storeState subscribed - move after LS: ${moveNumber}`
+      // );
     });
     players = $storePlayers;
     // console.log(`StatusBar => onMount(() #1 state`, state);

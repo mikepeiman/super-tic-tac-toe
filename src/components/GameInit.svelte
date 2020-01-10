@@ -67,10 +67,17 @@
   onMount(() => {
     console.log(`GameInit => onMount()`);
     storeSettings.subscribe(value => {
+      settings = value;
       ({ numberOfPlayers } = settings);
-      console.log(`GameInit => subscribed to settings, numberOfPlayers = ${numberOfPlayers}`)
+      // ***
+      // DO NOT DO THE FOLLOWING - INFITINE LOOP!
+      // storeSettings.set(value)
+      // ***
+      console.log(
+        `GameInit => subscribed to settings, numberOfPlayers = ${numberOfPlayers}`
+      );
     });
-    settings = $storeSettings;
+    // settings = $storeSettings;
     state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
@@ -166,8 +173,7 @@
   function updateGameSettings(e) {
     console.log(`GameInit => reset bubbled from MainMenu settings change`, e);
     settings = e.detail;
-    // resetGame();
-    // state.updateGameSettings = true;
+    storeSettings.set(e.detail);
   }
 </script>
 

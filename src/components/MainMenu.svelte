@@ -69,14 +69,14 @@
       if (lsSet) {
         let lsJSet = JSON.parse(lsSet);
         if (lsJSet) {
-          console.log("settings.lineBonus: ", lsJSet.lineBonus);
+          // console.log("settings.lineBonus: ", lsJSet.lineBonus);
           if (lsJSet.lineBonus === "undefined") {
             lsJSet.lineBonus = 0;
           }
           if (lsJSet.rows) {
-            console.log(
-              `initSettings :PROMISE: => localStorage settings contains rows property`
-            );
+            // console.log(
+            //   `initSettings :PROMISE: => localStorage settings contains rows property`
+            // );
             storeSettings.set(lsJSet);
             initialized = true;
             resolve(lsJSet);

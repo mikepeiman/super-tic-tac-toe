@@ -22,7 +22,7 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      console.log(`CountPoints => storeSettings.subscribe value #1 inside => `, value);
+      // console.log(`CountPoints => storeSettings.subscribe value #1 inside => `, value);
       settings = value;
     });
     storeDirectionArrays.subscribe(val => {

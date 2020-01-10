@@ -33,9 +33,7 @@ export const storePlayers = {
   subscribe: players.subscribe,
   set: val => {
     players.set(val);
-    // localStorage.setItem("players", JSON.stringify(players));
-    // let p = JSON.parse(localStorage.getItem('players'))
-    // console.log(`inside Stores.js, storePlayers.set called, players `, p)
+    localStorage.setItem("players", JSON.stringify(val));
   }
 };
 
@@ -45,16 +43,12 @@ export const storeSettings = {
     settings.set(val);
     localStorage.setItem("settings", JSON.stringify(val));
   }
-  // test: test => {
-  //   console.log(`test storeSettings subscribe method `, test)
-  //   settings.subscribe
-  // }
 };
 export const storeState = {
   subscribe: state.subscribe,
   set: val => {
     state.set(val);
-    // localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("state", JSON.stringify(val));
   }
 };
 export const storeDirectionArrays = {
