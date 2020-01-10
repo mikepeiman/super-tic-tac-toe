@@ -39,9 +39,6 @@
       setTimeout(() => {
         addStyles();
       }, 1);
-    console.log(
-      `reactive logging destructured numberOfPlayers ---${numberOfPlayers}--- in ScoreBoard`
-    );
   }
 
   onMount(() => {
@@ -62,11 +59,11 @@
       }
     });
     storePlayers.subscribe(value => {
-      console.log(
-        `ScoreBoard => storePlayers subscribed value of new players object, old players object `,
-        value,
-        players
-      );
+      // console.log(
+      //   `ScoreBoard => storePlayers subscribed value of new players object, old players object `,
+      //   value,
+      //   players
+      // );
       players = value;
     });
     setTimeout(() => {

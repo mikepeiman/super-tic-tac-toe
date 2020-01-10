@@ -107,6 +107,7 @@
     });
 
     storePlayers.subscribe(value => {
+      players = value
       // console.log(`GameBoard => storePlayers.subscribe value => `, value);
       // this is a good place to look for redundant code execution; this logs at least 10 times on reload
     });
@@ -247,12 +248,9 @@
     }
 
     players = players;
-    console.log(`grid array from inside renderGameBoardReload: `, grid);
   }
   async function resizeCells() {
-    console.log(`New resizeCells() function just called `);
     for (let i = 0; i < grid.length; i++) {
-      console.log(`New resizeCells() function first inner loop called `);
       let line = grid[i];
       for (let j = 0; j < line.length; j++) {
         let gridCell = line[j];
@@ -271,6 +269,7 @@
   }
 
   function addDirectionArraysToPlayerObjects() {
+    console.log(`\n\n addDirectionArraysToPlayerObjects `, players, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       for (let x = 0; x <= 3; x++) {
         players[i]["scores"][x].id = x + 1;

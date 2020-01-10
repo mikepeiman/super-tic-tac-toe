@@ -76,16 +76,19 @@ export const storePreservePlayerDetails = {
   subscribe: preservePlayerDetails.subscribe,
   set: val => {
     preservePlayerDetails.set(val);
-    localStorage.setItem(
-      "preservePlayerDetails",
-      JSON.stringify(val)
-    );
+    if (typeof window !== "undefined") {
+    if (!val) {
+      localStorage.removeItem("preservePlayerDetails");
+    } else {
+      localStorage.setItem("preservePlayerDetails", JSON.stringify(val));
+    }
   }
+}
 };
 export const storeGameHistoryTurns = {
   subscribe: gameHistoryTurns.subscribe,
   set: val => {
-    console.log(`storeGameHistoryTurns.set val => `, val)
+    console.log(`storeGameHistoryTurns.set val => `, val);
     gameHistoryTurns.set(val);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(val));
   }

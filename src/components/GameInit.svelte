@@ -62,7 +62,10 @@
 
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
-  $: numberOfPlayers && initializePlayers();
+  $: {
+    numberOfPlayers && initializePlayers();
+    storePreservePlayerDetails.set(false)
+  }
 
   onMount(() => {
     console.log(`GameInit => onMount()`);
@@ -137,8 +140,8 @@
           dirScoresByIndex: [0, 0, 0, 0]
         }
       ];
-      let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`
-          console.log(
+      let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
+      console.log(
         `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, bgColor = ${bg}`
       );
       scoreDirections.forEach((direction, index) => {
