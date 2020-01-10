@@ -119,7 +119,7 @@
     state = $storeState;
     let delayMS = 1000 / (settings.rows * settings.columns);
     let gameInProgress = localStorage.getItem("gameInProgress");
-    let playerDetails = localStorage.getItem("storePreservePlayerDetails");
+    let playerDetails = localStorage.getItem("preservePlayerDetails");
     let newBoard = buildGameBoard(
       settings.rows,
       settings.columns,
@@ -479,7 +479,7 @@
     resizeCells();
     console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
-      await renderGameBoardReload(10);
+      await renderGameBoardReload(0);
     }
   }
 

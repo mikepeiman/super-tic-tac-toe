@@ -63,8 +63,14 @@
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
-    numberOfPlayers && initializePlayers();
-    storePreservePlayerDetails.set(false);
+    if (typeof window !== "undefined") {
+      let playerDetails = localStorage.getItem("preservePlayerDetails");
+      if (!playerDetails) {
+        numberOfPlayers && initializePlayers();
+      }
+    }
+
+    // storePreservePlayerDetails.set(false);
   }
 
   onMount(() => {
