@@ -720,6 +720,7 @@
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
+    console.log(`\n\n about to set gameHistoryTurns, is it good or null? `, gameHistoryTurns, `\n\n`)
     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));

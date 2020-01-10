@@ -42,6 +42,7 @@
   });
 
   function countPoints() {
+    storePreservePlayerDetails.set(true)
     // let settings = JSON.parse(localStorage.getItem('settings'))
     console.log(
       "*************__________countPoints called________**************, settings, lines ",
