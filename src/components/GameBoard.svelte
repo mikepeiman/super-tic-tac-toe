@@ -96,7 +96,7 @@
 
   let rows, columns, size;
   ({ size, rows, columns } = settings);
-  $: rows, columns,size && resetGameBoard();
+  $: rows, columns, size && resetGameBoard();
   // $: columns && resetGameBoard();
 
   $: console.log(
@@ -106,14 +106,9 @@
   onMount(() => {
     console.log(`GameBoard component mounted`);
 
-    // is this subscription necessary to place here, below?
     storeSettings.subscribe(value => {
-      // console.log(`GameBoard => storeSettings.subscribe value => `, value);
-      // this one is important!!! below
       settings = value;
       ({ rows, columns, size } = settings);
-      // ({ columns } = settings);
-      //  resetGameBoard();
     });
 
     storePlayers.subscribe(value => {
@@ -170,7 +165,7 @@
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
       storePlayers.set(players);
-    } 
+    }
   });
 
   function moveNotification(e) {
@@ -222,10 +217,9 @@
           cell.classList.add("locked", "ticked");
           cell.setAttribute("locked", true);
           cell.style.border = "1px solid rgba(0,0,0,0.5)";
-          if(delayMS > 0) {
-          await delay(delayMS);
+          if (delayMS > 0) {
+            await delay(delayMS);
           }
-
         }
       }
     }
@@ -243,7 +237,7 @@
         cell.classList.add("ticked");
         cell.removeAttribute("locked");
         cell.style.border = "1px solid rgba(0,0,0,0.5)";
-        if(delayMS > 0) {
+        if (delayMS > 0) {
           await delay(delayMS);
         }
       }
@@ -450,8 +444,8 @@
       settings.size,
       settings.gutter
     );
-    console.log(`gameInProgress? `, gameInProgress)
-    if(gameInProgress) {
+    console.log(`gameInProgress? `, gameInProgress);
+    if (gameInProgress) {
       renderGameBoardReload(0);
     }
   }
@@ -660,19 +654,7 @@
     // console.log(`GameBoard => setGameHistoryTurns running`);
     let turnsPlayed = localStorage.getItem("gameHistoryTurns");
     if (turnsPlayed) {
-      if (turnsPlayed.length > 0) {
-        // console.log(
-        //   `if (localStorage.getItem("gameHistoryTurns"))****TRUE**** `,
-        //   gameHistoryTurns.length,
-        //   gameHistoryTurns
-        // );
-        // gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-        // console.log(
-        //   `from LS gameHistoryTurns, `,
-        //   gameHistoryTurns.length,
-        //   gameHistoryTurns
-        // );
-      } else {
+      if (!turnsPlayed.length > 0) {
         gameHistoryTurns = [];
       }
     }

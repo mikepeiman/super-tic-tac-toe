@@ -18,7 +18,7 @@
   $: currentPlayer = {};
   $: state = {};
   $: players = {};
-  $: settings = {};
+  let settings = {};
   $: scoreDirections = [
     {
       id: 1,
@@ -60,55 +60,16 @@
     diagonalDownRight: []
   };
 
-  // if (typeof window !== "undefined") {
-  //   console.log("we are running on the client");
-  //   storeCurrentPlayer.subscribe(value => {
-  //     console.log(`GameInit => storeCurrentPlayer subscribed`, value);
-  //     let ls = JSON.parse(localStorage.getItem("currentPlayer"));
-  //     console.log(`GameInit => storeCurrentPlayer LS`, ls);
-  //     // if (value !== false) {
-  //     //   console.log(
-  //     //     `GameInit => storeCurrentPlayer subscribed, value !== false`,
-  //     //     value
-  //     //   );
-  //     //   if (ls !== null) {
-  //     //     console.log(
-  //     //       `currentPlayer from store: ${value.name}, currentPlayer from ls: ${ls.name},`
-  //     //     );
-  //     //     if(value.id !== ls.id) {
-  //     //       storeCurrentPlayer.set(ls);
-  //     //     }
-  //     //   }
-
-  //     //   // localStorage.setItem("currentPlayer", JSON.stringify(value));
-  //     // } else {
-  //     //   console.log(
-  //     //     `GameInit => storeCurrentPlayer subscribed, value === false, setting to LS currentPlayer`
-  //     //   );
-  //     //   storeCurrentPlayer.set(ls);
-  //     // }
-
-  //     //       if (ls) {
-  //     //   console.log(
-  //     //     `GameInit => storeCurrentPlayer subscribed, ls IS`
-  //     //   );
-  //     //   // localStorage.setItem("currentPlayer", JSON.stringify(value));
-  //     // } else {
-  //     //   console.log(
-  //     //     `GameInit => storeCurrentPlayer subscribed, ls IS NOT`
-  //     //   );
-  //     //   storeCurrentPlayer.set(ls);
-  //     // }
-  //   });
-  // } else {
-  //   console.log("we are running on the server");
-  // }
+  let numberOfPlayers;
+  ({ numberOfPlayers } = settings);
+  $: numberOfPlayers && initializePlayers();
 
   onMount(() => {
     console.log(`GameInit => onMount()`);
-    // let ls = JSON.parse(localStorage.getItem("currentPlayer"));
-    // console.log(`GameInit => onMount() currentPlayer LS`, ls);
-    // players = $storePlayers;
+    storeSettings.subscribe(value => {
+      ({ numberOfPlayers } = settings);
+      console.log(`GameInit => subscribed to settings, numberOfPlayers = ${numberOfPlayers}`)
+    });
     settings = $storeSettings;
     state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);

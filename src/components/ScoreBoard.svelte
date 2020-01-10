@@ -32,6 +32,10 @@
   //   players = value;
   // });
 
+  //   let numberOfPlayers;
+  // ({ numberOfPlayers } = settings);
+  // $: numberOfPlayers && resetGameBoard();
+
   onMount(() => {
     storeSettings.subscribe(value => {
       console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
