@@ -63,38 +63,27 @@
       }
       let lsSet = localStorage.getItem("settings");
       if (lsSet) {
-        let lsJSet = JSON.parse(lsSet);
-        if (lsJSet) {
+        let lsJSetParsed = JSON.parse(lsSet);
+        if (lsJSetParsed) {
           // console.log("settings.lineBonus: ", lsJSet.lineBonus);
-          if (lsJSet.lineBonus === "undefined") {
-            lsJSet.lineBonus = 0;
+          if (lsJSetParsed.lineBonus === "undefined") {
+            lsJSetParsed.lineBonus = 0;
           }
-          if (lsJSet.rows) {
+          if (lsJSetParsed.rows) {
             // console.log(
             //   `initSettings :PROMISE: => localStorage settings contains rows property`
             // );
-            storeSettings.set(lsJSet);
+            storeSettings.set(lsJSetParsed);
             initialized = true;
-            resolve(lsJSet);
+            resolve(lsJSetParsed);
           }
         }
       } else {
-        let reason = new Error("No localStorage, Initialized default settings");
+        let reason = new Error("No localStorage, initialized default settings");
         initialized = true;
         reject(reason);
       }
     });
-
-    initSettings
-      .then(s => {
-        console.log(
-          `Here are the settings returned from our init promise: `,
-          s
-        );
-      })
-      .catch(err => {
-        console.log(`Here is the error returned from our promise: `, err);
-      });
   }
 
   function updatePlayers() {
@@ -189,7 +178,7 @@
 <div class="settings-menu-heading">
   <h2>Game Settings</h2>
 </div>
-{#if initialized}
+<!-- {#if initialized} -->
   <div class="form-wrap settings-menu">
     <label for="players">
       <div class="label-content">players</div>
@@ -277,8 +266,8 @@
         style="width: 2.5ch;" />
     </label>
   </div>
-{:else}
+<!-- {:else}
   <div>
     <h1 class="loading-settings-message">Loading settings data...</h1>
   </div>
-{/if}
+{/if} -->

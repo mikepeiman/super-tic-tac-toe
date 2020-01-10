@@ -104,7 +104,7 @@
 
     storePlayers.subscribe(value => {
       players = value;
-      console.log(`GameBoard => storePlayers.subscribe value => `, value);
+      // console.log(`GameBoard => storePlayers.subscribe value => `, value);
       // this is a good place to look for redundant code execution; this logs at least 10 times on reload
     });
     storeCurrentPlayer.subscribe(value => {
@@ -179,11 +179,11 @@
   }
 
   async function renderGameBoardReload(delayMS) {
-    console.log(
-      `\n\nGameBoard => renderGameBoardReload called! We should see our ${settings.movesPerTurn} moves....`,
-      gameHistoryTurns,
-      `\n\n`
-    );
+    // console.log(
+    //   `\n\nGameBoard => renderGameBoardReload called! We should see our ${settings.movesPerTurn} moves....`,
+    //   gameHistoryTurns,
+    //   `\n\n`
+    // );
     let gameboard = document.getElementById("gameboard-board");
     let amount, number, len;
     gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
@@ -264,7 +264,7 @@
     }
 
     if (gameHistoryTurns) {
-      loopAndLockTurns(gameHistoryTurns, delayMS).then(next => {
+      await loopAndLockTurns(gameHistoryTurns, delayMS).then(next => {
         loopAndUnlockLastTurn(turnHistory, delayMS);
       });
     } else {
@@ -472,7 +472,7 @@
   }
 
   async function resetGameBoard() {
-    console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
+    // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
     await clearGameBoard();
     await buildGameBoard(
       settings.rows,
@@ -480,9 +480,9 @@
       settings.size,
       settings.gutter
     );
-    console.log(`New resizeCells() function about to be called `);
+    // console.log(`New resizeCells() function about to be called `);
     resizeCells();
-    console.log(`gameInProgress? `, gameInProgress);
+    // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       await renderGameBoardReload(0);
     }
