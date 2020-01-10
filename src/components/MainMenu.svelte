@@ -17,7 +17,7 @@
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
-    movesPerTurn: 7,
+    movesPerTurn: 4,
     cellsToScore: 3,
     bonusForCompleteRow: 12,
     rows: 8,

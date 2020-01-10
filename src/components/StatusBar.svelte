@@ -41,7 +41,7 @@
       state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
-      console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
+      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
@@ -102,8 +102,8 @@
     localStorage.removeItem("gameboard");
     localStorage.removeItem("gameHistoryFlat");
     localStorage.removeItem("gameHistoryTurns");
+    localStorage.removeItem("turnHistory");
     localStorage.removeItem("lines");
-    localStorage.removeItem("state");
     localStorage.removeItem("moveNumber");
     let currentPlayerId = state.currentPlayer.id;
     localStorage.setItem(
@@ -136,6 +136,10 @@
     storePreservePlayerDetails.set(false);
     localStorage.removeItem("preservePlayerDetails");
     localStorage.removeItem("players");
+    localStorage.removeItem("state");
+    localStorage.removeItem("currentPlayer");
+    localStorage.removeItem("directionArrays");
+    localStorage.removeItem("state");
     resetGame();
     location.reload();
     dispatch("resetGame", true);
@@ -182,13 +186,24 @@
 </style>
 
 <!-- {#await players then players} -->
+{#await currentPlayer then currentPlayer}
+{#if !currentPlayer.name}
+
+  <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
+    <h2 class="player-indicator-heading">Loading players data...</h2>
+  </div>
+
+{:else}
+
 <!-- {#await state then state} -->
-{#if currentPlayer.name}
+<!-- {#if currentPlayer.name} -->
   <div
     class="player-indicator player-0"
     style={`--custom-bg: ${currentPlayer.bgColor}`}>
     <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
-    <h2 class="moves-indicator-heading">Moves remaining in turn: {movesRemaining}</h2>
+    <h2 class="moves-indicator-heading">
+      Moves remaining in turn: {movesRemaining}
+    </h2>
     <h2 class="progress-indicator-heading">
       Game Moves: {moveNumber}/{settings.rows * settings.columns}
     </h2>
@@ -215,10 +230,11 @@
       </button>
     </div>
   </div>
-{:else}
+<!-- {:else}
   <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
+{/if} -->
 {/if}
 <!-- {/await} -->
-<!-- {/await} -->
+{/await}
