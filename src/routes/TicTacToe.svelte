@@ -35,7 +35,6 @@
     // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
 
-
   $: state = null;
   $: players = null;
   $: settings = null;
@@ -71,7 +70,7 @@
   #topnav {
     background: #1a1a1a;
     color: #006f98;
-    border-bottom: 1px solid rgba(0,0,0,0);
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
   }
 
   #layout-main {
@@ -104,7 +103,7 @@
   }
   .statusbar-container {
     grid-area: statusbar;
-    border-top: 5px solid rgba(0,0,0,0);
+    border-top: 5px solid rgba(0, 0, 0, 0);
   }
   .mainmenu-container {
     grid-area: mainmenu;
@@ -169,6 +168,8 @@
     }
     &::after {
       content: attr(data-marker);
+      position: relative;
+      top: -2px;
       justify-self: center;
       align-self: center;
       background: attr(data-background-color);

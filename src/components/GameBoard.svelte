@@ -537,7 +537,6 @@
     cell.style.margin = settings.gutter + "px";
     cell.style.width = settings.size + "px";
     cell.style.height = settings.size + "px";
-
     cell.setAttribute("data-marker", currentPlayer.marker);
     console.log(
       `tickThis(cell) AFTER, settings.size ${settings.size} `,
@@ -557,6 +556,9 @@
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
     let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     cell.style = customBg;
+    cell.style.margin = settings.gutter + "px";
+    cell.style.width = settings.size + "px";
+    cell.style.height = settings.size + "px";
     cell.dataset.ticked = false;
     cell.removeAttribute("player-id");
     cell.removeAttribute("player-name");

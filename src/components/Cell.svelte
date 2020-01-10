@@ -47,17 +47,19 @@
       background: rgba(150, 150, 255, 0.5);
     }
   }
-  .ticked {
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
-    }
-    &::after {
-      content: attr(data-marker);
-      justify-self: center;
-      align-self: center;
-      background: attr(data-background-color);
-    }
-  }
+  // .ticked {
+  //   &:hover {
+  //     background: rgba(150, 150, 255, 0.5);
+  //   }
+  //   &::after {
+  //     content: attr(data-marker);
+  //     position: fixed;
+  //     top: -2px;
+  //     justify-self: center;
+  //     align-self: center;
+  //     background: attr(data-background-color);
+  //   }
+  // }
 </style>
 
 <div
