@@ -191,7 +191,7 @@
   function updateGameSettings(e) {
     console.log(`GameInit => reset bubbled from MainMenu settings change`, e);
     settings = e.detail;
-    storeSettings.set(e.detail);
+    // storeSettings.set(e.detail);
   }
 </script>
 

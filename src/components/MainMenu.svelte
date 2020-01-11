@@ -25,7 +25,9 @@
     size: 40,
     gutter: 0
   };
-  let settings = initialSettings;
+  // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
+  let settings = JSON.parse(JSON.stringify(initialSettings));
+  // let settings = Object.assign({}, initialSettings);
   $: {
     // settings, initializeSettings();
     if (typeof window !== "undefined") {
@@ -36,30 +38,81 @@
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   function checkForLSSettings() {
-    let ls = localStorage.getItem("settings");
-    let JSONinit = JSON.stringify(initialSettings)
-    let JSONcurrent = JSON.stringify(settings)
-    console.log(`MainMenu => checkForLSSettings() (means initialize on component mount or update on settings change)`)
-    console.log(`MainMenu => checkForLSSettings() does initialSettings differ from current settings, and do those differ from LS?`)
-    console.log(`MainMenu => checkForLSSettings() initialSettings == current settings::: ${JSONinit === JSONcurrent}\n`, JSONinit, `\n`,JSONcurrent)
-    console.log(`MainMenu => checkForLSSettings() initialSettings == ls ::: ${JSONinit === ls}\n`, JSONinit, `\n`, ls)
-    console.log(`MainMenu => checkForLSSettings() ls == current settings ::: ${ls === JSONcurrent}\n`, ls, `\n`,JSONcurrent)
-    // storeSettings.set(settings)
-    if (localStorage.getItem("settings")) {
-      console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
-      let ls = JSON.parse(localStorage.getItem("settings"));
-      console.log(`client operation, settings exists from LS eg #players ${ls.numberOfPlayers}`, ls);
-      settings = ls;
-      storeSettings.set(ls);
-      initialized = true;
+    let JSONls = localStorage.getItem("settings");
+    let JSONinit = JSON.stringify(initialSettings);
+    let JSONcurrent = JSON.stringify(settings);
+    let ls = JSON.parse(JSONls);
+
+    console.log(
+      `MainMenu => checkForLSSettings() initialSettings #players ${
+        initialSettings.numberOfPlayers
+      }::: initialSettings === current settings::: ${JSONinit ===
+        JSONcurrent}\n`,
+      JSONinit,
+      `\n`,
+      JSONcurrent
+    );
+    if (JSONls !== null) {
+      console.log(
+        `MainMenu => checkForLSSettings() ls #players ${
+          ls.numberOfPlayers
+        }::: initialSettings === ls ::: ${JSONinit === JSONls}\n`,
+        JSONinit,
+        `\n`,
+        JSONls
+      );
     }
+    if (ls !== null) {
+      console.log(
+        `MainMenu => checkForLSSettings() current #players ${
+          settings.numberOfPlayers
+        }::: ls === current settings ::: ${JSONls === JSONcurrent}\n`,
+        JSONls,
+        `\n`,
+        JSONcurrent
+      );
+    }
+
+    if (JSONls !== JSONcurrent) {
+      if (ls !== null) {
+        console.log(
+          `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} !== current settings ${settings.numberOfPlayers} so checking now which differs from initialSettings :::\n`
+        );
+        if (JSONcurrent === JSONinit) {
+          console.log(
+            `MainMenu => checkForLSSettings() current matches initial. Settings should = LS :::\n`
+          );
+          settings = ls;
+          storeSettings.set(settings);
+        } else {
+          console.log(
+            `Looks like we need to set current settings to LS... let's try that`
+          );
+          storeSettings.set(settings);
+        }
+      }
+    } else {
+      console.log(
+        `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} === current settings ${settings.numberOfPlayers}, so setting current to storeSettings :::`
+      );
+    }
+    storeSettings.set(settings);
+    initialized = true;
+    // if (localStorage.getItem("settings")) {
+    //   console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
+    //   let ls = JSON.parse(localStorage.getItem("settings"));
+    //   console.log(`client operation, settings exists from LS eg #players ${ls.numberOfPlayers}`, ls);
+    //   settings = ls;
+    //   storeSettings.set(ls);
+    //   initialized = true;
+    // }
   }
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     // initializeSettings();
-    checkForLSSettings();
+    // checkForLSSettings();
     setAllInputWidths();
-    storeSettings.set(settings);
+    // storeSettings.set(settings);
     storeSettings.subscribe(value => {
       console.log(`MainMenu => storeSettings.subscribe value => `, value);
       // settings = value;
@@ -120,7 +173,10 @@
   }
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    console.log(`triggerGameBoardUpdate settings should write to LS, eg #players ${settings.numberOfPlayers}: `, settings)
+    console.log(
+      `triggerGameBoardUpdate settings should write to LS, eg #players ${settings.numberOfPlayers}: `,
+      settings
+    );
     storeSettings.set(settings);
     setSingleInputWidth(e.target);
   }
