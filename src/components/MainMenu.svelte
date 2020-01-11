@@ -27,22 +27,27 @@
   };
   let settings = initialSettings;
   $: {
+    // settings, initializeSettings();
     if (typeof window !== "undefined") {
-          settings, initializeSettings();
-      // if (localStorage.getItem("settings")) {
-      //   let ls = JSON.parse(localStorage.getItem("settings"));
-      //   console.log(`client operation, settings exists `, ls);
-      //   settings = ls;
-      // }
+      settings && checkForLSSettings();
     }
-
   }
   // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
+  function checkForLSSettings() {
+    if (localStorage.getItem("settings")) {
+      let ls = JSON.parse(localStorage.getItem("settings"));
+      console.log(`client operation, settings exists `, ls);
+      settings = ls;
+      storeSettings.set(ls);
+      initialized = true;
+    }
+  }
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
-    initializeSettings();
+    // initializeSettings();
+    checkForLSSettings();
     setAllInputWidths();
     storeSettings.set(settings);
     storeSettings.subscribe(value => {
@@ -79,7 +84,9 @@
           }
         }
       } else {
-        let reason = new Error("No localStorage, initialized default settings");
+        let reason = new Error(
+          "Not an error - no settings in localStorage, so I initialized default settings"
+        );
         initialized = true;
         reject(reason);
       }
@@ -179,93 +186,93 @@
   <h2>Game Settings</h2>
 </div>
 <!-- {#if initialized} -->
-  <div class="form-wrap settings-menu">
-    <label for="players">
-      <div class="label-content">players</div>
-      <input
-        id="players"
-        name="players"
-        type="number"
-        placeholder={settings.numberOfPlayers}
-        bind:value={settings.numberOfPlayers}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="rows">
-      <div class="label-content">rows</div>
-      <input
-        id="rows"
-        name="rows"
-        type="number"
-        placeholder={settings.rows}
-        bind:value={settings.rows}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="columns">
-      <div class="label-content">columns</div>
-      <input
-        id="columns"
-        name="columns"
-        type="number"
-        placeholder={settings.columns}
-        bind:value={settings.columns}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="movesPerTurn">
-      <div class="label-content">moves per turn</div>
-      <input
-        id="movesPerTurn"
-        name="movesPerTurn"
-        type="number"
-        placeholder={settings.movesPerTurn}
-        bind:value={settings.movesPerTurn}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="movesPerTurn">
-      <div class="label-content">in a row to score</div>
-      <input
-        id="cellsToScore"
-        name="cellsToScore"
-        type="number"
-        placeholder={settings.cellsToScore}
-        bind:value={settings.cellsToScore}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="bonus">
-      <div class="label-content">bonus for complete line</div>
-      <input
-        id="bonusForCompleteRow"
-        name="bonusForCompleteRow"
-        type="number"
-        placeholder={settings.bonusForCompleteRow}
-        bind:value={settings.bonusForCompleteRow}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-    <label for="size">
-      <div class="label-content">square size (px)</div>
-      <input
-        id="size"
-        name="size"
-        type="number"
-        placeholder={settings.size}
-        bind:value={settings.size}
-        step="4"
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-  </div>
+<div class="form-wrap settings-menu">
+  <label for="players">
+    <div class="label-content">players</div>
+    <input
+      id="players"
+      name="players"
+      type="number"
+      placeholder={settings.numberOfPlayers}
+      bind:value={settings.numberOfPlayers}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="rows">
+    <div class="label-content">rows</div>
+    <input
+      id="rows"
+      name="rows"
+      type="number"
+      placeholder={settings.rows}
+      bind:value={settings.rows}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="columns">
+    <div class="label-content">columns</div>
+    <input
+      id="columns"
+      name="columns"
+      type="number"
+      placeholder={settings.columns}
+      bind:value={settings.columns}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="movesPerTurn">
+    <div class="label-content">moves per turn</div>
+    <input
+      id="movesPerTurn"
+      name="movesPerTurn"
+      type="number"
+      placeholder={settings.movesPerTurn}
+      bind:value={settings.movesPerTurn}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="movesPerTurn">
+    <div class="label-content">in a row to score</div>
+    <input
+      id="cellsToScore"
+      name="cellsToScore"
+      type="number"
+      placeholder={settings.cellsToScore}
+      bind:value={settings.cellsToScore}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="bonus">
+    <div class="label-content">bonus for complete line</div>
+    <input
+      id="bonusForCompleteRow"
+      name="bonusForCompleteRow"
+      type="number"
+      placeholder={settings.bonusForCompleteRow}
+      bind:value={settings.bonusForCompleteRow}
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+  <label for="size">
+    <div class="label-content">square size (px)</div>
+    <input
+      id="size"
+      name="size"
+      type="number"
+      placeholder={settings.size}
+      bind:value={settings.size}
+      step="4"
+      on:input={triggerGameBoardUpdate}
+      on:click={highlight}
+      style="width: 2.5ch;" />
+  </label>
+</div>
 <!-- {:else}
   <div>
     <h1 class="loading-settings-message">Loading settings data...</h1>
