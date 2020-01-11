@@ -35,10 +35,12 @@
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
-    numberOfPlayers &&
-      setTimeout(() => {
-        addStyles();
-      }, 1);
+    if (typeof window !== "undefined") {
+      numberOfPlayers &&
+        setTimeout(() => {
+          addStyles();
+        }, 1);
+    }
   }
 
   onMount(() => {
@@ -85,7 +87,7 @@
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("playerDetails", true);
-    storeCurrentPlayer.set(players[currentPlayer.id])
+    storeCurrentPlayer.set(players[currentPlayer.id]);
     // localStorage.setItem(
     //   "currentPlayer",
     //   JSON.stringify(players[currentPlayer.id])
