@@ -14,7 +14,6 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
     movesPerTurn: 4,
@@ -27,6 +26,7 @@
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
+  let settingsCheck = JSON.parse(JSON.stringify(settings));
   // let settings = Object.assign({}, initialSettings);
   $: {
     // settings, initializeSettings();
@@ -39,56 +39,59 @@
 
   function checkForLSSettings() {
     let JSONls = localStorage.getItem("settings");
-    let JSONinit = JSON.stringify(initialSettings);
+    let JSONcheck = JSON.stringify(settingsCheck);
     let JSONcurrent = JSON.stringify(settings);
     let ls = JSON.parse(JSONls);
 
-    console.log(
-      `MainMenu => checkForLSSettings() initialSettings #players ${
-        initialSettings.numberOfPlayers
-      }::: initialSettings === current settings::: ${JSONinit ===
-        JSONcurrent}\n`,
-      JSONinit,
-      `\n`,
-      JSONcurrent
-    );
-    if (JSONls !== null) {
-      console.log(
-        `MainMenu => checkForLSSettings() ls #players ${
-          ls.numberOfPlayers
-        }::: initialSettings === ls ::: ${JSONinit === JSONls}\n`,
-        JSONinit,
-        `\n`,
-        JSONls
-      );
-    }
-    if (ls !== null) {
-      console.log(
-        `MainMenu => checkForLSSettings() current #players ${
-          settings.numberOfPlayers
-        }::: ls === current settings ::: ${JSONls === JSONcurrent}\n`,
-        JSONls,
-        `\n`,
-        JSONcurrent
-      );
-    }
-
+    // console.log(
+    //   `MainMenu => checkForLSSettings() initialSettings #players ${
+    //     initialSettings.numberOfPlayers
+    //   }::: initialSettings === current settings::: ${JSONcheck ===
+    //     JSONcurrent}\n`,
+    //   JSONcheck,
+    //   `\n`,
+    //   JSONcurrent
+    // );
+    // if (JSONls !== null) {
+    //   console.log(
+    //     `MainMenu => checkForLSSettings() ls #players ${
+    //       ls.numberOfPlayers
+    //     }::: initialSettings === ls ::: ${JSONcheck === JSONls}\n`,
+    //     JSONcheck,
+    //     `\n`,
+    //     JSONls
+    //   );
+    // }
+    // if (ls !== null) {
+    //   console.log(
+    //     `MainMenu => checkForLSSettings() current #players ${
+    //       settings.numberOfPlayers
+    //     }::: ls === current settings ::: ${JSONls === JSONcurrent}\n`,
+    //     JSONls,
+    //     `\n`,
+    //     JSONcurrent
+    //   );
+    // }
+        console.log(
+          `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} settings ${settings.numberOfPlayers} settingsCheck ${settingsCheck.numberOfPlayers} :::\n`
+        );
     if (JSONls !== JSONcurrent) {
       if (ls !== null) {
         console.log(
           `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} !== current settings ${settings.numberOfPlayers} so checking now which differs from initialSettings :::\n`
         );
-        if (JSONcurrent === JSONinit) {
+        if (JSONcurrent === JSONcheck) {
           console.log(
-            `MainMenu => checkForLSSettings() current matches initial. Settings should = LS :::\n`
+            `MainMenu => checkForLSSettings() current matches last check. Looks like we need to set current settings <<< FROM >>> LS :::\n`
           );
           settings = ls;
-          storeSettings.set(settings);
+          storeSettings.set(ls);
         } else {
           console.log(
-            `Looks like we need to set current settings to LS... let's try that`
+            `Current settings do NOT match stored check. Looks like we need to set current settings >>> TO <<< LS... let's try that`
           );
           storeSettings.set(settings);
+          settingsCheck = settings
         }
       }
     } else {
@@ -97,14 +100,13 @@
       );
     }
     storeSettings.set(settings);
-    initialized = true;
+    
     // if (localStorage.getItem("settings")) {
     //   console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
     //   let ls = JSON.parse(localStorage.getItem("settings"));
     //   console.log(`client operation, settings exists from LS eg #players ${ls.numberOfPlayers}`, ls);
     //   settings = ls;
     //   storeSettings.set(ls);
-    //   initialized = true;
     // }
   }
   onMount(() => {
@@ -112,7 +114,7 @@
     // initializeSettings();
     // checkForLSSettings();
     setAllInputWidths();
-    // storeSettings.set(settings);
+    storeSettings.set(settings);
     storeSettings.subscribe(value => {
       console.log(`MainMenu => storeSettings.subscribe value => `, value);
       // settings = value;
@@ -142,7 +144,6 @@
             //   `initSettings :PROMISE: => localStorage settings contains rows property`
             // );
             storeSettings.set(lsJSetParsed);
-            initialized = true;
             resolve(lsJSetParsed);
           }
         }
@@ -150,7 +151,6 @@
         let reason = new Error(
           "Not an error - no settings in localStorage, so I initialized default settings"
         );
-        initialized = true;
         reject(reason);
       }
     });
@@ -251,7 +251,6 @@
 <div class="settings-menu-heading">
   <h2>Game Settings</h2>
 </div>
-<!-- {#if initialized} -->
 <div class="form-wrap settings-menu">
   <label for="players">
     <div class="label-content">players</div>
@@ -339,8 +338,3 @@
       style="width: 2.5ch;" />
   </label>
 </div>
-<!-- {:else}
-  <div>
-    <h1 class="loading-settings-message">Loading settings data...</h1>
-  </div>
-{/if} -->
