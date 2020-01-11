@@ -36,9 +36,19 @@
   // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
 
   function checkForLSSettings() {
+    let ls = localStorage.getItem("settings");
+    let JSONinit = JSON.stringify(initialSettings)
+    let JSONcurrent = JSON.stringify(settings)
+    console.log(`MainMenu => checkForLSSettings() (means initialize on component mount or update on settings change)`)
+    console.log(`MainMenu => checkForLSSettings() does initialSettings differ from current settings, and do those differ from LS?`)
+    console.log(`MainMenu => checkForLSSettings() initialSettings == current settings::: ${JSONinit === JSONcurrent}\n`, JSONinit, `\n`,JSONcurrent)
+    console.log(`MainMenu => checkForLSSettings() initialSettings == ls ::: ${JSONinit === ls}\n`, JSONinit, `\n`, ls)
+    console.log(`MainMenu => checkForLSSettings() ls == current settings ::: ${ls === JSONcurrent}\n`, ls, `\n`,JSONcurrent)
+    // storeSettings.set(settings)
     if (localStorage.getItem("settings")) {
+      console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
       let ls = JSON.parse(localStorage.getItem("settings"));
-      console.log(`client operation, settings exists `, ls);
+      console.log(`client operation, settings exists from LS eg #players ${ls.numberOfPlayers}`, ls);
       settings = ls;
       storeSettings.set(ls);
       initialized = true;
@@ -110,7 +120,7 @@
   }
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    // console.log(`triggerGameBoardUpdate settings should write to LS: `, settings)
+    console.log(`triggerGameBoardUpdate settings should write to LS, eg #players ${settings.numberOfPlayers}: `, settings)
     storeSettings.set(settings);
     setSingleInputWidth(e.target);
   }
