@@ -39,9 +39,10 @@
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
       ({ numberOfPlayers } = settings);
-              setTimeout(() => {
-          addStyles();
-        }, 1);
+      addStyles();
+        //       setTimeout(() => {
+        //   addStyles();
+        // }, 1);
     });
     players = $storePlayers;
     state = $storeState;

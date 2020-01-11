@@ -28,14 +28,12 @@
   let settings = JSON.parse(JSON.stringify(initialSettings));
   let settingsCheck = JSON.parse(JSON.stringify(settings));
   // let settings = Object.assign({}, initialSettings);
-  $: {
-    // settings, initializeSettings();
-    if (typeof window !== "undefined") {
-      settings && checkForLSSettings();
-    }
-  }
-  // $: console.log(`MainMenu settings.rows: ${settings.rows}`);
-  // $: console.log(`MainMenu settings.columns: ${settings.columns}`);
+  // $: {
+  //   // settings, initializeSettings();
+  //   if (typeof window !== "undefined") {
+  //     settings && initializeSettingsFromLS();
+  //   }
+  // }
 
   function checkForLSSettings() {
     let JSONls = localStorage.getItem("settings");
@@ -43,38 +41,6 @@
     let JSONcurrent = JSON.stringify(settings);
     let ls = JSON.parse(JSONls);
 
-    // console.log(
-    //   `MainMenu => checkForLSSettings() initialSettings #players ${
-    //     initialSettings.numberOfPlayers
-    //   }::: initialSettings === current settings::: ${JSONcheck ===
-    //     JSONcurrent}\n`,
-    //   JSONcheck,
-    //   `\n`,
-    //   JSONcurrent
-    // );
-    // if (JSONls !== null) {
-    //   console.log(
-    //     `MainMenu => checkForLSSettings() ls #players ${
-    //       ls.numberOfPlayers
-    //     }::: initialSettings === ls ::: ${JSONcheck === JSONls}\n`,
-    //     JSONcheck,
-    //     `\n`,
-    //     JSONls
-    //   );
-    // }
-    // if (ls !== null) {
-    //   console.log(
-    //     `MainMenu => checkForLSSettings() current #players ${
-    //       settings.numberOfPlayers
-    //     }::: ls === current settings ::: ${JSONls === JSONcurrent}\n`,
-    //     JSONls,
-    //     `\n`,
-    //     JSONcurrent
-    //   );
-    // }
-        console.log(
-          `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} settings ${settings.numberOfPlayers} settingsCheck ${settingsCheck.numberOfPlayers} :::\n`
-        );
     if (JSONls !== JSONcurrent) {
       if (ls !== null) {
         console.log(
@@ -91,7 +57,7 @@
             `Current settings do NOT match stored check. Looks like we need to set current settings >>> TO <<< LS... let's try that`
           );
           storeSettings.set(settings);
-          settingsCheck = settings
+          settingsCheck = settings;
         }
       }
     } else {
@@ -100,7 +66,7 @@
       );
     }
     storeSettings.set(settings);
-    
+
     // if (localStorage.getItem("settings")) {
     //   console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
     //   let ls = JSON.parse(localStorage.getItem("settings"));
@@ -109,9 +75,11 @@
     //   storeSettings.set(ls);
     // }
   }
+
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     // initializeSettings();
+    initializeSettingsFromLS();
     // checkForLSSettings();
     setAllInputWidths();
     storeSettings.set(settings);
@@ -122,6 +90,49 @@
 
     // settings.numberOfPlayers;
   });
+
+  function initializeSettingsFromLS() {
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    let ls = JSON.parse(localStorage.getItem("settings"));
+    if (ls !== null) {
+        console.log(
+          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL \n\n`,
+          ls,
+          `\nCurrent settings: \n`,
+          settings
+        );
+        settings = ls;
+        storeSettings.set(ls);
+    }
+  }
+
+
+  function initializeSettingsFromLS22222() {
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    let ls = JSON.parse(localStorage.getItem("settings"));
+    if (ls !== null) {
+      if (!gameInProgress) {
+        console.log(
+          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL and >>>>>>>>>> game is NOT in progress \n\n`,
+          ls,
+          `\nCurrent settings: \n`,
+          settings
+        );
+        settings = ls;
+        storeSettings.set(ls);
+      } else {
+        console.log(
+          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL and >>>>>>>>>> game ISISISISISIS in progress \n\n`,
+          ls,
+          `\nCurrent settings: \n`,
+          settings
+        );
+        // settings = ls
+        storeSettings.set(settings);
+      }
+    }
+  }
+
 
   function initializeSettings() {
     let initSettings = new Promise((resolve, reject) => {
@@ -171,6 +182,7 @@
       setSingleInputWidth(inputs[i]);
     }
   }
+  
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
     console.log(
