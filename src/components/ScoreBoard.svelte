@@ -23,15 +23,6 @@
   let settings = {};
   $: gameUnderway = false;
 
-  // storePlayers.subscribe(value => {
-  //   console.log(`ScoreBoard => storePlayers subscribed`, value);
-  //   players = value;
-  // });
-  // storeState.subscribe(value => {
-  //   console.log(`ScoreBoard => storeState subscribed`, value);
-  //   players = value;
-  // });
-
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
@@ -48,6 +39,9 @@
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
       ({ numberOfPlayers } = settings);
+              setTimeout(() => {
+          addStyles();
+        }, 1);
     });
     players = $storePlayers;
     state = $storeState;
