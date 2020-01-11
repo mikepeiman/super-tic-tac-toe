@@ -40,32 +40,22 @@
       settings = value;
       ({ numberOfPlayers } = settings);
       addStyles();
-        //       setTimeout(() => {
-        //   addStyles();
-        // }, 1);
     });
     players = $storePlayers;
     state = $storeState;
-    // currentPlayer = $storeCurrentPlayer;
     storeCurrentPlayer.subscribe(value => {
       // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
       if (value === null) {
-        // console.log(`yep, value null, no currentPLayer`);
         currentPlayer = players[0];
       }
     });
     storePlayers.subscribe(value => {
-      // console.log(
-      //   `ScoreBoard => storePlayers subscribed value of new players object, old players object `,
-      //   value,
-      //   players
-      // );
       players = value;
     });
-    setTimeout(() => {
-      addStyles();
-    }, 1);
+    // setTimeout(() => {
+    //   addStyles();
+    // }, 1);
   });
 
   afterUpdate(() => {

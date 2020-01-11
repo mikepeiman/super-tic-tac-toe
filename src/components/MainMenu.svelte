@@ -26,69 +26,16 @@
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
-  let settingsCheck = JSON.parse(JSON.stringify(settings));
   // let settings = Object.assign({}, initialSettings);
-  // $: {
-  //   // settings, initializeSettings();
-  //   if (typeof window !== "undefined") {
-  //     settings && initializeSettingsFromLS();
-  //   }
-  // }
-
-  function checkForLSSettings() {
-    let JSONls = localStorage.getItem("settings");
-    let JSONcheck = JSON.stringify(settingsCheck);
-    let JSONcurrent = JSON.stringify(settings);
-    let ls = JSON.parse(JSONls);
-
-    if (JSONls !== JSONcurrent) {
-      if (ls !== null) {
-        console.log(
-          `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} !== current settings ${settings.numberOfPlayers} so checking now which differs from initialSettings :::\n`
-        );
-        if (JSONcurrent === JSONcheck) {
-          console.log(
-            `MainMenu => checkForLSSettings() current matches last check. Looks like we need to set current settings <<< FROM >>> LS :::\n`
-          );
-          settings = ls;
-          storeSettings.set(ls);
-        } else {
-          console.log(
-            `Current settings do NOT match stored check. Looks like we need to set current settings >>> TO <<< LS... let's try that`
-          );
-          storeSettings.set(settings);
-          settingsCheck = settings;
-        }
-      }
-    } else {
-      console.log(
-        `MainMenu => checkForLSSettings() ls ${ls.numberOfPlayers} === current settings ${settings.numberOfPlayers}, so setting current to storeSettings :::`
-      );
-    }
-    storeSettings.set(settings);
-
-    // if (localStorage.getItem("settings")) {
-    //   console.log(`client operation, settings exists before LS eg #players ${settings.numberOfPlayers}`, settings);
-    //   let ls = JSON.parse(localStorage.getItem("settings"));
-    //   console.log(`client operation, settings exists from LS eg #players ${ls.numberOfPlayers}`, ls);
-    //   settings = ls;
-    //   storeSettings.set(ls);
-    // }
-  }
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
-    // initializeSettings();
     initializeSettingsFromLS();
-    // checkForLSSettings();
     setAllInputWidths();
     storeSettings.set(settings);
     storeSettings.subscribe(value => {
       console.log(`MainMenu => storeSettings.subscribe value => `, value);
-      // settings = value;
     });
-
-    // settings.numberOfPlayers;
   });
 
   function initializeSettingsFromLS() {
@@ -106,71 +53,6 @@
     }
   }
 
-
-  function initializeSettingsFromLS22222() {
-    let gameInProgress = localStorage.getItem("gameInProgress");
-    let ls = JSON.parse(localStorage.getItem("settings"));
-    if (ls !== null) {
-      if (!gameInProgress) {
-        console.log(
-          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL and >>>>>>>>>> game is NOT in progress \n\n`,
-          ls,
-          `\nCurrent settings: \n`,
-          settings
-        );
-        settings = ls;
-        storeSettings.set(ls);
-      } else {
-        console.log(
-          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL and >>>>>>>>>> game ISISISISISIS in progress \n\n`,
-          ls,
-          `\nCurrent settings: \n`,
-          settings
-        );
-        // settings = ls
-        storeSettings.set(settings);
-      }
-    }
-  }
-
-
-  function initializeSettings() {
-    let initSettings = new Promise((resolve, reject) => {
-      if (!settings) {
-        let settings = initialSettings;
-      }
-      if (settings.rows) {
-        settings = settings;
-      }
-      let lsSet = localStorage.getItem("settings");
-      if (lsSet) {
-        let lsJSetParsed = JSON.parse(lsSet);
-        if (lsJSetParsed) {
-          // console.log("settings.lineBonus: ", lsJSet.lineBonus);
-          if (lsJSetParsed.lineBonus === "undefined") {
-            lsJSetParsed.lineBonus = 0;
-          }
-          if (lsJSetParsed.rows) {
-            // console.log(
-            //   `initSettings :PROMISE: => localStorage settings contains rows property`
-            // );
-            storeSettings.set(lsJSetParsed);
-            resolve(lsJSetParsed);
-          }
-        }
-      } else {
-        let reason = new Error(
-          "Not an error - no settings in localStorage, so I initialized default settings"
-        );
-        reject(reason);
-      }
-    });
-  }
-
-  function updatePlayers() {
-    console.log(`MainMenu component, clicked to test countPoints: `, players);
-  }
-
   function setSingleInputWidth(input) {
     input.style.width = `${input.value.toString().length + 0.5}ch`;
   }
@@ -182,7 +64,7 @@
       setSingleInputWidth(inputs[i]);
     }
   }
-  
+
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
     console.log(
