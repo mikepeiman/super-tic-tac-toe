@@ -3,7 +3,7 @@
 </script>
 
 <style lang="scss">
-$border-size: 1px;
+  $border-size: 1px;
 	nav {
 		border-bottom: $border-size solid rgba(255,62,0,0.1);
 		font-weight: 300;
@@ -55,7 +55,7 @@ $border-size: 1px;
 	<ul>
 		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
 		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
-    <li><a class:selected='{segment === "tictactoe"}' href='TicTacToe'>tictactoe</a></li>
+    <li><a class:selected='{segment === "tictactoe"}' href='tictactoe'>tictactoe</a></li>
 
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
