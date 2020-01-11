@@ -319,8 +319,8 @@
     <div class="text-content">
       <h2>DEVELOPMENT (tentative roadmap):</h2>
       <ul>
-        <li>Incremental point bonuses</li>
-        <li>Different gameboard layouts beyond rectangular (crosses, rings)</li>
+        <li>Incremental point bonuses and other scoring variations</li>
+        <li>A range of gameplay features, too numerous to list here....</li>
         <li>Save and load games via local file system</li>
         <li>User authentication/login, save games and profile to DB</li>
         <li>Make solid mobile layout (currently designed for desktop)</li>
