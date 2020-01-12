@@ -204,7 +204,7 @@
       alt="A completed game of Super Tic Tac Toe"
       src="tictactoe-homepage.jpg" />
     <figcaption>An example of a completed game</figcaption>
-    <a segment rel=prefetch class="tictactoe-button" id="playnow" href="tictactoe">PLAY NOW!</a>
+    <a segment rel=prefetch class="tictactoe-button" id="playnow" href="tictactoe/">PLAY NOW!</a>
   </figure>
 
   <div class="game-info">
@@ -337,7 +337,7 @@
 
     <div class="text-content">
       <h2>Go on, play already...!</h2>
-      <a segment class="tictactoe-button" id="final-button" href="tictactoe">
+      <a segment class="tictactoe-button" id="final-button" href="tictactoe/">
         PLAY NOW!
       </a>
     </div>

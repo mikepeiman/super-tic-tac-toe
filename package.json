@@ -1,7 +1,7 @@
 {
-  "name": "TODO",
-  "description": "TODO",
-  "version": "0.0.1",
+  "name": "Super TicTacToe",
+  "description": "The evolution of Tic Tac Toe",
+  "version": "0.1.0",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
