@@ -34,8 +34,8 @@
   }
 
   .game-square {
-    width: 24px;
-    height: 24px;
+    // width: 24px;
+    // height: 24px;
     background: var(--custom-bg);
     border: none;
     border: 1px solid rgba(0,0,0,0.5);

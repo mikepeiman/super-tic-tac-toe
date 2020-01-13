@@ -95,10 +95,12 @@
     display: flex;
     flex-direction: column;
     color: #eee;
-    justify-content: start;
-    align-items: start;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    width: 100%;
     // overflow: hidden;
-    margin-bottom: 2rem;
+    // margin-bottom: 2rem;
   }
   .scoreboard-container {
     grid-area: scoreboard;
@@ -140,21 +142,22 @@
     -moz-appearance: textfield;
   }
 
-  .gameboard-board {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-  }
+  // .gameboard-board {
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-self: center;
+  // }
 
   .game-row {
     display: flex;
   }
 
   .game-square {
-    width: 24px;
-    height: 24px;
+    min-width: 12px;
+    min-height: 12px;
+    flex: 1;
     background: var(--custom-bg);
-    border: 1px solid black;
+    border: 1px solid rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     align-items: center;

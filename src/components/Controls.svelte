@@ -1,6 +1,4 @@
 <script>
-  import Content from "./modalOne.svelte";
-  import Modal from "svelte-simple-modal";
   import { getContext } from "svelte";
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();

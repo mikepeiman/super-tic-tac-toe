@@ -68,6 +68,15 @@
   $: gameHistoryTurns = [];
   $: turnHistory = [];
   $: gameHistoryFlat = [];
+  $: gameboardWidth = 0;
+  $: gameboardHeight = 0;
+  $: cellWidth = 0;
+  $: cellHeight = 0;
+  $: cellSize = 0;
+  let shrinkFactor = 0.75;
+  $: {
+    console.log('cellSize as lowest of calculated dimensions: ', cellSize)
+  }
 
   if (typeof window !== "undefined") {
     console.log("GameBoard check: we are running on the client");
@@ -95,7 +104,7 @@
   $: rows, columns, size, numberOfPlayers && resetGameBoard();
 
   onMount(() => {
-    console.log(`GameBoard component mounted`);
+   
 
     storeSettings.subscribe(value => {
       settings = value;
@@ -112,7 +121,27 @@
       currentPlayer = value;
       // localStorage.setItem("currentPlayer", JSON.stringify(value));
     });
-    let gameboard = document.querySelector("#gameboard-board");
+
+let gameboard = document.querySelector(".gameboard-container");
+ console.log(`GameBoard component mounted, gameboard el \n`, gameboard, `\n`);
+ console.dir(gameboard)
+  gameboardWidth = gameboard.offsetWidth;
+  gameboardHeight = gameboard.offsetHeight;
+  cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor)
+  cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor)
+  console.log(`W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`)
+  // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
+  if(cellWidth >= cellHeight) {
+    console.log(`W:${cellWidth} > H:${cellHeight}`)
+    cellSize = cellHeight
+  } else {
+    console.log(`W:${cellWidth} < H:${cellHeight}`)
+    cellSize = cellWidth
+  }
+  console.log(`GameBoard component mounted, gameboard el W:${gameboardWidth} H:${gameboardHeight}`);
+  console.log(`GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`);
+  console.log(`GameBoard component mounted, and final size: ${cellSize}`)
+    
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
     gameHistoryTurns = $storeGameHistoryTurns;
@@ -123,7 +152,7 @@
     let newBoard = buildGameBoard(
       settings.rows,
       settings.columns,
-      settings.size,
+      cellSize,
       settings.gutter
     );
 
@@ -161,7 +190,7 @@
       buildGameBoard(
         settings.rows,
         settings.columns,
-        settings.size,
+        cellSize,
         settings.gutter
       );
       storeState.set(state);
@@ -196,7 +225,7 @@
     buildGameBoard(
       settings.rows,
       settings.columns,
-      settings.size,
+      cellSize,
       settings.gutter
     );
 
@@ -230,8 +259,8 @@
           let cell = document.getElementById(move.id);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
           cell.style.margin = settings.gutter + "px";
-          cell.style.width = settings.size + "px";
-          cell.style.height = settings.size + "px";
+          cell.style.width = cellSize + "px";
+          cell.style.height = cellSize + "px";
           cell.setAttribute("data-marker", players[p].marker);
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
@@ -250,8 +279,8 @@
         let cell = document.getElementById(move.id);
         cell.style = `--custom-bg: ${players[p].bgColor}`;
         cell.style.margin = settings.gutter + "px";
-        cell.style.width = settings.size + "px";
-        cell.style.height = settings.size + "px";
+        cell.style.width = cellSize + "px";
+        cell.style.height = cellSize + "px";
         cell.setAttribute("data-marker", players[p].marker);
         cell.setAttribute("data-ticked", true);
         cell.classList.add("ticked");
@@ -282,8 +311,8 @@
         // console.log(`New resizeCells() function, checking gridCell: `, gridCell)
         let cell = document.getElementById(gridCell.id);
         cell.style.margin = settings.gutter + "px";
-        cell.style.width = settings.size + "px";
-        cell.style.height = settings.size + "px";
+        cell.style.width = cellSize + "px";
+        cell.style.height = cellSize + "px";
       }
     }
   }
@@ -477,7 +506,7 @@
     await buildGameBoard(
       settings.rows,
       settings.columns,
-      settings.size,
+      cellSize,
       settings.gutter
     );
     // console.log(`New resizeCells() function about to be called `);
@@ -539,7 +568,7 @@
 
   function tickThis(cell) {
     // console.log(
-    //   `tickThis(cell) BEFORE, settings.size ${settings.size} `,
+    //   `tickThis(cell) BEFORE, cellSize ${cellSize} `,
     //   settings,
     //   cell
     // );
@@ -563,11 +592,11 @@
     cell.setAttribute("player-name", currentPlayer.name);
     cell.style = `--custom-bg: ${currentPlayer.bgColor}`;
     cell.style.margin = settings.gutter + "px";
-    cell.style.width = settings.size + "px";
-    cell.style.height = settings.size + "px";
+    cell.style.width = cellSize + "px";
+    cell.style.height = cellSize + "px";
     cell.setAttribute("data-marker", currentPlayer.marker);
     // console.log(
-    //   `tickThis(cell) AFTER, settings.size ${settings.size} `,
+    //   `tickThis(cell) AFTER, cellSize ${cellSize} `,
     //   settings,
     //   cell
     // );
@@ -585,8 +614,8 @@
     let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     cell.style = customBg;
     cell.style.margin = settings.gutter + "px";
-    cell.style.width = settings.size + "px";
-    cell.style.height = settings.size + "px";
+    cell.style.width = cellSize + "px";
+    cell.style.height = cellSize + "px";
     cell.dataset.ticked = false;
     cell.removeAttribute("player-id");
     cell.removeAttribute("player-name");
@@ -785,8 +814,9 @@
   .row {
     display: flex;
   }
-  .component-wrapper {
-    width: 100%;
+  .gameboard-board {
+    // min-width: 100%;
+    //     min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -805,8 +835,7 @@
   }
 </style>
 
-<div class="component-wrapper">
-  <div id="gameboard-board" class="gameboard-board" />
+  <div id="gameboard-board" class="gameboard-board" >
   {#each grid as row}
     <div class="row">
       {#each row as cell}
@@ -818,5 +847,5 @@
       {/each}
     </div>
   {/each}
-
 </div>
+
