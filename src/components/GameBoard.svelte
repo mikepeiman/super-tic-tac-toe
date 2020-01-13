@@ -79,26 +79,10 @@
     console.log("cellSize as lowest of calculated dimensions: ", cellSize);
   }
 
-  if (typeof window !== "undefined") {
-    console.log("GameBoard check: we are running on the client");
-    storeGameHistoryFlat.subscribe(value => {
-      // console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
-      // console.log(
-      //   `GameBoard => storeGameHistoryFlat subscribed length: `,
-      //   value.length
-      // );
-    });
+  // if (typeof window !== "undefined") {
+  //   console.log("GameBoard check: we are running on the client");
 
-    storeGameHistoryTurns.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
-      let ghls = localStorage.getItem("gameHistoryTurns");
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
-      let parsedGhls = JSON.parse(ghls);
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
-    });
-  } else {
-    console.log("GameBoard check: we are running on the server");
-  }
+  // }
 
   let rows, columns, size, numberOfPlayers;
   ({ rows, columns, size, numberOfPlayers } = settings);
@@ -119,6 +103,20 @@
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
       // localStorage.setItem("currentPlayer", JSON.stringify(value));
+    });
+    storeGameHistoryFlat.subscribe(value => {
+      // console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
+      // console.log(
+      //   `GameBoard => storeGameHistoryFlat subscribed length: `,
+      //   value.length
+      // );
+    });
+    storeGameHistoryTurns.subscribe(value => {
+      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      let ghls = localStorage.getItem("gameHistoryTurns");
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
+      let parsedGhls = JSON.parse(ghls);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
 
     let gameboard = document.querySelector(".gameboard-container");

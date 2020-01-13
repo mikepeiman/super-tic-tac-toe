@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   // import { createEventDispatcher } from 'svelte';
-  export let id, row, column, player, ticked, cellClasses, cellStyles, customBg;
+  export let id, row, column, ticked, customBg;
   import { storeSettings } from "../stores.js";
 
   const dispatch = createEventDispatcher();

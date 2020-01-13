@@ -105,7 +105,7 @@
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);
-      animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      // animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
       transition: all .25s;
     }
   }
@@ -161,7 +161,7 @@
     border: 4px solid #fff;
     opacity: 1;
     border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    // animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
   }
   .lds-ripple div:nth-child(2) {
     animation-delay: -0.5s;
