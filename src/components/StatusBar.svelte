@@ -1,7 +1,7 @@
 <script>
   import Content from "./modalOne.svelte";
   import Modal from "svelte-simple-modal";
-    import { getContext } from 'svelte';
+  import { getContext } from "svelte";
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
@@ -17,8 +17,6 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
-
-
 
   $: currentPlayer = {};
   $: state = {};
@@ -233,33 +231,38 @@
       </h2>
       <div class="buttons-wrapper">
 
-        <Modal class="modal">
-        <Content />
-          <button
-            class="control-button"
-            id="new-game-button"
-            on:click={resetGame}>
-            New Game
-          </button>
-          <button
-            class="control-button"
-            id="save-game-button"
-            on:click={saveGame}>
-            Save game
-          </button>
-          <button
-            class="control-button"
-            id="save-game-button"
-            on:click={loadGame}>
-            Load game
-          </button>
-          <button
-            class="control-button"
-            id="reset-players-button"
-            on:click={resetPlayers}>
-            Reset players
-          </button>
-        </Modal>
+        <!-- <Modal class="modal"> -->
+        <!-- <Content /> -->
+
+        <CountPoints
+          {players}
+          {gameboardMapped}
+          on:playersScored={playersScored} />
+        <button
+          class="control-button"
+          id="new-game-button"
+          on:click={resetGame}>
+          New Game
+        </button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={saveGame}>
+          Save game
+        </button>
+        <button
+          class="control-button"
+          id="save-game-button"
+          on:click={loadGame}>
+          Load game
+        </button>
+        <button
+          class="control-button"
+          id="reset-players-button"
+          on:click={resetPlayers}>
+          Reset players
+        </button>
+        <!-- </Modal> -->
 
       </div>
     </div>
