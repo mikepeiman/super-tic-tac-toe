@@ -221,10 +221,14 @@
       margin: 0 1rem 1rem 1rem;
       transition: all 0.25s;
       border: 5px solid #1a1a1a;
-      min-width: 100%;
+      min-width: calc(100% - 10px - 1rem);
+      transform: scale(1);
     }
     .highlighted {
-      transform: translateX(1rem);
+      transform: translateX(1rem) scale(1.025);
+          border: 5px solid #eeeeee;
+    position: relative;
+    transition: all 0.25s;
     }
   }
 </style>
