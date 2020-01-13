@@ -9,6 +9,7 @@ import { writable } from "svelte/store";
 // }
 
 let settings = writable({});
+let cellSize = writable(0);
 let state = writable({
   lastTicked: "",
   currentPlayer: {},
@@ -44,6 +45,15 @@ export const storeSettings = {
     localStorage.setItem("settings", JSON.stringify(val));
   }
 };
+
+export const storeCellSize = {
+  subscribe: cellSize.subscribe,
+  set: val => {
+    cellSize.set(val);
+    localStorage.setItem("cellSize", JSON.stringify(val));
+  }
+};
+
 export const storeState = {
   subscribe: state.subscribe,
   set: val => {

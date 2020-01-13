@@ -5,6 +5,7 @@
   import Cell from "./Cell.svelte";
   import {
     storeSettings,
+    storeCellSize,
     storeState,
     storePlayers,
     storeCurrentPlayer,
@@ -75,7 +76,7 @@
   $: cellSize = 0;
   let shrinkFactor = 0.75;
   $: {
-    console.log('cellSize as lowest of calculated dimensions: ', cellSize)
+    console.log("cellSize as lowest of calculated dimensions: ", cellSize);
   }
 
   if (typeof window !== "undefined") {
@@ -104,8 +105,6 @@
   $: rows, columns, size, numberOfPlayers && resetGameBoard();
 
   onMount(() => {
-   
-
     storeSettings.subscribe(value => {
       settings = value;
       ({ rows, columns, size, numberOfPlayers } = settings);
@@ -122,26 +121,41 @@
       // localStorage.setItem("currentPlayer", JSON.stringify(value));
     });
 
-let gameboard = document.querySelector(".gameboard-container");
- console.log(`GameBoard component mounted, gameboard el \n`, gameboard, `\n`);
- console.dir(gameboard)
-  gameboardWidth = gameboard.offsetWidth;
-  gameboardHeight = gameboard.offsetHeight;
-  cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor)
-  cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor)
-  console.log(`W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`)
-  // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
-  if(cellWidth >= cellHeight) {
-    console.log(`W:${cellWidth} > H:${cellHeight}`)
-    cellSize = cellHeight
-  } else {
-    console.log(`W:${cellWidth} < H:${cellHeight}`)
-    cellSize = cellWidth
-  }
-  console.log(`GameBoard component mounted, gameboard el W:${gameboardWidth} H:${gameboardHeight}`);
-  console.log(`GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`);
-  console.log(`GameBoard component mounted, and final size: ${cellSize}`)
-    
+    let gameboard = document.querySelector(".gameboard-container");
+    console.log(
+      `GameBoard component mounted, gameboard el \n`,
+      gameboard,
+      `\n`
+    );
+    console.dir(gameboard);
+    gameboardWidth = gameboard.offsetWidth;
+    gameboardHeight = gameboard.offsetHeight;
+    cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
+    cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor);
+    console.log(
+      `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
+    );
+    // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
+    if (cellWidth >= cellHeight) {
+      console.log(`W:${cellWidth} > H:${cellHeight}`);
+      cellSize = cellHeight;
+    } else {
+      console.log(`W:${cellWidth} < H:${cellHeight}`);
+      cellSize = cellWidth;
+    }
+    storeCellSize.set(cellSize);
+    storeCellSize.subscribe(value => {
+      console.log(`GameBoard => storeCellSize subscribed`, value);
+    });
+
+    console.log(
+      `GameBoard component mounted, gameboard el W:${gameboardWidth} H:${gameboardHeight}`
+    );
+    console.log(
+      `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
+    );
+    console.log(`GameBoard component mounted, and final size: ${cellSize}`);
+
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
     gameHistoryTurns = $storeGameHistoryTurns;
@@ -222,12 +236,7 @@ let gameboard = document.querySelector(".gameboard-container");
       gameboard.removeChild(gameboard.firstChild);
     }
 
-    buildGameBoard(
-      settings.rows,
-      settings.columns,
-      cellSize,
-      settings.gutter
-    );
+    buildGameBoard(settings.rows, settings.columns, cellSize, settings.gutter);
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
@@ -835,7 +844,7 @@ let gameboard = document.querySelector(".gameboard-container");
   }
 </style>
 
-  <div id="gameboard-board" class="gameboard-board" >
+<div id="gameboard-board" class="gameboard-board">
   {#each grid as row}
     <div class="row">
       {#each row as cell}
@@ -848,4 +857,3 @@ let gameboard = document.querySelector(".gameboard-container");
     </div>
   {/each}
 </div>
-
