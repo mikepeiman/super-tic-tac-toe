@@ -10,5 +10,5 @@
 </script>
 
 <p>
-	<button on:click={showModalOneContent}>Show me a modalOneContent!</button>
+	<button on:click={showModalOneContent}>Game Menu</button>
 </p>

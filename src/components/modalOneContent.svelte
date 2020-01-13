@@ -1,4 +1,5 @@
 <script>
+import Controls from './Controls.svelte'
   export let message;
 </script>
 
@@ -10,3 +11,4 @@
 </style>
 
 <h2>🎉 {message} 🍾</h2>
+<Controls /> 

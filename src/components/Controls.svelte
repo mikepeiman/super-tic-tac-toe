@@ -87,20 +87,6 @@
     }
   });
 
-  function playersScored(e) {
-    console.log(
-      `StatusBar receiving dispatch of playersScored from CountPoints, `,
-      e.detail
-    );
-    console.log(
-      `StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `,
-      state.currentPlayer
-    );
-    players = e.detail;
-    localStorage.setItem("state", JSON.stringify(state));
-    dispatch("playersScored", players);
-  }
-
   function resetGame() {
     localStorage.removeItem("gameboard");
     localStorage.removeItem("gameHistoryFlat");
@@ -108,7 +94,7 @@
     localStorage.removeItem("turnHistory");
     localStorage.removeItem("lines");
     localStorage.removeItem("moveNumber");
-    let currentPlayerId = state.currentPlayer.id;
+
     localStorage.setItem(
       "state",
       JSON.stringify({
@@ -131,6 +117,7 @@
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
     localStorage.setItem("players", JSON.stringify(players));
+    storeCurrentPlayer.set(players[0]);
     location.reload();
     dispatch("resetGame", true);
   }
@@ -156,85 +143,18 @@
   }
 </script>
 
-<style lang="scss">
-  $title-margin: 1rem;
-  $title-padding-horizontal: 1rem;
-  $title-padding-vertical: 0.5rem;
-  $calc-padding: 2 * $title-padding-horizontal;
-  .player-indicator {
-    margin: 1rem;
-    color: #eee;
-    background: var(--custom-bg);
-    transition: all 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // padding: $title-padding-vertical $title-padding-horizontal;
-
-    & h2 {
-      margin: 0;
-      font-size: 1rem;
-    }
-  }
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
-
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
-
-  @media screen and (min-width: 960px) {
-    .player-indicator {
-      color: #eee;
-      // width: calc(100% - (2 * #{$title-padding-horizontal}));
-      background: var(--custom-bg);
-      transition: all 0.5s;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: $title-padding-vertical $title-padding-horizontal;
-      // border: 2px solid #eeeeee;
-
-      & h2 {
-        margin: 0;
-        font-size: 1.25rem;
-      }
-    }
-  }
-</style>
-
-{#await currentPlayer then currentPlayer}
-  {#if !currentPlayer.name}
-    <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
-      <h2 class="player-indicator-heading">Loading players data...</h2>
-    </div>
-  {:else}
-    <div
-      class="player-indicator player-0"
-      style={`--custom-bg: ${currentPlayer.bgColor}`}>
-      <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
-      <h2 class="moves-indicator-heading">
-        Moves remaining in turn: {movesRemaining}
-      </h2>
-      <h2 class="progress-indicator-heading">
-        Game Moves: {moveNumber}/{settings.rows * settings.columns}
-      </h2>
-      <div class="buttons-wrapper">
-        <Modal class="modal">
-          <Content />
-        </Modal>
-        <CountPoints
-          {players}
-          {gameboardMapped}
-          on:playersScored={playersScored} />
-      </div>
-    </div>
-  {/if}
-{/await}
+<button class="control-button" id="new-game-button" on:click={resetGame}>
+  New Game
+</button>
+<button class="control-button" id="save-game-button" on:click={saveGame}>
+  Save game
+</button>
+<button class="control-button" id="save-game-button" on:click={loadGame}>
+  Load game
+</button>
+<button
+  class="control-button"
+  id="reset-players-button"
+  on:click={resetPlayers}>
+  Reset players
+</button>
