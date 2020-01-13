@@ -1,6 +1,7 @@
 <script>
   import Content from "./modalOne.svelte";
   import Modal from "svelte-simple-modal";
+    import { getContext } from 'svelte';
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
@@ -16,6 +17,8 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+
+
 
   $: currentPlayer = {};
   $: state = {};
@@ -160,23 +163,26 @@
   $title-padding-horizontal: 1rem;
   $title-padding-vertical: 0.5rem;
   $calc-padding: 2 * $title-padding-horizontal;
-
   .player-indicator {
+    margin: 1rem;
     color: #eee;
-    // width: calc(100% - (2 * #{$title-padding-horizontal}));
     background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1rem;
-    padding: $title-padding-vertical $title-padding-horizontal;
-    // border: 2px solid #eeeeee;
+    // padding: $title-padding-vertical $title-padding-horizontal;
 
     & h2 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1rem;
     }
+  }
+  .player-status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(155, 55, 255, 0.75);
   }
 
   .player-status-bar {
@@ -184,6 +190,25 @@
     display: flex;
     justify-content: space-between;
     background: rgba(155, 55, 255, 0.75);
+  }
+
+  @media screen and (min-width: 960px) {
+    .player-indicator {
+      color: #eee;
+      // width: calc(100% - (2 * #{$title-padding-horizontal}));
+      background: var(--custom-bg);
+      transition: all 0.5s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $title-padding-vertical $title-padding-horizontal;
+      // border: 2px solid #eeeeee;
+
+      & h2 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+    }
   }
 </style>
 
@@ -209,6 +234,7 @@
       <div class="buttons-wrapper">
 
         <Modal class="modal">
+        <Content />
           <button
             class="control-button"
             id="new-game-button"
@@ -237,11 +263,5 @@
 
       </div>
     </div>
-    <!-- {:else}
-  <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
-    <h2 class="player-indicator-heading">Loading players data...</h2>
-  </div>
-{/if} -->
   {/if}
-  <!-- {/await} -->
 {/await}

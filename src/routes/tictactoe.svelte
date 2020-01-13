@@ -237,7 +237,7 @@
     }
   }
 
-  @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: portrait) {
     // html {
     //   transform: rotate(-90deg);
     //   transform-origin: left top;
@@ -250,17 +250,22 @@
     // }
 
   .scoreboard-container {
-    transform: scale(0.5);
-    transform-origin: top left;
+    // transform: scale(0.5);
+    // transform-origin: top left;
   }
   }
 
     
-  @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-  .scoreboard-container {
+  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
+  // .scoreboard-container {
+  //   transform: scale(0.25);
+  //   transform-origin: top left;
+  //   margin: .5rem 0 0 0;
+  // }
+    .page-container {
     transform: scale(0.5);
     transform-origin: top left;
-    margin: .5rem 0 0 0;
+    // margin: .5rem 0 0 0;
   }
   }
 </style>
