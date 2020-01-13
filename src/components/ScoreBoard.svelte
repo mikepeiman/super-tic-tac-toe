@@ -87,7 +87,7 @@
   }
 
   function addStyles() {
-    let scoreHeadings = document.querySelectorAll(".scoreboard-totals");
+    let scoreHeadings = document.querySelectorAll(".scoreboard-player");
     // console.log(
     //   `addStyle function, scoreHeadings for total-score: `,
     //   scoreHeadings
@@ -131,23 +131,22 @@
     flex-direction: column;
   }
 
-  .scoreboard-player {
+  .scoreboard-totals {
     display: flex;
     justify-content: space-between;
     background: rgba(0, 0, 0, 0.5);
   }
-  // .scoreboard-headings {
-  // }
-  .scoreboard-totals {
+
+  .scoreboard-player {
     background: var(--custom-bg);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
-    min-width: 100%;
-    min-width: 30vw;
+    min-width: 200%;
+    // min-width: 30vw;
     transform-origin: top left;
-    transform: scale(0.65);
-    margin-bottom: -1.75rem;
+    transform: scale(0.5);
+    margin-bottom: -2.75rem;
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -214,19 +213,15 @@
     position: relative;
     transition: all 0.25s;
     // transform: scale(1.025);
-    transform: translateX(1rem) scale(0.65);
+    transform: translateX(1rem) scale(0.55);
   }
   @media screen and (min-width: 960px) {
-    .scoreboard-totals {
+    .scoreboard-player {
       background: var(--custom-bg);
       margin: 0 1rem 1rem 1rem;
       transition: all 0.25s;
       border: 5px solid #1a1a1a;
       min-width: 100%;
-      min-width: 30vw;
-      transform-origin: top left;
-      transform: scale(0.65);
-      margin-bottom: -1.75rem;
     }
     .highlighted {
       transform: translateX(1rem);
@@ -239,7 +234,7 @@
   <div class="scoreboard-container-inner">
     {#each players as player}
       <div
-        class="scoreboard-totals"
+        class="scoreboard-player"
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
         <h3 class="total-score">
           <input
@@ -260,7 +255,7 @@
             on:blur={() => updateStoredPlayers(player)} />
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
-        <div class="scoreboard-player">
+        <div class="scoreboard-totals">
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
               <div class="direction-score-section">
