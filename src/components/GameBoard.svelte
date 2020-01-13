@@ -836,8 +836,7 @@
     <div class="row">
       {#each row as cell}
         <Cell
-          width={cellSize+'px'}
-          height={cellSize}
+          customSize
           ticked={false}
           customBg
           id={cell.id}
