@@ -236,6 +236,33 @@
       border-bottom: 2.5px solid #eeeeee;
     }
   }
+
+  @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+    // html {
+    //   transform: rotate(-90deg);
+    //   transform-origin: left top;
+    //   width: 100vh;
+    //   height: 100vw;
+    //   overflow-x: hidden;
+    //   position: absolute;
+    //   top: 100%;
+    //   left: 0;
+    // }
+
+  .scoreboard-container {
+    transform: scale(0.5);
+    transform-origin: top left;
+  }
+  }
+
+    
+  @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  .scoreboard-container {
+    transform: scale(0.5);
+    transform-origin: top left;
+    margin: .5rem 0 0 0;
+  }
+  }
 </style>
 
 <!-- <div class="title-container">

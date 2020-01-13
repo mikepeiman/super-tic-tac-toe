@@ -146,9 +146,9 @@
         }
       ];
       let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
-      console.log(
-        `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, bgColor = ${bg}`
-      );
+      // console.log(
+      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, bgColor = ${bg}`
+      // );
       scoreDirections.forEach((direction, index) => {
         // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
         players[i]["scores"].push(direction);

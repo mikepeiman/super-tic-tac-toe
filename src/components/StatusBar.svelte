@@ -1,4 +1,6 @@
 <script>
+  import Content from "./modalOne.svelte";
+  import Modal from "svelte-simple-modal";
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
@@ -187,54 +189,59 @@
 
 <!-- {#await players then players} -->
 {#await currentPlayer then currentPlayer}
-{#if !currentPlayer.name}
-
-  <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
-    <h2 class="player-indicator-heading">Loading players data...</h2>
-  </div>
-
-{:else}
-
-<!-- {#await state then state} -->
-<!-- {#if currentPlayer.name} -->
-  <div
-    class="player-indicator player-0"
-    style={`--custom-bg: ${currentPlayer.bgColor}`}>
-    <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
-    <h2 class="moves-indicator-heading">
-      Moves remaining in turn: {movesRemaining}
-    </h2>
-    <h2 class="progress-indicator-heading">
-      Game Moves: {moveNumber}/{settings.rows * settings.columns}
-    </h2>
-    <div class="buttons-wrapper">
-      <CountPoints
-        {players}
-        {gameboardMapped}
-        on:playersScored={playersScored} />
-      <button class="control-button" id="new-game-button" on:click={resetGame}>
-        New Game
-      </button>
-      <button class="control-button" id="save-game-button" on:click={saveGame}>
-        Save game
-      </button>
-      <button class="control-button" id="save-game-button" on:click={loadGame}>
-        Load game
-      </button>
-
-      <button
-        class="control-button"
-        id="reset-players-button"
-        on:click={resetPlayers}>
-        Reset players
-      </button>
+  {#if !currentPlayer.name}
+    <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
+      <h2 class="player-indicator-heading">Loading players data...</h2>
     </div>
-  </div>
-<!-- {:else}
+  {:else}
+    <!-- {#await state then state} -->
+    <!-- {#if currentPlayer.name} -->
+    <div
+      class="player-indicator player-0"
+      style={`--custom-bg: ${currentPlayer.bgColor}`}>
+      <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
+      <h2 class="moves-indicator-heading">
+        Moves remaining in turn: {movesRemaining}
+      </h2>
+      <h2 class="progress-indicator-heading">
+        Game Moves: {moveNumber}/{settings.rows * settings.columns}
+      </h2>
+      <div class="buttons-wrapper">
+
+        <Modal class="modal">
+          <button
+            class="control-button"
+            id="new-game-button"
+            on:click={resetGame}>
+            New Game
+          </button>
+          <button
+            class="control-button"
+            id="save-game-button"
+            on:click={saveGame}>
+            Save game
+          </button>
+          <button
+            class="control-button"
+            id="save-game-button"
+            on:click={loadGame}>
+            Load game
+          </button>
+          <button
+            class="control-button"
+            id="reset-players-button"
+            on:click={resetPlayers}>
+            Reset players
+          </button>
+        </Modal>
+
+      </div>
+    </div>
+    <!-- {:else}
   <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
     <h2 class="player-indicator-heading">Loading players data...</h2>
   </div>
 {/if} -->
-{/if}
-<!-- {/await} -->
+  {/if}
+  <!-- {/await} -->
 {/await}

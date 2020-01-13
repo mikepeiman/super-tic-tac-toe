@@ -211,6 +211,8 @@
     // transform: scale(1.025);
     transform: translateX(1rem);
   }
+
+
 </style>
 
 {#await players then players}

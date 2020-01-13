@@ -3,7 +3,8 @@
 	"theme_color": "#333333",
 	"name": "SuperTicTacToe",
 	"short_name": "TicTacToe",
-	"display": "minimal-ui",
+  "display": "minimal-ui",
+  "orientation": "landscape",
 	"start_url": "/",
 	"icons": [
 		{

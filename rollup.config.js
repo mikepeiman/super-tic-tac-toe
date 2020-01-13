@@ -42,7 +42,7 @@ export default {
 			}),
 			resolve({
 				browser: true,
-				dedupe
+				dedupe: ['svelte', 'svelte/transition', 'svelte/internal']
 			}),
 			commonjs(),
 
