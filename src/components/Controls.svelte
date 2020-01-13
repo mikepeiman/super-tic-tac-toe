@@ -143,18 +143,67 @@
   }
 </script>
 
-<button class="control-button" id="new-game-button" on:click={resetGame}>
-  New Game
-</button>
-<button class="control-button" id="save-game-button" on:click={saveGame}>
-  Save game
-</button>
-<button class="control-button" id="save-game-button" on:click={loadGame}>
-  Load game
-</button>
-<button
-  class="control-button"
-  id="reset-players-button"
-  on:click={resetPlayers}>
-  Reset players
-</button>
+<style lang="scss">
+  .controls-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .control-button {
+    background: rgba(0, 25, 75, 0.25);
+    color: #1a1a1a;
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+  }
+
+  #new-game-button {
+    background: hsla(260, 100%, 50%, 1);
+
+    &:hover {
+      background: hsla(260, 100%, 25%, 1);
+    }
+  }
+  #save-game-button {
+    background: hsla(140, 100%, 50%, 1);
+
+    &:hover {
+      background: hsla(140, 100%, 25%, 1);
+    }
+  }
+  #load-game-button {
+    background: hsla(200, 100%, 50%, 1);
+
+    &:hover {
+      background: hsla(200, 100%, 25%, 1);
+    }
+  }
+  #reset-players-button {
+    background: hsla(320, 100%, 50%, 1);
+
+    &:hover {
+      background: hsla(320, 100%, 25%, 1);
+    }
+  }
+</style>
+
+<div class="controls-wrapper">
+
+  <button class="control-button" id="save-game-button" on:click={saveGame}>
+    Save game
+  </button>
+  <button class="control-button" id="load-game-button" on:click={loadGame}>
+    Load game
+  </button>
+  <button class="control-button" id="new-game-button" on:click={resetGame}>
+    New Game
+  </button>
+  <button
+    class="control-button"
+    id="reset-players-button"
+    on:click={resetPlayers}>
+    Reset players
+  </button>
+</div>

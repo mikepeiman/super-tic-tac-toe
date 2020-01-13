@@ -10,5 +10,5 @@ import Controls from './Controls.svelte'
 	}
 </style>
 
-<h2>🎉 {message} 🍾</h2>
+<h2>{message}</h2>
 <Controls /> 

@@ -212,16 +212,6 @@
     }
   }
 
-  .control-button {
-    background: rgba(0, 25, 75, 0.25);
-    // margin: 0.25rem;
-    color: #eeeeee;
-    // border: 1px solid $input-blue;
-    &:hover {
-      background: rgba(0, 25, 75, 0.5);
-      color: #eeeeee;
-    }
-  }
 
   .title-container {
     background: #1a1a1a;
