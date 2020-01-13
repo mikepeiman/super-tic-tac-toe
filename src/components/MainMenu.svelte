@@ -14,6 +14,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
     movesPerTurn: 4,
@@ -42,14 +43,17 @@
     let gameInProgress = localStorage.getItem("gameInProgress");
     let ls = JSON.parse(localStorage.getItem("settings"));
     if (ls !== null) {
-        console.log(
-          `loadSettingsFromLS >>>>>>>>>>>> NOT NULL \n\n`,
-          ls,
-          `\nCurrent settings: \n`,
-          settings
-        );
-        settings = ls;
-        storeSettings.set(ls);
+      console.log(
+        `loadSettingsFromLS >>>>>>>>>>>> NOT NULL \n\n`,
+        ls,
+        `\nCurrent settings: \n`,
+        settings
+      );
+      settings = ls;
+      storeSettings.set(ls);
+      setTimeout(() => {
+        initialized = true;
+      }, 5000);
     }
   }
 
@@ -99,6 +103,11 @@
     & h2 {
       padding: 0.5rem 0.5rem 0 0.5rem;
     }
+    & .loading {
+      color: hsla(280, 100%, 50%, 1);
+      animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      transition: all .25s;
+    }
   }
 
   .form-wrap {
@@ -140,95 +149,159 @@
       }
     }
   }
+
+  .lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+  }
+  .lds-ripple div {
+    position: absolute;
+    border: 4px solid #fff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  .lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  @keyframes lds-ripple {
+    0% {
+      top: 2rem; // 36px;
+      left: 2rem;
+      // top: 0px;
+      // left: 0px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 4rem; // 72px;
+      height: 4rem;
+      opacity: 0;
+    }
+  }
+
+    @keyframes loading-title {
+    0% {
+      top: 2rem; // 36px;
+      left: 2rem;
+      // top: 0px;
+      // left: 0px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 4rem; // 72px;
+      height: 4rem;
+      opacity: 0;
+    }
+  }
 </style>
 
-<div class="settings-menu-heading">
-  <h2>Game Settings</h2>
-</div>
-<div class="form-wrap settings-menu">
-  <label for="players">
-    <div class="label-content">players</div>
-    <input
-      id="players"
-      name="players"
-      type="number"
-      placeholder={settings.numberOfPlayers}
-      bind:value={settings.numberOfPlayers}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="rows">
-    <div class="label-content">rows</div>
-    <input
-      id="rows"
-      name="rows"
-      type="number"
-      placeholder={settings.rows}
-      bind:value={settings.rows}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="columns">
-    <div class="label-content">columns</div>
-    <input
-      id="columns"
-      name="columns"
-      type="number"
-      placeholder={settings.columns}
-      bind:value={settings.columns}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="movesPerTurn">
-    <div class="label-content">moves per turn</div>
-    <input
-      id="movesPerTurn"
-      name="movesPerTurn"
-      type="number"
-      placeholder={settings.movesPerTurn}
-      bind:value={settings.movesPerTurn}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="movesPerTurn">
-    <div class="label-content">in a row to score</div>
-    <input
-      id="cellsToScore"
-      name="cellsToScore"
-      type="number"
-      placeholder={settings.cellsToScore}
-      bind:value={settings.cellsToScore}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="bonus">
-    <div class="label-content">bonus for complete line</div>
-    <input
-      id="bonusForCompleteRow"
-      name="bonusForCompleteRow"
-      type="number"
-      placeholder={settings.bonusForCompleteRow}
-      bind:value={settings.bonusForCompleteRow}
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-  <label for="size">
-    <div class="label-content">square size (px)</div>
-    <input
-      id="size"
-      name="size"
-      type="number"
-      placeholder={settings.size}
-      bind:value={settings.size}
-      step="4"
-      on:input={triggerGameBoardUpdate}
-      on:click={highlight}
-      style="width: 2.5ch;" />
-  </label>
-</div>
+{#if initialized}
+  <div class="settings-menu-heading">
+    <h2>Game Settings</h2>
+  </div>
+  <div class="form-wrap settings-menu">
+    <label for="players">
+      <div class="label-content">players</div>
+      <input
+        id="players"
+        name="players"
+        type="number"
+        placeholder={settings.numberOfPlayers}
+        bind:value={settings.numberOfPlayers}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="rows">
+      <div class="label-content">rows</div>
+      <input
+        id="rows"
+        name="rows"
+        type="number"
+        placeholder={settings.rows}
+        bind:value={settings.rows}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="columns">
+      <div class="label-content">columns</div>
+      <input
+        id="columns"
+        name="columns"
+        type="number"
+        placeholder={settings.columns}
+        bind:value={settings.columns}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="movesPerTurn">
+      <div class="label-content">moves per turn</div>
+      <input
+        id="movesPerTurn"
+        name="movesPerTurn"
+        type="number"
+        placeholder={settings.movesPerTurn}
+        bind:value={settings.movesPerTurn}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="movesPerTurn">
+      <div class="label-content">in a row to score</div>
+      <input
+        id="cellsToScore"
+        name="cellsToScore"
+        type="number"
+        placeholder={settings.cellsToScore}
+        bind:value={settings.cellsToScore}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="bonus">
+      <div class="label-content">bonus for complete line</div>
+      <input
+        id="bonusForCompleteRow"
+        name="bonusForCompleteRow"
+        type="number"
+        placeholder={settings.bonusForCompleteRow}
+        bind:value={settings.bonusForCompleteRow}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+    <label for="size">
+      <div class="label-content">square size (px)</div>
+      <input
+        id="size"
+        name="size"
+        type="number"
+        placeholder={settings.size}
+        bind:value={settings.size}
+        step="4"
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+  </div>
+{:else}
+  <div class="settings-menu-heading">
+    <h2 class="loading">Loading Settings...</h2>
+    <div class="lds-ripple">
+      <div />
+      <div />
+    </div>
+  </div>
+{/if}
