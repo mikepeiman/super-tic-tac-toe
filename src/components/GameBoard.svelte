@@ -75,18 +75,10 @@
   $: cellHeight = 0;
   $: cellSize = 0;
   let shrinkFactor = 0.75;
-  $: {
-    console.log("cellSize as lowest of calculated dimensions: ", cellSize);
-  }
-
-  // if (typeof window !== "undefined") {
-  //   console.log("GameBoard check: we are running on the client");
-
-  // }
 
   let rows, columns, size, numberOfPlayers;
   ({ rows, columns, size, numberOfPlayers } = settings);
-  $: rows, columns, size, numberOfPlayers && resetGameBoard();
+  // $: rows, columns, size, numberOfPlayers && resetGameBoard();
 
   onMount(() => {
     storeSettings.subscribe(value => {
@@ -96,36 +88,19 @@
 
     storePlayers.subscribe(value => {
       players = value;
-      // console.log(`GameBoard => storePlayers.subscribe value => `, value);
-      // this is a good place to look for redundant code execution; this logs at least 10 times on reload
     });
     storeCurrentPlayer.subscribe(value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
-      // localStorage.setItem("currentPlayer", JSON.stringify(value));
     });
-    storeGameHistoryFlat.subscribe(value => {
-      // console.log(`GameBoard => storeGameHistoryFlat subscribed`, value);
-      // console.log(
-      //   `GameBoard => storeGameHistoryFlat subscribed length: `,
-      //   value.length
-      // );
-    });
+    storeGameHistoryFlat.subscribe(value => {});
     storeGameHistoryTurns.subscribe(value => {
       console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
       let ghls = localStorage.getItem("gameHistoryTurns");
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => localStorage.getItem("gameHistoryTurns")`, ghls);
       let parsedGhls = JSON.parse(ghls);
-      // console.log(`GameBoard => storeGameHistoryTurns subscribed => JSON.parse(localStorage.getItem("gameHistoryTurns"))`, ghls);
     });
 
     let gameboard = document.querySelector(".gameboard-container");
-    console.log(
-      `GameBoard component mounted, gameboard el \n`,
-      gameboard,
-      `\n`
-    );
-    console.dir(gameboard);
     gameboardWidth = gameboard.offsetWidth;
     gameboardHeight = gameboard.offsetHeight;
     cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
@@ -161,19 +136,18 @@
     let delayMS = 1000 / (settings.rows * settings.columns);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("preservePlayerDetails");
-    let newBoard = buildGameBoard(
-      settings.rows,
-      settings.columns,
-      cellSize,
-      settings.gutter
-    );
 
     if (gameInProgress) {
       console.log(
         `GameBoard => if (gameInProgress) we should be redrawing the moves...`
       );
-      newBoard.then(() => {
-        renderGameBoardReload(delayMS);
+      buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
+      let reload = renderGameBoardReload(delayMS);
+      reload.then(checkin => {
+        console.log(
+          `~~~~~~~~~~~~~ used renderGameBoardReload() as thennable, value `,
+          checkin
+        );
       });
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
@@ -199,12 +173,16 @@
       }
     } else {
       state.movesRemaining = settings.movesPerTurn;
-      buildGameBoard(
-        settings.rows,
-        settings.columns,
-        cellSize,
-        settings.gutter
-      );
+      buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
+      // let newboard = buildGameGrid(
+      //   settings.rows,
+      //   settings.columns,
+      //   cellSize,
+      //   settings.gutter
+      // );
+      // newboard.then(res => {
+      //   console.log(`newboard built buildGameGrid in onMount, res: `, res)
+      // })
       storeState.set(state);
     }
     if (playerDetails) {
@@ -234,7 +212,12 @@
       gameboard.removeChild(gameboard.firstChild);
     }
 
-    buildGameBoard(settings.rows, settings.columns, cellSize, settings.gutter);
+    await buildGameGrid(
+      settings.rows,
+      settings.columns,
+      cellSize,
+      settings.gutter
+    );
 
     const delay = (amount = number) => {
       return new Promise(resolve => {
@@ -247,21 +230,22 @@
         len = gameHistoryTurns.length;
       }
     }
+    console.log(`gameHistoryTurns and len: ${len}; `, gameHistoryTurns);
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
         for (let j = 0; j < settings.movesPerTurn; j++) {
-          //           console.log(
-          //   `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
-          //   turn,
-          //   `\n\n`
-          // );
+          console.log(
+            `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
+            turn,
+            `\n\n`
+          );
           let move = turn[j];
-          //                     console.log(
-          //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
-          //   move,
-          //   `\n\n`
-          // );
+          console.log(
+            `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+            move,
+            `\n\n`
+          );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -477,12 +461,17 @@
     return cell;
   }
 
-  async function buildGameBoard(rows, columns, size, gutter) {
+  async function buildGameGrid(rows, columns, size, gutter) {
+    console.log(
+      `buildGameGrid called with rows ${rows}, columns ${columns}, size ${size}, gutter ${gutter}`
+    );
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
+      // console.log(`buildGameGrid creating a row ${r}`)
       grid.push([]);
       for (let c = 0; c < columns; c++) {
+        // console.log(`buildGameGrid creating a col ${c}`)
         let id = `R${r}C${c}`;
         let cellAttributes = {
           id: id,
@@ -496,7 +485,7 @@
     await addDirectionArraysToPlayerObjects();
     grid = grid;
     return grid;
-    console.log(`grid array from inside buildGameBoard: `, grid);
+    console.log(`grid array from inside buildGameGrid: `, grid);
   }
 
   async function clearGameBoard() {
@@ -510,7 +499,7 @@
   async function resetGameBoard() {
     // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
     await clearGameBoard();
-    await buildGameBoard(
+    await buildGameGrid(
       settings.rows,
       settings.columns,
       cellSize,
@@ -847,6 +836,10 @@
     <div class="row">
       {#each row as cell}
         <Cell
+          width={cellSize+'px'}
+          height={cellSize}
+          ticked={false}
+          customBg
           id={cell.id}
           row={cell.row}
           column={cell.column}

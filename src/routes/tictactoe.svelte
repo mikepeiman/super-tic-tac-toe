@@ -152,19 +152,19 @@
     display: flex;
   }
 
-  .game-square {
-    min-width: 12px;
-    min-height: 12px;
-    flex: 1;
-    background: var(--custom-bg);
-    border: 1px solid rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
-    }
-  }
+  // .game-square {
+  //   min-width: 12px;
+  //   min-height: 12px;
+  //   flex: 1;
+  //   // background: var(--custom-bg);
+  //   border: 1px solid red;//rgba(0,0,0,0.5);
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   &:hover {
+  //     background: rgba(150, 150, 255, 0.5);
+  //   }
+  // }
   .ticked {
     &.unlocked {
       border: 1px solid red;

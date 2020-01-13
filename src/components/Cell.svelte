@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   // import { createEventDispatcher } from 'svelte';
-  export let id, row, column, ticked, customBg;
+  export let id, row, column, ticked, width, height, customBg;
   import { storeSettings } from "../stores.js";
 
   const dispatch = createEventDispatcher();
@@ -36,9 +36,11 @@
   .game-square {
     // width: 24px;
     // height: 24px;
+    min-width: 12px;
+    min-height: 12px;
     background: var(--custom-bg);
     border: none;
-    border: 1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     margin: 0;
     display: flex;
     justify-content: center;
@@ -47,19 +49,6 @@
       background: rgba(150, 150, 255, 0.5);
     }
   }
-  // .ticked {
-  //   &:hover {
-  //     background: rgba(150, 150, 255, 0.5);
-  //   }
-  //   &::after {
-  //     content: attr(data-marker);
-  //     position: fixed;
-  //     top: -2px;
-  //     justify-self: center;
-  //     align-self: center;
-  //     background: attr(data-background-color);
-  //   }
-  // }
 </style>
 
 <div
@@ -67,6 +56,8 @@
   {row}
   {column}
   {id}
+  {width}
+  {height}
   on:click={moveNotification}
   data-ticked={ticked}
   data-marker="Y"
