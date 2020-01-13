@@ -79,13 +79,15 @@
 
   .page-container {
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: 8em auto;
+    // grid-template-columns: 1fr 4fr 1fr;
+    // grid-template-rows: 8em auto;
     grid-template-areas:
       "scoreboard statusbar statusbar"
       "scoreboard gameboard mainmenu";
     // background: #1a1a1a;
     height: 100%;
+    grid-template-columns: 20vw 60vw 20vw;
+    grid-template-rows: 25vh auto;
   }
 
   .gameboard-container {
@@ -249,24 +251,38 @@
     //   left: 0;
     // }
 
-  .scoreboard-container {
-    // transform: scale(0.5);
-    // transform-origin: top left;
-  }
+    .scoreboard-container {
+      // transform: scale(0.5);
+      // transform-origin: top left;
+    }
   }
 
-    
   @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
-  // .scoreboard-container {
-  //   transform: scale(0.25);
-  //   transform-origin: top left;
-  //   margin: .5rem 0 0 0;
-  // }
-    .page-container {
-    transform: scale(0.5);
-    transform-origin: top left;
-    // margin: .5rem 0 0 0;
-  }
+    // .scoreboard-container {
+    //   transform: scale(0.25);
+    //   transform-origin: top left;
+    //   margin: .5rem 0 0 0;
+    // }
+    // .page-container {
+    //   transform: scale(0.5);
+    //   transform-origin: top left;
+    // }
+    // .scoreboard-container {
+    //   // transform: scale(0.5);
+    //   transform-origin: top left;
+    // }
+    // .statusbar-container {
+    //   transform: scale(0.5);
+    //   transform-origin: top left;
+    // }
+    // .gameboard-container {
+    //   transform: scale(0.5);
+    //   transform-origin: top left;
+    // }
+    // .mainmenu-container {
+    //   transform: scale(0.5);
+    //   transform-origin: top left;
+    // }
   }
 </style>
 

@@ -143,6 +143,11 @@
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
+    min-width: 100%;
+    min-width: 30vw;
+    transform-origin: top left;
+    transform: scale(0.65);
+    margin-bottom: -1.75rem;
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -209,10 +214,24 @@
     position: relative;
     transition: all 0.25s;
     // transform: scale(1.025);
-    transform: translateX(1rem);
+    transform: translateX(1rem) scale(0.65);
   }
-
-
+  @media screen and (min-width: 960px) {
+    .scoreboard-totals {
+      background: var(--custom-bg);
+      margin: 0 1rem 1rem 1rem;
+      transition: all 0.25s;
+      border: 5px solid #1a1a1a;
+      min-width: 100%;
+      min-width: 30vw;
+      transform-origin: top left;
+      transform: scale(0.65);
+      margin-bottom: -1.75rem;
+    }
+    .highlighted {
+      transform: translateX(1rem);
+    }
+  }
 </style>
 
 {#await players then players}
