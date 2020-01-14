@@ -32,6 +32,7 @@
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
     initializeSettingsFromLS();
+    initialized = true;
     setAllInputWidths();
     storeSettings.set(settings);
     storeSettings.subscribe(value => {
@@ -54,7 +55,7 @@
       // setTimeout(() => {
       //   initialized = true;
       // }, 5000);
-      initialized = true;
+      
     }
   }
 
