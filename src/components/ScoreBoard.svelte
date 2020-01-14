@@ -5,6 +5,7 @@
   export let state, players, highlighted;
   import {
     storeSettings,
+    storeViewportSize,
     storeState,
     storePlayers,
     storeCurrentPlayer,
@@ -15,6 +16,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let appViewport = {};
   $: players = [];
   $: state = {};
   $: currentPlayer = {};
@@ -35,6 +37,7 @@
   }
 
   onMount(() => {
+    setViewportSize();
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
@@ -53,9 +56,18 @@
     storePlayers.subscribe(value => {
       players = value;
     });
-    // setTimeout(() => {
-    //   addStyles();
-    // }, 1);
+    storeViewportSize.subscribe(val => {
+      console.log(`ScoreBoard subscribed to app viewport size: `, val);
+      appViewport = val;
+    });
+    console.log(
+      `ScoreBoard subscribed to app viewport size: `,
+      appViewport.width
+    );
+    console.log(
+      `ScoreBoard subscribed to app viewport size: `,
+      appViewport.height
+    );
   });
 
   afterUpdate(() => {
@@ -87,9 +99,9 @@
   }
 
   function addStyles() {
-    let scoreHeadings = document.querySelectorAll(".scoreboard-player");
-    scoreHeadings.forEach((h, i) => {
-      h.style = `--player-color: ${players[i].bgColor}`;
+    let scoreboardPlayers = document.querySelectorAll(".scoreboard-player");
+    scoreboardPlayers.forEach((player, i) => {
+      player.style = `--player-color: ${players[i].bgColor}; --viewport-width: ${appViewport.width}`;
     });
   }
 
@@ -103,6 +115,16 @@
       gameUnderway = true;
       return true;
     }
+  }
+  function setViewportSize() {
+    let app = document.querySelector("#sapper");
+    console.log(`setViewportSize for app: `, app);
+    let appWidth = app.offsetWidth;
+    let appHeight = app.offsetHeight;
+    storeViewportSize.set({
+      width: appWidth,
+      height: appHeight
+    });
   }
 </script>
 
@@ -140,8 +162,16 @@
     border: 5px solid #1a1a1a;
     min-width: max-content;
     transform-origin: top left;
-    transform: scale(0.35);
-    margin-bottom: -2.75rem;
+    transform: scale(calc(var(--viewport-width) / 1000));
+    margin-bottom: var(--viewport-width)px;
+  }
+  .highlighted {
+    border: 5px solid #eeeeee;
+    position: relative;
+    transition: all 0.25s;
+    min-width: max-content;
+    // transform: scale(1.025);
+    transform: scale(calc(var(--viewport-width) / 950));
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -203,13 +233,7 @@
     text-align: center;
     color: var(--player-color);
   }
-  .highlighted {
-    border: 5px solid #eeeeee;
-    position: relative;
-    transition: all 0.25s;
-    // transform: scale(1.025);
-    transform:  scale(0.4);
-  }
+
   @media screen and (min-width: 960px) {
     .scoreboard-player {
       background: var(--player-color);
@@ -234,6 +258,7 @@
     {#each players as player}
       <div
         class="scoreboard-player"
+        style={`--viewport-width: ${appViewport.width}`}
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
         <h3 class="total-score">
           <input

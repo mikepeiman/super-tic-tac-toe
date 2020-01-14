@@ -8,6 +8,7 @@
   import { writable } from "svelte/store";
   import {
     storeSettings,
+    storeViewportSize,
     storeState,
     storePlayers,
     storeCurrentPlayer,
@@ -42,6 +43,7 @@
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);
+    // setViewportSize();
   });
 
   function resetGame() {
@@ -52,16 +54,15 @@
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
   }
 
-  function setPlayersToStore(e) {
-    // console.log(
-    //   `TicTacToe => setPlayersToStore triggered by player init or detail change`,
-    //   e.detail
-    // );
-    // players = e.detail;
-    // players.forEach(player => {
-    //   console.log(player.name, player.marker);
-    // });
-    // storePlayers.set(players);
+  function setViewportSize() {
+    let app = document.querySelector("#sapper");
+    console.log(`setViewportSize for app: `, app);
+    let appWidth = app.offsetWidth;
+    let appHeight = app.offsetHeight;
+    storeViewportSize.set({
+      width: appWidth,
+      height: appHeight
+    });
   }
 </script>
 
@@ -302,18 +303,16 @@
 {#await players then players}
   <div class="page-container">
     <div class="mainmenu-container">
-      <GameInit on:playersInitialized={setPlayersToStore} />
+      <GameInit />
     </div>
     <div class="statusbar-container">
-      <StatusBar
-        on:resetGame={resetGame}
-        on:playersScored={setPlayersToStore} />
+      <StatusBar />
     </div>
     <div class="scoreboard-container">
-      <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
+      <ScoreBoard />
     </div>
     <div class="gameboard-container">
-      <GameBoard on:move={moveNotification} />
+      <GameBoard />
     </div>
   </div>
 

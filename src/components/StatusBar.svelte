@@ -322,7 +322,7 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <div class="player-indicator player-0" style={`--player-color: #006f98;`}>
+    <div class="player-indicator player-0" style={`--player-color: #006f98`}>
       <h2 class="player-indicator-heading">Loading players data...</h2>
     </div>
   {:else}

@@ -10,6 +10,7 @@ import { writable } from "svelte/store";
 
 let settings = writable({});
 let cellSize = writable(0);
+let viewportSize = writable({});
 let state = writable({
   lastTicked: "",
   currentPlayer: {},
@@ -51,6 +52,14 @@ export const storeCellSize = {
   set: val => {
     cellSize.set(val);
     localStorage.setItem("cellSize", JSON.stringify(val));
+  }
+};
+
+export const storeViewportSize = {
+  subscribe: viewportSize.subscribe,
+  set: val => {
+    viewportSize.set(val);
+    localStorage.setItem("viewportSize", JSON.stringify(val));
   }
 };
 
@@ -110,101 +119,3 @@ export const storeGameHistoryFlat = {
     localStorage.setItem("gameHistoryFlat", JSON.stringify(val));
   }
 };
-
-// let gameHistoryTurns = writable([
-//   [
-//     { move: 1, id: "R0C0", clickCount: 1, player: { id: 0, name: "Player 1" } },
-//     { move: 2, id: "R1C1", clickCount: 2, player: { id: 0, name: "Player 1" } },
-//     { move: 3, id: "R2C2", clickCount: 3, player: { id: 0, name: "Player 1" } }
-//   ],
-//   [
-//     {
-//       move: 4,
-//       id: "R4C14",
-//       clickCount: 4,
-//       player: { id: 1, name: "Player 2" }
-//     },
-//     {
-//       move: 5,
-//       id: "R3C14",
-//       clickCount: 5,
-//       player: { id: 1, name: "Player 2" }
-//     },
-//     { move: 6, id: "R2C14", clickCount: 6, player: { id: 1, name: "Player 2" } }
-//   ],
-//   [
-//     {
-//       move: 7,
-//       id: "R0C13",
-//       clickCount: 7,
-//       player: { id: 2, name: "Player 3" }
-//     },
-//     {
-//       move: 8,
-//       id: "R1C12",
-//       clickCount: 8,
-//       player: { id: 2, name: "Player 3" }
-//     },
-//     { move: 9, id: "R2C11", clickCount: 9, player: { id: 2, name: "Player 3" } }
-//   ],
-//   [
-//     {
-//       move: 10,
-//       id: "R3C3",
-//       clickCount: 10,
-//       player: { id: 0, name: "Player 1" }
-//     },
-//     {
-//       move: 11,
-//       id: "R4C4",
-//       clickCount: 11,
-//       player: { id: 0, name: "Player 1" }
-//     },
-//     {
-//       move: 12,
-//       id: "R4C5",
-//       clickCount: 12,
-//       player: { id: 0, name: "Player 1" }
-//     }
-//   ],
-//   [
-//     {
-//       move: 13,
-//       id: "R1C14",
-//       clickCount: 13,
-//       player: { id: 1, name: "Player 2" }
-//     },
-//     {
-//       move: 14,
-//       id: "R0C14",
-//       clickCount: 14,
-//       player: { id: 1, name: "Player 2" }
-//     },
-//     {
-//       move: 15,
-//       id: "R1C13",
-//       clickCount: 15,
-//       player: { id: 1, name: "Player 2" }
-//     }
-//   ],
-//   [
-//     {
-//       move: 16,
-//       id: "R0C12",
-//       clickCount: 16,
-//       player: { id: 2, name: "Player 3" }
-//     },
-//     {
-//       move: 17,
-//       id: "R0C11",
-//       clickCount: 17,
-//       player: { id: 2, name: "Player 3" }
-//     },
-//     {
-//       move: 18,
-//       id: "R1C11",
-//       clickCount: 18,
-//       player: { id: 2, name: "Player 3" }
-//     }
-//   ]
-// ]);
