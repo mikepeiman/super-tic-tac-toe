@@ -214,19 +214,23 @@
     // background: rgba(0, 0, 0, 0.5);
     padding: 0.125rem;
     width: 100%;
-    text-transform: lowercase;
+    // text-transform: lowercase;
     color: #006f98;
+    & p {
+      font-size: 0.5rem;
+    }
     & h2 {
       color: white;
-      margin-bottom: .5rem;
+      text-transform: capitalize;
+      margin-bottom: 0.5rem;
     }
     & label {
       font-size: 0.5rem;
-      margin-left: .25rem;
+      margin-left: 0.25rem;
       word-wrap: normal;
     }
     & input {
-      background: rgba(255,255,255, 0.15);
+      background: rgba(255, 255, 255, 0.15);
       border: none;
       color: white;
       font-family: inherit;
@@ -244,16 +248,22 @@
       }
     }
   }
-
+  .statusbar-details-wrapper {
+    padding: 0.5rem;
+    border: 2px solid var(--player-color);
+    border-radius: 5px;
+    margin-left: 2px;
+  }
   .player-name {
-    padding: .5rem;
-    border-bottom: 5px solid var(--player-color);
+    // padding: 0.5rem;
+    // border-bottom: 5px solid var(--player-color);
   }
   .inputs-wrapper {
     display: flex;
   }
   .buttons-wrapper {
     display: flex;
+    // width: 15vw;
   }
 
   button {
@@ -313,29 +323,25 @@
         <input name="player-name" value={currentPlayer.name} /> -->
         <h2 class="player-name">{currentPlayer.name}</h2>
       </div>
-      <div class="player-status-detail" id="turn-moves">
-        <input name="turn-moves" value={movesRemaining} />
-        <label for="turn-moves">moves remaining in turn</label>
 
-      </div>
-      <div class="player-status-detail" id="total-moves">
-        <!-- <div class="inputs-wrapper"> -->
-          <input name="total-moves" value={moveNumber} />
-          <label for="total-moves"> of </label>
-          <input
-            name="total-moves"
-            class="value"
-            value={settings.rows * settings.columns} />
-        <!-- </div> -->
-        <label for="total-moves">total moves played</label>
-
-      </div>
-      <div class="buttons-wrapper">
-        <Modal>
-          <Content />
-        </Modal>
-        <div>
-          <CountPoints {players} on:playersScored={playersScored} />
+      <div class="statusbar-details-wrapper">
+        <div class="player-status-detail" id="turn-moves">
+          <input name="turn-moves" value={movesRemaining} />
+          <label for="turn-moves">moves remaining in turn</label>
+        </div>
+        <div class="player-status-detail" id="total-moves">
+          <p>
+            {moveNumber} of {settings.rows * settings.columns} total moves
+            played
+          </p>
+        </div>
+        <div class="buttons-wrapper">
+          <Modal>
+            <Content />
+          </Modal>
+          <div>
+            <CountPoints {players} on:playersScored={playersScored} />
+          </div>
         </div>
       </div>
     </div>

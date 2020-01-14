@@ -110,10 +110,9 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    margin-bottom: 0.5rem;
+    // margin-bottom: 0.5rem;
     & h2 {
-      padding: 0.5rem;
-      border-bottom: 5px solid var(--player-color);
+      // padding: 0.5rem;
       font-size: 1rem;
     }
     & .loading {
@@ -124,12 +123,16 @@
   }
 
   .form-wrap {
+    border: 2px solid var(--player-color);
+    padding: 0.5rem;
+    border-radius: 5px;
     display: -webkit-box;
     display: flex;
     flex-direction: column;
     -webkit-box-pack: justify;
     justify-content: space-between;
     width: 100%;
+    margin-left: 2px;
     & label {
       display: grid;
       grid-template-columns: 1fr 5fr;
@@ -151,7 +154,7 @@
         margin: 0;
         outline: none;
         // border-bottom: 1px solid darken($input-blue, 30%);
-        font-size: .65rem;
+        font-size: 0.65rem;
         border-bottom: none;
         padding: 0;
         &:focus {
@@ -223,9 +226,11 @@
 
 {#if initialized}
   <div class="settings-menu-heading">
-    <h2 style={`--player-color: ${currentPlayer.bgColor}`}>Game Settings</h2>
+    <h2>Game Settings</h2>
   </div>
-  <div class="form-wrap settings-menu">
+  <div
+    class="form-wrap settings-menu"
+    style={`--player-color: ${currentPlayer.bgColor}`}>
     <label for="players">
       <div class="label-content">players</div>
       <input

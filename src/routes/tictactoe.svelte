@@ -91,7 +91,7 @@
     min-height: 100vh;
     max-height: 100vh;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 40vh 60vh;
+    grid-template-rows: 48vh 52vh;
   }
 
   .gameboard-container {
@@ -118,8 +118,8 @@
     grid-area: statusbar;
     // border-top: 5px solid rgba(0, 0, 0, 0);
     // background: rgba(0, 255, 0, 0.25);
-    max-height: 50vh;
-    min-height: 50vh;
+    max-height: 40vh;
+    min-height: 35vh;
     max-width: 15vw;
     // overflow: scroll;
   }
@@ -130,8 +130,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    max-height: 50vh;
-    min-height: 50vh;
+    max-height: 40vh;
+    min-height: 35vh;
     max-width: 15vw;
     // overflow: scroll;
   }
