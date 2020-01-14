@@ -103,11 +103,8 @@
     scoreboardPlayers.forEach((player, i) => {
       player.style = `--player-color: ${
         players[i].bgColor
-      }; --viewport-width: ${
-        appViewport.width
-      }; --customWidthPx: ${appViewport.width * 0.2}px;
-      --custom-marginBottom: -${2000 / appViewport.width}rem`;
-      
+      }; --viewport-width: ${appViewport.width};
+      --custom-marginBottom: -${2400 / appViewport.width}rem`;
     });
   }
 
@@ -136,7 +133,6 @@
 
 <style lang="scss">
   :root {
-    --customWidthPx: calc(var(--viewport-width) * 0.2) px;
   }
   .scoreboard-container-inner {
     margin-top: 1rem;
@@ -170,10 +166,8 @@
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
     min-width: max-content;
-    // min-width: calc(var(--viewport-width) * 0.2) px;
-    // min-width: var(--customWidthPx);
     transform-origin: top left;
-    transform: scale(calc(var(--viewport-width) / 2100));
+    transform: scale(calc(var(--viewport-width) / 1800));
     margin-bottom: var(--custom-marginBottom);
   }
   .highlighted {
@@ -182,7 +176,7 @@
     transition: all 0.25s;
     min-width: max-content;
     // transform: scale(1.025);
-    transform: scale(calc(var(--viewport-width) / 2000));
+    transform: scale(calc(var(--viewport-width) / 1700));
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -229,7 +223,8 @@
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;
-    width: 100%;
+    max-width: 10ch;
+    min-width: 10ch;
     color: var(--player-color);
   }
   .player-marker {

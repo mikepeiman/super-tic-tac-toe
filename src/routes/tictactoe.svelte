@@ -180,8 +180,8 @@
     }
     &::after {
       content: attr(data-marker);
+      font-size: var(--cell-marker-size);
       position: relative;
-      top: -2px;
       justify-self: center;
       align-self: center;
       background: attr(data-background-color);

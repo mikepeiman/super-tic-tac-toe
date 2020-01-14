@@ -131,7 +131,11 @@
       renderGameBoardReload(delayMS);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-      console.log(`Checking bool existence of LS gameHistoryTurns: ${Boolean(gameHistoryTurns)}`)
+      console.log(
+        `Checking bool existence of LS gameHistoryTurns: ${Boolean(
+          gameHistoryTurns
+        )}`
+      );
       if (!gameHistoryTurns) {
         gameHistoryTurns = [];
       }
@@ -238,7 +242,9 @@
           // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
-          cell.style = `--player-color: ${players[p].bgColor}`;
+          let customColor = `--player-color: ${players[p].bgColor}`
+          let customMarkerSize = `--cell-marker-size: ${Math.floor(cellSize / 2.5)}px`
+          cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
           cell.style.height = cellSize + "px";
@@ -815,23 +821,32 @@
     display: flex;
   }
   .gameboard-board {
-    border: 5px solid rgba(0,0,0,0);
+    border: 5px solid rgba(0, 0, 0, 0);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition: all .25s;
+    transition: all 0.25s;
   }
 
-  .debug {
-    display: flex;
-  }
-
-  .debug-section {
-    margin: 1rem;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 1);
-    border: 3px solid rgba(255, 155, 200, 0.5);
+  .ticked {
+    &.unlocked {
+      border: 1px solid red;
+    }
+    &:hover {
+      background: rgba(150, 150, 255, 0.5);
+    }
+    &::after {
+      content: attr(data-marker);
+      // font-size: var(--custom-mark-size);
+      font-size: attr(data-markersize);
+      // font-size: 48px;
+      position: relative;
+      top: -2px;
+      justify-self: center;
+      align-self: center;
+      background: attr(data-background-color);
+    }
   }
 </style>
 
@@ -841,6 +856,7 @@
       {#each row as cell}
         <Cell
           customSize
+          customMarkSize
           ticked={false}
           customBg
           id={cell.id}

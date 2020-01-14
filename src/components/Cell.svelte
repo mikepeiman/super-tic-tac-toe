@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   // import { createEventDispatcher } from 'svelte';
-  export let id, row, column, ticked, customSize, customBg;
+  export let id, row, column, ticked, customSize, customMarkSize, customBg;
   import { storeSettings, storeCellSize } from "../stores.js";
 
   let cellSize, customStyles;
@@ -18,6 +18,7 @@
     let alpha = parseFloat((column + 1) / 200 / colFactor).toFixed(2);
     customBg = `--player-color: hsla(${hue}, 50%, 50%, ${alpha})`;
     customSize = `--custom-size: ${cellSize}px`;
+    customMarkSize = `--custom-mark-size: ${cellSize / 2}px`
     customStyles = `${customBg}; ${customSize}`
     // console.log(`------------Cell => onMount() ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
   });
@@ -41,8 +42,6 @@
   }
 
   .game-square {
-    // width: 24px;
-    // height: 24px;
     width: 24px;
     height: 24px;
     min-width: 12px;
@@ -69,7 +68,4 @@
   {id}
   on:click={moveNotification}
   data-ticked={ticked}
-  data-marker="Y"
-  width={customSize}
-  height={cellSize}
   style={customStyles} />
