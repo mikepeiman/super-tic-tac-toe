@@ -189,6 +189,26 @@
     justify-content: space-between;
     background: rgba(155, 55, 255, 0.75);
   }
+  .buttons-wrapper {
+    display: flex;
+  }
+  
+  .control-button {
+    background: rgba(0, 25, 75, 0.25);
+    color: #1a1a1a;
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+  }
+
+  #tally-game-button {
+    background: hsla(260, 100%, 50%, 1);
+
+    &:hover {
+      background: hsla(260, 100%, 25%, 1);
+    }
+  }
 
   @media screen and (min-width: 960px) {
     .player-indicator {
@@ -199,6 +219,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
       padding: $title-padding-vertical $title-padding-horizontal;
       // border: 2px solid #eeeeee;
 
@@ -227,7 +248,7 @@
         Game Moves: {moveNumber}/{settings.rows * settings.columns}
       </h2>
       <div class="buttons-wrapper">
-        <Modal class="modal">
+        <Modal >
           <Content />
         </Modal>
         <CountPoints
