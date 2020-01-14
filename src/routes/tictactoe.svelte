@@ -66,9 +66,9 @@
 </script>
 
 <style lang="scss" global>
-:root {
-  --input-blue: 50, 200, 255
-}
+  :root {
+    --input-blue: 50, 200, 255;
+  }
   $input-blue: rgba(50, 200, 255, 1);
   #topnav {
     background: #1a1a1a;
@@ -91,7 +91,7 @@
     min-height: 100vh;
     max-height: 100vh;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 45vh auto;
+    grid-template-rows: 50vh 50vh;
   }
 
   .gameboard-container {
@@ -101,21 +101,27 @@
     color: #eee;
     justify-content: center;
     align-items: center;
-    height: auto;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.25);
+    height: 100vh;
+    background: #1a1a1a;
+    // overflow: scroll;
   }
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
-    height: auto;
+    max-height: 100vh;
+    min-height: 100vh;
+    max-width: 100%;
     background: rgba(255, 0, 255, 0.25);
+    overflow: scroll;
   }
   .statusbar-container {
     grid-area: statusbar;
     // border-top: 5px solid rgba(0, 0, 0, 0);
-    background: rgba(0, 255, 0, 0.25);
-    height: auto;
+    // background: rgba(0, 255, 0, 0.25);
+    max-height: 50vh;
+    min-height: 50vh;
+    max-width: 100%;
+    // overflow: scroll;
   }
   .mainmenu-container {
     background: rgba(0, 0, 255, 0.25);
@@ -124,7 +130,10 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: auto;
+    max-height: 50vh;
+    min-height: 50vh;
+    max-width: 100%;
+    // overflow: scroll;
   }
 
   input {
@@ -139,7 +148,14 @@
     margin: 0.5rem;
     justify-self: flex-end;
   }
-
+.form-wrap {
+  & input {
+    font-size: .75rem;
+  }
+  & label {
+    font-size: .5rem;
+  }
+}
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -180,7 +196,7 @@
     padding: 0.25rem;
     margin: 0.25rem;
     border-radius: 0.125rem;
-    font-size: .75rem;
+    font-size: 0.75rem;
     border: none;
     color: #eeeeee;
     background: rgba(var(--input-blue), 0.5);
@@ -188,7 +204,6 @@
       background: rgba(var(--input-blue), 1);
     }
     &.control-button {
-
     }
   }
 

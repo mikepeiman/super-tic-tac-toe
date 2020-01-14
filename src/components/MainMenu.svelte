@@ -97,7 +97,7 @@
   .settings-menu-heading {
     color: #1a1a1a;
     background: darken($input-blue, 30%);
-    font-size: 0.75rem;
+    font-size: 0.5rem;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -119,12 +119,13 @@
     -webkit-box-pack: justify;
     justify-content: space-between;
     width: 100%;
+    overflow-x: scroll;
     & label {
       display: grid;
       grid-template-columns: 1fr 5fr;
       grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 1rem;
+      font-size: .5rem;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: flex-start;

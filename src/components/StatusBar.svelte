@@ -190,7 +190,10 @@
     justify-content: space-between;
     align-items: center;
     // padding: $title-padding-vertical $title-padding-horizontal;
-
+    height: 100%;
+    height: -moz-available; /* WebKit-based browsers will ignore this. */
+    height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    height: fill-available;
     & h2 {
       margin: 0;
       font-size: 1rem;
@@ -243,7 +246,7 @@
     padding: 0.25rem;
     margin: 0.25rem;
     background: rgba(0, 25, 75, 0.25);
-    font-size: .75rem;
+    font-size: 0.75rem;
     border: none;
     color: #1a1a1a;
     &:hover {
