@@ -142,29 +142,10 @@
     -moz-appearance: textfield;
   }
 
-  // .gameboard-board {
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-self: center;
-  // }
-
   .game-row {
     display: flex;
   }
 
-  // .game-square {
-  //   min-width: 12px;
-  //   min-height: 12px;
-  //   flex: 1;
-  //   // background: var(--custom-bg);
-  //   border: 1px solid red;//rgba(0,0,0,0.5);
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   &:hover {
-  //     background: rgba(150, 150, 255, 0.5);
-  //   }
-  // }
   .ticked {
     &.unlocked {
       border: 1px solid red;
@@ -181,11 +162,10 @@
       background: attr(data-background-color);
     }
   }
-
   .player-change {
     transition: all 0.25s;
-    // border: 50px solid red;
-    background: rgba(155, 255, 155, 1);
+    border: 5px solid white;
+    background: rgba(255, 255, 255, .25);
   }
 
   button {

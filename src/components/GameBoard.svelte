@@ -781,8 +781,8 @@
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
-      console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
-      currentPlayer = players[0];`);
+      // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
+      // currentPlayer = players[0];`);
       currentPlayer = players[0];
       playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
     } else {
@@ -813,12 +813,12 @@
     display: flex;
   }
   .gameboard-board {
-    // min-width: 100%;
-    //     min-height: 100%;
+    border: 5px solid rgba(0,0,0,0);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    transition: all .25s;
   }
 
   .debug {
