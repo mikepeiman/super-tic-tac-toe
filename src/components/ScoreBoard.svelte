@@ -101,7 +101,13 @@
   function addStyles() {
     let scoreboardPlayers = document.querySelectorAll(".scoreboard-player");
     scoreboardPlayers.forEach((player, i) => {
-      player.style = `--player-color: ${players[i].bgColor}; --viewport-width: ${appViewport.width}`;
+      player.style = `--player-color: ${
+        players[i].bgColor
+      }; --viewport-width: ${
+        appViewport.width
+      }; --customWidthPx: ${appViewport.width * 0.2}px;
+      --custom-marginBottom: -${2000 / appViewport.width}rem`;
+      
     });
   }
 
@@ -129,6 +135,9 @@
 </script>
 
 <style lang="scss">
+  :root {
+    --customWidthPx: calc(var(--viewport-width) * 0.2) px;
+  }
   .scoreboard-container-inner {
     margin-top: 1rem;
     width: max-content;
@@ -161,9 +170,11 @@
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
     min-width: max-content;
+    // min-width: calc(var(--viewport-width) * 0.2) px;
+    // min-width: var(--customWidthPx);
     transform-origin: top left;
-    transform: scale(calc(var(--viewport-width) / 1000));
-    margin-bottom: var(--viewport-width)px;
+    transform: scale(calc(var(--viewport-width) / 2100));
+    margin-bottom: var(--custom-marginBottom);
   }
   .highlighted {
     border: 5px solid #eeeeee;
@@ -171,7 +182,7 @@
     transition: all 0.25s;
     min-width: max-content;
     // transform: scale(1.025);
-    transform: scale(calc(var(--viewport-width) / 950));
+    transform: scale(calc(var(--viewport-width) / 2000));
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
