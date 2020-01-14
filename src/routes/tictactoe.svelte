@@ -91,7 +91,7 @@
     min-height: 100vh;
     max-height: 100vh;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 50vh 50vh;
+    grid-template-rows: 40vh 60vh;
   }
 
   .gameboard-container {
@@ -148,14 +148,14 @@
     margin: 0.5rem;
     justify-self: flex-end;
   }
-.form-wrap {
-  & input {
-    font-size: .75rem;
+  .form-wrap {
+    & input {
+      font-size: 0.75rem;
+    }
+    & label {
+      font-size: 0.5rem;
+    }
   }
-  & label {
-    font-size: .5rem;
-  }
-}
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -199,12 +199,14 @@
     font-size: 0.75rem;
     border: none;
     color: #eeeeee;
-    background: rgba(var(--input-blue), 0.5);
+    // background: rgba(var(--input-blue), 0.5);
+    background: rgba(255, 255, 255, 0.15);
     &:hover {
+      background: rgba(255, 255, 255, 0.25);
       background: rgba(var(--input-blue), 1);
     }
     &.control-button {
-      font-size: .5rem;
+      font-size: 0.5rem;
     }
   }
 

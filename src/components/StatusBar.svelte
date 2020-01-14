@@ -158,15 +158,15 @@
   }
 
   function setSingleInputWidth(input) {
-    console.log(`setSingleInputWidth value ${input.value.toString()} `, input);
+    // console.log(`setSingleInputWidth value ${input.value.toString()} `, input);
     input.style.width = `${input.value.toString().length + 0.5}ch`;
   }
 
   async function setAllInputWidths() {
     await currentPlayer;
-    console.log(`setAllInputWidths() called`);
+    // console.log(`setAllInputWidths() called`);
     let inputs = await document.querySelectorAll("input");
-    console.log(`setAllInputWidths() called`, inputs);
+    // console.log(`setAllInputWidths() called`, inputs);
     let len = inputs.length;
     for (let i = 0; i < len; i++) {
       setSingleInputWidth(inputs[i]);
@@ -215,7 +215,11 @@
     padding: 0.125rem;
     width: 100%;
     text-transform: lowercase;
-    // margin-bottom: 0.5rem;
+    color: #006f98;
+    & h2 {
+      color: white;
+      margin-bottom: .5rem;
+    }
     & label {
       font-size: 0.5rem;
       margin-left: .25rem;
@@ -315,14 +319,14 @@
 
       </div>
       <div class="player-status-detail" id="total-moves">
-        <div class="inputs-wrapper">
+        <!-- <div class="inputs-wrapper"> -->
           <input name="total-moves" value={moveNumber} />
-          /
+          <label for="total-moves"> of </label>
           <input
             name="total-moves"
             class="value"
             value={settings.rows * settings.columns} />
-        </div>
+        <!-- </div> -->
         <label for="total-moves">total moves played</label>
 
       </div>

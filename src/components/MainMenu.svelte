@@ -14,6 +14,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let currentPlayer;
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -31,6 +32,13 @@
 
   onMount(() => {
     console.log(`MainMenu onMount(), settings`, settings);
+    storeCurrentPlayer.subscribe(val => {
+      currentPlayer = val;
+      console.log(`MainMenu => currentPlayer from store: `, currentPlayer);
+    });
+    let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
+    currentPlayer = lsCurrentPlayer;
+    console.log(`MainMenu => currentPlayer from ls: `, currentPlayer);
     initializeSettingsFromLS();
     initialized = true;
     setAllInputWidths();
@@ -55,7 +63,6 @@
       // setTimeout(() => {
       //   initialized = true;
       // }, 5000);
-      
     }
   }
 
@@ -95,22 +102,24 @@
     color: #eeeeee;
   }
   .settings-menu-heading {
-    color: #1a1a1a;
-    background: darken($input-blue, 30%);
+    // color: #1a1a1a;
+    // background: darken($input-blue, 30%);
     color: white;
-    border-bottom: 5px solid var(--player-color);
-    font-size: 0.5rem;
+    // border-bottom: 5px solid var(--player-color);
+
     display: flex;
     align-items: flex-end;
     justify-content: center;
     margin-bottom: 0.5rem;
     & h2 {
-      padding: 0.5rem 0.5rem 0 0.5rem;
+      padding: 0.5rem;
+      border-bottom: 5px solid var(--player-color);
+      font-size: 1rem;
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);
       // animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-      transition: all .25s;
+      transition: all 0.25s;
     }
   }
 
@@ -121,13 +130,12 @@
     -webkit-box-pack: justify;
     justify-content: space-between;
     width: 100%;
-    overflow-x: scroll;
     & label {
       display: grid;
       grid-template-columns: 1fr 5fr;
       grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: .5rem;
+      font-size: 0.5rem;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: flex-start;
@@ -142,7 +150,10 @@
         grid-area: settings-input;
         margin: 0;
         outline: none;
-        border-bottom: 1px solid darken($input-blue, 30%);
+        // border-bottom: 1px solid darken($input-blue, 30%);
+        font-size: .65rem;
+        border-bottom: none;
+        padding: 0;
         &:focus {
           border-bottom: 1px solid $input-blue;
           outline: none;
@@ -190,7 +201,7 @@
     }
   }
 
-    @keyframes loading-title {
+  @keyframes loading-title {
     0% {
       top: 2rem; // 36px;
       left: 2rem;
@@ -212,7 +223,7 @@
 
 {#if initialized}
   <div class="settings-menu-heading">
-    <h2>Game Settings</h2>
+    <h2 style={`--player-color: ${currentPlayer.bgColor}`}>Game Settings</h2>
   </div>
   <div class="form-wrap settings-menu">
     <label for="players">
