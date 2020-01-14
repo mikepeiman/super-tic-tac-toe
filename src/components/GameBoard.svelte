@@ -98,6 +98,7 @@
       console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
       let ghls = localStorage.getItem("gameHistoryTurns");
       let parsedGhls = JSON.parse(ghls);
+      console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
     });
 
     setCellSize();
@@ -130,6 +131,7 @@
       renderGameBoardReload(delayMS);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
+      console.log(`Checking bool existence of LS gameHistoryTurns: ${Boolean(gameHistoryTurns)}`)
       if (!gameHistoryTurns) {
         gameHistoryTurns = [];
       }
@@ -752,7 +754,7 @@
         gameHistoryTurns
       )} and type of: ${typeof gameHistoryTurns}`
     );
-    gameHistoryTurns ? (gameHistoryTurns = []) : gameHistoryTurns;
+    // gameHistoryTurns ? (gameHistoryTurns = []) : gameHistoryTurns;
     if (!gameHistoryTurns) {
       gameHistoryTurns = [];
     }
