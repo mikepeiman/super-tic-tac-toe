@@ -88,10 +88,6 @@
 
   function addStyles() {
     let scoreHeadings = document.querySelectorAll(".scoreboard-player");
-    // console.log(
-    //   `addStyle function, scoreHeadings for total-score: `,
-    //   scoreHeadings
-    // );
     scoreHeadings.forEach((h, i) => {
       h.style = `--player-color: ${players[i].bgColor}`;
     });
@@ -103,13 +99,7 @@
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
       gameUnderway = false;
       return false;
-      // console.log(
-      //   `addHighlightIfGameInProgress! FALSE!!!! moveNumber ${moveNumber} totalMovesInGame ${totalMovesInGame}`
-      // );
     } else {
-      // console.log(
-      //   `addHighlightIfGameInProgress! TRUE!!!!! ${moveNumber} totalMovesInGame ${totalMovesInGame}`
-      // );
       gameUnderway = true;
       return true;
     }

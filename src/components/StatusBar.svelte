@@ -254,7 +254,8 @@
       font-family: inherit;
       font-weight: 400;
       font-size: 0.6rem;
-      padding: 0.125rem;
+      padding: 0.125rem .175rem;
+      border-radius: 2px;
     }
   }
   .statusbar-details-wrapper {
