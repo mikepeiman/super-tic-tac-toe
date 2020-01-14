@@ -185,6 +185,7 @@
     background: var(--custom-bg);
     transition: all 0.5s;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     // padding: $title-padding-vertical $title-padding-horizontal;

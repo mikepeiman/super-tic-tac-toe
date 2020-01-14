@@ -82,12 +82,12 @@
     // grid-template-columns: 1fr 4fr 1fr;
     // grid-template-rows: 8em auto;
     grid-template-areas:
-      "scoreboard statusbar statusbar"
+      "scoreboard gameboard statusbar"
       "scoreboard gameboard mainmenu";
     // background: #1a1a1a;
     height: 100%;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 25vh auto;
+    grid-template-rows: 45vh auto;
   }
 
   .gameboard-container {
