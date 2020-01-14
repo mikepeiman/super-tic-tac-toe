@@ -29,7 +29,7 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`StatusBar => storeSettings.subscribe value => `, value);
+      console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
       let lsMovesFromTurnHistory = JSON.parse(
         localStorage.getItem("turnHistory")
@@ -85,6 +85,8 @@
       currentPlayer = players[0];
       storeCurrentPlayer.set(currentPlayer);
     }
+
+    setAllInputWidths();
   });
 
   function playersScored(e) {
@@ -154,6 +156,22 @@
   function loadGame() {
     // storeGameInProgress.set(false);
   }
+
+  function setSingleInputWidth(input) {
+    console.log(`setSingleInputWidth value ${input.value.toString()} `, input);
+    input.style.width = `${input.value.toString().length + 0.5}ch`;
+  }
+
+  async function setAllInputWidths() {
+    await currentPlayer;
+    console.log(`setAllInputWidths() called`);
+    let inputs = await document.querySelectorAll("input");
+    console.log(`setAllInputWidths() called`, inputs);
+    let len = inputs.length;
+    for (let i = 0; i < len; i++) {
+      setSingleInputWidth(inputs[i]);
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -176,12 +194,6 @@
       font-size: 1rem;
     }
   }
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
 
   .player-status-bar {
     width: 100%;
@@ -189,10 +201,31 @@
     justify-content: space-between;
     background: rgba(155, 55, 255, 0.75);
   }
+
+  .player-status-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    & input {
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-family: inherit;
+      font-weight: 400;
+      font-size: 1.1rem;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      border-bottom: none;
+      margin: 0;
+      justify-self: flex-start;
+    }
+  }
+
   .buttons-wrapper {
     display: flex;
   }
-  
+
   .control-button {
     background: rgba(0, 25, 75, 0.25);
     color: #1a1a1a;
@@ -219,7 +252,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
+      // width: 100%;
+      // width: 75vw;
       padding: $title-padding-vertical $title-padding-horizontal;
       // border: 2px solid #eeeeee;
 
@@ -240,15 +274,27 @@
     <div
       class="player-indicator player-0"
       style={`--custom-bg: ${currentPlayer.bgColor}`}>
-      <h2 class="player-indicator-heading">{currentPlayer.name}</h2>
-      <h2 class="moves-indicator-heading">
-        Moves remaining in turn: {movesRemaining}
-      </h2>
-      <h2 class="progress-indicator-heading">
-        Game Moves: {moveNumber}/{settings.rows * settings.columns}
-      </h2>
+      <div class="player-status-detail" id="player-name">
+        <label for="player-name">Player</label>
+        <input name="player-name" value={currentPlayer.name} />
+      </div>
+      <div class="player-status-detail" id="turn-moves">
+
+        <label for="turn-moves">Moves remaining in turn:</label>
+        <input name="turn-moves" value={movesRemaining} />
+      </div>
+      <div class="player-status-detail" id="total-moves">
+        <label for="total-moves">Game Moves:</label>
+        <div class="inputs-wrapper">
+          <input name="total-moves" value={moveNumber} />
+          /
+          <input
+            name="total-moves"
+            value="{settings.rows * settings.columns}" />
+        </div>
+      </div>
       <div class="buttons-wrapper">
-        <Modal >
+        <Modal>
           <Content />
         </Modal>
         <CountPoints
