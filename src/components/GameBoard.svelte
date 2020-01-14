@@ -161,9 +161,9 @@
     }
   });
 
-function setCellSize() {
-  console.log(`|--|---|--|--|--|--|    setCellSize() called`)
-      let gameboard = document.querySelector(".gameboard-container");
+  function setCellSize() {
+    console.log(`|--|---|--|--|--|--|    setCellSize() called`);
+    let gameboard = document.querySelector(".gameboard-container");
     gameboardWidth = gameboard.offsetWidth;
     gameboardHeight = gameboard.offsetHeight;
     cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
@@ -180,7 +180,7 @@ function setCellSize() {
       cellSize = cellWidth;
     }
     storeCellSize.set(cellSize);
-}
+  }
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -291,6 +291,7 @@ function setCellSize() {
         let gridCell = line[j];
         // console.log(`New resizeCells() function, checking cellSize ${cellSize}, gridCell: `, gridCell)
         let cell = document.getElementById(gridCell.id);
+        setCustomBg(cell);
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
@@ -581,17 +582,20 @@ function setCellSize() {
     // );
   }
 
-  function untickThis(cell) {
-    let id = cell.id;
+  function setCustomBg(cell) {
     let row = cell.getAttribute("row");
     let column = cell.getAttribute("column");
-    cell.classList.remove("ticked");
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
     let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     cell.style = customBg;
+  }
+
+  function untickThis(cell) {
+    cell.classList.remove("ticked");
+    setCustomBg(cell);
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
