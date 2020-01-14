@@ -108,12 +108,12 @@
     // border-bottom: 5px solid var(--player-color);
 
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
     // margin-bottom: 0.5rem;
     & h2 {
       // padding: 0.5rem;
-      font-size: 1rem;
+      font-size: .75rem;
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);

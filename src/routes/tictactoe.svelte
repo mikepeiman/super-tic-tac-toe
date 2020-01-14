@@ -111,8 +111,8 @@
     max-height: 100vh;
     min-height: 100vh;
     max-width: 100%;
-    background: rgba(255, 0, 255, 0.25);
-    overflow: scroll;
+    // background: rgba(255, 0, 255, 0.25);
+    // overflow: scroll;
   }
   .statusbar-container {
     grid-area: statusbar;
@@ -304,15 +304,13 @@
     <div class="mainmenu-container">
       <GameInit on:playersInitialized={setPlayersToStore} />
     </div>
-
-    <div class="scoreboard-container">
-      <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
-    </div>
-
     <div class="statusbar-container">
       <StatusBar
         on:resetGame={resetGame}
         on:playersScored={setPlayersToStore} />
+    </div>
+    <div class="scoreboard-container">
+      <ScoreBoard on:playerNameOrMarkerUpdate={setPlayersToStore} />
     </div>
     <div class="gameboard-container">
       <GameBoard on:move={moveNotification} />

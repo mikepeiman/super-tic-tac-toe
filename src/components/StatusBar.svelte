@@ -188,8 +188,8 @@
     transition: all 0.5s;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    // justify-content: space-between;
+    // align-items: center;
     // padding: $title-padding-vertical $title-padding-horizontal;
     // height: 100%;
     // height: -moz-available; /* WebKit-based browsers will ignore this. */
@@ -197,7 +197,7 @@
     // height: fill-available;
     & h2 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.75rem;
     }
   }
 
@@ -212,7 +212,7 @@
     display: flex;
     align-items: center;
     // background: rgba(0, 0, 0, 0.5);
-    padding: 0.125rem;
+    // padding: 0.125rem;
     width: 100%;
     // text-transform: lowercase;
     color: #006f98;
@@ -222,7 +222,7 @@
     & h2 {
       color: white;
       text-transform: capitalize;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
     & label {
       font-size: 0.5rem;
@@ -247,12 +247,22 @@
         background: rgba(0, 0, 0, 0);
       }
     }
+    & .dynamic-value {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      font-family: inherit;
+      font-weight: 400;
+      font-size: 0.6rem;
+      padding: 0.125rem;
+    }
   }
   .statusbar-details-wrapper {
     padding: 0.5rem;
     border: 2px solid var(--player-color);
     border-radius: 5px;
     margin-left: 2px;
+    width: min-content;
   }
   .player-name {
     // padding: 0.5rem;
@@ -326,13 +336,15 @@
 
       <div class="statusbar-details-wrapper">
         <div class="player-status-detail" id="turn-moves">
-          <input name="turn-moves" value={movesRemaining} />
-          <label for="turn-moves">moves remaining in turn</label>
+          <p>
+            <span class="dynamic-value">{movesRemaining}</span>
+            moves remaining in turn
+          </p>
         </div>
         <div class="player-status-detail" id="total-moves">
           <p>
-            {moveNumber} of {settings.rows * settings.columns} total moves
-            played
+            <span class="dynamic-value">{moveNumber}</span>
+            of {settings.rows * settings.columns} total moves played
           </p>
         </div>
         <div class="buttons-wrapper">

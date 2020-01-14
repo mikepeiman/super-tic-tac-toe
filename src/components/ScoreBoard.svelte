@@ -119,7 +119,9 @@
 <style lang="scss">
   .scoreboard-container-inner {
     margin-top: 1rem;
+    width: max-content;
     max-width: 100%;
+    height: 100%;
   }
   .scores-wrap {
     display: flex;
@@ -146,10 +148,9 @@
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
-    min-width: 200%;
-    // min-width: 30vw;
+    min-width: max-content;
     transform-origin: top left;
-    transform: scale(0.5);
+    transform: scale(0.35);
     margin-bottom: -2.75rem;
   }
   .scoreboard-direction {
@@ -217,7 +218,7 @@
     position: relative;
     transition: all 0.25s;
     // transform: scale(1.025);
-    transform: translateX(1rem) scale(0.55);
+    transform:  scale(0.4);
   }
   @media screen and (min-width: 960px) {
     .scoreboard-player {
@@ -225,11 +226,11 @@
       margin: 0 1rem 1rem 1rem;
       transition: all 0.25s;
       border: 5px solid #1a1a1a;
-      min-width: calc(100% - 10px - 1rem);
+      // min-width: calc(100% - 10px - 1rem);
       transform: scale(1);
     }
     .highlighted {
-      transform: translateX(1rem) scale(1.025);
+      transform: scale(1.025);
       border: 5px solid #eeeeee;
       position: relative;
       transition: all 0.25s;
