@@ -181,19 +181,20 @@
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
     // margin: 1rem;
-    padding: 0.5rem;
+    // padding: 0.5rem;
     color: #eee;
-    background: var(--custom-bg);
+    // background: var(--player-color);
+    // background: #1a1a1a;
     transition: all 0.5s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     // padding: $title-padding-vertical $title-padding-horizontal;
-    height: 100%;
-    height: -moz-available; /* WebKit-based browsers will ignore this. */
-    height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    height: fill-available;
+    // height: 100%;
+    // height: -moz-available; /* WebKit-based browsers will ignore this. */
+    // height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    // height: fill-available;
     & h2 {
       margin: 0;
       font-size: 1rem;
@@ -204,20 +205,24 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
+    // background: rgba(155, 55, 255, 0.75);
   }
 
   .player-status-detail {
     display: flex;
-    // flex-direction: column;
+    align-items: center;
+    // background: rgba(0, 0, 0, 0.5);
+    padding: 0.125rem;
     width: 100%;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    text-transform: lowercase;
+    // margin-bottom: 0.5rem;
     & label {
-      font-size: 0.6rem;
+      font-size: 0.5rem;
+      margin-left: .25rem;
+      word-wrap: normal;
     }
     & input {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(255,255,255, 0.15);
       border: none;
       color: white;
       font-family: inherit;
@@ -234,6 +239,11 @@
         background: rgba(0, 0, 0, 0);
       }
     }
+  }
+
+  .player-name {
+    padding: .5rem;
+    border-bottom: 5px solid var(--player-color);
   }
   .inputs-wrapper {
     display: flex;
@@ -267,7 +277,7 @@
     .player-indicator {
       color: #eee;
       // width: calc(100% - (2 * #{$title-padding-horizontal}));
-      background: var(--custom-bg);
+      background: var(--player-color);
       transition: all 0.5s;
       display: flex;
       justify-content: space-between;
@@ -287,13 +297,13 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <div class="player-indicator player-0" style={`--custom-bg: #006f98;`}>
+    <div class="player-indicator player-0" style={`--player-color: #006f98;`}>
       <h2 class="player-indicator-heading">Loading players data...</h2>
     </div>
   {:else}
     <div
       class="player-indicator player-0"
-      style={`--custom-bg: ${currentPlayer.bgColor}`}>
+      style={`--player-color: ${currentPlayer.bgColor}`}>
       <div class="player-status-detail" id="player-name">
         <!-- <label for="player-name"></label>
         <input name="player-name" value={currentPlayer.name} /> -->

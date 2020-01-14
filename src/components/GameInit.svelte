@@ -203,7 +203,7 @@
 
   .player-indicator {
     width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: var(--custom-bg);
+    background: var(--player-color);
     transition: all 0.5s;
     display: flex;
     justify-content: space-between;

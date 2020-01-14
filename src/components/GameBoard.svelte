@@ -238,7 +238,7 @@
           // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
-          cell.style = `--custom-bg: ${players[p].bgColor}`;
+          cell.style = `--player-color: ${players[p].bgColor}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
           cell.style.height = cellSize + "px";
@@ -258,7 +258,7 @@
         let move = turnHistory[i];
         let p = move.player.id;
         let cell = document.getElementById(move.id);
-        cell.style = `--custom-bg: ${players[p].bgColor}`;
+        cell.style = `--player-color: ${players[p].bgColor}`;
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
@@ -572,7 +572,7 @@
     cell.dataset.ticked = true;
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
-    cell.style = `--custom-bg: ${currentPlayer.bgColor}`;
+    cell.style = `--player-color: ${currentPlayer.bgColor}`;
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
@@ -591,7 +591,7 @@
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
-    let customBg = `--custom-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
+    let customBg = `--player-color: hsla(${hue}, 50%, 50%, ${alpha});`;
     cell.style = customBg;
   }
 
@@ -786,10 +786,10 @@
       // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
       // currentPlayer = players[0];`);
       currentPlayer = players[0];
-      playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
+      playerIndicator.style = `--player-color: ${currentPlayer.bgColor}`;
     } else {
       currentPlayer = players[id + 1];
-      playerIndicator.style = `--custom-bg: ${currentPlayer.bgColor}`;
+      playerIndicator.style = `--player-color: ${currentPlayer.bgColor}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;

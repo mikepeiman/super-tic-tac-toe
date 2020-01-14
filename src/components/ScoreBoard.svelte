@@ -93,7 +93,7 @@
     //   scoreHeadings
     // );
     scoreHeadings.forEach((h, i) => {
-      h.style = `--custom-bg: ${players[i].bgColor}`;
+      h.style = `--player-color: ${players[i].bgColor}`;
     });
   }
 
@@ -142,7 +142,7 @@
   }
 
   .scoreboard-player {
-    background: var(--custom-bg);
+    background: var(--player-color);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
@@ -175,7 +175,7 @@
   }
 
   .total-score {
-    // background: var(--custom-bg);
+    // background: var(--player-color);
     padding: 0.25rem;
     margin: 0 0.5rem;
     display: flex;
@@ -189,7 +189,7 @@
     border-radius: 2px;
     max-width: 5ch;
     min-width: 3ch;
-    color: var(--custom-bg);
+    color: var(--player-color);
     text-align: right;
   }
   .player-name {
@@ -198,7 +198,7 @@
     margin: 0.25rem;
     border-radius: 2px;
     width: 100%;
-    color: var(--custom-bg);
+    color: var(--player-color);
   }
   .player-marker {
     background: black;
@@ -210,7 +210,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--custom-bg);
+    color: var(--player-color);
   }
   .highlighted {
     border: 5px solid #eeeeee;
@@ -221,7 +221,7 @@
   }
   @media screen and (min-width: 960px) {
     .scoreboard-player {
-      background: var(--custom-bg);
+      background: var(--player-color);
       margin: 0 1rem 1rem 1rem;
       transition: all 0.25s;
       border: 5px solid #1a1a1a;

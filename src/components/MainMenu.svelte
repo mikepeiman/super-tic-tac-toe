@@ -97,6 +97,8 @@
   .settings-menu-heading {
     color: #1a1a1a;
     background: darken($input-blue, 30%);
+    color: white;
+    border-bottom: 5px solid var(--player-color);
     font-size: 0.5rem;
     display: flex;
     align-items: flex-end;

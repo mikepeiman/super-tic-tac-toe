@@ -120,11 +120,11 @@
     // background: rgba(0, 255, 0, 0.25);
     max-height: 50vh;
     min-height: 50vh;
-    max-width: 100%;
+    max-width: 15vw;
     // overflow: scroll;
   }
   .mainmenu-container {
-    background: rgba(0, 0, 255, 0.25);
+    // background: rgba(0, 0, 255, 0.25);
     grid-area: mainmenu;
     margin: 0;
     display: flex;
@@ -132,7 +132,7 @@
     justify-content: flex-start;
     max-height: 50vh;
     min-height: 50vh;
-    max-width: 100%;
+    max-width: 15vw;
     // overflow: scroll;
   }
 
@@ -204,6 +204,7 @@
       background: rgba(var(--input-blue), 1);
     }
     &.control-button {
+      font-size: .5rem;
     }
   }
 
