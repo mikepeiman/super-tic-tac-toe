@@ -739,7 +739,14 @@
       gameHistoryTurns,
       `\n\n`
     );
-    gameHistoryTurns = [...gameHistoryTurns, turnHistory];
+    // if(!gameHistoryTurns) {}
+    console.log(`Bool of gameHistoryTurns: ${Boolean(gameHistoryTurns)} and type of: ${typeof gameHistoryTurns}`)
+    gameHistoryTurns ? gameHistoryTurns = [] : gameHistoryTurns
+    if(!gameHistoryTurns) {
+      gameHistoryTurns = []
+    }
+    console.log(`Bool of gameHistoryTurns: ${Boolean(gameHistoryTurns)} and type of: ${typeof gameHistoryTurns}`)
+     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
