@@ -99,18 +99,20 @@
     align-items: center;
     height: 75vh;
     width: 100%;
-    // overflow: hidden;
-    // margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.25);
   }
   .scoreboard-container {
     grid-area: scoreboard;
-    margin: 1rem 0 0 0;
+    margin: 0;
+    background: rgba(255, 0, 255, 0.25);
   }
   .statusbar-container {
     grid-area: statusbar;
-    border-top: 5px solid rgba(0, 0, 0, 0);
+    // border-top: 5px solid rgba(0, 0, 0, 0);
+    background: rgba(0, 255, 0, 0.25);
   }
   .mainmenu-container {
+    background: rgba(0, 0, 255, 0.25);
     grid-area: mainmenu;
     margin: 0 1rem 0 0;
     display: flex;
@@ -165,17 +167,21 @@
   .player-change {
     transition: all 0.25s;
     border: 5px solid white;
-    background: rgba(255, 255, 255, .25);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   button {
-    padding: 1rem;
-    border-radius: 3px;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 0.125rem;
     border: none;
     color: #eeeeee;
     background: rgba(55, 255, 155, 0.5);
     &:hover {
       background: rgba(0, 25, 75, 1);
+    }
+    &.control-button {
+      color: white;
     }
   }
 
@@ -194,7 +200,6 @@
       opacity: 1;
     }
   }
-
 
   .title-container {
     background: #1a1a1a;
@@ -256,6 +261,12 @@
     //   transform: scale(0.5);
     //   transform-origin: top left;
     // }
+  }
+
+  @media screen and (min-width: 960px) {
+    .statusbar-container {
+      border-top: 5px solid rgba(0, 0, 0, 0);
+    }
   }
 </style>
 

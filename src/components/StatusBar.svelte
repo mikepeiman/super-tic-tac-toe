@@ -5,7 +5,7 @@
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let state, players, gameboardMapped;
+  export let state, players;
   import {
     storeSettings,
     storeState,
@@ -180,7 +180,8 @@
   $title-padding-vertical: 0.5rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
-    margin: 1rem;
+    // margin: 1rem;
+    padding: 0.5rem;
     color: #eee;
     background: var(--custom-bg);
     transition: all 0.5s;
@@ -205,30 +206,44 @@
 
   .player-status-detail {
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     width: 100%;
-
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    & label {
+      font-size: 0.6rem;
+    }
     & input {
       background: rgba(0, 0, 0, 0.5);
       border: none;
       color: white;
       font-family: inherit;
       font-weight: 400;
-      font-size: 1.1rem;
-      padding: 0.25rem;
-      border-radius: 0.25rem;
+      font-size: 0.6rem;
+      padding: 0.125rem;
+      border-radius: 0.125rem;
       border-bottom: none;
       margin: 0;
       justify-self: flex-start;
+      &.value {
+        font-size: 0.6rem;
+        padding: 0.125rem;
+        background: rgba(0, 0, 0, 0);
+      }
     }
   }
-
+  .inputs-wrapper {
+    display: flex;
+  }
   .buttons-wrapper {
     display: flex;
   }
 
-  .control-button {
+  button {
+    padding: 0.25rem;
+    margin: 0.25rem;
     background: rgba(0, 25, 75, 0.25);
+    border: none;
     color: #1a1a1a;
     &:hover {
       background: rgba(0, 0, 0, 0.5);
@@ -276,32 +291,34 @@
       class="player-indicator player-0"
       style={`--custom-bg: ${currentPlayer.bgColor}`}>
       <div class="player-status-detail" id="player-name">
-        <label for="player-name">Player</label>
-        <input name="player-name" value={currentPlayer.name} />
+        <!-- <label for="player-name"></label>
+        <input name="player-name" value={currentPlayer.name} /> -->
+        <h2 class="player-name">{currentPlayer.name}</h2>
       </div>
       <div class="player-status-detail" id="turn-moves">
-
-        <label for="turn-moves">Moves remaining in turn:</label>
         <input name="turn-moves" value={movesRemaining} />
+        <label for="turn-moves">moves remaining in turn</label>
+
       </div>
       <div class="player-status-detail" id="total-moves">
-        <label for="total-moves">Game Moves:</label>
         <div class="inputs-wrapper">
           <input name="total-moves" value={moveNumber} />
           /
           <input
             name="total-moves"
-            value="{settings.rows * settings.columns}" />
+            class="value"
+            value={settings.rows * settings.columns} />
         </div>
+        <label for="total-moves">total moves played</label>
+
       </div>
       <div class="buttons-wrapper">
         <Modal>
           <Content />
         </Modal>
-        <CountPoints
-          {players}
-          {gameboardMapped}
-          on:playersScored={playersScored} />
+        <div>
+          <CountPoints {players} on:playersScored={playersScored} />
+        </div>
       </div>
     </div>
   {/if}

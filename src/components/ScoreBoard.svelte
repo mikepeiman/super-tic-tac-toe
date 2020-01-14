@@ -117,6 +117,10 @@
 </script>
 
 <style lang="scss">
+  .scoreboard-container-inner {
+    margin-top: 1rem;
+    max-width: 100%;
+  }
   .scores-wrap {
     display: flex;
     flex-direction: column;
@@ -226,9 +230,9 @@
     }
     .highlighted {
       transform: translateX(1rem) scale(1.025);
-          border: 5px solid #eeeeee;
-    position: relative;
-    transition: all 0.25s;
+      border: 5px solid #eeeeee;
+      position: relative;
+      transition: all 0.25s;
     }
   }
 </style>

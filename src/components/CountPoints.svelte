@@ -13,7 +13,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  export let players;
+  export let players, wrapperClass;
 
   $: lines = [];
 
