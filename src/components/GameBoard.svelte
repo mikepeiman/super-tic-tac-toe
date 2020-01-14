@@ -78,7 +78,7 @@
 
   let rows, columns, size, numberOfPlayers;
   ({ rows, columns, size, numberOfPlayers } = settings);
-  // $: rows, columns, size, numberOfPlayers && resetGameBoard();
+  $: rows, columns, size, numberOfPlayers && resetGameBoard();
 
   onMount(() => {
     storeSettings.subscribe(value => {
@@ -174,15 +174,6 @@
     } else {
       state.movesRemaining = settings.movesPerTurn;
       buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
-      // let newboard = buildGameGrid(
-      //   settings.rows,
-      //   settings.columns,
-      //   cellSize,
-      //   settings.gutter
-      // );
-      // newboard.then(res => {
-      //   console.log(`newboard built buildGameGrid in onMount, res: `, res)
-      // })
       storeState.set(state);
     }
     if (playerDetails) {
@@ -207,10 +198,6 @@
     let amount, number, len;
     gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
     turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
-
-    while (gameboard.firstChild) {
-      gameboard.removeChild(gameboard.firstChild);
-    }
 
     await buildGameGrid(
       settings.rows,
@@ -488,17 +475,10 @@
     console.log(`grid array from inside buildGameGrid: `, grid);
   }
 
-  async function clearGameBoard() {
-    let gameboard = document.getElementById("gameboard-board");
-    while (gameboard.firstChild) {
-      gameboard.removeChild(gameboard.firstChild);
-    }
-    grid = [];
-  }
-
   async function resetGameBoard() {
     // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
-    await clearGameBoard();
+
+    // grid = []
     await buildGameGrid(
       settings.rows,
       settings.columns,

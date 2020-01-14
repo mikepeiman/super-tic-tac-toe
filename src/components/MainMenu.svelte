@@ -51,9 +51,10 @@
       );
       settings = ls;
       storeSettings.set(ls);
-      setTimeout(() => {
-        initialized = true;
-      }, 5000);
+      // setTimeout(() => {
+      //   initialized = true;
+      // }, 5000);
+      initialized = true;
     }
   }
 
