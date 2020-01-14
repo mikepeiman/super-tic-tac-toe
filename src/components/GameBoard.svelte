@@ -100,25 +100,10 @@
       let parsedGhls = JSON.parse(ghls);
     });
 
-    let gameboard = document.querySelector(".gameboard-container");
-    gameboardWidth = gameboard.offsetWidth;
-    gameboardHeight = gameboard.offsetHeight;
-    cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
-    cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor);
-    console.log(
-      `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
-    );
-    // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
-    if (cellWidth >= cellHeight) {
-      console.log(`W:${cellWidth} > H:${cellHeight}`);
-      cellSize = cellHeight;
-    } else {
-      console.log(`W:${cellWidth} < H:${cellHeight}`);
-      cellSize = cellWidth;
-    }
-    storeCellSize.set(cellSize);
+    setCellSize();
     storeCellSize.subscribe(value => {
       console.log(`GameBoard => storeCellSize subscribed`, value);
+      // cellSize = value;
     });
 
     console.log(
@@ -142,13 +127,7 @@
         `GameBoard => if (gameInProgress) we should be redrawing the moves...`
       );
       buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
-      let reload = renderGameBoardReload(delayMS);
-      reload.then(checkin => {
-        console.log(
-          `~~~~~~~~~~~~~ used renderGameBoardReload() as thennable, value `,
-          checkin
-        );
-      });
+      renderGameBoardReload(delayMS);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
       if (!gameHistoryTurns) {
@@ -181,6 +160,27 @@
       storePlayers.set(players);
     }
   });
+
+function setCellSize() {
+  console.log(`|--|---|--|--|--|--|    setCellSize() called`)
+      let gameboard = document.querySelector(".gameboard-container");
+    gameboardWidth = gameboard.offsetWidth;
+    gameboardHeight = gameboard.offsetHeight;
+    cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
+    cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor);
+    console.log(
+      `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
+    );
+    // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
+    if (cellWidth >= cellHeight) {
+      console.log(`W:${cellWidth} > H:${cellHeight}`);
+      cellSize = cellHeight;
+    } else {
+      console.log(`W:${cellWidth} < H:${cellHeight}`);
+      cellSize = cellWidth;
+    }
+    storeCellSize.set(cellSize);
+}
 
   function moveNotification(e) {
     console.log(`GameBoard moveNOtification: `, e);
@@ -217,22 +217,23 @@
         len = gameHistoryTurns.length;
       }
     }
+    console.log(`turnHistory and len: ${turnHistory.len}; `, turnHistory);
     console.log(`gameHistoryTurns and len: ${len}; `, gameHistoryTurns);
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
         for (let j = 0; j < settings.movesPerTurn; j++) {
-          console.log(
-            `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
-            turn,
-            `\n\n`
-          );
+          // console.log(
+          //   `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
+          //   turn,
+          //   `\n\n`
+          // );
           let move = turn[j];
-          console.log(
-            `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
-            move,
-            `\n\n`
-          );
+          // console.log(
+          //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+          //   move,
+          //   `\n\n`
+          // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           cell.style = `--custom-bg: ${players[p].bgColor}`;
@@ -282,11 +283,13 @@
     players = players;
   }
   async function resizeCells() {
+    // debugger;
+    setCellSize();
     for (let i = 0; i < grid.length; i++) {
       let line = grid[i];
       for (let j = 0; j < line.length; j++) {
         let gridCell = line[j];
-        // console.log(`New resizeCells() function, checking gridCell: `, gridCell)
+        // console.log(`New resizeCells() function, checking cellSize ${cellSize}, gridCell: `, gridCell)
         let cell = document.getElementById(gridCell.id);
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
@@ -486,7 +489,7 @@
       settings.gutter
     );
     // console.log(`New resizeCells() function about to be called `);
-    resizeCells();
+    await resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       await renderGameBoardReload(0);
@@ -740,13 +743,21 @@
       `\n\n`
     );
     // if(!gameHistoryTurns) {}
-    console.log(`Bool of gameHistoryTurns: ${Boolean(gameHistoryTurns)} and type of: ${typeof gameHistoryTurns}`)
-    gameHistoryTurns ? gameHistoryTurns = [] : gameHistoryTurns
-    if(!gameHistoryTurns) {
-      gameHistoryTurns = []
+    console.log(
+      `Bool of gameHistoryTurns: ${Boolean(
+        gameHistoryTurns
+      )} and type of: ${typeof gameHistoryTurns}`
+    );
+    gameHistoryTurns ? (gameHistoryTurns = []) : gameHistoryTurns;
+    if (!gameHistoryTurns) {
+      gameHistoryTurns = [];
     }
-    console.log(`Bool of gameHistoryTurns: ${Boolean(gameHistoryTurns)} and type of: ${typeof gameHistoryTurns}`)
-     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
+    console.log(
+      `Bool of gameHistoryTurns: ${Boolean(
+        gameHistoryTurns
+      )} and type of: ${typeof gameHistoryTurns}`
+    );
+    gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
