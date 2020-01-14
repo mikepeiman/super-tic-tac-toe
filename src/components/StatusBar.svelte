@@ -243,6 +243,7 @@
     padding: 0.25rem;
     margin: 0.25rem;
     background: rgba(0, 25, 75, 0.25);
+    font-size: .75rem;
     border: none;
     color: #1a1a1a;
     &:hover {

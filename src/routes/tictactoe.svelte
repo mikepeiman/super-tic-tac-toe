@@ -66,6 +66,9 @@
 </script>
 
 <style lang="scss" global>
+:root {
+  --input-blue: 50, 200, 255
+}
   $input-blue: rgba(50, 200, 255, 1);
   #topnav {
     background: #1a1a1a;
@@ -85,7 +88,8 @@
       "scoreboard gameboard statusbar"
       "scoreboard gameboard mainmenu";
     // background: #1a1a1a;
-    height: 100%;
+    min-height: 100vh;
+    max-height: 100vh;
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 45vh auto;
   }
@@ -97,28 +101,30 @@
     color: #eee;
     justify-content: center;
     align-items: center;
-    height: 75vh;
+    height: auto;
     width: 100%;
     background: rgba(255, 255, 255, 0.25);
   }
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
+    height: auto;
     background: rgba(255, 0, 255, 0.25);
   }
   .statusbar-container {
     grid-area: statusbar;
     // border-top: 5px solid rgba(0, 0, 0, 0);
     background: rgba(0, 255, 0, 0.25);
+    height: auto;
   }
   .mainmenu-container {
     background: rgba(0, 0, 255, 0.25);
     grid-area: mainmenu;
-    margin: 0 1rem 0 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: max-content;
+    height: auto;
   }
 
   input {
@@ -174,14 +180,15 @@
     padding: 0.25rem;
     margin: 0.25rem;
     border-radius: 0.125rem;
+    font-size: .75rem;
     border: none;
     color: #eeeeee;
-    background: rgba(55, 255, 155, 0.5);
+    background: rgba(var(--input-blue), 0.5);
     &:hover {
-      background: rgba(0, 25, 75, 1);
+      background: rgba(var(--input-blue), 1);
     }
     &.control-button {
-      color: white;
+
     }
   }
 
