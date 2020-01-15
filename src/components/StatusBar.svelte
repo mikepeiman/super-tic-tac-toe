@@ -175,9 +175,9 @@
 </script>
 
 <style lang="scss">
-  $title-margin: 1rem;
-  $title-padding-horizontal: 1rem;
-  $title-padding-vertical: 0.5rem;
+  $title-margin: .5rem;
+  $title-padding-horizontal: .5rem;
+  $title-padding-vertical: 0.25rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
     // margin: 1rem;
@@ -197,7 +197,7 @@
     // height: fill-available;
     & h2 {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 1.25rem;
     }
   }
 
@@ -217,7 +217,7 @@
     // text-transform: lowercase;
     color: #006f98;
     & p {
-      font-size: 0.5rem;
+      font-size: 1rem;
     }
     & h2 {
       color: white;
@@ -225,7 +225,7 @@
       margin-bottom: 0.25rem;
     }
     & label {
-      font-size: 0.5rem;
+      font-size: 1rem;
       margin-left: 0.25rem;
       word-wrap: normal;
     }
@@ -235,14 +235,14 @@
       color: white;
       font-family: inherit;
       font-weight: 400;
-      font-size: 0.6rem;
+      font-size: 1rem;
       padding: 0.125rem;
       border-radius: 0.125rem;
       border-bottom: none;
       margin: 0;
       justify-self: flex-start;
       &.value {
-        font-size: 0.6rem;
+        font-size: 1rem;
         padding: 0.125rem;
         background: rgba(0, 0, 0, 0);
       }
@@ -253,8 +253,8 @@
       color: white;
       font-family: inherit;
       font-weight: 400;
-      font-size: 0.6rem;
-      padding: 0.125rem .175rem;
+      font-size: 1rem;
+      padding: 0.125rem 0.175rem;
       border-radius: 2px;
     }
   }
@@ -263,7 +263,7 @@
     border: 2px solid var(--player-color);
     border-radius: 5px;
     margin-left: 2px;
-    width: min-content;
+    width: auto;
   }
   .player-name {
     // padding: 0.5rem;
@@ -281,7 +281,7 @@
     padding: 0.25rem;
     margin: 0.25rem;
     background: rgba(0, 25, 75, 0.25);
-    font-size: 0.75rem;
+    font-size: 1rem;
     border: none;
     color: #1a1a1a;
     &:hover {
@@ -316,6 +316,28 @@
         margin: 0;
         font-size: 1.25rem;
       }
+    }
+  }
+    @media screen and (min-width: 600px) {
+    body {
+      font-size: 80%;
+    }
+  }
+  @media screen and (min-width: 900px) {
+    body {
+      font-size: 90%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    body {
+      font-size: 100%;
+    }
+  }
+
+  @media screen and (min-width: 1500px) {
+    body {
+      font-size: 110%;
     }
   }
 </style>

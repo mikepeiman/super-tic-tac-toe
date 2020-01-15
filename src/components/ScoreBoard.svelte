@@ -32,13 +32,16 @@
       numberOfPlayers &&
         // setTimeout(() => {
         addStyles();
-      // }, 1);
+        window.innerWidth && addStyles();
+      console.log(`\n***window object***innerWidth ${window.innerWidth}\n`)
     }
   }
 
   onMount(() => {
+    // window.addEventListener("resize", addStyles())
+    window.addEventListener("resize", function(){console.log('resize!'); addStyles()}, true);
     setViewportSize();
-    setPlacardPositions();
+    // setPlacardPositions();
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
@@ -126,15 +129,18 @@
   }
 
   async function addStyles() {
+    console.log(`\n***window object***innerWidth ${window.innerWidth}\n`)
     await players;
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
     let width = placard.offsetWidth;
     let left = placard.offsetLeft;
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
     let widthRatio = appViewport.width / width;
     let heightRatio = appViewport.height / height;
-    let placardWidthRatio = width / height;
+    let placardWidthRatio = (width / height) * 2.5;
 
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].bgColor};`;
@@ -142,20 +148,21 @@
       let scaledWidth = width * scaleValue;
       let scaleValue2 = appViewport.width / width / placardWidthRatio;
       let scaleWidth = `--scale-width: ${scaleValue}`;
-      console.log(`scaleWidth: ${scaleWidth}`);
+      // console.log(`scaleWidth: ${scaleWidth}`);
       let marginBottom = ` --custom-marginBottom: -${1700 /
         appViewport.width}rem`;
-      let positionTop = `--position-top: ${i * (height * scaleValue)}px;`;
-      console.log(
-        `setStyles()!!! --- ||| --- ::: iter ${i} 
-        scaleValue ${scaleValue} \n
-        scaleValue2 ${scaleValue2} \n
-        scaledWidth ${scaledWidth} \n
-        placardWidthRatio 
-        ${placardWidthRatio} \n
-        height * i ${i * height} \n
-          the final top pos: ${positionTop}`
-      );
+      let positionTop = `--position-top: ${i * (height * scaleValue) +
+        i * 16}px;`;
+      // console.log(
+      //   `setStyles()!!! --- ||| --- ::: iter ${i} 
+      //   scaleValue ${scaleValue} \n
+      //   scaleValue2 ${scaleValue2} \n
+      //   scaledWidth ${scaledWidth} \n
+      //   placardWidthRatio 
+      //   ${placardWidthRatio} \n
+      //   height * i ${i * height} \n
+      //     the final top pos: ${positionTop}`
+      // );
       placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
     });
   }
@@ -312,8 +319,27 @@
   //     transition: all 0.25s;
   //   }
   // }
+    @media screen and (min-width: 600px) {
+    body {
+      font-size: 80%;
+    }
+  }
+  @media screen and (min-width: 900px) {
+    body {
+      font-size: 90%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    body {
+      font-size: 100%;
+    }
+  }
 
   @media screen and (min-width: 1500px) {
+    body {
+      font-size: 110%;
+    }
   }
 </style>
 

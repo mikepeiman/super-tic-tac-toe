@@ -113,7 +113,7 @@
     // margin-bottom: 0.5rem;
     & h2 {
       // padding: 0.5rem;
-      font-size: .75rem;
+      font-size: 1.25rem;
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);
@@ -138,7 +138,7 @@
       grid-template-columns: 1fr 5fr;
       grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 0.5rem;
+      font-size: 1rem;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: flex-start;
@@ -154,7 +154,7 @@
         margin: 0;
         outline: none;
         // border-bottom: 1px solid darken($input-blue, 30%);
-        font-size: 0.65rem;
+        font-size: 1rem;
         border-bottom: none;
         padding: 0;
         &:focus {
@@ -220,6 +220,29 @@
       width: 4rem; // 72px;
       height: 4rem;
       opacity: 0;
+    }
+  }
+
+    @media screen and (min-width: 600px) {
+    body {
+      font-size: 80%;
+    }
+  }
+  @media screen and (min-width: 900px) {
+    body {
+      font-size: 90%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    body {
+      font-size: 100%;
+    }
+  }
+
+  @media screen and (min-width: 1500px) {
+    body {
+      font-size: 110%;
     }
   }
 </style>
