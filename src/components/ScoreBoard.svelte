@@ -30,8 +30,7 @@
   ({ numberOfPlayers } = settings);
   $: {
     if (typeof window !== "undefined") {
-      numberOfPlayers &&
-        addStyles();
+      numberOfPlayers && addStyles();
       window.innerWidth && addStyles();
       placardFactor && addStyles();
       console.log(`\n***window object***innerWidth ${window.innerWidth}\n`);
@@ -196,11 +195,12 @@
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
     let appRatio = parseFloat((appWidth / appHeight).toFixed(2));
-    storeViewportSize.set({
+    appViewport = {
       width: appWidth,
       height: appHeight,
       ratio: appRatio
-    });
+    }
+    storeViewportSize.set(appViewport);
   }
 </script>
 
@@ -372,14 +372,24 @@
   <!-- {#await state then state} -->
   <div class="scoreboard-container-inner">
     <!-- <span class="debug-output">Placard factor: {placardFactor}</span> -->
-    <label for="placardFactor" class="debug-output">
-      Placard factor:
-      <input
-        name="placardFactor"
-        type="number"
-        step=".25"
-        bind:value={placardFactor} />
-    </label>
+    <div class="debug-output">
+      <label for="placardFactor">
+        Placard factor:
+        <input
+          name="placardFactor"
+          type="number"
+          step=".25"
+          bind:value={placardFactor} />
+      </label>
+      <label for="viewportRatio">
+        Viewport ratio (W:H):
+        <input
+          name="viewportRatio"
+          type="number"
+          step=".25"
+          bind:value={appViewport.ratio} />
+      </label>
+    </div>
     {#each players as player}
       <div
         class="scoreboard-player"
