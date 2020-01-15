@@ -101,6 +101,17 @@
     });
 
     setCellSize();
+    window.addEventListener(
+      "resize",
+      async function() {
+        console.log("GameBoard resize!");
+        await setCellSize();
+        console.log("GameBoard resize awaited cellSize!");
+        resetGameBoard();
+        console.log("GameBoard resize reset gameboard!");
+      },
+      true
+    );
     storeCellSize.subscribe(value => {
       console.log(`GameBoard => storeCellSize subscribed`, value);
       // cellSize = value;
@@ -171,8 +182,12 @@
     let gameboard = document.querySelector(".gameboard-container");
     gameboardWidth = gameboard.offsetWidth;
     gameboardHeight = gameboard.offsetHeight;
-    cellWidth = parseInt((gameboardWidth / settings.columns) * settings.sizeFactor / 100);
-    cellHeight = parseInt((gameboardHeight / settings.rows) * settings.sizeFactor / 100);
+    cellWidth = parseInt(
+      ((gameboardWidth / settings.columns) * settings.sizeFactor) / 100
+    );
+    cellHeight = parseInt(
+      ((gameboardHeight / settings.rows) * settings.sizeFactor) / 100
+    );
     console.log(
       `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
     );
@@ -241,8 +256,10 @@
           // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
-          let customColor = `--player-color: ${players[p].bgColor}`
-          let customMarkerSize = `--cell-marker-size: ${Math.floor(cellSize / 2.5)}px`
+          let customColor = `--player-color: ${players[p].bgColor}`;
+          let customMarkerSize = `--cell-marker-size: ${Math.floor(
+            cellSize / 2.5
+          )}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
@@ -479,7 +496,7 @@
         grid[r].push(cellAttributes);
       }
     }
-    await players
+    await players;
     await createDirectionArrays();
     await addDirectionArraysToPlayerObjects();
     grid = grid;

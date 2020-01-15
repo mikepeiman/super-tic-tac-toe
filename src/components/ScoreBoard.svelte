@@ -165,17 +165,6 @@
       let pColor = `--player-color: ${players[i].bgColor};`;
       let positionTop = `--position-top: ${i * (height * scaleValue2) +
         i * 16}px;`;
-      // console.log(
-      //   `setStyles()!!! --- ||| --- ::: iter ${i}
-      //   scaleValue ${scaleValue}
-      //   scaleValue2 ${scaleValue2}
-      //   scaledWidth ${width * scaleValue}
-      //   windowWidth ${windowWidth}
-      //   placardWidthRatio
-      //   ${placardWidthRatio}
-      //   height * i ${i * height}
-      //     the final top pos: ${positionTop}`
-      // );
       placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
     });
     for (let i = 0; i < 3; i++) {
