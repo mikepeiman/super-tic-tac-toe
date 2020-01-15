@@ -16,6 +16,8 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+$: windowWidth = 0;
+$: windowHeight = 0;
   $: appViewport = {};
   $: placardFactor = 2.5;
   $: placardViewRatio = placardFactor * appViewport.ratio;
@@ -151,8 +153,8 @@
     height = 100;
     let left = placard.offsetLeft;
     console.log(`placard width ${width} height ${height} left ${left}`);
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
     let widthRatio = windowWidth / width;
     let heightRatio = appViewport.height / height;
     let placardWidthRatio = (width / height) * placardFactor;
@@ -207,16 +209,16 @@
       ratio: appRatio
     };
     storeViewportSize.set(appViewport);
-    placardFactor = 2;
-    if (appWidth < 800) {
-      placardFactor = 1.75;
-    }
-    if (appWidth > 1100) {
-      placardFactor = 2;
-    }
-    if (appWidth > 1500) {
-      placardFactor = 2.25;
-    }
+    placardFactor = 2.5;
+    // if (appWidth < 800) {
+    //   placardFactor = 1.75;
+    // }
+    // if (appWidth > 1100) {
+    //   placardFactor = 2;
+    // }
+    // if (appWidth > 1500) {
+    //   placardFactor = 2.25;
+    // }
   }
 </script>
 
@@ -394,16 +396,14 @@
         <input
           name="viewportWidth"
           type="number"
-          step=".25"
-          bind:value={appViewport.width} />
+          bind:value={windowWidth} />
       </label>
       <label for="viewportHeight">
         V-Height:
         <input
           name="viewportHeight"
           type="number"
-          step=".25"
-          bind:value={appViewport.height} />
+          bind:value={windowHeight} />
       </label>
       <label for="placardFactor">
         PF:
