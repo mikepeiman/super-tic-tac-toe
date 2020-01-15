@@ -74,16 +74,15 @@
   $: cellWidth = 0;
   $: cellHeight = 0;
   $: cellSize = 0;
-  let shrinkFactor = 0.75;
 
-  let rows, columns, size, numberOfPlayers;
-  ({ rows, columns, size, numberOfPlayers } = settings);
-  $: rows, columns, size, numberOfPlayers && resetGameBoard();
+  let rows, columns, size, numberOfPlayers, sizeFactor;
+  ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
+  $: rows, columns, size, numberOfPlayers, sizeFactor && resetGameBoard();
 
   onMount(() => {
     storeSettings.subscribe(value => {
       settings = value;
-      ({ rows, columns, size, numberOfPlayers } = settings);
+      ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
     });
 
     storePlayers.subscribe(value => {
@@ -172,8 +171,8 @@
     let gameboard = document.querySelector(".gameboard-container");
     gameboardWidth = gameboard.offsetWidth;
     gameboardHeight = gameboard.offsetHeight;
-    cellWidth = parseInt((gameboardWidth / settings.columns) * shrinkFactor);
-    cellHeight = parseInt((gameboardHeight / settings.rows) * shrinkFactor);
+    cellWidth = parseInt((gameboardWidth / settings.columns) * settings.sizeFactor / 100);
+    cellHeight = parseInt((gameboardHeight / settings.rows) * settings.sizeFactor / 100);
     console.log(
       `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
     );

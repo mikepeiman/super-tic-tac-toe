@@ -24,6 +24,7 @@
     rows: 8,
     columns: 12,
     size: 40,
+    sizeFactor: 75,
     gutter: 0
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
@@ -335,6 +336,21 @@
         placeholder={settings.size}
         bind:value={settings.size}
         step="4"
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
+        <label for="sizeactor">
+      <div class="label-content">Board size (%)</div>
+      <input
+        id="sizeFactor"
+        name="sizeFactor"
+        type="number"
+        placeholder={settings.sizeFactor}
+        bind:value={settings.sizeFactor}
+        max="100"
+        step="5"
+        min="10"
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
