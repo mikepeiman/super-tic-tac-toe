@@ -16,8 +16,6 @@
   export let players, wrapperClass;
 
   $: lines = [];
-
-  $: gameboardMapped = [];
   $: settings = {};
 
   onMount(() => {

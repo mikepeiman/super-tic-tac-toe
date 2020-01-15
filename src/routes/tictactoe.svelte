@@ -39,7 +39,6 @@
   $: state = null;
   $: players = null;
   $: settings = null;
-  $: gameboardMapped = [];
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);

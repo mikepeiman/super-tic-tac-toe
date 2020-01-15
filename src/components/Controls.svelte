@@ -3,7 +3,7 @@
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  export let state, players, gameboardMapped;
+  export let state, players;
   import {
     storeSettings,
     storeState,
