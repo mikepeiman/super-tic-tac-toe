@@ -201,6 +201,7 @@
   .player-status-detail {
     display: flex;
     align-items: center;
+    position: relative;
     // background: rgba(0, 0, 0, 0.5);
     // padding: 0.125rem;
     width: 100%;
@@ -237,6 +238,9 @@
         background: rgba(0, 0, 0, 0);
       }
     }
+    & .dynamic-wrapper {
+      position: relative;
+    }
     & .dynamic-value {
       background: rgba(255, 255, 255, 0.15);
       border: none;
@@ -245,7 +249,16 @@
       font-weight: 400;
       font-size: 1rem;
       padding: 0.125rem 0.175rem;
+      min-height: 3rem;
+      min-width: 3rem;
       border-radius: 2px;
+      position: absolute;
+      /* FONT-VARIANT: JIS04; */
+      left: -3.8rem;
+      top: -1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .statusbar-details-wrapper {
@@ -276,7 +289,7 @@
   .buttons-wrapper {
     display: flex;
     grid-area: controls;
-    padding: .75rem;
+    padding: 0.75rem;
   }
 
   button {
@@ -383,13 +396,13 @@
         </div>
 
         <div class="player-status-detail" id="turn-moves">
-          <p>
+          <p class="dynamic-wrapper">
             <span class="dynamic-value">{movesRemaining}</span>
             moves remaining in turn
           </p>
         </div>
         <div class="player-status-detail" id="total-moves">
-          <p>
+          <p class="dynamic-wrapper">
             <span class="dynamic-value">{moveNumber}</span>
             of {settings.rows * settings.columns} total moves played
           </p>
