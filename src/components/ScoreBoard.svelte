@@ -30,14 +30,15 @@
   $: {
     if (typeof window !== "undefined") {
       numberOfPlayers &&
-        setTimeout(() => {
+        // setTimeout(() => {
           addStyles();
-        }, 1);
+        // }, 1);
     }
   }
 
   onMount(() => {
     setViewportSize();
+    // setPlacardPositions();
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
@@ -94,17 +95,50 @@
     // localStorage.setItem("preservePlayerDetails", JSON.stringify(true));
   }
 
-  function highlight() {
+  async function setPlacardPositions() {
+    await players;
+    let placards = await document.querySelectorAll(".scoreboard-player");
+
+    placards.forEach((placard, i) => {
+      let height = placard.offsetHeight;
+      let width = placard.offsetWidth;
+      let left = placard.offsetLeft;
+      let widthRatio = appViewport.width / width;
+      let heightRatio = appViewport.height / height;
+      console.log(
+        `=======================   setPlacardPositions()   ========================`, placard
+      );
+      console.log(
+        `width ${width} height ${height} widthRatio ${widthRatio} heightRatio ${heightRatio}`
+      );
+      console.log(
+        `=======================   setPlacardPositions()   ========================`
+      );
+      placard.style = `top: ${appViewport.height / 7.5}px;`
+    });
+  }
+
+  function highlight(e) {
+    console.log(`highlight target `, e.target);
+    e.target.select();
     document.execCommand("selectall", null, false);
   }
 
-  function addStyles() {
-    let scoreboardPlayers = document.querySelectorAll(".scoreboard-player");
-    scoreboardPlayers.forEach((player, i) => {
-      player.style = `--player-color: ${
-        players[i].bgColor
-      }; --viewport-width: ${appViewport.width};
-      --custom-marginBottom: -${2400 / appViewport.width}rem`;
+  async function addStyles() {
+    await players
+    let placards = document.querySelectorAll(".scoreboard-player");
+    let placardWidth = placards[0].offsetWidth;
+    
+    placards.forEach((placard, i) => {
+      let pColor = `--player-color: ${players[i].bgColor};`;
+      let vScale = `--scale-width: ${appViewport.width / placardWidth / 5}`;
+      console.log(`vScale: ${vScale}`)
+      // let scale = `--vScale: ${}`;
+      let marginBottom = ` --custom-marginBottom: -${1700 /
+        appViewport.width}rem`;
+      let positionTop = `--position-top: ${i * appViewport.height / 7.5}px;`
+      console.log(`setStyles()!!! --- ||| --- ::: iter ${i} X viewport height ${(i)*appViewport.height} the final top pos: ${positionTop}`)
+      placard.style = `${pColor}; ${vScale};`;
     });
   }
 
@@ -138,7 +172,8 @@
     margin-top: 1rem;
     width: max-content;
     max-width: 100%;
-    height: 100%;
+    position: relative;
+    // height: 100%;
   }
   .scores-wrap {
     display: flex;
@@ -162,13 +197,15 @@
 
   .scoreboard-player {
     background: var(--player-color);
+    position: relative;
+    // top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
     min-width: max-content;
     transform-origin: top left;
-    transform: scale(calc(var(--viewport-width) / 1800));
-    margin-bottom: var(--custom-marginBottom);
+    transform: scale(var(--scale-width));
+    // margin-bottom: var(--custom-marginBottom);
   }
   .highlighted {
     border: 5px solid #eeeeee;
@@ -176,7 +213,7 @@
     transition: all 0.25s;
     min-width: max-content;
     // transform: scale(1.025);
-    transform: scale(calc(var(--viewport-width) / 1700));
+    transform: scale(calc(var(--scale-width) * 1.05));
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -255,6 +292,9 @@
       position: relative;
       transition: all 0.25s;
     }
+  }
+
+  @media screen and (min-width: 1500px) {
   }
 </style>
 
