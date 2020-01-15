@@ -31,14 +31,14 @@
     if (typeof window !== "undefined") {
       numberOfPlayers &&
         // setTimeout(() => {
-          addStyles();
-        // }, 1);
+        addStyles();
+      // }, 1);
     }
   }
 
   onMount(() => {
     setViewportSize();
-    // setPlacardPositions();
+    setPlacardPositions();
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
@@ -106,7 +106,8 @@
       let widthRatio = appViewport.width / width;
       let heightRatio = appViewport.height / height;
       console.log(
-        `=======================   setPlacardPositions()   ========================`, placard
+        `=======================   setPlacardPositions()   ========================`,
+        placard
       );
       console.log(
         `width ${width} height ${height} widthRatio ${widthRatio} heightRatio ${heightRatio}`
@@ -114,7 +115,7 @@
       console.log(
         `=======================   setPlacardPositions()   ========================`
       );
-      placard.style = `top: ${appViewport.height / 7.5}px;`
+      // placard.style = `top: ${appViewport.height / 7.5}px;`
     });
   }
 
@@ -125,20 +126,37 @@
   }
 
   async function addStyles() {
-    await players
+    await players;
     let placards = document.querySelectorAll(".scoreboard-player");
-    let placardWidth = placards[0].offsetWidth;
-    
+    let placard = placards[0];
+    let height = placard.offsetHeight;
+    let width = placard.offsetWidth;
+    let left = placard.offsetLeft;
+    let widthRatio = appViewport.width / width;
+    let heightRatio = appViewport.height / height;
+    let placardWidthRatio = width / height;
+
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].bgColor};`;
-      let vScale = `--scale-width: ${appViewport.width / placardWidth / 5}`;
-      console.log(`vScale: ${vScale}`)
-      // let scale = `--vScale: ${}`;
+      let scaleValue = appViewport.width / width / 5;
+      let scaledWidth = width * scaleValue;
+      let scaleValue2 = appViewport.width / width / placardWidthRatio;
+      let scaleWidth = `--scale-width: ${scaleValue}`;
+      console.log(`scaleWidth: ${scaleWidth}`);
       let marginBottom = ` --custom-marginBottom: -${1700 /
         appViewport.width}rem`;
-      let positionTop = `--position-top: ${i * appViewport.height / 7.5}px;`
-      console.log(`setStyles()!!! --- ||| --- ::: iter ${i} X viewport height ${(i)*appViewport.height} the final top pos: ${positionTop}`)
-      placard.style = `${pColor}; ${vScale};`;
+      let positionTop = `--position-top: ${i * (height * scaleValue)}px;`;
+      console.log(
+        `setStyles()!!! --- ||| --- ::: iter ${i} 
+        scaleValue ${scaleValue} \n
+        scaleValue2 ${scaleValue2} \n
+        scaledWidth ${scaledWidth} \n
+        placardWidthRatio 
+        ${placardWidthRatio} \n
+        height * i ${i * height} \n
+          the final top pos: ${positionTop}`
+      );
+      placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
     });
   }
 
@@ -197,8 +215,9 @@
 
   .scoreboard-player {
     background: var(--player-color);
-    position: relative;
-    // top: var(--position-top);
+    position: absolute;
+    left: 16px;
+    top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     border: 5px solid #1a1a1a;
@@ -277,22 +296,22 @@
     color: var(--player-color);
   }
 
-  @media screen and (min-width: 960px) {
-    .scoreboard-player {
-      background: var(--player-color);
-      margin: 0 1rem 1rem 1rem;
-      transition: all 0.25s;
-      border: 5px solid #1a1a1a;
-      // min-width: calc(100% - 10px - 1rem);
-      transform: scale(1);
-    }
-    .highlighted {
-      transform: scale(1.025);
-      border: 5px solid #eeeeee;
-      position: relative;
-      transition: all 0.25s;
-    }
-  }
+  // @media screen and (min-width: 960px) {
+  //   .scoreboard-player {
+  //     background: var(--player-color);
+  //     margin: 0 1rem 1rem 1rem;
+  //     transition: all 0.25s;
+  //     border: 5px solid #1a1a1a;
+  //     // min-width: calc(100% - 10px - 1rem);
+  //     transform: scale(1);
+  //   }
+  //   .highlighted {
+  //     transform: scale(1.025);
+  //     border: 5px solid #eeeeee;
+  //     position: relative;
+  //     transition: all 0.25s;
+  //   }
+  // }
 
   @media screen and (min-width: 1500px) {
   }

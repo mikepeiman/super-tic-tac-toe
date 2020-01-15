@@ -480,6 +480,7 @@
         grid[r].push(cellAttributes);
       }
     }
+    await players
     await createDirectionArrays();
     await addDirectionArraysToPlayerObjects();
     grid = grid;
