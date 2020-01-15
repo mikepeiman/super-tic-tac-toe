@@ -23,7 +23,6 @@
     bonusForCompleteRow: 12,
     rows: 8,
     columns: 12,
-    size: 40,
     sizeFactor: 75,
     gutter: 0
   };
@@ -224,7 +223,7 @@
     }
   }
 
-    @media screen and (min-width: 600px) {
+  @media screen and (min-width: 600px) {
     body {
       font-size: 80%;
     }
@@ -327,20 +326,7 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="size">
-      <div class="label-content">square size (px)</div>
-      <input
-        id="size"
-        name="size"
-        type="number"
-        placeholder={settings.size}
-        bind:value={settings.size}
-        step="4"
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
-    </label>
-        <label for="sizeactor">
+    <label for="sizeFactor">
       <div class="label-content">Board size (%)</div>
       <input
         id="sizeFactor"

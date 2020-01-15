@@ -17,6 +17,7 @@
   } from "../stores.js";
 
   let appViewport = {};
+  let placardFactor = 2.5;
   $: players = [];
   $: state = {};
   $: currentPlayer = {};
@@ -30,16 +31,23 @@
   $: {
     if (typeof window !== "undefined") {
       numberOfPlayers &&
-        // setTimeout(() => {
         addStyles();
-        window.innerWidth && addStyles();
-      console.log(`\n***window object***innerWidth ${window.innerWidth}\n`)
+      window.innerWidth && addStyles();
+      placardFactor && addStyles();
+      console.log(`\n***window object***innerWidth ${window.innerWidth}\n`);
     }
   }
 
   onMount(() => {
     // window.addEventListener("resize", addStyles())
-    window.addEventListener("resize", function(){console.log('resize!'); addStyles()}, true);
+    window.addEventListener(
+      "resize",
+      function() {
+        console.log("resize!");
+        addStyles();
+      },
+      true
+    );
     setViewportSize();
     // setPlacardPositions();
     storeSettings.subscribe(value => {
@@ -129,7 +137,10 @@
   }
 
   async function addStyles() {
-    console.log(`\n***window object***innerWidth ${window.innerWidth}\n`, window)
+    console.log(
+      `\n***window object***innerWidth ${window.innerWidth}\n`,
+      window
+    );
     await players;
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -140,25 +151,26 @@
     let windowHeight = window.innerHeight;
     let widthRatio = appViewport.width / width;
     let heightRatio = appViewport.height / height;
-    let placardWidthRatio = (width / height) * 2.5;
+    // placardFactor = 2.5;
+    let placardWidthRatio = (width / height) * placardFactor;
 
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].bgColor};`;
       let scaleValue = appViewport.width / width / 5;
       let scaledWidth = width * scaleValue;
       let scaleValue2 = appViewport.width / width / placardWidthRatio;
-      let scaleWidth = `--scale-width: ${scaleValue}`;
+      let scaleWidth = `--scale-width: ${scaleValue2}`;
       // console.log(`scaleWidth: ${scaleWidth}`);
       let marginBottom = ` --custom-marginBottom: -${1700 /
         appViewport.width}rem`;
       let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
       // console.log(
-      //   `setStyles()!!! --- ||| --- ::: iter ${i} 
+      //   `setStyles()!!! --- ||| --- ::: iter ${i}
       //   scaleValue ${scaleValue} \n
       //   scaleValue2 ${scaleValue2} \n
       //   scaledWidth ${scaledWidth} \n
-      //   placardWidthRatio 
+      //   placardWidthRatio
       //   ${placardWidthRatio} \n
       //   height * i ${i * height} \n
       //     the final top pos: ${positionTop}`
@@ -183,7 +195,7 @@
     console.log(`setViewportSize for app: `, app);
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
-    let appRatio = parseFloat((appWidth / appHeight).toFixed(2))
+    let appRatio = parseFloat((appWidth / appHeight).toFixed(2));
     storeViewportSize.set({
       width: appWidth,
       height: appHeight,
@@ -321,7 +333,7 @@
   //     transition: all 0.25s;
   //   }
   // }
-    @media screen and (min-width: 600px) {
+  @media screen and (min-width: 600px) {
     body {
       font-size: 80%;
     }
@@ -343,11 +355,31 @@
       font-size: 110%;
     }
   }
+
+  .debug-output {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #ccc;
+    color: black;
+    padding: 8px;
+    z-index: 99;
+    width: 100%;
+  }
 </style>
 
 {#await players then players}
   <!-- {#await state then state} -->
   <div class="scoreboard-container-inner">
+    <!-- <span class="debug-output">Placard factor: {placardFactor}</span> -->
+    <label for="placardFactor" class="debug-output">
+      Placard factor:
+      <input
+        name="placardFactor"
+        type="number"
+        step=".25"
+        bind:value={placardFactor} />
+    </label>
     {#each players as player}
       <div
         class="scoreboard-player"
