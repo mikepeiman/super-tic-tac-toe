@@ -175,26 +175,14 @@
 </script>
 
 <style lang="scss">
-  $title-margin: .5rem;
-  $title-padding-horizontal: .5rem;
+  $title-margin: 0.5rem;
+  $title-padding-horizontal: 0.5rem;
   $title-padding-vertical: 0.25rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
-    // margin: 1rem;
-    // padding: 0.5rem;
     color: #eee;
-    // background: var(--player-color);
-    // background: #1a1a1a;
     transition: all 0.5s;
     display: flex;
-    flex-direction: column;
-    // justify-content: space-between;
-    // align-items: center;
-    // padding: $title-padding-vertical $title-padding-horizontal;
-    // height: 100%;
-    // height: -moz-available; /* WebKit-based browsers will ignore this. */
-    // height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    // height: fill-available;
     & h2 {
       margin: 0;
       font-size: 1.25rem;
@@ -259,11 +247,22 @@
     }
   }
   .statusbar-details-wrapper {
-    padding: 0.5rem;
-    border: 2px solid var(--player-color);
-    border-radius: 5px;
-    margin-left: 2px;
-    width: auto;
+    // padding: 0.5rem;
+    border-top: 12px solid var(--player-color);
+    width: 100%;
+    display: grid;
+    grid-template-areas: "playername turnmoves gamemoves controls";
+    grid-template-columns: 20vw 30vw 30vw 20vw;
+  }
+
+  #player-name {
+    grid-area: playername;
+  }
+  #turn-moves {
+    grid-area: turnmoves;
+  }
+  #game-moves {
+    grid-area: gamemoves;
   }
   .player-name {
     // padding: 0.5rem;
@@ -274,12 +273,12 @@
   }
   .buttons-wrapper {
     display: flex;
-    // width: 15vw;
+    grid-area: controls;
   }
 
   button {
-    padding: 0.25rem;
-    margin: 0.25rem;
+    padding: 0.75rem;
+    margin: 0.75rem;
     background: rgba(0, 25, 75, 0.25);
     font-size: 1rem;
     border: none;
@@ -290,11 +289,27 @@
     }
   }
 
-  #tally-game-button {
+  :global(#tally-game-button) {
+    font-size: .75rem;
     background: hsla(260, 100%, 50%, 1);
+    border: 2px solid rgba(0, 0, 0, 0);
 
     &:hover {
-      background: hsla(260, 100%, 25%, 1);
+      background: hsla(260, 100%, 35%, 1);
+      cursor: pointer;
+      border: 2px solid hsla(260, 100%, 70%, 1);
+    }
+  }
+
+    :global(#game-menu-button) {
+    font-size: .75rem;
+    background: hsla(130, 50%, 35%, 1);
+    border: 2px solid rgba(0, 0, 0, 0);
+
+    &:hover {
+      background: hsla(130, 50%, 45%, 1);
+      cursor: pointer;
+      border: 2px solid hsla(130, 50%, 70%, 1);
     }
   }
 
@@ -318,7 +333,7 @@
   //     }
   //   }
   // }
-    @media screen and (min-width: 600px) {
+  @media screen and (min-width: 600px) {
     body {
       font-size: 80%;
     }
@@ -340,6 +355,11 @@
       font-size: 110%;
     }
   }
+  @media screen and (min-width: 960px) {
+    .statusbar-container-inner {
+      border-top: 5px solid var(--player-color);
+    }
+  }
 </style>
 
 {#await currentPlayer then currentPlayer}
@@ -351,13 +371,14 @@
     <div
       class="player-indicator player-0"
       style={`--player-color: ${currentPlayer.bgColor}`}>
-      <div class="player-status-detail" id="player-name">
-        <!-- <label for="player-name"></label>
-        <input name="player-name" value={currentPlayer.name} /> -->
-        <h2 class="player-name">{currentPlayer.name}</h2>
-      </div>
 
       <div class="statusbar-details-wrapper">
+        <div class="player-status-detail" id="player-name">
+          <!-- <label for="player-name"></label>
+        <input name="player-name" value={currentPlayer.name} /> -->
+          <h2 class="player-name">{currentPlayer.name}</h2>
+        </div>
+
         <div class="player-status-detail" id="turn-moves">
           <p>
             <span class="dynamic-value">{movesRemaining}</span>
@@ -371,12 +392,13 @@
           </p>
         </div>
         <div class="buttons-wrapper">
+          <div class="tally-points-button">
+            <CountPoints {players} on:playersScored={playersScored} />
+          </div>
           <Modal>
             <Content />
           </Modal>
-          <div>
-            <CountPoints {players} on:playersScored={playersScored} />
-          </div>
+
         </div>
       </div>
     </div>

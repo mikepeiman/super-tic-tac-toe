@@ -21,7 +21,7 @@ font-size: 100%;
 
 	main {
 		position: relative;
-		/* max-width: 56em; */
+		width: 100vw;
 		background-color: #1a1a1a;
 		/* padding: 2em; */
 		margin: 0 auto;

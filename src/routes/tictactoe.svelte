@@ -72,24 +72,22 @@
     --input-blue: 50, 200, 255;
   }
   $input-blue: rgba(50, 200, 255, 1);
-  #topnav {
-    background: #1a1a1a;
-    color: #006f98;
-    border-bottom: 1px solid rgba(0, 0, 0, 0);
-  }
 
   #layout-main {
     background: #1a1a1a;
   }
 
   .page-container {
+    box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". . ."
-      "scoreboard gameboard statusbar"
+      "statusbar statusbar statusbar"
+      "scoreboard gameboard mainmenu"
       "scoreboard gameboard mainmenu";
-    min-height: 100vh;
-    max-height: 100vh;
+    min-height: calc(100vh - 10px);
+    max-height: calc(100vh - 10px);
+    min-width: calc(100vw - 12px);
+    max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 10vh 38vh 52vh;
   }
@@ -101,27 +99,19 @@
     color: #eee;
     justify-content: flex-start;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     background: #1a1a1a;
     // overflow: scroll;
   }
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
-    max-height: 100vh;
-    min-height: 100vh;
     max-width: 100%;
     // background: rgba(255, 0, 255, 0.25);
     // overflow: scroll;
   }
   .statusbar-container {
     grid-area: statusbar;
-    // border-top: 5px solid rgba(0, 0, 0, 0);
-    // background: rgba(0, 255, 0, 0.25);
-    max-height: 40vh;
-    min-height: 35vh;
-    max-width: 15vw;
-    // overflow: scroll;
   }
   .mainmenu-container {
     // background: rgba(0, 0, 255, 0.25);
@@ -193,10 +183,10 @@
   }
 
   button {
-    padding: 0.25rem;
-    margin: 0.25rem;
+    padding: 0.75rem;
+    margin: 0.75rem;
     border-radius: 0.125rem;
-    font-size: 0.75rem;
+    font-size: 1.25rem;
     border: none;
     color: #eeeeee;
     // background: rgba(var(--input-blue), 0.5);
@@ -261,37 +251,6 @@
   }
 
   @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
-    // .scoreboard-container {
-    //   transform: scale(0.25);
-    //   transform-origin: top left;
-    //   margin: .5rem 0 0 0;
-    // }
-    // .page-container {
-    //   transform: scale(0.5);
-    //   transform-origin: top left;
-    // }
-    // .scoreboard-container {
-    //   // transform: scale(0.5);
-    //   transform-origin: top left;
-    // }
-    // .statusbar-container {
-    //   transform: scale(0.5);
-    //   transform-origin: top left;
-    // }
-    // .gameboard-container {
-    //   transform: scale(0.5);
-    //   transform-origin: top left;
-    // }
-    // .mainmenu-container {
-    //   transform: scale(0.5);
-    //   transform-origin: top left;
-    // }
-  }
-
-  @media screen and (min-width: 960px) {
-    .statusbar-container {
-      border-top: 5px solid rgba(0, 0, 0, 0);
-    }
   }
 </style>
 

@@ -9,4 +9,4 @@
 	};
 </script>
 
-	<button class="control-button" on:click={showModalOneContent}>Game Menu</button>
+	<button class="control-button" id="game-menu-button" on:click={showModalOneContent}>Game Menu</button>

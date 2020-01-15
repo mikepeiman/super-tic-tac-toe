@@ -208,7 +208,9 @@
 </script>
 
 <style lang="scss">
-
+#tally-game-button {
+  
+}
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
