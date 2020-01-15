@@ -180,6 +180,8 @@
   $title-padding-vertical: 0.25rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
+    border-top: 12px solid var(--player-color);
+    border-bottom: 12px solid var(--player-color);
     color: #eee;
     transition: all 0.5s;
     display: flex;
@@ -248,7 +250,7 @@
   }
   .statusbar-details-wrapper {
     // padding: 0.5rem;
-    border-top: 12px solid var(--player-color);
+
     width: 100%;
     display: grid;
     grid-template-areas: "playername turnmoves gamemoves controls";
@@ -274,6 +276,7 @@
   .buttons-wrapper {
     display: flex;
     grid-area: controls;
+    padding: .75rem;
   }
 
   button {
@@ -290,7 +293,7 @@
   }
 
   :global(#tally-game-button) {
-    font-size: .75rem;
+    font-size: 0.75rem;
     background: hsla(260, 100%, 50%, 1);
     border: 2px solid rgba(0, 0, 0, 0);
 
@@ -301,8 +304,8 @@
     }
   }
 
-    :global(#game-menu-button) {
-    font-size: .75rem;
+  :global(#game-menu-button) {
+    font-size: 0.75rem;
     background: hsla(130, 50%, 35%, 1);
     border: 2px solid rgba(0, 0, 0, 0);
 

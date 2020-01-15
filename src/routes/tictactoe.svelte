@@ -82,14 +82,14 @@
     display: grid;
     grid-template-areas:
       "statusbar statusbar statusbar"
-      "scoreboard gameboard mainmenu"
+      ". . ."
       "scoreboard gameboard mainmenu";
     min-height: calc(100vh - 10px);
     max-height: calc(100vh - 10px);
-    min-width: calc(100vw - 12px);
+    // min-width: calc(100vw - 12px);
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 10vh 38vh 52vh;
+    grid-template-rows: 12vh 2rem auto;
   }
 
   .gameboard-container {
@@ -183,8 +183,8 @@
   }
 
   button {
-    padding: 0.75rem;
-    margin: 0.75rem;
+    min-height: 3rem;
+    margin-right: .5rem;
     border-radius: 0.125rem;
     font-size: 1.25rem;
     border: none;

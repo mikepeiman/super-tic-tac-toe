@@ -94,10 +94,9 @@
 </script>
 
 <style lang="scss">
-
-body {
-  font-size: 24px;
-}
+  body {
+    font-size: 24px;
+  }
   $input-blue: rgba(50, 200, 255, 1);
 
   .loading-settings-message {
@@ -127,14 +126,14 @@ body {
   }
 
   .form-wrap {
-    border: 2px solid var(--player-color);
+    // border: 2px solid var(--player-color);
     padding: 0.5rem;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 100%;
-    margin-left: 2px;
+    // width: 100%;
+    // margin-left: 2px;
     & label {
       display: grid;
       grid-template-columns: 1fr 5fr;
@@ -155,9 +154,10 @@ body {
         grid-area: settings-input;
         margin: 0;
         outline: none;
-        // border-bottom: 1px solid darken($input-blue, 30%);
+        // border-bottom: none;
+        border-bottom: 1px solid darken($input-blue, 30%);
         font-size: 1em;
-        border-bottom: none;
+
         padding: 0;
         &:focus {
           border-bottom: 1px solid $input-blue;
@@ -250,9 +250,9 @@ body {
 </style>
 
 {#if initialized}
-  <div class="settings-menu-heading">
+  <!-- <div class="settings-menu-heading">
     <h2>Game Settings</h2>
-  </div>
+  </div> -->
   <div
     class="form-wrap settings-menu"
     style={`--player-color: ${currentPlayer.bgColor}`}>
