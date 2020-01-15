@@ -58,7 +58,7 @@
     console.log(`setViewportSize for app: `, app);
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
-    let appRatio = (appWidth / appHeight).toFixed(2)
+    let appRatio = (appWidth / appHeight).toFixed(2);
     storeViewportSize.set({
       width: appWidth,
       height: appHeight,
@@ -84,16 +84,14 @@
 
   .page-container {
     display: grid;
-    // grid-template-columns: 1fr 4fr 1fr;
-    // grid-template-rows: 8em auto;
     grid-template-areas:
+      ". . ."
       "scoreboard gameboard statusbar"
       "scoreboard gameboard mainmenu";
-    // background: #1a1a1a;
     min-height: 100vh;
     max-height: 100vh;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 48vh 52vh;
+    grid-template-rows: 10vh 38vh 52vh;
   }
 
   .gameboard-container {
@@ -101,7 +99,7 @@
     display: flex;
     flex-direction: column;
     color: #eee;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
     background: #1a1a1a;

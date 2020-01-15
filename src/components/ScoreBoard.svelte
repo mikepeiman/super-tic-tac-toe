@@ -226,11 +226,9 @@ $: windowHeight = 0;
   :root {
   }
   .scoreboard-container-inner {
-    margin-top: 1rem;
     width: max-content;
     max-width: 100%;
     position: relative;
-    // height: 100%;
   }
   .scores-wrap {
     display: flex;
@@ -375,6 +373,7 @@ $: windowHeight = 0;
   }
 
   .debug-output {
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;

@@ -94,6 +94,10 @@
 </script>
 
 <style lang="scss">
+
+body {
+  font-size: 24px;
+}
   $input-blue: rgba(50, 200, 255, 1);
 
   .loading-settings-message {
@@ -126,10 +130,8 @@
     border: 2px solid var(--player-color);
     padding: 0.5rem;
     border-radius: 5px;
-    display: -webkit-box;
     display: flex;
     flex-direction: column;
-    -webkit-box-pack: justify;
     justify-content: space-between;
     width: 100%;
     margin-left: 2px;
@@ -138,15 +140,15 @@
       grid-template-columns: 1fr 5fr;
       grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 1rem;
+      font-size: 1em;
       // display: flex;
       // flex-flow: row-reverse;
-      align-items: flex-start;
+      align-items: baseline;
       justify-content: flex-end;
 
       & .label-content {
         grid-area: settings-label;
-        margin-left: 0.75rem;
+        margin-left: 0.25em;
         color: darken($input-blue, 30%);
       }
       & input {
@@ -154,7 +156,7 @@
         margin: 0;
         outline: none;
         // border-bottom: 1px solid darken($input-blue, 30%);
-        font-size: 1rem;
+        font-size: 1em;
         border-bottom: none;
         padding: 0;
         &:focus {
@@ -225,24 +227,24 @@
 
   @media screen and (min-width: 600px) {
     body {
-      font-size: 80%;
+      font-size: 12px;
     }
   }
   @media screen and (min-width: 900px) {
     body {
-      font-size: 90%;
+      font-size: 14px;
     }
   }
 
   @media screen and (min-width: 1200px) {
     body {
-      font-size: 100%;
+      font-size: 16px;
     }
   }
 
   @media screen and (min-width: 1500px) {
     body {
-      font-size: 110%;
+      font-size: 20px;
     }
   }
 </style>
