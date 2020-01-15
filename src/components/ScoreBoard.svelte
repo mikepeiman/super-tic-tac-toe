@@ -129,7 +129,7 @@
   }
 
   async function addStyles() {
-    console.log(`\n***window object***innerWidth ${window.innerWidth}\n`)
+    console.log(`\n***window object***innerWidth ${window.innerWidth}\n`, window)
     await players;
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -183,9 +183,11 @@
     console.log(`setViewportSize for app: `, app);
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
+    let appRatio = parseFloat((appWidth / appHeight).toFixed(2))
     storeViewportSize.set({
       width: appWidth,
-      height: appHeight
+      height: appHeight,
+      ratio: appRatio
     });
   }
 </script>

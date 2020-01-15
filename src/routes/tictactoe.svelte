@@ -59,9 +59,11 @@
     console.log(`setViewportSize for app: `, app);
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
+    let appRatio = (appWidth / appHeight).toFixed(2)
     storeViewportSize.set({
       width: appWidth,
-      height: appHeight
+      height: appHeight,
+      ratio: appRatio
     });
   }
 </script>
