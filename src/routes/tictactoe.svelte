@@ -89,7 +89,7 @@
     // min-width: calc(100vw - 12px);
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 12vh 2rem auto;
+    grid-template-rows: 18vh 3vh auto;
   }
 
   .gameboard-container {
@@ -184,7 +184,7 @@
 
   button {
     min-height: 3rem;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
     border-radius: 0.125rem;
     font-size: 1.25rem;
     border: none;
@@ -251,6 +251,12 @@
   }
 
   @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
+  }
+
+  @media screen and (min-width: 1100px) {
+    .page-container {
+      grid-template-rows: 15vh 3vh auto;
+    }
   }
 </style>
 

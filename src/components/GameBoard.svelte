@@ -6,6 +6,7 @@
   import {
     storeSettings,
     storeCellSize,
+    storeGameboardWidth,
     storeState,
     storePlayers,
     storeCurrentPlayer,
@@ -69,8 +70,8 @@
   $: gameHistoryTurns = [];
   $: turnHistory = [];
   $: gameHistoryFlat = [];
-  $: gameboardWidth = 0;
-  $: gameboardHeight = 0;
+  $: gameboardContainerWidth = 0;
+  $: gameboardContainerHeight = 0;
   $: cellWidth = 0;
   $: cellHeight = 0;
   $: cellSize = 0;
@@ -118,7 +119,7 @@
     });
 
     console.log(
-      `GameBoard component mounted, gameboard el W:${gameboardWidth} H:${gameboardHeight}`
+      `GameBoard component mounted, gameboard el W:${gameboardContainerWidth} H:${gameboardContainerHeight}`
     );
     console.log(
       `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
@@ -179,14 +180,16 @@
 
   function setCellSize() {
     console.log(`|--|---|--|--|--|--|    setCellSize() called`);
-    let gameboard = document.querySelector(".gameboard-container");
-    gameboardWidth = gameboard.offsetWidth;
-    gameboardHeight = gameboard.offsetHeight;
+    let gameboardContainer = document.querySelector(".gameboard-container");
+    let gameboard = document.querySelector(".gameboard-board");
+    gameboardContainerWidth = gameboardContainer.offsetWidth;
+    let gameboardWidth = gameboard.offsetWidth;
+    gameboardContainerHeight = gameboardContainer.offsetHeight;
     cellWidth = parseInt(
-      ((gameboardWidth / settings.columns) * settings.sizeFactor) / 100
+      ((gameboardContainerWidth / settings.columns) * settings.sizeFactor) / 100
     );
     cellHeight = parseInt(
-      ((gameboardHeight / settings.rows) * settings.sizeFactor) / 100
+      ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
     );
     console.log(
       `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
@@ -200,6 +203,8 @@
       cellSize = cellWidth;
     }
     storeCellSize.set(cellSize);
+    // let gameboardContainerWidth = settings.columns * cellSize
+    storeGameboardWidth.set(gameboardWidth)
   }
 
   function moveNotification(e) {

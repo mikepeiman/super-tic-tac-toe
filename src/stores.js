@@ -10,6 +10,7 @@ import { writable } from "svelte/store";
 
 let settings = writable({});
 let cellSize = writable(0);
+let gameboardWidth = writable(0);
 let viewportSize = writable({});
 let state = writable({
   lastTicked: "",
@@ -52,6 +53,14 @@ export const storeCellSize = {
   set: val => {
     cellSize.set(val);
     localStorage.setItem("cellSize", JSON.stringify(val));
+  }
+};
+
+export const storeGameboardWidth = {
+  subscribe: gameboardWidth.subscribe,
+  set: val => {
+    gameboardWidth.set(val);
+    localStorage.setItem("gameboardWidth", JSON.stringify(val));
   }
 };
 

@@ -8,6 +8,7 @@
   export let state, players;
   import {
     storeSettings,
+    storeGameboardWidth,
     storeState,
     storePlayers,
     storeCurrentPlayer,
@@ -18,6 +19,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let gameboardWidth = "420px";
   $: currentPlayer = {};
   $: state = {};
   $: players = {};
@@ -46,6 +48,10 @@
     storeCurrentPlayer.subscribe(value => {
       // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
+    });
+    storeGameboardWidth.subscribe(val => {
+      console.log(`from statusBar => gameboard el width: `, val);
+      gameboardWidth = val;
     });
 
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
@@ -204,7 +210,7 @@
     position: relative;
     // background: rgba(0, 0, 0, 0.5);
     // padding: 0.125rem;
-    width: 100%;
+    // width: 100%;
     // text-transform: lowercase;
     color: #006f98;
     & p {
@@ -262,22 +268,54 @@
     }
   }
   .statusbar-details-wrapper {
-    // padding: 0.5rem;
-
     width: 100%;
     display: grid;
-    grid-template-areas: "playername turnmoves gamemoves controls";
-    grid-template-columns: 20vw 30vw 30vw 20vw;
+    /* justify-items: center; */
+    grid-template-areas: "playername moves controls";
+    grid-template-columns: 1fr auto 1fr;
   }
 
   #player-name {
     grid-area: playername;
+    justify-self: flex-start;
+    &:before {
+      content: "";
+      margin-right: 0.5rem;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 50px 0 50px 50px;
+      border-color: transparent transparent transparent var(--player-color);
+    }
   }
+  #moves-wrapper {
+    margin-left: 3.8rem;
+    grid-area: moves;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--moves-wrapper-width);
+  }
+  #buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-area: controls;
+    padding: 0.75rem;
+    justify-self: flex-end;
+  }
+
+  .player-indicator-heading {
+    padding: 1rem;
+  }
+
   #turn-moves {
-    grid-area: turnmoves;
+    // grid-area: turnmoves;
   }
   #game-moves {
-    grid-area: gamemoves;
+    // grid-area: gamemoves;
   }
   .player-name {
     // padding: 0.5rem;
@@ -285,11 +323,6 @@
   }
   .inputs-wrapper {
     display: flex;
-  }
-  .buttons-wrapper {
-    display: flex;
-    grid-area: controls;
-    padding: 0.75rem;
   }
 
   button {
@@ -329,26 +362,6 @@
     }
   }
 
-  // @media screen and (min-width: 960px) {
-  //   .player-indicator {
-  //     color: #eee;
-  //     // width: calc(100% - (2 * #{$title-padding-horizontal}));
-  //     background: var(--player-color);
-  //     transition: all 0.5s;
-  //     display: flex;
-  //     justify-content: space-between;
-  //     align-items: center;
-  //     // width: 100%;
-  //     // width: 75vw;
-  //     padding: $title-padding-vertical $title-padding-horizontal;
-  //     // border: 2px solid #eeeeee;
-
-  //     & h2 {
-  //       margin: 0;
-  //       font-size: 1.25rem;
-  //     }
-  //   }
-  // }
   @media screen and (min-width: 600px) {
     body {
       font-size: 80%;
@@ -358,11 +371,18 @@
     body {
       font-size: 90%;
     }
+    #buttons-wrapper {
+      flex-direction: row;
+    }
   }
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1100px) {
     body {
       font-size: 100%;
+    }
+    #moves-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
 
@@ -371,11 +391,11 @@
       font-size: 110%;
     }
   }
-  @media screen and (min-width: 960px) {
-    .statusbar-container-inner {
-      border-top: 5px solid var(--player-color);
-    }
-  }
+  // @media screen and (min-width: 960px) {
+  //   .statusbar-container-inner {
+  //     border-top: 5px solid var(--player-color);
+  //   }
+  // }
 </style>
 
 {#await currentPlayer then currentPlayer}
@@ -395,19 +415,23 @@
           <h2 class="player-name">{currentPlayer.name}</h2>
         </div>
 
-        <div class="player-status-detail" id="turn-moves">
-          <p class="dynamic-wrapper">
-            <span class="dynamic-value">{movesRemaining}</span>
-            moves remaining in turn
-          </p>
+        <div
+          id="moves-wrapper"
+          style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+          <div class="player-status-detail" id="turn-moves">
+            <p class="dynamic-wrapper">
+              <span class="dynamic-value">{movesRemaining}</span>
+              moves remaining in turn
+            </p>
+          </div>
+          <div class="player-status-detail" id="total-moves">
+            <p class="dynamic-wrapper">
+              <span class="dynamic-value">{moveNumber}</span>
+              of {settings.rows * settings.columns} total moves played
+            </p>
+          </div>
         </div>
-        <div class="player-status-detail" id="total-moves">
-          <p class="dynamic-wrapper">
-            <span class="dynamic-value">{moveNumber}</span>
-            of {settings.rows * settings.columns} total moves played
-          </p>
-        </div>
-        <div class="buttons-wrapper">
+        <div class="buttons-wrapper" id="buttons-wrapper">
           <div class="tally-points-button">
             <CountPoints {players} on:playersScored={playersScored} />
           </div>
