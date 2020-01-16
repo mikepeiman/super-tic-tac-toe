@@ -192,7 +192,6 @@
     transition: all 0.5s;
     display: flex;
     & h2 {
-      margin: 0;
       font-size: 1.25rem;
     }
   }
@@ -215,11 +214,6 @@
     color: #006f98;
     & p {
       font-size: 1rem;
-    }
-    & h2 {
-      color: white;
-      text-transform: capitalize;
-      margin-bottom: 0.25rem;
     }
     & label {
       font-size: 1rem;
@@ -247,7 +241,7 @@
     & .dynamic-wrapper {
       position: relative;
       width: 21ch;
-    margin: 1rem 0 1rem -.75rem;
+      margin: 1rem 0 1rem -0.75rem;
     }
     & .dynamic-value {
       background: var(--player-color);
@@ -320,8 +314,13 @@
     // grid-area: gamemoves;
   }
   .player-name {
-    // padding: 0.5rem;
+    color: var(--player-color);
     // border-bottom: 5px solid var(--player-color);
+    // background: #eee;
+    // padding: .25rem;
+    // margin: 0 1rem 0 -1rem;
+    // border-radius: .25rem;
+    // box-shadow: 0 0 3px 0px var(--player-color);
   }
   .inputs-wrapper {
     display: flex;
@@ -386,10 +385,19 @@
       flex-direction: row;
       justify-content: space-between;
     }
-    .player-status-detail .dynamic-value {
-      min-height: 3rem;
-      min-width: 3rem;
-      margin-top: 0;
+    .player-status-detail {
+      margin: 0 1rem;
+      & .dynamic-value {
+        min-height: 3rem;
+        min-width: 3rem;
+        margin-top: 0;
+        left: -2.8rem;
+      }
+      & .dynamic-wrapper {
+        position: relative;
+        width: 21ch;
+        margin: 1rem;
+      }
     }
   }
 
@@ -419,7 +427,11 @@
         <div class="player-status-detail" id="player-name">
           <!-- <label for="player-name"></label>
         <input name="player-name" value={currentPlayer.name} /> -->
-          <h2 class="player-name">{currentPlayer.name}</h2>
+          <h2
+            class="player-name"
+            style={`--player-color: ${currentPlayer.bgColor}`}>
+            {currentPlayer.name}
+          </h2>
         </div>
 
         <div
