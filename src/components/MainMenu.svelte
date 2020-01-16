@@ -130,12 +130,13 @@
     background: #122032;
     border-bottom: 6px solid var(--player-color);
     margin: 0;
-    // border-radius: 5px;
+    height: 100%;
     display: grid;
     grid-template-areas:
       "players rows toScore size"
       "moves columns bonus .";
     justify-content: space-between;
+    align-content: center;
     grid-template-rows: 1.5rem;
 
     & label {

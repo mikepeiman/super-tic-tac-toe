@@ -186,7 +186,7 @@
   $title-padding-vertical: 0.25rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
-    border-top: 12px solid var(--player-color);
+    // border-top: 12px solid var(--player-color);
     border-bottom: 6px solid var(--player-color);
     color: #eee;
     transition: all 0.5s;
@@ -282,18 +282,27 @@
   #player-name {
     grid-area: playername;
     justify-self: flex-start;
+
     & h2 {
-      margin: 0 0 4px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0 0 1rem;
+      background: var(--player-color);
+      color: white;
+      padding: 0 0.75rem;
+      min-height: 2.5rem;
+      border-radius: 2px;
     }
     &:before {
-      content: "";
-      margin-right: 0.5rem;
-      margin-left: -1rem;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 50px 0 50px 50px;
-      border-color: transparent transparent transparent var(--player-color);
+      // content: "";
+      // margin-right: 0.5rem;
+      // margin-left: -1rem;
+      // width: 0;
+      // height: 0;
+      // border-style: solid;
+      // border-width: 50px 0 50px 50px;
+      // border-color: transparent transparent transparent var(--player-color);
     }
   }
   #moves-wrapper {
@@ -397,7 +406,8 @@
       position: relative;
     }
     .player-indicator {
-      border-top: 12px solid var(--player-color);
+      // border-top: 12px solid var(--player-color);
+      border-top: none;
       border-bottom: 12px solid var(--player-color);
       color: #eee;
       transition: all 0.5s;

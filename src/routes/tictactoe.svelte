@@ -89,7 +89,7 @@
     // min-width: calc(100vw - 12px);
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 18vh 12vh auto;
+    grid-template-rows: 18vh auto auto;
   }
 
   .gameboard-container {
@@ -102,20 +102,27 @@
     height: 100%;
     margin-right: 1rem;
     background: #1a1a1a;
-    
-    // overflow: scroll;
+    z-index: 0;
+    & .gameboard-board {
+      z-index: 8;
+    }
   }
+
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
     max-width: 100%;
     border-top: 6px solid rgba(0, 0, 0, 0);
+    z-index: 7;
   }
+
   .statusbar-container {
     grid-area: statusbar;
+    z-index: 10;
   }
+
   .mainmenu-container {
-    // background: rgba(0, 0, 255, 0.25);
+    z-index: 9;
     grid-area: mainmenu;
     margin: 0;
     display: flex;
@@ -250,7 +257,73 @@
     }
   }
 
-  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
+  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: landscape) {
+    .page-container {
+      box-sizing: border-box;
+      display: grid;
+      grid-template-areas:
+        "statusbar statusbar statusbar"
+        "mainmenu mainmenu mainmenu"
+        "scoreboard gameboard gameboard";
+      min-height: calc(100vh - 10px);
+      max-height: calc(100vh - 10px);
+      // min-width: calc(100vw - 12px);
+      max-width: 100vw;
+      grid-template-columns: 20vw 60vw 20vw;
+      grid-template-rows: 16vh 13vh auto;
+    }
+    .statusbar-container {
+      min-height: 15vh;
+      max-height: 15vh;
+    }
+    .player-indicator {
+      height: 100%;
+      min-height: 15vh;
+      max-height: 15vh;
+      & #moves-wrapper {
+        flex-direction: row;
+        min-width: 50vw;
+        justify-content: space-between;
+        margin: 0;
+      }
+      & #turn-moves {
+        top: 0;
+      }
+      & #total-moves {
+        top: 0;
+      }
+      & button {
+        min-height: 1.5rem;
+      }
+      & #buttons-wrapper {
+        justify-content: space-around;
+        flex-direction: row;
+        margin-right: 1rem;
+      }
+      & .control-button {
+        margin: 0;
+      }
+      & #modal-wrapper {
+        top: 0;
+      }
+      & #tally-points-wrapper {
+        top: 0;
+      }
+    }
+    .gameboard-container {
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .scoreboard-container {
+      margin-top: 1rem;
+    }
+
+    .mainmenu-container {
+      & .form-wrap {
+        padding: 0.5rem 1.5rem;
+      }
+    }
   }
 
   @media screen and (min-width: 1100px) {
