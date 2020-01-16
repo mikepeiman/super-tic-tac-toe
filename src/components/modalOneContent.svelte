@@ -4,11 +4,12 @@ import Controls from './Controls.svelte'
 </script>
 
 <style>
-  h2 {
+  .modal-title {
 		font-size: 2rem;
-		text-align: center;
+    text-align: center;
+    color: white;
 	}
 </style>
 
-<h2>{message}</h2>
+<h2 class="modal-title">{message}</h2>
 <Controls /> 

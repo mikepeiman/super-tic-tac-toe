@@ -144,13 +144,21 @@
 <style lang="scss">
   .controls-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    & .subgroup {
+      display: flex;
+      width: 100%;
+    }
   }
 
   .control-button {
     background: rgba(0, 25, 75, 0.25);
     color: #1a1a1a;
+        width: 100%;
+    margin: 1rem;
+    padding: 2rem .5rem;
     &:hover {
       background: rgba(0, 0, 0, 0.5);
       color: white;
@@ -189,19 +197,23 @@
 
 <div class="controls-wrapper">
 
-  <button class="control-button" id="save-game-button" on:click={saveGame}>
-    Save game
-  </button>
-  <button class="control-button" id="load-game-button" on:click={loadGame}>
-    Load game
-  </button>
-  <button class="control-button" id="new-game-button" on:click={resetGame}>
-    New Game
-  </button>
-  <button
-    class="control-button"
-    id="reset-players-button"
-    on:click={resetPlayers}>
-    Reset players
-  </button>
+  <div class="subgroup">
+    <button class="control-button" id="save-game-button" on:click={saveGame}>
+      Save game
+    </button>
+    <button class="control-button" id="load-game-button" on:click={loadGame}>
+      Load game
+    </button>
+  </div>
+  <div class="subgroup">
+    <button class="control-button" id="new-game-button" on:click={resetGame}>
+      New Game
+    </button>
+    <button
+      class="control-button"
+      id="reset-players-button"
+      on:click={resetPlayers}>
+      Reset players
+    </button>
+  </div>
 </div>

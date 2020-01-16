@@ -140,10 +140,10 @@ $: windowHeight = 0;
   }
 
   async function addStyles() {
-    console.log(
-      `\n***window object***innerWidth ${window.innerWidth}\n`,
-      window
-    );
+    // console.log(
+    //   `\n***window object***innerWidth ${window.innerWidth}\n`,
+    //   window
+    // );
     await players;
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -152,7 +152,7 @@ $: windowHeight = 0;
     width = 237;
     height = 100;
     let left = placard.offsetLeft;
-    console.log(`placard width ${width} height ${height} left ${left}`);
+    // console.log(`placard width ${width} height ${height} left ${left}`);
     windowWidth = window.innerWidth;
     windowHeight = window.innerHeight;
     let widthRatio = windowWidth / width;
@@ -162,7 +162,7 @@ $: windowHeight = 0;
     let scaledWidth = width * scaleValue;
     let scaleValue2 = windowWidth / width / placardWidthRatio;
     let scaleWidth = `--scale-width: ${scaleValue2}`;
-    console.log(`scaleValue2: ${scaleValue2}`);
+    // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].bgColor};`;
       let positionTop = `--position-top: ${i * (height * scaleValue2) +
@@ -172,17 +172,17 @@ $: windowHeight = 0;
     for (let i = 0; i < 3; i++) {
       let positionTop = `--position-top: ${i * (height * scaleValue2) +
         i * 16}px;`;
-      console.log(
-        `setStyles()!!! --- ||| --- ::: iter ${i}
-        scaleValue ${scaleValue}
-        scaleValue2 ${scaleValue2}
-        scaledWidth ${width * scaleValue}
-        windowWidth ${windowWidth}
-        placardWidthRatio
-        ${placardWidthRatio}
-        height * i ${i * height}
-          the final top pos: ${positionTop}`
-      );
+      // console.log(
+      //   `setStyles()!!! --- ||| --- ::: iter ${i}
+      //   scaleValue ${scaleValue}
+      //   scaleValue2 ${scaleValue2}
+      //   scaledWidth ${width * scaleValue}
+      //   windowWidth ${windowWidth}
+      //   placardWidthRatio
+      //   ${placardWidthRatio}
+      //   height * i ${i * height}
+      //     the final top pos: ${positionTop}`
+      // );
     }
   }
 

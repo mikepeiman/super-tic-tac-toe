@@ -192,7 +192,8 @@
       background: rgba(var(--input-blue), 1);
     }
     &.control-button {
-      font-size: 0.5rem;
+      font-size: 1rem;
+      padding: .5rem;
     }
   }
 
