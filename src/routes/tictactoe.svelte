@@ -99,7 +99,7 @@
     color: #eee;
     justify-content: flex-start;
     align-items: flex-end;
-    height: 100%;
+    height: auto;
     margin-right: 1rem;
     background: #1a1a1a;
     z-index: 0;
