@@ -248,20 +248,20 @@
       position: relative;
     }
     & .dynamic-value {
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--player-color);
       border: none;
+      margin-top: 0.35rem;
       color: white;
       font-family: inherit;
       font-weight: 400;
       font-size: 1rem;
       padding: 0.125rem 0.175rem;
-      min-height: 3rem;
-      min-width: 3rem;
+      min-height: 2.25rem;
+      min-width: 2.25rem;
       border-radius: 2px;
       position: absolute;
-      /* FONT-VARIANT: JIS04; */
       left: -3.8rem;
-      top: -1rem;
+      top: -0.9rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -383,6 +383,11 @@
     #moves-wrapper {
       flex-direction: row;
       justify-content: space-between;
+    }
+    .player-status-detail .dynamic-value {
+      min-height: 3rem;
+      min-width: 3rem;
+      margin-top: 0;
     }
   }
 
