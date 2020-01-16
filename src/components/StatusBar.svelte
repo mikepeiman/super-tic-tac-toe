@@ -246,6 +246,8 @@
     }
     & .dynamic-wrapper {
       position: relative;
+      width: 21ch;
+    margin: 1rem 0 1rem -.75rem;
     }
     & .dynamic-value {
       background: var(--player-color);
@@ -261,7 +263,7 @@
       border-radius: 2px;
       position: absolute;
       left: -3.8rem;
-      top: -0.9rem;
+      top: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -296,7 +298,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: var(--moves-wrapper-width);
+    // min-width: var(--moves-wrapper-width);
   }
   #buttons-wrapper {
     display: flex;
@@ -424,14 +426,14 @@
           id="moves-wrapper"
           style={`--moves-wrapper-width: ${gameboardWidth}px`}>
           <div class="player-status-detail" id="turn-moves">
-            <p class="dynamic-wrapper">
-              <span class="dynamic-value">{movesRemaining}</span>
-              moves remaining in turn
-            </p>
+
+            <span class="dynamic-value">{movesRemaining}</span>
+            <p class="dynamic-wrapper">moves remaining in turn</p>
           </div>
           <div class="player-status-detail" id="total-moves">
+
+            <span class="dynamic-value">{moveNumber}</span>
             <p class="dynamic-wrapper">
-              <span class="dynamic-value">{moveNumber}</span>
               of {settings.rows * settings.columns} total moves played
             </p>
           </div>
