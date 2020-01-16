@@ -120,10 +120,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    max-height: 40vh;
-    min-height: 35vh;
-    max-width: 15vw;
-    // overflow: scroll;
   }
 
   input {

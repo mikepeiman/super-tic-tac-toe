@@ -126,8 +126,8 @@
   }
 
   .form-wrap {
-    // border: 2px solid var(--player-color);
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    margin: 0;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
