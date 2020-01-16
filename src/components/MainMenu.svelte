@@ -116,7 +116,7 @@
     // margin-bottom: 0.5rem;
     & h2 {
       // padding: 0.5rem;
-      font-size: 1.25rem;
+      font-size: 125%;
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);
@@ -145,7 +145,7 @@
       // grid-template-rows: 1.5rem 1.5rem;
       // grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 100%;
+      font-size: 80%;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: baseline;
@@ -269,6 +269,11 @@
     body {
       font-size: 80%;
     }
+    .form-wrap {
+      & label {
+        font-size: 100%;
+      }
+    }
   }
   @media screen and (min-width: 900px) {
     body {
@@ -289,7 +294,7 @@
         grid-template-columns: 1fr 5fr;
         grid-template-areas: "settings-input settings-label";
         // display: -webkit-box;
-        font-size: 1rem;
+        font-size: 100%;
         // display: flex;
         // flex-flow: row-reverse;
         align-items: baseline;
@@ -307,7 +312,7 @@
           outline: none;
           // border-bottom: none;
           border-bottom: 1px solid darken($input-blue, 30%);
-          font-size: 1em;
+          font-size: 100%;
           position: relative;
 
           padding: 0;

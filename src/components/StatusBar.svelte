@@ -263,10 +263,14 @@
       align-items: center;
     }
   }
+  #turn-moves .dynamic-value {
 
+  }
   #total-moves .dynamic-value {
     background: black;
     color: #006f98;
+    padding: calc(0.125rem - 2px) calc(0.175rem - 2px);
+    border: 2px solid var(--player-color);
   }
   .statusbar-details-wrapper {
     width: 100%;
