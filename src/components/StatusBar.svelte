@@ -246,7 +246,7 @@
     & .dynamic-value {
       background: var(--player-color);
       border: none;
-      margin-top: 0.35rem;
+      margin-top: 7px;
       color: white;
       font-family: inherit;
       font-weight: 400;
@@ -299,19 +299,36 @@
     flex-direction: column;
     align-items: center;
     grid-area: controls;
-    padding: 0.75rem;
+    padding: 8px;
     justify-self: flex-end;
+    justify-content: space-between;
+    &:nth-child(1) {
+      top: 3px;
+    }
+    &:nth-child(2) {
+      top: -3px;
+    }
   }
 
   .player-indicator-heading {
     padding: 1rem;
   }
 
-  #turn-moves {
-    // grid-area: turnmoves;
+  #tally-points-wrapper {
+    top: 3px;
+    position: relative;
   }
-  #game-moves {
-    // grid-area: gamemoves;
+
+  #modal-wrapper {
+    top: -3px;
+    position: relative;
+  }
+
+  #turn-moves {
+    top: 3px;
+  }
+  #total-moves {
+    top: -3px;
   }
   .player-name {
     color: var(--player-color);
@@ -326,18 +343,18 @@
     display: flex;
   }
 
-  button {
-    padding: 0.75rem;
-    margin: 0.75rem;
-    background: rgba(0, 25, 75, 0.25);
-    font-size: 1rem;
-    border: none;
-    color: #1a1a1a;
-    &:hover {
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-    }
-  }
+  // button {
+  //   padding: 0.75rem;
+  //   margin: 0.75rem;
+  //   background: rgba(0, 25, 75, 0.25);
+  //   font-size: 1rem;
+  //   border: none;
+  //   color: #1a1a1a;
+  //   &:hover {
+  //     background: rgba(0, 0, 0, 0.5);
+  //     color: white;
+  //   }
+  // }
 
   :global(#tally-game-button) {
     font-size: 0.75rem;
@@ -374,6 +391,14 @@
     }
     #buttons-wrapper {
       flex-direction: row;
+    }
+    #tally-points-wrapper {
+      top: 0;
+      position: relative;
+    }
+    #modal-wrapper {
+      top: 0;
+      position: relative;
     }
   }
 
@@ -451,12 +476,14 @@
           </div>
         </div>
         <div class="buttons-wrapper" id="buttons-wrapper">
-          <div class="tally-points-button">
+          <div id="tally-points-wrapper">
             <CountPoints {players} on:playersScored={playersScored} />
           </div>
-          <Modal>
-            <Content />
-          </Modal>
+          <div id="modal-wrapper">
+            <Modal>
+              <Content />
+            </Modal>
+          </div>
 
         </div>
       </div>

@@ -179,9 +179,10 @@
   }
 
   button {
-    min-height: 3rem;
+    min-height: 2.5rem;
     margin-right: 0.5rem;
-    border-radius: 0.125rem;
+    // margin-top: .35rem;
+    border-radius: 2px;
     font-size: 1.25rem;
     border: none;
     color: #eeeeee;
@@ -193,7 +194,8 @@
     }
     &.control-button {
       font-size: 1rem;
-      padding: .5rem;
+      padding: 0.5rem;
+      // margin-top: 7px;
     }
   }
 
@@ -253,6 +255,27 @@
   @media screen and (min-width: 1100px) {
     .page-container {
       grid-template-rows: 15vh 3vh auto;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    button {
+      min-height: 3rem;
+      margin-right: 0.5rem;
+      border-radius: 2px;
+      font-size: 1.25rem;
+      border: none;
+      color: #eeeeee;
+      // background: rgba(var(--input-blue), 0.5);
+      background: rgba(255, 255, 255, 0.15);
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        background: rgba(var(--input-blue), 1);
+      }
+      &.control-button {
+        font-size: 1rem;
+        padding: 0.5rem;
+      }
     }
   }
 </style>
