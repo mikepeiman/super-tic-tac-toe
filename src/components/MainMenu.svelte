@@ -130,7 +130,7 @@
     background: #122032;
     border-bottom: 6px solid var(--player-color);
     margin: 0;
-    height: 100%;
+    height: auto;
     display: grid;
     grid-template-areas:
       "players rows toScore size"

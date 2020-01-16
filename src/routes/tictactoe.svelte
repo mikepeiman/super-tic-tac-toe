@@ -320,9 +320,93 @@
         padding: 0.5rem 1.5rem;
       }
     }
+    @media (min-width: 400px) {
+      #moves-wrapper {
+        margin-left: 3.8rem;
+        grid-area: moves;
+        justify-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // min-width: var(--moves-wrapper-width);
+        & .player-status-detail {
+          & .dynamic-value {
+            min-height: 2rem;
+            /* height: 2rem; */
+            font-size: 0.75rem;
+            margin: 0;
+            top: 0.5rem;
+            position: initial;
+          }
+          & .dynamic-wrapper {
+            font-size: 0.75rem;
+            margin: 0 0 0 0.25rem;
+          }
+        }
+      }
+      .player-indicator {
+        & #buttons-wrapper {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          grid-area: controls;
+          padding: 8px;
+          margin-right: 0;
+          justify-self: flex-end;
+          justify-content: space-between;
+          & #tally-game-button {
+            font-size: 0.5rem;
+            border: none;
+            height: 2rem;
+            &:hover {
+              border: none;
+            }
+          }
+          & #game-menu-button {
+            font-size: 0.5rem;
+            border: none;
+            height: 2rem;
+            &:hover {
+              border: none;
+            }
+          }
+        }
+        & #player-name h2 {
+          font-size: 0.75rem;
+        }
+      }
+    }
+    @media (min-width: 820px) {
+      #moves-wrapper {
+        margin-left: 3.8rem;
+        grid-area: moves;
+        justify-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // min-width: var(--moves-wrapper-width);
+      }
+      #buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        grid-area: controls;
+        padding: 8px;
+        justify-self: flex-end;
+        justify-content: space-between;
+        &:nth-child(1) {
+          top: 3px;
+        }
+        &:nth-child(2) {
+          top: -3px;
+        }
+      }
+    }
   }
 
-  @media screen and (min-height: 320px) and (max-height: 600px) and (orientation: landscape) {
+  @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
     .gameboard-container {
       align-items: center;
       margin-top: 1rem;
