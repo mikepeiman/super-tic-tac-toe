@@ -264,7 +264,6 @@
     }
   }
   #turn-moves .dynamic-value {
-
   }
   #total-moves .dynamic-value {
     // background: black;
@@ -283,9 +282,13 @@
   #player-name {
     grid-area: playername;
     justify-self: flex-start;
+    & h2 {
+      margin: 0 0 4px 0;
+    }
     &:before {
       content: "";
       margin-right: 0.5rem;
+      margin-left: -1rem;
       width: 0;
       height: 0;
       border-style: solid;
@@ -341,6 +344,9 @@
   }
   .player-name {
     color: var(--player-color);
+    & h2 {
+      margin: 0 0 4px 0;
+    }
   }
   .inputs-wrapper {
     display: flex;
@@ -409,6 +415,12 @@
     #moves-wrapper {
       flex-direction: row;
       justify-content: space-between;
+    }
+    #turn-moves {
+      top: 0;
+    }
+    #total-moves {
+      top: 0;
     }
     .player-status-detail {
       margin: 0 1rem;
