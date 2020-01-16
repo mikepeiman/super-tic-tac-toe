@@ -127,14 +127,14 @@
 
   .form-wrap {
     padding: 0.5rem;
-    background: black;
+    background: #122032;
     border-bottom: 6px solid var(--player-color);
     margin: 0;
     // border-radius: 5px;
     display: grid;
     grid-template-areas:
-      "players rows columns size"
-      "moves toScore bonus .";
+      "players rows toScore size"
+      "moves columns bonus .";
     justify-content: space-between;
     grid-template-rows: 1.5rem;
 
