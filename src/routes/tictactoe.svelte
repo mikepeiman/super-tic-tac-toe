@@ -291,9 +291,7 @@
       & #total-moves {
         top: 0;
       }
-      & button {
-        min-height: 1.5rem;
-      }
+
       & #buttons-wrapper {
         justify-content: space-around;
         flex-direction: row;
@@ -320,7 +318,7 @@
         padding: 0.5rem 1.5rem;
       }
     }
-    @media (min-width: 400px) {
+    @media (max-width: 400px) {
       #moves-wrapper {
         margin-left: 3.8rem;
         grid-area: moves;
@@ -355,6 +353,9 @@
           margin-right: 0;
           justify-self: flex-end;
           justify-content: space-between;
+          & button {
+            min-height: 1.5rem;
+          }
           & #tally-game-button {
             font-size: 0.5rem;
             border: none;
