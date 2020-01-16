@@ -82,14 +82,14 @@
     display: grid;
     grid-template-areas:
       "statusbar statusbar statusbar"
-      ". . ."
-      "scoreboard gameboard mainmenu";
+      "mainmenu mainmenu mainmenu"
+      "scoreboard gameboard gameboard";
     min-height: calc(100vh - 10px);
     max-height: calc(100vh - 10px);
     // min-width: calc(100vw - 12px);
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 18vh 3vh auto;
+    grid-template-rows: 18vh 9vh auto;
   }
 
   .gameboard-container {
@@ -277,6 +277,20 @@
         padding: 0.5rem;
       }
     }
+      .page-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-areas:
+      "statusbar statusbar statusbar"
+      ". . ."
+      "scoreboard gameboard mainmenu";
+    min-height: calc(100vh - 10px);
+    max-height: calc(100vh - 10px);
+    // min-width: calc(100vw - 12px);
+    max-width: 100vw;
+    grid-template-columns: 20vw 60vw 20vw;
+    grid-template-rows: 18vh 3vh auto;
+  }
   }
 </style>
 

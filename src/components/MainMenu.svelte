@@ -20,7 +20,7 @@
     numberOfPlayers: 3,
     movesPerTurn: 4,
     cellsToScore: 3,
-    bonusForCompleteRow: 12,
+    bonusForCompleteLine: 12,
     rows: 8,
     columns: 12,
     sizeFactor: 75,
@@ -129,21 +129,23 @@
     padding: 0.5rem 0.5rem 0.5rem 0;
     margin: 0;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    // flex-direction: row;
     justify-content: space-between;
     // width: 100%;
     // margin-left: 2px;
     & label {
       display: grid;
       grid-template-columns: 1fr 5fr;
+      grid-template-rows: 1.5rem 1.5rem;
       grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 1em;
+      font-size: 1rem;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: baseline;
       justify-content: flex-end;
+      position: relative;
 
       & .label-content {
         grid-area: settings-label;
@@ -157,6 +159,7 @@
         // border-bottom: none;
         border-bottom: 1px solid darken($input-blue, 30%);
         font-size: 1em;
+        position: relative;
 
         padding: 0;
         &:focus {
@@ -169,6 +172,17 @@
         }
       }
     }
+  }
+
+  #sizeFactor {
+    position: relative;
+  }
+  .percent-symbol {
+    position: absolute;
+    color: $input-blue;
+    margin-right: 1ch;
+    left: 3ch;
+    font-family: "Muli";
   }
 
   .lds-ripple {
@@ -227,24 +241,72 @@
 
   @media screen and (min-width: 600px) {
     body {
-      font-size: 12px;
+      font-size: 80%;
     }
   }
   @media screen and (min-width: 900px) {
     body {
-      font-size: 14px;
+      font-size: 90%;
+    }
+
+    .form-wrap {
+      padding: 0.5rem 0.5rem 0.5rem 0;
+      margin: 0;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      // width: 100%;
+      // margin-left: 2px;
+      & label {
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        grid-template-areas: "settings-input settings-label";
+        // display: -webkit-box;
+        font-size: 1rem;
+        // display: flex;
+        // flex-flow: row-reverse;
+        align-items: baseline;
+        justify-content: flex-end;
+        position: relative;
+
+        & .label-content {
+          grid-area: settings-label;
+          margin-left: 0.25em;
+          color: darken($input-blue, 30%);
+        }
+        & input {
+          grid-area: settings-input;
+          margin: 0;
+          outline: none;
+          // border-bottom: none;
+          border-bottom: 1px solid darken($input-blue, 30%);
+          font-size: 1em;
+          position: relative;
+
+          padding: 0;
+          &:focus {
+            border-bottom: 1px solid $input-blue;
+            outline: none;
+          }
+          &::selection {
+            color: white;
+            background: $input-blue;
+          }
+        }
+      }
     }
   }
 
   @media screen and (min-width: 1200px) {
     body {
-      font-size: 16px;
+      font-size: 100%;
     }
   }
 
   @media screen and (min-width: 1500px) {
     body {
-      font-size: 20px;
+      font-size: 110%;
     }
   }
 </style>
@@ -256,10 +318,9 @@
   <div
     class="form-wrap settings-menu"
     style={`--player-color: ${currentPlayer.bgColor}`}>
-    <label for="players">
+    <label for="players" id="players">
       <div class="label-content">players</div>
       <input
-        id="players"
         name="players"
         type="number"
         placeholder={settings.numberOfPlayers}
@@ -268,10 +329,9 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="rows">
+    <label for="rows" id="rows">
       <div class="label-content">rows</div>
       <input
-        id="rows"
         name="rows"
         type="number"
         placeholder={settings.rows}
@@ -280,10 +340,9 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="columns">
+    <label for="columns" id="columns">
       <div class="label-content">columns</div>
       <input
-        id="columns"
         name="columns"
         type="number"
         placeholder={settings.columns}
@@ -292,10 +351,9 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="movesPerTurn">
+    <label for="movesPerTurn" id="movesPerTurn">
       <div class="label-content">moves per turn</div>
       <input
-        id="movesPerTurn"
         name="movesPerTurn"
         type="number"
         placeholder={settings.movesPerTurn}
@@ -304,10 +362,9 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="movesPerTurn">
+    <label for="cellsToScore" id="cellsToScore">
       <div class="label-content">in a row to score</div>
       <input
-        id="cellsToScore"
         name="cellsToScore"
         type="number"
         placeholder={settings.cellsToScore}
@@ -316,22 +373,20 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="bonus">
+    <label for="bonusForCompleteLine" id="bonusForCompleteLine">
       <div class="label-content">bonus for complete line</div>
       <input
-        id="bonusForCompleteRow"
-        name="bonusForCompleteRow"
+        name="bonusForCompleteLine"
         type="number"
-        placeholder={settings.bonusForCompleteRow}
-        bind:value={settings.bonusForCompleteRow}
+        placeholder={settings.bonusForCompleteLine}
+        bind:value={settings.bonusForCompleteLine}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
-    <label for="sizeFactor">
+    <label for="sizeFactor" id="sizeFactor">
       <div class="label-content">Board size (%)</div>
       <input
-        id="sizeFactor"
         name="sizeFactor"
         type="number"
         placeholder={settings.sizeFactor}
@@ -342,6 +397,7 @@
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
+      <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
 {:else}

@@ -101,21 +101,21 @@
       let rows = settings.rows;
       let columns = settings.columns;
       // console.log(`||||| score(settings, direction, player, idx) |||||| inside of scoring function, settings rows ${rows} columns ${columns}`)
-      let bonusForCompleteRow = settings.bonusForCompleteRow;
+      let bonusForCompleteLine = settings.bonusForCompleteLine;
       let longerDimension = rows > columns ? rows : columns;
       let shorterDimension = rows < columns ? rows : columns;
       let len = line.length;
       // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
-      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteRow}`)
+      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteLine}`)
       let equalSides = rows === columns ? rows : false;
       // console.log(`has equal sides? ${equalSides}`)
-      let lineBonus = bonusForCompleteRow;
+      let lineBonus = bonusForCompleteLine;
       if (len >= longerDimension) {
-        lineBonus = bonusForCompleteRow;
+        lineBonus = bonusForCompleteLine;
         // console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
       } else if (len >= shorterDimension) {
         lineBonus = Math.ceil(
-          bonusForCompleteRow / (longerDimension / shorterDimension)
+          bonusForCompleteLine / (longerDimension / shorterDimension)
         );
         // console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
       } else {
