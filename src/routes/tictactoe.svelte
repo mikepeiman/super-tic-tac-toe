@@ -98,17 +98,18 @@
     flex-direction: column;
     color: #eee;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-end;
     height: 100%;
+    margin-right: 1rem;
     background: #1a1a1a;
+    
     // overflow: scroll;
   }
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
     max-width: 100%;
-    // background: rgba(255, 0, 255, 0.25);
-    // overflow: scroll;
+    border-top: 6px solid rgba(0, 0, 0, 0);
   }
   .statusbar-container {
     grid-area: statusbar;
@@ -254,11 +255,18 @@
 
   @media screen and (min-width: 1100px) {
     .page-container {
-      grid-template-rows: 15vh 3vh auto;
+      grid-template-rows: 15vh 7vh auto;
     }
   }
 
   @media screen and (min-width: 900px) {
+    .gameboard-container {
+      align-items: center;
+      margin-right: 0;
+    }
+    .mainmenu-container {
+      border-top: 6px solid rgba(0, 0, 0, 0);
+    }
     button {
       min-height: 3rem;
       margin-right: 0.5rem;
@@ -277,20 +285,20 @@
         padding: 0.5rem;
       }
     }
-      .page-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-areas:
-      "statusbar statusbar statusbar"
-      ". . ."
-      "scoreboard gameboard mainmenu";
-    min-height: calc(100vh - 10px);
-    max-height: calc(100vh - 10px);
-    // min-width: calc(100vw - 12px);
-    max-width: 100vw;
-    grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 18vh 3vh auto;
-  }
+    .page-container {
+      box-sizing: border-box;
+      display: grid;
+      grid-template-areas:
+        "statusbar statusbar statusbar"
+        ". . ."
+        "scoreboard gameboard mainmenu";
+      min-height: calc(100vh - 10px);
+      max-height: calc(100vh - 10px);
+      // min-width: calc(100vw - 12px);
+      max-width: 100vw;
+      grid-template-columns: 20vw 60vw 20vw;
+      grid-template-rows: 18vh 7vh auto;
+    }
   }
 </style>
 

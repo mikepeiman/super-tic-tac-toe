@@ -843,7 +843,7 @@
     display: flex;
   }
   .gameboard-board {
-    border: 5px solid rgba(0, 0, 0, 0);
+    border: 6px solid rgba(0, 0, 0, 0);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

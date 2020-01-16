@@ -16,8 +16,8 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-$: windowWidth = 0;
-$: windowHeight = 0;
+  $: windowWidth = 0;
+  $: windowHeight = 0;
   $: appViewport = {};
   $: placardFactor = 2.5;
   $: placardViewRatio = placardFactor * appViewport.ratio;
@@ -158,25 +158,23 @@ $: windowHeight = 0;
     let widthRatio = windowWidth / width;
     let heightRatio = appViewport.height / height;
     let placardWidthRatio = (width / height) * placardFactor;
-    let scaleValue = windowWidth / width / 5;
-    let scaledWidth = width * scaleValue;
-    let scaleValue2 = windowWidth / width / placardWidthRatio;
-    let scaleWidth = `--scale-width: ${scaleValue2}`;
+    // let scaleValue = windowWidth / width / 5;
+    let scaleValue = windowWidth / width / placardWidthRatio;
+    let scaleWidth = `--scale-width: ${scaleValue}`;
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].bgColor};`;
-      let positionTop = `--position-top: ${i * (height * scaleValue2) +
+      let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
       placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
     });
     for (let i = 0; i < 3; i++) {
-      let positionTop = `--position-top: ${i * (height * scaleValue2) +
+      let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
       // console.log(
       //   `setStyles()!!! --- ||| --- ::: iter ${i}
       //   scaleValue ${scaleValue}
       //   scaleValue2 ${scaleValue2}
-      //   scaledWidth ${width * scaleValue}
       //   windowWidth ${windowWidth}
       //   placardWidthRatio
       //   ${placardWidthRatio}
@@ -209,10 +207,19 @@ $: windowHeight = 0;
       ratio: appRatio
     };
     storeViewportSize.set(appViewport);
-    placardFactor = 2.5;
-    // if (appWidth < 800) {
-    //   placardFactor = 1.75;
-    // }
+    placardFactor = 2.6;
+        if (appWidth < 1500) {
+      placardFactor = 2.4;
+    }
+        if (appWidth < 1200) {
+      placardFactor = 2.2;
+    }
+    if (appWidth < 900) {
+      placardFactor = 1.9;
+    }
+    if (appWidth < 600) {
+      placardFactor = 1.65;
+    }
     // if (appWidth > 1100) {
     //   placardFactor = 2;
     // }
@@ -253,7 +260,7 @@ $: windowHeight = 0;
   .scoreboard-player {
     background: var(--player-color);
     position: absolute;
-    left: 16px;
+    left: 0;
     top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
@@ -358,6 +365,10 @@ $: windowHeight = 0;
     body {
       font-size: 90%;
     }
+
+    .scoreboard-player {
+      // left: 16px;
+    }
   }
 
   @media screen and (min-width: 1200px) {
@@ -392,17 +403,11 @@ $: windowHeight = 0;
     <div class="debug-output">
       <label for="viewportWidth">
         V-Width:
-        <input
-          name="viewportWidth"
-          type="number"
-          bind:value={windowWidth} />
+        <input name="viewportWidth" type="number" bind:value={windowWidth} />
       </label>
       <label for="viewportHeight">
         V-Height:
-        <input
-          name="viewportHeight"
-          type="number"
-          bind:value={windowHeight} />
+        <input name="viewportHeight" type="number" bind:value={windowHeight} />
       </label>
       <label for="placardFactor">
         PF:

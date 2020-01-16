@@ -283,12 +283,11 @@
     .form-wrap {
       padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
-      border-radius: 5px;
+      margin-right: 1rem;
+      border-radius: 0 0 5px 5px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      // width: 100%;
-      // margin-left: 2px;
       & label {
         display: grid;
         grid-template-columns: 1fr 5fr;
