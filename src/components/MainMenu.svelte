@@ -126,21 +126,26 @@
   }
 
   .form-wrap {
-    padding: 0.5rem 0.5rem 0.5rem 0;
+    padding: 0.5rem;
+    background: black;
+    border-bottom: 6px solid var(--player-color);
     margin: 0;
-    border-radius: 5px;
+    // border-radius: 5px;
     display: grid;
-    // flex-direction: row;
+    grid-template-areas:
+      "players rows columns size"
+      "moves toScore bonus .";
     justify-content: space-between;
-    // width: 100%;
-    // margin-left: 2px;
+    grid-template-rows: 1.5rem;
+
     & label {
-      display: grid;
-      grid-template-columns: 1fr 5fr;
-      grid-template-rows: 1.5rem 1.5rem;
-      grid-template-areas: "settings-input settings-label";
+      display: flex;
+      flex-direction: row-reverse;
+      // grid-template-columns: 1fr 5fr;
+      // grid-template-rows: 1.5rem 1.5rem;
+      // grid-template-areas: "settings-input settings-label";
       // display: -webkit-box;
-      font-size: 1rem;
+      font-size: 100%;
       // display: flex;
       // flex-flow: row-reverse;
       align-items: baseline;
@@ -172,6 +177,27 @@
         }
       }
     }
+  }
+  #players {
+    grid-area: players;
+  }
+  #rows {
+    grid-area: rows;
+  }
+  #columns {
+    grid-area: columns;
+  }
+  #movesPerTurn {
+    grid-area: moves;
+  }
+  #cellsToScore {
+    grid-area: toScore;
+  }
+  #bonusForCompleteLine {
+    grid-area: bonus;
+  }
+  #sizeFactor {
+    grid-area: size;
   }
 
   #sizeFactor {

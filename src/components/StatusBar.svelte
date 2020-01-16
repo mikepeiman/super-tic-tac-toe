@@ -187,7 +187,7 @@
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
     border-top: 12px solid var(--player-color);
-    border-bottom: 12px solid var(--player-color);
+    border-bottom: 6px solid var(--player-color);
     color: #eee;
     transition: all 0.5s;
     display: flex;
@@ -263,6 +263,11 @@
       align-items: center;
     }
   }
+
+  #total-moves .dynamic-value {
+    background: black;
+    color: #006f98;
+  }
   .statusbar-details-wrapper {
     width: 100%;
     display: grid;
@@ -332,29 +337,10 @@
   }
   .player-name {
     color: var(--player-color);
-    // border-bottom: 5px solid var(--player-color);
-    // background: #eee;
-    // padding: .25rem;
-    // margin: 0 1rem 0 -1rem;
-    // border-radius: .25rem;
-    // box-shadow: 0 0 3px 0px var(--player-color);
   }
   .inputs-wrapper {
     display: flex;
   }
-
-  // button {
-  //   padding: 0.75rem;
-  //   margin: 0.75rem;
-  //   background: rgba(0, 25, 75, 0.25);
-  //   font-size: 1rem;
-  //   border: none;
-  //   color: #1a1a1a;
-  //   &:hover {
-  //     background: rgba(0, 0, 0, 0.5);
-  //     color: white;
-  //   }
-  // }
 
   :global(#tally-game-button) {
     font-size: 0.75rem;
@@ -399,6 +385,16 @@
     #modal-wrapper {
       top: 0;
       position: relative;
+    }
+    .player-indicator {
+      border-top: 12px solid var(--player-color);
+      border-bottom: 12px solid var(--player-color);
+      color: #eee;
+      transition: all 0.5s;
+      display: flex;
+      & h2 {
+        font-size: 1.25rem;
+      }
     }
   }
 
