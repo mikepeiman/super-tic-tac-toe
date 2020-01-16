@@ -191,6 +191,7 @@
     color: #eee;
     transition: all 0.5s;
     display: flex;
+    height: auto;
     & h2 {
       font-size: 1.25rem;
     }
@@ -246,7 +247,7 @@
     & .dynamic-value {
       background: var(--player-color);
       border: none;
-      margin-top: 7px;
+      margin-top: 8px;
       color: white;
       font-family: inherit;
       font-weight: 400;
@@ -413,12 +414,6 @@
         font-size: 1.25rem;
       }
     }
-  }
-
-  @media screen and (min-width: 1100px) {
-    body {
-      font-size: 100%;
-    }
     #moves-wrapper {
       flex-direction: row;
       justify-content: space-between;
@@ -442,6 +437,12 @@
         width: 21ch;
         margin: 1rem;
       }
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    body {
+      font-size: 100%;
     }
   }
 

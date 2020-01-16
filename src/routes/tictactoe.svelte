@@ -119,8 +119,8 @@
   .statusbar-container {
     grid-area: statusbar;
     z-index: 10;
-          min-height: 15vh;
-      max-height: 15vh;
+    min-height: 15vh;
+    max-height: 15vh;
   }
 
   .mainmenu-container {
@@ -241,23 +241,20 @@
     }
   }
 
-  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: portrait) {
-    // html {
-    //   transform: rotate(-90deg);
-    //   transform-origin: left top;
-    //   width: 100vh;
-    //   height: 100vw;
-    //   overflow-x: hidden;
-    //   position: absolute;
-    //   top: 100%;
-    //   left: 0;
-    // }
+  // @media screen and (min-width: 320px) and (max-width: 820px) and (orientation: portrait) {
 
-    .scoreboard-container {
-      // transform: scale(0.5);
-      // transform-origin: top left;
-    }
-  }
+  //   html {
+  //     transform: rotate(-90deg);
+  //     transform-origin: left top;
+  //     width: 100vh;
+  //     height: 100vw;
+  //     overflow-x: hidden;
+  //     position: absolute;
+  //     top: 100%;
+  //     left: 0;
+  //   }
+
+  // }
 
   @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
     .page-container {
@@ -302,9 +299,6 @@
         flex-direction: row;
         margin-right: 1rem;
       }
-      & .control-button {
-        margin: 0;
-      }
       & #modal-wrapper {
         top: 0;
       }
@@ -314,17 +308,28 @@
     }
     .gameboard-container {
       align-items: center;
-      margin-top: 1rem;
+      // margin-top: 1rem;
     }
 
     .scoreboard-container {
-      margin-top: 1rem;
+      // margin-top: 1rem;
     }
 
     .mainmenu-container {
       & .form-wrap {
         padding: 0.5rem 1.5rem;
       }
+    }
+  }
+
+  @media screen and (min-height: 320px) and (max-height: 600px) and (orientation: landscape) {
+    .gameboard-container {
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .scoreboard-container {
+      margin-top: 1rem;
     }
   }
 
