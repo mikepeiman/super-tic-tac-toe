@@ -89,7 +89,7 @@
     // min-width: calc(100vw - 12px);
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 18vh auto auto;
+    grid-template-rows: 16vh 13vh auto;
   }
 
   .gameboard-container {
@@ -119,6 +119,8 @@
   .statusbar-container {
     grid-area: statusbar;
     z-index: 10;
+          min-height: 15vh;
+      max-height: 15vh;
   }
 
   .mainmenu-container {
@@ -257,7 +259,7 @@
     }
   }
 
-  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: landscape) {
+  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
     .page-container {
       box-sizing: border-box;
       display: grid;
@@ -328,7 +330,7 @@
 
   @media screen and (min-width: 1100px) {
     .page-container {
-      grid-template-rows: 15vh 7vh auto;
+      grid-template-rows: 16vh 13vh auto;
     }
   }
 
@@ -370,7 +372,7 @@
       // min-width: calc(100vw - 12px);
       max-width: 100vw;
       grid-template-columns: 20vw 60vw 20vw;
-      grid-template-rows: 18vh 7vh auto;
+      // grid-template-rows: 18vh 7vh auto;
     }
   }
 </style>

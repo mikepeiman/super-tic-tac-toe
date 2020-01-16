@@ -137,7 +137,7 @@
       "moves columns bonus .";
     justify-content: space-between;
     align-content: center;
-    grid-template-rows: 1.5rem;
+    // grid-template-rows: 1.5rem;
 
     & label {
       display: flex;
@@ -289,6 +289,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      height: auto;
       & label {
         display: grid;
         grid-template-columns: 1fr 5fr;

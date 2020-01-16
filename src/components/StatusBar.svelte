@@ -412,6 +412,7 @@
       color: #eee;
       transition: all 0.5s;
       display: flex;
+      min-height: 100%;
       & h2 {
         font-size: 1.25rem;
       }
