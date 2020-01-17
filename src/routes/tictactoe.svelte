@@ -19,6 +19,11 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  $: state = null;
+  $: players = null;
+  $: settings = null;
+  let currentPlayer;
+
   storeState.subscribe(value => {
     // console.log(`TicTacToe => storeState.subscribe value => `, value);
     // state = value
@@ -35,10 +40,9 @@
   storePreservePlayerDetails.subscribe(value => {
     // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
-
-  $: state = null;
-  $: players = null;
-  $: settings = null;
+  storeCurrentPlayer.subscribe(val => {
+    currentPlayer = val;
+  });
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);
@@ -90,6 +94,8 @@
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 16vh 13vh auto;
+    background: var(--player-color);
+    background-image: linear-gradient(125deg, black, rgba(0, 0, 0, 0.85));
   }
 
   .gameboard-container {
@@ -101,7 +107,7 @@
     align-items: flex-end;
     height: auto;
     margin-right: 1rem;
-    background: #1a1a1a;
+    // background: #1a1a1a;
     z-index: 0;
     & .gameboard-board {
       z-index: 8;
@@ -166,22 +172,6 @@
     display: flex;
   }
 
-  .ticked {
-    &.unlocked {
-      border: 1px solid red;
-    }
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
-    }
-    &::after {
-      content: attr(data-marker);
-      font-size: var(--cell-marker-size);
-      position: relative;
-      justify-self: center;
-      align-self: center;
-      background: attr(data-background-color);
-    }
-  }
   .player-change {
     transition: all 0.25s;
     border: 5px solid white;
@@ -209,6 +199,65 @@
     }
   }
 
+  .game-square {
+    width: 24px;
+    height: 24px;
+    min-width: 12px;
+    min-height: 12px;
+    width: var(--custom-size);
+    height: var(--custom-size);
+    // background: var(--player-color, #1a1a1a);
+    // background: #1a1a1a;
+    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.unticked {
+      &:hover {
+        // background: rgba(150, 150, 255, 0.5);
+        // background: var(--player-color);
+        border: 1px solid var(--player-color);
+        background: rgba(26, 26, 26, 0.15);
+        content: var(--player-mark);
+      }
+      &:hover::after {
+        content: var(--player-mark);
+        font-size: var(--custom-mark-size);
+        position: relative;
+        justify-self: center;
+        align-self: center;
+        // background: attr(data-background-color);
+      }
+    }
+
+    &.ticked {
+      background: var(--player-color);
+      &:hover {
+        background-image: linear-gradient(45deg,
+          rgba(26, 26, 26, 0.35),
+          rgba(26, 26, 26, 0.45)
+        );
+      }
+      &:hover::after {
+        content: attr(data-marker);
+        font-size: var(--cell-marker-size);
+        position: relative;
+        justify-self: center;
+        align-self: center;
+        background: attr(data-background-color);
+      }
+      &::after {
+        content: attr(data-marker);
+        font-size: var(--cell-marker-size);
+        position: relative;
+        justify-self: center;
+        align-self: center;
+        background: attr(data-background-color);
+      }
+    }
+  }
   .locked {
     opacity: 0.75;
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -472,7 +521,9 @@
 </div> -->
 
 {#await players then players}
-  <div class="page-container">
+  <div
+    class="page-container"
+    style={`--player-color: ${currentPlayer.bgColor}`}>
     <div class="mainmenu-container">
       <GameInit />
     </div>

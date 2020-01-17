@@ -17,6 +17,8 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  let customMarkerSize;
+  let currentPlayerMark;
   let settings = {};
   $: state = {};
   $: moveNumber = 0;
@@ -204,7 +206,7 @@
     }
     storeCellSize.set(cellSize);
     // let gameboardContainerWidth = settings.columns * cellSize
-    storeGameboardWidth.set(gameboardWidth)
+    storeGameboardWidth.set(gameboardWidth);
   }
 
   function moveNotification(e) {
@@ -262,7 +264,7 @@
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].bgColor}`;
-          let customMarkerSize = `--cell-marker-size: ${Math.floor(
+          customMarkerSize = `--cell-marker-size: ${Math.floor(
             cellSize / 2.5
           )}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
@@ -272,6 +274,7 @@
           cell.setAttribute("data-marker", players[p].marker);
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
+          cell.classList.remove("unticked");
           cell.setAttribute("locked", true);
           cell.style.border = "1px solid rgba(0,0,0,0.5)";
           if (delayMS > 0) {
@@ -292,6 +295,7 @@
         cell.setAttribute("data-marker", players[p].marker);
         cell.setAttribute("data-ticked", true);
         cell.classList.add("ticked");
+        cell.classList.remove("unticked");
         cell.removeAttribute("locked");
         cell.style.border = "1px solid rgba(0,0,0,0.5)";
         if (delayMS > 0) {
@@ -544,6 +548,7 @@
     let id = cell.id;
     let ticked = cell.dataset.ticked == "true";
     cell.classList.add("ticked");
+    cell.classList.remove("unticked");
 
     if (ticked) {
       if (!cell.hasAttribute("locked")) {
@@ -597,6 +602,7 @@
       playerName: currentPlayer.name
     };
     cell.classList.add("ticked");
+    cell.classList.remove("unticked");
     cell.dataset.ticked = true;
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
@@ -619,12 +625,17 @@
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
-    let customBg = `--player-color: hsla(${hue}, 50%, 50%, ${alpha});`;
-    cell.style = customBg;
+    let customBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
+    currentPlayerMark = `--player-mark: '${currentPlayer.marker}'`;
+    console.log(
+      `setCustomBg: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
+    );
+    cell.style = `${customBg}; ${customMarkerSize}; ${currentPlayerMark}`;
   }
 
   function untickThis(cell) {
     cell.classList.remove("ticked");
+    cell.classList.add("unticked");
     setCustomBg(cell);
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
@@ -843,35 +854,16 @@
     display: flex;
   }
   .gameboard-board {
-    border: 6px solid rgba(0, 0, 0, 0);
+    border: 6px solid rgba(255, 255, 255, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     transition: all 0.25s;
-  }
-
-  .ticked {
-    &.unlocked {
-      border: 1px solid red;
-    }
-    &:hover {
-      background: rgba(150, 150, 255, 0.5);
-    }
-    &::after {
-      content: attr(data-marker);
-      // font-size: var(--custom-mark-size);
-      font-size: attr(data-markersize);
-      // font-size: 48px;
-      position: relative;
-      top: -2px;
-      justify-self: center;
-      align-self: center;
-      background: attr(data-background-color);
-    }
+    box-shadow: 0 0 32px 6px rgba(255, 255, 255, 0.2)
   }
 </style>
-
+{#await grid then grid}
 <div id="gameboard-board" class="gameboard-board">
   {#each grid as row}
     <div class="row">
@@ -879,6 +871,7 @@
         <Cell
           customSize
           customMarkSize
+          customMark
           ticked={false}
           customBg
           id={cell.id}
@@ -889,3 +882,4 @@
     </div>
   {/each}
 </div>
+{/await}
