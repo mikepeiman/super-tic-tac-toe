@@ -292,14 +292,14 @@
       border-radius: 2px;
     }
     &:before {
-      // content: "";
-      // margin-right: 0.5rem;
-      // margin-left: -1rem;
-      // width: 0;
-      // height: 0;
-      // border-style: solid;
-      // border-width: 50px 0 50px 50px;
-      // border-color: transparent transparent transparent var(--player-color);
+      content: "";
+      margin-right: 0.5rem;
+      margin-left: -1rem;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 50px 0 50px 50px;
+      border-color: transparent transparent transparent var(--player-color);
     }
   }
   #moves-wrapper {
