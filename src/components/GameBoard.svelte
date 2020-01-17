@@ -82,7 +82,7 @@
   ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
   $: rows, columns, size, numberOfPlayers, sizeFactor && resetGameBoard();
 
-  onMount(() => {
+  onMount(async () => {
     storeSettings.subscribe(value => {
       settings = value;
       ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
@@ -102,7 +102,7 @@
       let parsedGhls = JSON.parse(ghls);
       console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
     });
-
+    await grid.length;
     setCellSize();
     window.addEventListener(
       "resize",
@@ -180,10 +180,10 @@
     }
   });
 
-  function setCellSize() {
+  async function setCellSize() {
     console.log(`|--|---|--|--|--|--|    setCellSize() called`);
     let gameboardContainer = document.querySelector(".gameboard-container");
-    let gameboard = document.querySelector(".gameboard-board");
+    let gameboard = document.querySelector("#gameboard");
     gameboardContainerWidth = gameboardContainer.offsetWidth;
     let gameboardWidth = gameboard.offsetWidth;
     gameboardContainerHeight = gameboardContainer.offsetHeight;
@@ -221,7 +221,7 @@
     //   gameHistoryTurns,
     //   `\n\n`
     // );
-    let gameboard = document.getElementById("gameboard-board");
+    let gameboard = document.getElementById("gameboard");
     let amount, number, len;
     gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
     turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
@@ -244,8 +244,9 @@
         len = gameHistoryTurns.length;
       }
     }
-    console.log(`turnHistory and len: ${turnHistory.len}; `, turnHistory);
-    console.log(`gameHistoryTurns and len: ${len}; `, gameHistoryTurns);
+    console.log(`renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `, turnHistory);
+    console.log(`renderGameBoardReload() => gameHistoryTurns and len: ${len}; `, gameHistoryTurns);
+    console.log(`renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `);
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
@@ -338,8 +339,9 @@
   }
 
   function addDirectionArraysToPlayerObjects() {
-    // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, `\n\n`)
+    console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
+      // next loop is to set the four direction array to each player object .scores property 
       for (let x = 0; x <= 3; x++) {
         players[i]["scores"][x].id = x + 1;
         players[i].scores[x].name = scoreDirections[x].name;
@@ -351,7 +353,7 @@
     storePlayers.set(players);
   }
 
-  function makeLinesFrom(dir) {
+  async function makeLinesFrom(dir) {
     let rows = settings.rows;
     let columns = settings.columns;
     let start,
@@ -422,6 +424,7 @@
     lines = lines;
     storeDirectionArrays.set(lines);
     localStorage.setItem("directionArrays", JSON.stringify(lines));
+    await players
     addDirectionArraysToPlayerObjects();
   }
 
@@ -506,9 +509,10 @@
       }
     }
     await players;
+
+    grid = grid;
     await createDirectionArrays();
     await addDirectionArraysToPlayerObjects();
-    grid = grid;
     return grid;
     console.log(`grid array from inside buildGameGrid: `, grid);
   }
@@ -813,7 +817,7 @@
   function playerChange() {
     storePreservePlayerDetails.set(true);
     turnHistory = [];
-    let gameboard = document.getElementById("gameboard-board");
+    let gameboard = document.getElementById("gameboard");
     gameboard.classList.add("player-change");
     setTimeout(() => {
       gameboard.classList.remove("player-change");
@@ -860,26 +864,27 @@
     justify-content: flex-start;
     align-items: center;
     transition: all 0.25s;
-    box-shadow: 0 0 32px 6px rgba(255, 255, 255, 0.2)
+    box-shadow: 0 0 32px 6px rgba(255, 255, 255, 0.2);
   }
 </style>
+
 {#if grid.length}
-<div id="gameboard-board" class="gameboard-board">
-  {#each grid as row}
-    <div class="row">
-      {#each row as cell}
-        <Cell
-          customSize
-          customMarkSize
-          customMark
-          ticked={false}
-          customBg
-          id={cell.id}
-          row={cell.row}
-          column={cell.column}
-          on:move={moveNotification} />
-      {/each}
-    </div>
-  {/each}
-</div>
+  <div id="gameboard" class="gameboard-board">
+    {#each grid as row}
+      <div class="row">
+        {#each row as cell}
+          <Cell
+            customSize
+            customMarkSize
+            customMark
+            ticked={false}
+            customBg
+            id={cell.id}
+            row={cell.row}
+            column={cell.column}
+            on:move={moveNotification} />
+        {/each}
+      </div>
+    {/each}
+  </div>
 {/if}

@@ -65,9 +65,9 @@
   $: {
     if (typeof window !== "undefined") {
       let playerDetails = localStorage.getItem("preservePlayerDetails");
-      if (!playerDetails) {
+      // if (!playerDetails) {
         numberOfPlayers && initializePlayers();
-      }
+      // }
     }
 
     // storePreservePlayerDetails.set(false);
@@ -85,6 +85,7 @@
       console.log(
         `GameInit => subscribed to settings, numberOfPlayers = ${numberOfPlayers}`
       );
+
     });
     // settings = $storeSettings;
     state = $storeState;

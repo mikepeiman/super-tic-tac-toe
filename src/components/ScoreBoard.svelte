@@ -145,6 +145,7 @@
     //   window
     // );
     await players;
+    await document.getElementById("gameboard")
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
