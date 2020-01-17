@@ -863,7 +863,7 @@
     box-shadow: 0 0 32px 6px rgba(255, 255, 255, 0.2)
   }
 </style>
-{#await grid then grid}
+{#if grid.length}
 <div id="gameboard-board" class="gameboard-board">
   {#each grid as row}
     <div class="row">
@@ -882,4 +882,4 @@
     </div>
   {/each}
 </div>
-{/await}
+{/if}

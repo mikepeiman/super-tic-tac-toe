@@ -434,7 +434,7 @@
       }
       & .dynamic-wrapper {
         position: relative;
-        width: 21ch;
+        width: 22ch;
         margin: 1rem;
       }
     }
