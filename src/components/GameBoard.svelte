@@ -325,7 +325,7 @@
         let gridCell = line[j];
         // console.log(`New resizeCells() function, checking cellSize ${cellSize}, gridCell: `, gridCell)
         let cell = document.getElementById(gridCell.id);
-        setCustomBg(cell);
+        setCustomStyles(cell);
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
@@ -339,7 +339,7 @@
   }
 
   function addDirectionArraysToPlayerObjects() {
-    console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
+    // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       // next loop is to set the four direction array to each player object .scores property 
       for (let x = 0; x <= 3; x++) {
@@ -622,25 +622,25 @@
     // );
   }
 
-  function setCustomBg(cell) {
+  function setCustomStyles(cell) {
     let row = cell.getAttribute("row");
     let column = cell.getAttribute("column");
     let rowFactor = 60 / settings.rows;
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
-    let customBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
+    let ggBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     currentPlayerMark = `--player-mark: '${currentPlayer.marker}'`;
     console.log(
-      `setCustomBg: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
+      `setCustomStyles: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
     );
-    cell.style = `${customBg}; ${customMarkerSize}; ${currentPlayerMark}`;
+    cell.style = `${ggBg}; ${customMarkerSize}; ${currentPlayerMark}`;
   }
 
   function untickThis(cell) {
     cell.classList.remove("ticked");
     cell.classList.add("unticked");
-    setCustomBg(cell);
+    setCustomStyles(cell);
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
@@ -858,7 +858,7 @@
     display: flex;
   }
   .gameboard-board {
-    border: 6px solid rgba(255, 255, 255, 0.25);
+    border: 6px solid #1a1a1a; //rgba(255, 255, 255, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -878,7 +878,7 @@
             customMarkSize
             customMark
             ticked={false}
-            customBg
+            ggBg
             id={cell.id}
             row={cell.row}
             column={cell.column}

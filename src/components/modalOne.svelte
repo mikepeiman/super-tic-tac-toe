@@ -63,8 +63,9 @@
     }
   });
 
-  const showModalOneContent = () => {
+  const showModal = () => {
     open(modalOneContent, { message: "Game Controls:" }, styling);
+    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`)
   };
 </script>
 
@@ -86,6 +87,6 @@
 <button
   class="control-button"
   id="game-menu-button"
-  on:click={showModalOneContent}>
+  on:click={showModal}>
   Game Menu
 </button>

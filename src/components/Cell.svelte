@@ -8,7 +8,8 @@
     customSize,
     customMarkSize,
     customMark,
-    customBg;
+    playerColor,
+    ggBg;
   import {
     storeSettings,
     storeCellSize,
@@ -30,11 +31,12 @@
     let colFactor = settings.columns / 100;
     let hue = rowFactor * row + 210;
     let alpha = parseFloat((column + 1) / 200 / colFactor).toFixed(2);
-    customBg = `--player-color: hsla(${hue}, 50%, 50%, ${alpha})`;
+    ggBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha})`;
+    playerColor = `--player-color: ${currentPlayer.color}`
     customSize = `--custom-size: ${cellSize}px`;
     customMarkSize = `--custom-mark-size: ${cellSize / 2}px`;
     customMark = `--player-mark: ${currentPlayer.marker}`;
-    customStyles = `${customBg}; ${customSize}; ${customMarkSize}; ${customMark};`;
+    customStyles = `${ggBg}; ${playerColor}; ${customSize}; ${customMarkSize}; ${customMark};`;
     // console.log(`------------Cell => onMount() ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
   });
 
@@ -55,7 +57,6 @@
   .game-row {
     display: flex;
   }
-
 </style>
 
 <div
