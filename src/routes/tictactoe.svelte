@@ -237,6 +237,11 @@
 
     &.ticked {
       background: var(--player-color);
+      outline: 3px solid #1a1a1a;
+      outline-offset: -4px;
+      &.locked {
+        outline: none;
+      }
       &:hover {
         background-image: linear-gradient(
           45deg,
