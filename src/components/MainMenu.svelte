@@ -127,8 +127,11 @@
 
   .form-wrap {
     padding: 0.5rem;
-    background: #122032;
-    border-bottom: 6px solid var(--player-color);
+    background: black;//#122032;
+    // border-bottom: 6px solid var(--player-color);
+    border: 6px solid var(--player-color);
+    outline: 13px solid rgba(0, 0, 0, 0.5);
+    outline-offset: -7px;
     margin: 0;
     height: auto;
     display: grid;
@@ -285,7 +288,7 @@
       padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
       margin-right: 1rem;
-      border-radius: 0 0 5px 5px;
+      // border-radius: 0 0 5px 5px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;

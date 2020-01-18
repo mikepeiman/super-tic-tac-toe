@@ -1,5 +1,6 @@
 <script>
   import Content from "./modalOne.svelte";
+  import NightModeToggle from "./NightModeToggle.svelte";
   import Modal from "svelte-simple-modal";
   import { getContext } from "svelte";
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
@@ -187,7 +188,9 @@
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
     // border-top: 12px solid var(--player-color);
-    border-bottom: 6px solid var(--player-color);
+    // border-bottom: 6px solid var(--player-color);
+    // outline: 6.5px solid rgba(0, 0, 0, 0.5);
+    // outline-offset: -6.5px;
     color: #eee;
     transition: all 0.5s;
     display: flex;
@@ -400,7 +403,9 @@
     .player-indicator {
       // border-top: 12px solid var(--player-color);
       border-top: none;
-      border-bottom: 12px solid var(--player-color);
+      border-bottom: 6px solid var(--player-color);
+      // outline: 19px solid rgba(0, 0, 0, 0.5);
+      // outline-offset: -13px;
       color: #eee;
       transition: all 0.5s;
       display: flex;
@@ -448,6 +453,11 @@
   @media screen and (min-width: 1100px) {
     body {
       font-size: 100%;
+    }
+    .player-indicator {
+      border-bottom: 6px solid var(--player-color);
+      outline: 19px solid rgba(0, 0, 0, 0.5);
+      outline-offset: -13px;
     }
   }
 
@@ -499,6 +509,9 @@
           </div>
         </div>
         <div class="buttons-wrapper" id="buttons-wrapper">
+          <div id="night-mode-toggle-wrapper">
+            <NightModeToggle />
+          </div>
           <div id="tally-points-wrapper">
             <CountPoints {players} on:playersScored={playersScored} />
           </div>

@@ -268,7 +268,7 @@
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].bgColor}`;
           customMarkerSize = `--cell-marker-size: ${Math.floor(
-            cellSize / 2.5
+            cellSize / 2
           )}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
@@ -860,7 +860,10 @@
     display: flex;
   }
   .gameboard-board {
-    border: 6px solid #1a1a1a; //rgba(255, 255, 255, 0.25);
+        outline: 12px solid rgba(0,0,0,0.5);
+    outline-offset: -7px;
+    padding: 6px;
+    border: 6px solid var(--player-color); //rgba(255, 255, 255, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

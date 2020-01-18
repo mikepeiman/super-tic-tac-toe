@@ -88,14 +88,14 @@
       "statusbar statusbar statusbar"
       "mainmenu mainmenu mainmenu"
       "scoreboard gameboard gameboard";
-    min-height: calc(100vh - 10px);
-    max-height: calc(100vh - 10px);
-    // min-width: calc(100vw - 12px);
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 100vw;
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 16vh 13vh auto;
     background: var(--player-color);
-    background-image: linear-gradient(125deg, black, rgba(0, 0, 0, 0.85));
+    background-image: linear-gradient(125deg, black, rgba(0, 0, 0, 0.7));
   }
 
   .gameboard-container {
@@ -222,7 +222,7 @@
         outline: 3px solid var(--player-color);
         outline-offset: -4px;
         background: rgba(26, 26, 26, 0.15);
-        content: var(--player-mark);
+        // content: var(--player-mark);
         color: rgba(255, 255, 255, 0.25);
       }
       &:hover::after {
@@ -261,6 +261,7 @@
         content: attr(data-marker);
         font-size: var(--cell-marker-size);
         position: relative;
+        top: -.15rem;
         justify-self: center;
         align-self: center;
         background: attr(data-background-color);
