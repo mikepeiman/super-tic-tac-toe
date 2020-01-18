@@ -218,9 +218,12 @@
       &:hover {
         // background: rgba(150, 150, 255, 0.5);
         // background: var(--player-color);
-        border: 1px solid var(--player-color);
+        // border: 2px solid var(--player-color);
+        outline: 3px solid var(--player-color);
+        outline-offset: -4px;
         background: rgba(26, 26, 26, 0.15);
         content: var(--player-mark);
+        color: rgba(255, 255, 255, 0.25);
       }
       &:hover::after {
         content: var(--player-mark);
@@ -235,7 +238,8 @@
     &.ticked {
       background: var(--player-color);
       &:hover {
-        background-image: linear-gradient(45deg,
+        background-image: linear-gradient(
+          45deg,
           rgba(26, 26, 26, 0.35),
           rgba(26, 26, 26, 0.45)
         );
@@ -339,6 +343,10 @@
       }
       & #total-moves {
         top: 0;
+      }
+      & #player-name::before {
+        border: 0;
+        display: none;
       }
 
       & #buttons-wrapper {

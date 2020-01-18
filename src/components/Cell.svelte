@@ -46,17 +46,7 @@
 </script>
 
 <style lang="scss">
-  .gameboard-board {
-    margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    border: 0px solid none;
-  }
 
-  .game-row {
-    display: flex;
-  }
 </style>
 
 <div

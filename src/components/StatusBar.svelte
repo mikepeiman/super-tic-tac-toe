@@ -292,14 +292,9 @@
       border-radius: 2px;
     }
     &:before {
-      content: "";
-      margin-right: 0.5rem;
-      margin-left: -1rem;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 50px 0 50px 50px;
-      border-color: transparent transparent transparent var(--player-color);
+      margin: 0;
+      border: 0;
+      display: none;
     }
   }
   #moves-wrapper {
@@ -413,6 +408,16 @@
       & h2 {
         font-size: 1.25rem;
       }
+      & #player-name::before {
+        content: "";
+        margin-right: 0.5rem;
+        margin-left: -1rem;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 50px 0 50px 50px;
+        border-color: transparent transparent transparent var(--player-color);
+      }
     }
     #moves-wrapper {
       flex-direction: row;
@@ -470,8 +475,6 @@
 
       <div class="statusbar-details-wrapper">
         <div class="player-status-detail" id="player-name">
-          <!-- <label for="player-name"></label>
-        <input name="player-name" value={currentPlayer.name} /> -->
           <h2
             class="player-name"
             style={`--player-color: ${currentPlayer.bgColor}`}>

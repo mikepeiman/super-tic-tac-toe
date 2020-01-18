@@ -65,12 +65,10 @@
   $: {
     if (typeof window !== "undefined") {
       let playerDetails = localStorage.getItem("preservePlayerDetails");
-      // if (!playerDetails) {
+      if (!playerDetails) {
         numberOfPlayers && initializePlayers();
-      // }
+      }
     }
-
-    // storePreservePlayerDetails.set(false);
   }
 
   onMount(() => {
