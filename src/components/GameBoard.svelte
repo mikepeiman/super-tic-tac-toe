@@ -91,9 +91,11 @@
     storePlayers.subscribe(value => {
       players = value;
     });
-    storeCurrentPlayer.subscribe(value => {
+    storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
+      await grid.length
+      resetGameBoard()
     });
     storeGameHistoryFlat.subscribe(value => {});
     storeGameHistoryTurns.subscribe(value => {
@@ -864,7 +866,7 @@
     justify-content: flex-start;
     align-items: center;
     transition: all 0.25s;
-    box-shadow: 0 0 32px 6px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 24px 6px rgba(26,26,26, 1)
   }
 </style>
 
