@@ -352,7 +352,7 @@
   </div> -->
   <div
     class="form-wrap settings-menu"
-    style={`--player-color: ${currentPlayer.bgColor}`}>
+    style={`--player-color: ${currentPlayer.colorMain}`}>
     <label for="players" id="players">
       <div class="label-content">players</div>
       <input

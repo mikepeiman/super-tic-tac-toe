@@ -125,7 +125,7 @@
   afterUpdate(() => {});
 
   function initializePlayers() {
-    let hueOffset = 140;
+    let hueOffset = 180;
     // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
 
@@ -138,7 +138,10 @@
           name: `Player ${i + 1}`,
           totalScore: 0,
           marker: "x",
-          bgColor: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
+          colorMain: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
+          colorLight: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 75%, 1)`,
+          colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 25%, 1)`,
+          colorHue: `${(i + 1) * hueInterval + hueOffset}`,
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0]
@@ -146,7 +149,7 @@
       ];
       let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
       // console.log(
-      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, bgColor = ${bg}`
+      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
       // );
       scoreDirections.forEach((direction, index) => {
         // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)

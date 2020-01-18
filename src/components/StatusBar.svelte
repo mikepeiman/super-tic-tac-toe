@@ -22,6 +22,26 @@
 
   let gameboardWidth = "420px";
   $: currentPlayer = {};
+
+  let colorMain, colorLight, colorDark, colorHue;
+
+  $: {
+    
+    if (typeof window !== "undefined") {
+        ({ colorMain, colorLight, colorDark, colorHue } = currentPlayer);
+        let colorMainVar = '--player-color';
+        let colorLightVar = '--player-color-light';
+        let colorDarkVar = '--player-color-dark';
+        let colorHueVar = '--player-color-hue';
+        
+      let styles = `--player-color: ${colorMain}; --player-color-light: ${colorLight}; --player-color-dark: ${colorDark}; --player-hue: ${colorHue};`;
+      console.log(`Styles of player color from currentPlayer: `, styles);
+      document.documentElement.style.setProperty(colorMainVar, colorMain);
+      document.documentElement.style.setProperty(colorLightVar, colorLight);
+      document.documentElement.style.setProperty(colorDarkVar, colorDark);
+      document.documentElement.style.setProperty(colorHueVar, colorHue);
+    }
+  }
   $: state = {};
   $: players = {};
   $: settings = {};
@@ -491,13 +511,13 @@
   {:else}
     <div
       class="player-indicator player-0"
-      style={`--player-color: ${currentPlayer.bgColor}`}>
+      style={`--player-color: ${currentPlayer.colorMain}`}>
 
       <div class="statusbar-details-wrapper">
         <div class="player-status-detail" id="player-name">
           <h2
             class="player-name"
-            style={`--player-color: ${currentPlayer.bgColor}`}>
+            style={`--player-color: ${currentPlayer.colorMain}`}>
             {currentPlayer.name}
           </h2>
         </div>

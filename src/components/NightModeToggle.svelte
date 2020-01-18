@@ -53,10 +53,9 @@
 
   .theme-switch {
     display: flex;
-    justify-content: space-between;
-    flex-flow: row-reverse;
+    justify-content: flex-start;
     align-items: center;
-    height: 34px;
+    height: 3rem;
     position: relative;
     width: calc(60px + 10ch);
   }
@@ -69,7 +68,7 @@
   }
 
   .toggle-text {
-    position: absolute;
+    // position: absolute;
   }
 
   .slider {
@@ -97,7 +96,7 @@
   }
 
   input:checked + .slider {
-    background-color: #66bb6a;
+    background-color: hsla(130, 50%, 35%, 1);
   }
 
   input:checked + .slider:before {
@@ -115,13 +114,13 @@
     .slider {
       background-color: #ccc;
       width: 60px;
-      height: auto;
+      height: 34px;
       bottom: 0;
       cursor: pointer;
       // left: 0;
       position: absolute;
       right: 0;
-      top: 0;
+      top: .5rem;
       transition: 0.4s;
     }
     .slider:before {

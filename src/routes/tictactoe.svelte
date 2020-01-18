@@ -43,6 +43,12 @@
   });
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
+    if (typeof window !== "undefined") {
+      document.documentElement.style.setProperty(
+        "--player-color",
+        currentPlayer.colorMain
+      );
+    }
   });
 
   onMount(() => {
@@ -165,7 +171,7 @@
   }
 
   #tally-points-wrapper {
-    margin: 1.5rem 0rem 1.5rem 1rem
+    margin: 1.5rem 0rem 1.5rem 1rem;
   }
 
   .statusbar-container {
@@ -583,7 +589,7 @@
 {#await players then players}
   <div
     class="page-container"
-    style={`--player-color: ${currentPlayer.bgColor}`}>
+    style={`--player-color: ${currentPlayer.colorMain}`}>
     <div class="mainmenu-container">
       <GameInit />
     </div>

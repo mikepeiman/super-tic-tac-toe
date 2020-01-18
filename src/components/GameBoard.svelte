@@ -266,7 +266,7 @@
           // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
-          let customColor = `--player-color: ${players[p].bgColor}`;
+          let customColor = `--player-color: ${players[p].colorMain}`;
           customMarkerSize = `--cell-marker-size: ${Math.floor(
             cellSize / 2
           )}px`;
@@ -291,7 +291,7 @@
         let move = turnHistory[i];
         let p = move.player.id;
         let cell = document.getElementById(move.id);
-        cell.style = `--player-color: ${players[p].bgColor}`;
+        cell.style = `--player-color: ${players[p].colorMain}`;
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
@@ -612,7 +612,7 @@
     cell.dataset.ticked = true;
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
-    cell.style = `--player-color: ${currentPlayer.bgColor}`;
+    cell.style = `--player-color: ${currentPlayer.colorMain}`;
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
@@ -831,10 +831,10 @@
       // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
       // currentPlayer = players[0];`);
       currentPlayer = players[0];
-      playerIndicator.style = `--player-color: ${currentPlayer.bgColor}`;
+      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
     } else {
       currentPlayer = players[id + 1];
-      playerIndicator.style = `--player-color: ${currentPlayer.bgColor}`;
+      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;

@@ -164,7 +164,7 @@
     let scaleWidth = `--scale-width: ${scaleValue}`;
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
-      let pColor = `--player-color: ${players[i].bgColor};`;
+      let pColor = `--player-color: ${players[i].colorMain};`;
       let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
       placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
