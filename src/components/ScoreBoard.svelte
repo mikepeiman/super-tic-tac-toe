@@ -333,7 +333,7 @@
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;
-    max-width: 2ch;
+    min-width: 2ch;
     display: flex;
     align-items: center;
     justify-content: center;
