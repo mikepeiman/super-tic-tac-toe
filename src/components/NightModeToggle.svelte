@@ -26,18 +26,21 @@
 
   const toggleStyles = e => {
     const page = document.querySelector(".page-container");
-        const currentTheme = localStorage.getItem("theme");
+    const currentTheme = localStorage.getItem("theme");
+    const toggleSwitch = document.querySelector("#night-mode-toggle");
     console.log(
       `toggleStyles ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`,
       e.target
     );
-    console.dir(e.target)
+    console.dir(e.target);
     if (e.target.checked) {
       page.classList = "page-container dark";
+      // toggleSwitch.checked = true;
       document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
       localStorage.setItem("theme", "dark"); //add this
     } else {
       page.classList = "page-container light";
+      e.target.checked = false;
       console.log(`currentTheme from ls is light: ${currentTheme}`);
       document.documentElement.style.setProperty("--theme-bg", "#efefef");
       localStorage.setItem("theme", "light"); //add this
@@ -46,37 +49,36 @@
 </script>
 
 <style lang="scss">
-  :global(.window button.close) {
-    width: 3rem;
-    height: 3rem;
-    &:before {
-      left: 0.5rem;
-      width: 2rem;
-    }
-    &:after {
-      left: 0.5rem;
-      width: 2rem;
-    }
-  }
-
   /*Simple css to style it like a toggle switch*/
 
   .theme-switch {
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row-reverse;
+    align-items: center;
     height: 34px;
     position: relative;
-    width: 60px;
+    width: calc(60px + 10ch);
   }
 
   .theme-switch input {
     display: none;
   }
 
+  .slider-wrapper {
+  }
+
+  .toggle-text {
+    position: absolute;
+  }
+
   .slider {
     background-color: #ccc;
+    width: 40px;
+    height: 26px;
     bottom: 0;
     cursor: pointer;
-    left: 0;
+    // left: 0;
     position: absolute;
     right: 0;
     top: 0;
@@ -85,13 +87,13 @@
 
   .slider:before {
     background-color: #fff;
-    bottom: 4px;
+    bottom: 3px;
     content: "";
-    height: 26px;
-    left: 4px;
+    height: 19.5px;
+    left: 3px;
     position: absolute;
     transition: 0.4s;
-    width: 26px;
+    width: 19.5px;
   }
 
   input:checked + .slider {
@@ -99,15 +101,43 @@
   }
 
   input:checked + .slider:before {
-    transform: translateX(26px);
+    transform: translateX(13.5px);
   }
 
   .slider.round {
-    border-radius: 34px;
+    border-radius: 25.5px;
   }
 
   .slider.round:before {
     border-radius: 50%;
+  }
+  @media (min-width: 900px) {
+    .slider {
+      background-color: #ccc;
+      width: 60px;
+      height: auto;
+      bottom: 0;
+      cursor: pointer;
+      // left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: 0.4s;
+    }
+    .slider:before {
+      bottom: 4px;
+      height: 26px;
+      left: 4px;
+      width: 26px;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
   }
 </style>
 
@@ -118,7 +148,9 @@
     type="checkbox"
     id="night-mode-toggle"
     on:click={toggleStyles} />
+  <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
-  <span>Dark Mode</span>
+  <!-- </div> -->
+  <span class="toggle-text">Dark Mode</span>
 
 </label>
