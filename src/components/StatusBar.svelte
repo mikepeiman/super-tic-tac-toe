@@ -471,6 +471,16 @@
   //     border-top: 5px solid var(--player-color);
   //   }
   // }
+
+  .theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 10px;
+      font-size: 1rem;
+    }
+  }
 </style>
 
 {#await currentPlayer then currentPlayer}
@@ -509,7 +519,7 @@
           </div>
         </div>
         <div class="buttons-wrapper" id="buttons-wrapper">
-          <div id="night-mode-toggle-wrapper">
+          <div id="theme-switch-wrapper">
             <NightModeToggle />
           </div>
           <div id="tally-points-wrapper">

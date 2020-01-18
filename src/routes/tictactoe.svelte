@@ -72,9 +72,16 @@
 </script>
 
 <style lang="scss" global>
-  :root {
+  :global(:root) {
     --input-blue: 50, 200, 255;
+    --theme-bg: #1a1a1a;
+    --theme-color: #efefef;
   }
+  [data-theme="dark"] {
+    --theme-bg: #efefef;
+    --theme-color: #1a1a1a;
+  }
+
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
@@ -95,7 +102,7 @@
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 16vh 13vh auto;
     background: var(--player-color);
-    background-image: linear-gradient(125deg, black, rgba(0, 0, 0, 0.7));
+    background-image: linear-gradient(125deg, var(--theme-bg), rgba(26,26,26, 0.7));
   }
 
   .gameboard-container {
@@ -261,7 +268,7 @@
         content: attr(data-marker);
         font-size: var(--cell-marker-size);
         position: relative;
-        top: -.15rem;
+        top: -0.15rem;
         justify-self: center;
         align-self: center;
         background: attr(data-background-color);

@@ -127,7 +127,7 @@
 
   .form-wrap {
     padding: 0.5rem;
-    background: black;//#122032;
+    background: var(--theme-bg);//black;//#122032;
     // border-bottom: 6px solid var(--player-color);
     border: 6px solid var(--player-color);
     outline: 13px solid rgba(0, 0, 0, 0.5);
