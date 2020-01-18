@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
+  import CountPoints from "./../components/CountPoints.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
@@ -68,6 +69,20 @@
       height: appHeight,
       ratio: appRatio
     });
+  }
+
+  function playersScored(e) {
+    console.log(
+      `StatusBar receiving dispatch of playersScored from CountPoints, `,
+      e.detail
+    );
+    console.log(
+      `StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `,
+      state.currentPlayer
+    );
+    players = e.detail;
+    localStorage.setItem("state", JSON.stringify(state));
+    dispatch("playersScored", players);
   }
 </script>
 
@@ -149,9 +164,17 @@
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
+    display: flex;
     max-width: 100%;
+    justify-content: flex-start;
+    flex-direction: column;
     border-top: 6px solid rgba(0, 0, 0, 0);
     z-index: 7;
+    align-items: center;
+  }
+
+  #tally-points-wrapper {
+    margin: 1rem 2rem 2rem 2rem;
   }
 
   .statusbar-container {
@@ -550,7 +573,7 @@
       display: grid;
       grid-template-areas:
         "statusbar statusbar statusbar"
-        ". . ."
+        "scoreboard  . ."
         "scoreboard gameboard mainmenu";
       min-height: calc(100vh - 10px);
       max-height: calc(100vh - 10px);
@@ -577,6 +600,9 @@
       <StatusBar />
     </div>
     <div class="scoreboard-container">
+      <div id="tally-points-wrapper">
+        <CountPoints {players} on:playersScored={playersScored} />
+      </div>
       <ScoreBoard />
     </div>
     <div class="gameboard-container">

@@ -522,9 +522,9 @@
           <div id="theme-switch-wrapper">
             <NightModeToggle />
           </div>
-          <div id="tally-points-wrapper">
+          <!-- <div id="tally-points-wrapper">
             <CountPoints {players} on:playersScored={playersScored} />
-          </div>
+          </div> -->
           <div id="modal-wrapper">
             <Modal>
               <Content />
