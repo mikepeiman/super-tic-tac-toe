@@ -3,26 +3,43 @@
   // import { storeViewportSize } from "./../stores.js";
 
   onMount(() => {
-    const currentTheme = localStorage.getItem("theme")
+    const page = document.querySelector(".page-container");
+    const toggleSwitch = document.querySelector("#night-mode-toggle");
+    const currentTheme = localStorage.getItem("theme");
+    console.log(`currentTheme from ls: ${currentTheme}`)
       ? localStorage.getItem("theme")
       : null;
 
     if (currentTheme) {
-      document.documentElement.setAttribute("data-theme", currentTheme);
-
+      page.classList = `page-container ${currentTheme}`;
+      console.log(`currentTheme from ls exists: ${currentTheme}`);
+      // document.documentElement.setAttribute("data-theme", currentTheme);
+      document.documentElement.style.setProperty("--theme-bg", "#efefef");
       if (currentTheme === "dark") {
+        console.log(`currentTheme from ls is dark: ${currentTheme}`);
         toggleSwitch.checked = true;
+        // toggleSwitch.setAttribute("checked", true)
+        document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
       }
     }
   });
 
-  const toggleStyles = (e) => {
-    console.log(`toggleStyles ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
+  const toggleStyles = e => {
+    const page = document.querySelector(".page-container");
+        const currentTheme = localStorage.getItem("theme");
+    console.log(
+      `toggleStyles ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`,
+      e.target
+    );
+    console.dir(e.target)
     if (e.target.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
+      page.classList = "page-container dark";
+      document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
       localStorage.setItem("theme", "dark"); //add this
     } else {
-      document.documentElement.setAttribute("data-theme", "light");
+      page.classList = "page-container light";
+      console.log(`currentTheme from ls is light: ${currentTheme}`);
+      document.documentElement.style.setProperty("--theme-bg", "#efefef");
       localStorage.setItem("theme", "light"); //add this
     }
   };

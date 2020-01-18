@@ -82,6 +82,20 @@
     --theme-color: #1a1a1a;
   }
 
+  body {
+    transition: all 0.25s;
+    &.dark-theme {
+      background: var(--theme-bg);
+      background: #1a1a1a;
+      transition: all.25s;
+    }
+    &.light-theme {
+      background: var(--theme-bg);
+      background: white;
+      transition: all.25s;
+    }
+  }
+
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
@@ -101,8 +115,19 @@
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
     grid-template-rows: 16vh 13vh auto;
-    background: var(--player-color);
-    background-image: linear-gradient(125deg, var(--theme-bg), rgba(26,26,26, 0.7));
+    // background: var(--player-color);
+    // background-image: linear-gradient(125deg, var(--theme-bg), rgba(26,26,26, 0.7));
+    transition: all 0.25s;
+    &.dark {
+      background: var(--theme-bg);
+      // background: #1a1a1a;
+      transition: all.25s;
+    }
+    &.light {
+      background: var(--theme-bg);
+      // background: white;
+      transition: all.25s;
+    }
   }
 
   .gameboard-container {

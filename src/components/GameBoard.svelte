@@ -633,9 +633,9 @@
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
     let ggBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
     currentPlayerMark = `--player-mark: '${currentPlayer.marker}'`;
-    console.log(
-      `setCustomStyles: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
-    );
+    // console.log(
+    //   `setCustomStyles: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
+    // );
     cell.style = `${ggBg}; ${customMarkerSize}; ${currentPlayerMark}`;
   }
 
