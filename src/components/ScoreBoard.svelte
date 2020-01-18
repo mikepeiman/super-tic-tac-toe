@@ -265,14 +265,14 @@
     top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
-    border: 5px solid #1a1a1a;
+    outline: 5px solid #1a1a1a;
     min-width: max-content;
     transform-origin: top left;
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
   }
   .highlighted {
-    border: 5px solid #eeeeee;
+    outline: 5px solid #eeeeee;
     position: relative;
     transition: all 0.25s;
     min-width: max-content;

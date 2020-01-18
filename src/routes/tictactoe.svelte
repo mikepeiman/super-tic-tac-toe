@@ -72,17 +72,8 @@
   }
 
   function playersScored(e) {
-    console.log(
-      `StatusBar receiving dispatch of playersScored from CountPoints, `,
-      e.detail
-    );
-    console.log(
-      `StatusBar receiving dispatch of playersScored from CountPoints, state.currentPlayer `,
-      state.currentPlayer
-    );
     players = e.detail;
-    localStorage.setItem("state", JSON.stringify(state));
-    dispatch("playersScored", players);
+    // dispatch("playersScored", players);
   }
 </script>
 
@@ -168,13 +159,13 @@
     max-width: 100%;
     justify-content: flex-start;
     flex-direction: column;
-    border-top: 6px solid rgba(0, 0, 0, 0);
+    // border-top: 6px solid rgba(0, 0, 0, 0);
     z-index: 7;
-    align-items: center;
+    align-items: flex-start;
   }
 
   #tally-points-wrapper {
-    margin: 1rem 2rem 2rem 2rem;
+    margin: 1.5rem 0rem 1.5rem 1rem
   }
 
   .statusbar-container {
