@@ -517,12 +517,12 @@
                   width="20"
                   height="20"
                   alt="Icon for direction {direction.name}" />
-                <div class="direction-score">{player.dirPointsByIndex[i]}</div>
+                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
               </div>
             </div>
           {/each}
         </div>
-        <div class="scoreboard-totals">
+        <!-- <div class="scoreboard-totals">
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
               <div class="direction-score-section">
@@ -536,7 +536,7 @@
               </div>
             </div>
           {/each}
-        </div>
+        </div> -->
       </div>
     {/each}
   </div>
