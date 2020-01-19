@@ -216,10 +216,11 @@
         at least whatever will fit on your screen...)
       </p>
       <p>
-        This game is made by myself, Mike Peiman, and playtested with love by my
+        This game is made by myself - Mike Peiman - and playtested with love by my
         six-year-old daughter and other family and friends. Coded from scratch
         in Svelte/Sapper, with zero style libraries.
       </p>
+      <span class="note">NOTE: The site is currently optimized for desktop; responsive design in progress (try landscape mode if you're on your phone)</span>
     </div>
 
     <hr />
