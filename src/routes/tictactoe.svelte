@@ -55,6 +55,7 @@
       players = value;
       // console.log(`TicTacToe => storePlayers subscribed`, value);
     });
+    setViewportSize();
   });
 
   function resetGame() {
@@ -76,6 +77,15 @@
       height: appHeight,
       ratio: appRatio
     });
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    // let vh = window.innerHeight * 0.01;
+    // let vw = window.innerWidth * 0.01;
+    let vh = screen.height * 0.01;
+    let vw = screen.width * 0.01;
+    console.log(`SET VIEWPORT SIZE :::::::::: vh ${vh }vw ${vw} avail screen `, screen)
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    document.documentElement.style.setProperty("--vw", `${vw}px`);
   }
 
   function playersScored(e) {
@@ -84,12 +94,12 @@
   }
 
   function clearScores() {
-    console.log(`clear scores`)
+    console.log(`clear scores`);
     players.forEach(player => {
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
-    storePlayers.set(players)
+    storePlayers.set(players);
   }
 </script>
 
@@ -98,6 +108,12 @@
     --input-blue: 50, 200, 255;
     // --theme-bg: #1a1a1a;
     // --theme-color: #efefef;
+  }
+  :global(body) {
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    width: 100vw;
+    height: calc(var(--vh, 1vh) * 100);
+    width: calc(var(--vw, 1vw) * 100);
   }
   // [data-theme="dark"] {
   //   --theme-bg: #efefef;
@@ -128,15 +144,16 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      "statusbar statusbar statusbar"
-      "mainmenu mainmenu mainmenu"
-      "scoreboard gameboard gameboard";
+      "statusbar"
+      "mainmenu"
+      "scoreboard"
+      "gameboard";
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 16vh 13vh auto;
+    grid-template-columns: 100%;
+    grid-template-rows: 10vh 10vh 15vh 65vh;
     // background: var(--player-color);
     // background-image: linear-gradient(125deg, var(--theme-bg), rgba(26,26,26, 0.7));
     transition: all 0.25s;
@@ -158,7 +175,11 @@
     flex-direction: column;
     color: #eee;
     justify-content: flex-start;
-    align-items: flex-end;
+    // align-items: flex-end;
+    height: auto;
+    // align-items: flex-end;
+    align-items: center;
+    width: 100vw;
     height: auto;
     // margin-right: 1rem;
     // background: #1a1a1a;
@@ -624,8 +645,8 @@
       <!-- <div id="clear-points-wrapper">
 
       </div> -->
-      <!-- <ScoreBoard /> -->
-    <!-- </div> --> 
+    <!-- <ScoreBoard /> -->
+    <!-- </div> -->
     <div class="gameboard-container">
       <GameBoard />
     </div>

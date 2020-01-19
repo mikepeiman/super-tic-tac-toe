@@ -13,13 +13,13 @@
     toggleSwitch.checked = true;
     initStylesDark();
     if (currentTheme) {
-      toggleStyles(currentTheme);
       // page.classList = `page-container ${currentTheme}`;
       // page.classList.toggle(currentTheme);
       console.log(`currentTheme from ls exists: ${currentTheme}`);
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       if (currentTheme === "light") {
+        toggleStyles(currentTheme);
         console.log(`currentTheme from ls is dark: ${currentTheme}`);
         toggleSwitch.checked = false;
         document.documentElement.style.setProperty("--theme-bg", light);
