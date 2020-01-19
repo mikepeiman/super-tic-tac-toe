@@ -21,7 +21,7 @@
   } from "../stores.js";
 
   $: state = null;
-  $: players = null;
+  let players;
   $: settings = null;
   let currentPlayer;
 
@@ -35,9 +35,7 @@
   storeGameInProgress.subscribe(value => {
     // console.log(`TicTacToe => storeGameInProgress subscribed`, value);
   });
-  storePlayers.subscribe(value => {
-    // console.log(`TicTacToe => storePlayers subscribed`, value);
-  });
+
   storePreservePlayerDetails.subscribe(value => {
     // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
   });
@@ -53,7 +51,10 @@
 
   onMount(() => {
     console.log(`TicTacToe.svelte onMount`);
-    // setViewportSize();
+    storePlayers.subscribe(value => {
+      players = value;
+      // console.log(`TicTacToe => storePlayers subscribed`, value);
+    });
   });
 
   function resetGame() {
@@ -80,6 +81,15 @@
   function playersScored(e) {
     players = e.detail;
     // dispatch("playersScored", players);
+  }
+
+  function clearScores() {
+    console.log(`clear scores`)
+    players.forEach(player => {
+      player.totalScore = 0;
+      player.dirScoresByIndex = [0, 0, 0, 0];
+    });
+    storePlayers.set(players)
   }
 </script>
 
@@ -171,7 +181,8 @@
   }
 
   #tally-points-wrapper {
-    margin: 1.5rem 0rem 1.5rem 1rem;
+    margin: 0rem 0rem 1.5rem 1rem;
+    display: flex;
   }
 
   .statusbar-container {
@@ -260,14 +271,16 @@
     height: var(--custom-size);
     background: var(--gg-bg);
     // background-image: radial-gradient(var(--gg-bg), transparent);
-    box-shadow: inset 0 0 .15rem .025rem #1a1a1a;
+    // box-shadow: inset 0 0 0.15rem 0.025rem #1a1a1a;
     border: none;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    // border: 1px solid rgba(var(--theme-fg), 0.15);
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     &.unticked {
+      // border: 1px solid rgba(var(--theme-fg), 0.15);
       &:hover {
         // background: rgba(150, 150, 255, 0.5);
         // background: var(--player-color);
@@ -416,7 +429,8 @@
       & #modal-wrapper {
         top: 0;
       }
-      & #tally-points-wrapper {
+      & #tally-points-wrapper,
+      #clear-points-wrapper {
         top: 0;
       }
     }
@@ -600,7 +614,16 @@
     <div class="scoreboard-container">
       <div id="tally-points-wrapper">
         <CountPoints {players} on:playersScored={playersScored} />
+        <button
+          class="control-button"
+          id="clear-game-button"
+          on:click={clearScores}>
+          Clear Scores
+        </button>
       </div>
+      <!-- <div id="clear-points-wrapper">
+
+      </div> -->
       <ScoreBoard />
     </div>
     <div class="gameboard-container">

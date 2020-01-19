@@ -265,9 +265,10 @@
       position: relative;
       width: 21ch;
       margin: 1rem 0 1rem -0.75rem;
+      color: var(--theme-fg);//hsla(130, 50%, 25%, 1);
     }
     & .dynamic-value {
-      background: var(--player-color);
+      background: hsla(130, 50%, 25%, 1); //var(--player-color);
       border: none;
       margin-top: 8px;
       color: white;
@@ -306,7 +307,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0 0 0 1rem;
+      margin: 0;
       background: var(--player-color);
       color: white;
       padding: 0 0.75rem;
@@ -349,11 +350,6 @@
     padding: 1rem;
   }
 
-  #tally-points-wrapper {
-    top: 3px;
-    position: relative;
-  }
-
   #modal-wrapper {
     top: -3px;
     position: relative;
@@ -377,13 +373,25 @@
 
   :global(#tally-game-button) {
     font-size: 0.75rem;
-    background: hsla(260, 100%, 50%, 1);
+    background: hsla(130, 50%, 35%, 1);
     border: 2px solid rgba(0, 0, 0, 0);
 
     &:hover {
-      background: hsla(260, 100%, 35%, 1);
+      background: hsla(130, 50%, 45%, 1);
       cursor: pointer;
-      border: 2px solid hsla(260, 100%, 70%, 1);
+      border: 2px solid hsla(130, 50%, 70%, 1);
+    }
+  }
+
+  :global(#clear-game-button) {
+    font-size: 0.75rem;
+    background: hsla(130, 50%, 35%, 1);
+    border: 2px solid rgba(0, 0, 0, 0);
+
+    &:hover {
+      background: hsla(130, 50%, 45%, 1);
+      cursor: pointer;
+      border: 2px solid hsla(130, 50%, 70%, 1);
     }
   }
 
@@ -411,10 +419,10 @@
     #buttons-wrapper {
       flex-direction: row;
     }
-    #tally-points-wrapper {
-      top: 0;
-      position: relative;
-    }
+    // #tally-points-wrapper {
+    //   top: 0;
+    //   position: relative;
+    // }
     #modal-wrapper {
       top: 0;
       position: relative;
@@ -431,6 +439,9 @@
       min-height: 100%;
       & h2 {
         font-size: 1.25rem;
+      }
+      & #player-name h2 {
+        min-height: 3rem;
       }
       & #player-name::before {
         content: "";
@@ -459,7 +470,7 @@
         min-height: 3rem;
         min-width: 3rem;
         margin-top: 0;
-        left: -2.8rem;
+        left: -3.3rem;
       }
       & .dynamic-wrapper {
         position: relative;

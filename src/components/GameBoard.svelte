@@ -868,8 +868,8 @@
     display: flex;
   }
   .gameboard-board {
-    outline: 12px solid rgba(0, 0, 0, 0.5);
-    outline-offset: -7px;
+    // outline: 12px solid rgba(0, 0, 0, 0.5);
+    // outline-offset: -7px;
     padding: 6px;
     border: 6px solid var(--player-color); //rgba(255, 255, 255, 0.25);
     display: flex;
@@ -877,7 +877,7 @@
     justify-content: flex-start;
     align-items: center;
     transition: all 0.25s;
-    box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
+    // box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
   }
 </style>
 

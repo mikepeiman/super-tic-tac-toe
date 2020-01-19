@@ -2,7 +2,10 @@
   import { onMount } from "svelte";
   // import { storeViewportSize } from "./../stores.js";
 
+    const light = "#ededed";
+    const dark = "#1a1a1a";
   onMount(() => {
+
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
@@ -14,13 +17,13 @@
       // page.classList = `page-container ${currentTheme}`;
       // page.classList.toggle(currentTheme);
       console.log(`currentTheme from ls exists: ${currentTheme}`);
-      document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
-      document.documentElement.style.setProperty("--theme-fg", "#eee");
+      document.documentElement.style.setProperty("--theme-bg", dark);
+      document.documentElement.style.setProperty("--theme-fg", light);
       if (currentTheme === "light") {
         console.log(`currentTheme from ls is dark: ${currentTheme}`);
         toggleSwitch.checked = false;
-        document.documentElement.style.setProperty("--theme-bg", "#eee");
-        document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
+        document.documentElement.style.setProperty("--theme-bg", light);
+        document.documentElement.style.setProperty("--theme-fg", dark);
       }
     }
   });
@@ -34,14 +37,14 @@
     if (e.target.checked) {
       // page.classList = "page-container dark";
       // toggleSwitch.checked = true;
-      document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
-      document.documentElement.style.setProperty("--theme-fg", "#eee");
+      document.documentElement.style.setProperty("--theme-bg", dark);
+      document.documentElement.style.setProperty("--theme-fg", light);
       localStorage.setItem("theme", "dark");
     } else {
       // page.classList = "page-container light";
       e.target.checked = false;
-      document.documentElement.style.setProperty("--theme-bg", "#eee");
-      document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
+      document.documentElement.style.setProperty("--theme-bg", light);
+      document.documentElement.style.setProperty("--theme-fg", dark);
       localStorage.setItem("theme", "light");
     }
     toggleStyles(currentTheme);
