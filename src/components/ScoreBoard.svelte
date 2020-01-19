@@ -145,7 +145,7 @@
     //   window
     // );
     await players;
-    await document.getElementById("gameboard")
+    await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
@@ -209,10 +209,10 @@
     };
     storeViewportSize.set(appViewport);
     placardFactor = 2.6;
-        if (appWidth < 1500) {
+    if (appWidth < 1500) {
       placardFactor = 2.4;
     }
-        if (appWidth < 1200) {
+    if (appWidth < 1200) {
       placardFactor = 2.2;
     }
     if (appWidth < 900) {
@@ -270,9 +270,20 @@
     transform-origin: top left;
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
+    transition: all 0.25s;
+    &.dark {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all.25s;
+    }
+    &.light {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all.25s;
+    }
   }
   .highlighted {
-    outline: 5px solid var(--player-color-dark);
+    outline: 5px solid var(--theme-fg);
     position: relative;
     transition: all 0.25s;
     min-width: max-content;
@@ -310,7 +321,7 @@
   }
 
   .total-score-number {
-    background: black;
+    background: var(--theme-bg);
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;
@@ -320,7 +331,7 @@
     text-align: right;
   }
   .player-name {
-    background: black;
+    background: var(--theme-bg);
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;
@@ -329,7 +340,7 @@
     color: var(--player-color);
   }
   .player-marker {
-    background: black;
+    background: var(--theme-bg);
     padding: 0.5rem;
     margin: 0.25rem;
     border-radius: 2px;

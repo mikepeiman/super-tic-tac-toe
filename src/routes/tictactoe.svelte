@@ -94,19 +94,19 @@
   //   --theme-color: #1a1a1a;
   // }
 
-  body {
-    transition: all 0.25s;
-    &.dark-theme {
-      background: var(--theme-bg);
-      background: #1a1a1a;
-      transition: all.25s;
-    }
-    &.light-theme {
-      background: var(--theme-bg);
-      background: white;
-      transition: all.25s;
-    }
-  }
+  // body {
+  //   transition: all 0.25s;
+  //   &.dark-theme {
+  //     background: var(--theme-bg);
+  //     background: #1a1a1a;
+  //     transition: all.25s;
+  //   }
+  //   &.light-theme {
+  //     background: var(--theme-bg);
+  //     background: white;
+  //     transition: all.25s;
+  //   }
+  // }
 
   $input-blue: rgba(50, 200, 255, 1);
 
@@ -132,12 +132,12 @@
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
-      // background: #1a1a1a;
+      color: var(--theme-fg);
       transition: all.25s;
     }
     &.light {
       background: var(--theme-bg);
-      // background: white;
+      color: var(--theme-fg);
       transition: all.25s;
     }
   }
@@ -202,7 +202,7 @@
     margin: 0.5rem;
     justify-self: flex-end;
   }
-  .form-wrap {
+  .settings-wrapper {
     & input {
       font-size: 0.75rem;
     }
@@ -225,8 +225,8 @@
   }
 
   .player-change {
-    transition: all 0.25s;
-    border: 5px solid white;
+    transition: all 0.5s;
+    outline: 5px solid var(--theme-fg);
     background: rgba(255, 255, 255, 0.25);
   }
 
@@ -430,7 +430,7 @@
     }
 
     .mainmenu-container {
-      & .form-wrap {
+      & .settings-wrapper {
         padding: 0.5rem 1.5rem;
       }
     }

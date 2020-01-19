@@ -7,47 +7,76 @@
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
     currentTheme ? localStorage.getItem("theme") : null;
-
+    toggleSwitch.checked = true;
+    initStylesDark();
     if (currentTheme) {
-      page.classList = `page-container ${currentTheme}`;
+      toggleStyles(currentTheme);
+      // page.classList = `page-container ${currentTheme}`;
+      // page.classList.toggle(currentTheme);
       console.log(`currentTheme from ls exists: ${currentTheme}`);
-      // document.documentElement.setAttribute("data-theme", currentTheme);
-      document.documentElement.style.setProperty("--theme-bg", "#eee");
-      document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
-      if (currentTheme === "dark") {
+      document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
+      document.documentElement.style.setProperty("--theme-fg", "#eee");
+      if (currentTheme === "light") {
         console.log(`currentTheme from ls is dark: ${currentTheme}`);
-        toggleSwitch.checked = true;
-        // toggleSwitch.setAttribute("checked", true)
-        document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
-        document.documentElement.style.setProperty("--theme-fg", "#eee");
+        toggleSwitch.checked = false;
+        document.documentElement.style.setProperty("--theme-bg", "#eee");
+        document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
       }
     }
   });
 
-  const toggleStyles = e => {
-    const page = document.querySelector(".page-container");
+  const toggleTheme = e => {
+    // const page = document.querySelector(".page-container");
+    // const placards = document.querySelectorAll(".scoreboard-player");
     const currentTheme = localStorage.getItem("theme");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
-    console.log(
-      `toggleStyles ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`,
-      e.target
-    );
-    console.dir(e.target);
+
     if (e.target.checked) {
-      page.classList = "page-container dark";
+      // page.classList = "page-container dark";
       // toggleSwitch.checked = true;
       document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
       document.documentElement.style.setProperty("--theme-fg", "#eee");
-      localStorage.setItem("theme", "dark"); //add this
+      localStorage.setItem("theme", "dark");
     } else {
-      page.classList = "page-container light";
+      // page.classList = "page-container light";
       e.target.checked = false;
-      console.log(`currentTheme from ls is light: ${currentTheme}`);
       document.documentElement.style.setProperty("--theme-bg", "#eee");
       document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
-      localStorage.setItem("theme", "light"); //add this
+      localStorage.setItem("theme", "light");
     }
+    toggleStyles(currentTheme);
   };
+
+  function toggleStyles(theme) {
+    const page = document.querySelector(".page-container");
+    const placards = document.querySelectorAll(".scoreboard-player");
+    const settings = document.querySelector(".settings-wrapper");
+    let elements = [page, settings];
+    placards.forEach(placard => {
+      elements.push(placard);
+    });
+    elements.forEach(el => {
+      el.classList.toggle("dark");
+      el.classList.toggle("light");
+    });
+  }
+
+  function initStylesDark() {
+    const page = document.querySelector(".page-container");
+    const placards = document.querySelectorAll(".scoreboard-player");
+    const settings = document.querySelector(".settings-wrapper");
+    let elements = [page, settings];
+    placards.forEach(placard => {
+      elements.push(placard);
+    });
+    elements.forEach(el => {
+      el.classList.remove("light");
+      el.classList.remove("dark");
+      el.classList.add("dark");
+    });
+  }
+
+  // make an addStyles to set initial theme class on each element
 </script>
 
 <style lang="scss">
@@ -159,7 +188,7 @@
     name="night-mode-toggle"
     type="checkbox"
     id="night-mode-toggle"
-    on:click={toggleStyles} />
+    on:click={toggleTheme} />
   <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
   <!-- </div> -->

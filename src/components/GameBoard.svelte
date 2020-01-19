@@ -94,8 +94,8 @@
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
-      await grid.length
-      resetGameBoard()
+      await grid.length;
+      resetGameBoard();
     });
     storeGameHistoryFlat.subscribe(value => {});
     storeGameHistoryTurns.subscribe(value => {
@@ -246,9 +246,17 @@
         len = gameHistoryTurns.length;
       }
     }
-    console.log(`renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `, turnHistory);
-    console.log(`renderGameBoardReload() => gameHistoryTurns and len: ${len}; `, gameHistoryTurns);
-    console.log(`renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `);
+    console.log(
+      `renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `,
+      turnHistory
+    );
+    console.log(
+      `renderGameBoardReload() => gameHistoryTurns and len: ${len}; `,
+      gameHistoryTurns
+    );
+    console.log(
+      `renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `
+    );
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
@@ -343,7 +351,7 @@
   function addDirectionArraysToPlayerObjects() {
     // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
-      // next loop is to set the four direction array to each player object .scores property 
+      // next loop is to set the four direction array to each player object .scores property
       for (let x = 0; x <= 3; x++) {
         players[i]["scores"][x].id = x + 1;
         players[i].scores[x].name = scoreDirections[x].name;
@@ -426,7 +434,7 @@
     lines = lines;
     storeDirectionArrays.set(lines);
     localStorage.setItem("directionArrays", JSON.stringify(lines));
-    await players
+    await players;
     addDirectionArraysToPlayerObjects();
   }
 
@@ -823,7 +831,7 @@
     gameboard.classList.add("player-change");
     setTimeout(() => {
       gameboard.classList.remove("player-change");
-    }, 250);
+    }, 500);
     let playerIndicator = document.querySelector(".player-indicator");
     playerIndicator.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
@@ -860,7 +868,7 @@
     display: flex;
   }
   .gameboard-board {
-        outline: 12px solid rgba(0,0,0,0.5);
+    outline: 12px solid rgba(0, 0, 0, 0.5);
     outline-offset: -7px;
     padding: 6px;
     border: 6px solid var(--player-color); //rgba(255, 255, 255, 0.25);
@@ -869,7 +877,7 @@
     justify-content: flex-start;
     align-items: center;
     transition: all 0.25s;
-    box-shadow: 0 0 24px 6px rgba(26,26,26, 1)
+    box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
   }
 </style>
 

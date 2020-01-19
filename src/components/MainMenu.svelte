@@ -125,7 +125,7 @@
     }
   }
 
-  .form-wrap {
+  .settings-wrapper {
     padding: 0.5rem;
     background: var(--theme-bg);//black;//#122032;
     // border-bottom: 6px solid var(--player-color);
@@ -273,7 +273,7 @@
     body {
       font-size: 80%;
     }
-    .form-wrap {
+    .settings-wrapper {
       & label {
         font-size: 100%;
       }
@@ -284,7 +284,7 @@
       font-size: 90%;
     }
 
-    .form-wrap {
+    .settings-wrapper {
       padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
       margin-right: 1rem;
@@ -351,7 +351,7 @@
     <h2>Game Settings</h2>
   </div> -->
   <div
-    class="form-wrap settings-menu"
+    class="settings-wrapper settings-menu"
     style={`--player-color: ${currentPlayer.colorMain}`}>
     <label for="players" id="players">
       <div class="label-content">players</div>
