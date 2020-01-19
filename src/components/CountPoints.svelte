@@ -233,5 +233,6 @@
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
+<i class="fas fa-abacus"></i>
   Tally Scores
 </button>

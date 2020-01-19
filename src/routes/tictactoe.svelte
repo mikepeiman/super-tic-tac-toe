@@ -7,6 +7,7 @@
   import MainMenu from "./../components/MainMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
+  import Fa from "svelte-fa";
   import { writable } from "svelte/store";
   import {
     storeSettings,
@@ -20,6 +21,14 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+
+  import abacus from "@fortawesome/fontawesome-pro/js/all.js";
+  const faTheme = {
+    primaryColor: "red",
+    secondaryColor: "#000000",
+    primaryOpacity: 0.8,
+    secondaryOpacity: 0.6
+  };
 
   $: state = null;
   let players;
@@ -614,6 +623,8 @@
     </div>
     <div class="scoreboard-container">
       <div id="tally-points-wrapper">
+        <Fa icon={abacus} {...faTheme} />
+        
         <CountPoints {players} on:playersScored={playersScored} />
         <button
           class="control-button"
