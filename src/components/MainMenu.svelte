@@ -127,7 +127,7 @@
 
   .settings-wrapper {
     padding: 0.5rem;
-    background: var(--theme-bg);//black;//#122032;
+    background: var(--theme-bg); //black;//#122032;
     // border-bottom: 6px solid var(--player-color);
     border: 6px solid var(--player-color);
     outline: 13px solid rgba(0, 0, 0, 0.5);
@@ -140,7 +140,17 @@
       "moves columns bonus .";
     justify-content: space-between;
     align-content: center;
-    // grid-template-rows: 1.5rem;
+    transition: all 0.25s;
+    &.dark {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all 0.25s;
+    }
+    &.light {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all 0.25s;
+    }
 
     & label {
       display: flex;

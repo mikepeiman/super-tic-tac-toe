@@ -271,15 +271,20 @@
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
-    &.dark {
-      background: var(--theme-bg);
-      color: var(--theme-fg);
-      transition: all.25s;
-    }
-    &.light {
-      background: var(--theme-bg);
-      color: var(--theme-fg);
-      transition: all.25s;
+    & .player-name,
+    .player-marker,
+    .total-score-number {
+      transition: all 0.25s;
+      &.dark {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
+      &.light {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
     }
   }
   .highlighted {
