@@ -1,6 +1,6 @@
 <script>
-  export let segment;
-  // Just to update master for deployment.
+  const emojis = require("emojis-list");
+  console.log(emojis);
 </script>
 
 <style lang="scss">
@@ -204,7 +204,14 @@
       alt="A completed game of Super Tic Tac Toe"
       src="tictactoe-homepage.jpg" />
     <figcaption>An example of a completed game</figcaption>
-    <a segment rel=prefetch class="tictactoe-button" id="playnow" href="tictactoe/">PLAY NOW!</a>
+    <a
+      segment
+      rel="prefetch"
+      class="tictactoe-button"
+      id="playnow"
+      href="tictactoe/">
+      PLAY NOW!
+    </a>
   </figure>
 
   <div class="game-info">
@@ -216,11 +223,14 @@
         at least whatever will fit on your screen...)
       </p>
       <p>
-        This game is made by myself - Mike Peiman - and playtested with love by my
-        six-year-old daughter and other family and friends. Coded from scratch
-        in Svelte/Sapper, with zero style libraries.
+        This game is made by myself - Mike Peiman - and playtested with love by
+        my six-year-old daughter and other family and friends. Coded from
+        scratch in Svelte/Sapper, with zero style libraries.
       </p>
-      <span class="note">NOTE: The site is currently optimized for desktop; responsive design in progress (try landscape mode if you're on your phone)</span>
+      <span class="note">
+        NOTE: The site is currently optimized for desktop; responsive design in
+        progress (try landscape mode if you're on your phone)
+      </span>
     </div>
 
     <hr />
@@ -306,9 +316,10 @@
         </li>
         <li>
           <span class="cool">
-            Cool feature! ~ You <span class="bold">CAN</span> change the
-            number-of-moves-in-a-row-to-score, and the line bonus on the fly and
-            recalculate scoring!
+            Cool feature! ~ You
+            <span class="bold">CAN</span>
+            change the number-of-moves-in-a-row-to-score, and the line bonus on
+            the fly and recalculate scoring!
           </span>
           We've discovered that there definitely are different winning
           strategies based on different settings.

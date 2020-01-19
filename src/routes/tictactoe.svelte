@@ -6,6 +6,7 @@
   import StatusBar from "./../components/StatusBar.svelte";
   import MainMenu from "./../components/MainMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
+  import emojis from "emojis-list";
   import { writable } from "svelte/store";
   import {
     storeSettings,
@@ -50,7 +51,7 @@
   });
 
   onMount(() => {
-    console.log(`TicTacToe.svelte onMount`);
+    console.log(`TicTacToe.svelte onMount, emojis `, emojis);
     storePlayers.subscribe(value => {
       players = value;
       // console.log(`TicTacToe => storePlayers subscribed`, value);
