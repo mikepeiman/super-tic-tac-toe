@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-  import Fa from "sveltejs-fontawesome";
+
   const dispatch = createEventDispatcher();
   import {
     storeSettings,
@@ -15,8 +15,9 @@
   } from "../stores.js";
 
   export let players, wrapperClass;
-
-  import { faCircle } from "@fortawesome/pro-duotone-svg-icons";
+  
+  import Fa from "sveltejs-fontawesome";
+  import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
 
   $: lines = [];
   $: settings = {};
@@ -235,8 +236,7 @@
   }
 </style>
 
-<Fa icon={faCircle} size="3rem" color="#00ccff" />
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
-  <i class="fad fa-abacus" />
-  Tally Scores
+  <Fa icon={faAbacus} size="1rem" color="#00ccff" secondaryColor="#ffcc00" class="test" />
+  <span class="button-text">Tally Scores</span>
 </button>

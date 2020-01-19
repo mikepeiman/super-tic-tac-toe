@@ -159,6 +159,9 @@
         width: 100%;
     margin: 1rem;
     padding: 2rem .5rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
     &:hover {
       background: rgba(0, 0, 0, 0.5);
       color: white;

@@ -23,13 +23,8 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  // import abacus from "@fortawesome/fontawesome-pro/js/all.js";
-  // const faTheme = {
-  //   primaryColor: "red",
-  //   secondaryColor: "#000000",
-  //   primaryOpacity: 0.8,
-  //   secondaryOpacity: 0.6
-  // };
+  import Fa from "sveltejs-fontawesome";
+  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
 
   $: state = null;
   let players;
@@ -269,7 +264,16 @@
     &.control-button {
       font-size: 1rem;
       padding: 0.5rem;
-      // margin-top: 7px;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      & svg {
+        margin-right: .25rem;
+      }
+      & .button-text {
+        position: relative;
+        top: 1px;
+      }
     }
   }
 
@@ -624,13 +628,14 @@
     </div>
     <div class="scoreboard-container">
       <div id="tally-points-wrapper">
-     
+
         <CountPoints {players} on:playersScored={playersScored} />
         <button
           class="control-button"
           id="clear-game-button"
           on:click={clearScores}>
-          Clear Scores
+          <Fa icon={faEmptySet} size="1rem" color="#00ccff" secondaryColor="#ffcc00" class="test" />
+          <span class="button-text">Clear Scores</span>
         </button>
       </div>
       <ScoreBoard />
