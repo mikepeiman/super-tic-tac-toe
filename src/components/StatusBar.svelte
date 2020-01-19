@@ -26,14 +26,13 @@
   let colorMain, colorLight, colorDark, colorHue;
 
   $: {
-    
     if (typeof window !== "undefined") {
-        ({ colorMain, colorLight, colorDark, colorHue } = currentPlayer);
-        let colorMainVar = '--player-color';
-        let colorLightVar = '--player-color-light';
-        let colorDarkVar = '--player-color-dark';
-        let colorHueVar = '--player-color-hue';
-        
+      ({ colorMain, colorLight, colorDark, colorHue } = currentPlayer);
+      let colorMainVar = "--player-color";
+      let colorLightVar = "--player-color-light";
+      let colorDarkVar = "--player-color-dark";
+      let colorHueVar = "--player-color-hue";
+
       let styles = `--player-color: ${colorMain}; --player-color-light: ${colorLight}; --player-color-dark: ${colorDark}; --player-hue: ${colorHue};`;
       console.log(`Styles of player color from currentPlayer: `, styles);
       document.documentElement.style.setProperty(colorMainVar, colorMain);
@@ -475,9 +474,10 @@
       font-size: 100%;
     }
     .player-indicator {
-      border-bottom: 6px solid var(--player-color);
-      outline: 19px solid rgba(0, 0, 0, 0.5);
-      outline-offset: -13px;
+      border-bottom: 6px solid var(--player-color-dark);
+      // box-shadow: 0 0 15px var(--player-color-light);
+      // outline: 19px solid rgba(0, 0, 0, 0.5);
+      // outline-offset: -13px;
     }
   }
 
@@ -486,20 +486,9 @@
       font-size: 110%;
     }
   }
-  // @media screen and (min-width: 960px) {
-  //   .statusbar-container-inner {
-  //     border-top: 5px solid var(--player-color);
-  //   }
-  // }
-
-  .theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 10px;
-      font-size: 1rem;
-    }
+  span {
+    margin-left: 10px;
+    font-size: 1rem;
   }
 </style>
 

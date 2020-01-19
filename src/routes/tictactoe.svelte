@@ -86,13 +86,13 @@
 <style lang="scss" global>
   :global(:root) {
     --input-blue: 50, 200, 255;
-    --theme-bg: #1a1a1a;
-    --theme-color: #efefef;
+    // --theme-bg: #1a1a1a;
+    // --theme-color: #efefef;
   }
-  [data-theme="dark"] {
-    --theme-bg: #efefef;
-    --theme-color: #1a1a1a;
-  }
+  // [data-theme="dark"] {
+  //   --theme-bg: #efefef;
+  //   --theme-color: #1a1a1a;
+  // }
 
   body {
     transition: all 0.25s;
@@ -258,8 +258,9 @@
     min-height: 12px;
     width: var(--custom-size);
     height: var(--custom-size);
-    // background: var(--player-color, #1a1a1a);
-    // background: #1a1a1a;
+    background: var(--gg-bg);
+    // background-image: radial-gradient(var(--gg-bg), transparent);
+    box-shadow: inset 0 0 .15rem .025rem #1a1a1a;
     border: none;
     border: 1px solid rgba(255, 255, 255, 0.05);
     margin: 0;

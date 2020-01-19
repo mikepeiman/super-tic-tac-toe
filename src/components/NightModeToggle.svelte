@@ -6,20 +6,20 @@
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
-    console.log(`currentTheme from ls: ${currentTheme}`)
-      ? localStorage.getItem("theme")
-      : null;
+    currentTheme ? localStorage.getItem("theme") : null;
 
     if (currentTheme) {
       page.classList = `page-container ${currentTheme}`;
       console.log(`currentTheme from ls exists: ${currentTheme}`);
       // document.documentElement.setAttribute("data-theme", currentTheme);
-      document.documentElement.style.setProperty("--theme-bg", "#efefef");
+      document.documentElement.style.setProperty("--theme-bg", "#eee");
+      document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
       if (currentTheme === "dark") {
         console.log(`currentTheme from ls is dark: ${currentTheme}`);
         toggleSwitch.checked = true;
         // toggleSwitch.setAttribute("checked", true)
         document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
+        document.documentElement.style.setProperty("--theme-fg", "#eee");
       }
     }
   });
@@ -37,12 +37,14 @@
       page.classList = "page-container dark";
       // toggleSwitch.checked = true;
       document.documentElement.style.setProperty("--theme-bg", "#1a1a1a");
+      document.documentElement.style.setProperty("--theme-fg", "#eee");
       localStorage.setItem("theme", "dark"); //add this
     } else {
       page.classList = "page-container light";
       e.target.checked = false;
       console.log(`currentTheme from ls is light: ${currentTheme}`);
-      document.documentElement.style.setProperty("--theme-bg", "#efefef");
+      document.documentElement.style.setProperty("--theme-bg", "#eee");
+      document.documentElement.style.setProperty("--theme-fg", "#1a1a1a");
       localStorage.setItem("theme", "light"); //add this
     }
   };
@@ -50,6 +52,12 @@
 
 <style lang="scss">
   /*Simple css to style it like a toggle switch*/
+
+  :global(#theme-switch-wrapper) {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+  }
 
   .theme-switch {
     display: flex;
@@ -68,7 +76,7 @@
   }
 
   .toggle-text {
-    // position: absolute;
+    color: var(--theme-fg);
   }
 
   .slider {
@@ -111,6 +119,11 @@
     border-radius: 50%;
   }
   @media (min-width: 900px) {
+    :global(#theme-switch-wrapper) {
+      display: flex;
+      align-items: center;
+      margin-right: 2rem;
+    }
     .slider {
       background-color: #ccc;
       width: 60px;
@@ -120,7 +133,7 @@
       // left: 0;
       position: absolute;
       right: 0;
-      top: .5rem;
+      top: 0.5rem;
       transition: 0.4s;
     }
     .slider:before {
