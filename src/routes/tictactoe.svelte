@@ -84,12 +84,12 @@
   }
 
   function clearScores() {
-    console.log(`clear scores`)
+    console.log(`clear scores`);
     players.forEach(player => {
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
-    storePlayers.set(players)
+    storePlayers.set(players);
   }
 </script>
 
@@ -611,7 +611,7 @@
     <div class="statusbar-container">
       <StatusBar />
     </div>
-    <!-- <div class="scoreboard-container">
+    <div class="scoreboard-container">
       <div id="tally-points-wrapper">
         <CountPoints {players} on:playersScored={playersScored} />
         <button
@@ -621,11 +621,8 @@
           Clear Scores
         </button>
       </div>
-      <!-- <div id="clear-points-wrapper">
-
-      </div> -->
-      <!-- <ScoreBoard /> -->
-    <!-- </div> --> 
+      <ScoreBoard />
+    </div>
     <div class="gameboard-container">
       <GameBoard />
     </div>

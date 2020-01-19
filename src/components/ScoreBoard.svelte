@@ -271,9 +271,33 @@
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
-    & .player-name,
-    .player-marker,
-    .total-score-number {
+    & .player-name {
+      transition: all 0.25s;
+      &.dark {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
+      &.light {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
+    }
+        & .player-marker {
+      transition: all 0.25s;
+      &.dark {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
+      &.light {
+        background: var(--theme-bg);
+        color: var(--theme-fg);
+        transition: all 0.25s;
+      }
+    }
+    & .total-score-number {
       transition: all 0.25s;
       &.dark {
         background: var(--theme-bg);

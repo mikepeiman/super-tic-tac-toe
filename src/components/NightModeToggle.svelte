@@ -2,10 +2,11 @@
   import { onMount } from "svelte";
   // import { storeViewportSize } from "./../stores.js";
 
-    const light = "#ededed";
-    const dark = "#1a1a1a";
+  const light = "#ededed";
+  const dark = "#1a1a1a";
   onMount(() => {
-
+    document.documentElement.style.setProperty("--theme-bg", dark);
+    document.documentElement.style.setProperty("--theme-fg", light);
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
@@ -53,10 +54,19 @@
   function toggleStyles(theme) {
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
+    const playerNames = document.querySelectorAll(".player-name");
+    const playerMarks = document.querySelectorAll(".player-marker");
+    const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
     let elements = [page, settings];
-    placards.forEach(placard => {
-      elements.push(placard);
+    playerNames.forEach(name => {
+      elements.push(name);
+    });
+    playerMarks.forEach(mark => {
+      elements.push(mark);
+    });
+    playerScores.forEach(score => {
+      elements.push(score);
     });
     elements.forEach(el => {
       el.classList.toggle("dark");
@@ -67,10 +77,19 @@
   function initStylesDark() {
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
+    const playerNames = document.querySelectorAll(".player-name");
+    const playerMarks = document.querySelectorAll(".player-marker");
+    const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
     let elements = [page, settings];
-    placards.forEach(placard => {
-      elements.push(placard);
+    playerNames.forEach(name => {
+      elements.push(name);
+    });
+    playerMarks.forEach(mark => {
+      elements.push(mark);
+    });
+    playerScores.forEach(score => {
+      elements.push(score);
     });
     elements.forEach(el => {
       el.classList.remove("light");
