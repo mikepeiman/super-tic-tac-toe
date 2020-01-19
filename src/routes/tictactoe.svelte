@@ -160,7 +160,7 @@
     justify-content: flex-start;
     align-items: flex-end;
     height: auto;
-    margin-right: 1rem;
+    // margin-right: 1rem;
     // background: #1a1a1a;
     z-index: 0;
     & .gameboard-board {
@@ -611,7 +611,7 @@
     <div class="statusbar-container">
       <StatusBar />
     </div>
-    <div class="scoreboard-container">
+    <!-- <div class="scoreboard-container">
       <div id="tally-points-wrapper">
         <CountPoints {players} on:playersScored={playersScored} />
         <button
@@ -624,8 +624,8 @@
       <!-- <div id="clear-points-wrapper">
 
       </div> -->
-      <ScoreBoard />
-    </div>
+      <!-- <ScoreBoard /> -->
+    <!-- </div> --> 
     <div class="gameboard-container">
       <GameBoard />
     </div>
