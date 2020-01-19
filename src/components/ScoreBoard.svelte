@@ -16,6 +16,8 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
+  import EmojiSelector from "svelte-emoji-selector";
+
   $: windowWidth = 0;
   $: windowHeight = 0;
   $: appViewport = {};
@@ -34,9 +36,12 @@
   ({ numberOfPlayers } = settings);
   $: {
     if (typeof window !== "undefined") {
-      numberOfPlayers && addStyles();
-      window.innerWidth && addStyles();
-      placardFactor && addStyles();
+      if (players.length > 0) {
+        numberOfPlayers && addStyles();
+        window.innerWidth && addStyles();
+        placardFactor && addStyles();
+      }
+
       console.log(`\n***window object***innerWidth ${window.innerWidth}\n`);
     }
   }
@@ -90,11 +95,17 @@
     addHighlightIfGameInProgress();
   });
 
-  function updateStoredPlayers(player) {
-    // console.log(
-    //   `ScoreBoard => updateStoredPlayers: input on:blur, marker ${player.marker}, state.currentPlayer: ${currentPlayer.name} `,
-    //   currentPlayer
-    // );
+  function onEmoji(event, player) {
+    // let emoji = event.detail;
+    console.log(`emoji event ${event}`, event, player);
+    // textContent += event.detail;
+  }
+  function updateStoredPlayers(player, emoji) {
+    console.log(
+      `ScoreBoard => updateStoredPlayers: input on:blur, this player marker ${player.marker}, name: ${player.name} `,
+      player, emoji
+    );
+    player.marker = emoji.detail
     storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
@@ -146,6 +157,14 @@
     // );
     await players;
     await document.getElementById("gameboard");
+    // let scoreboards = new Promise((resolve) => {
+    //   let promisedPlacards = document.querySelectorAll(".scoreboard-player");
+    //   let placard = promisedPlacards[0];
+    //   return placard
+    // })
+    // scoreboards.then((result) => {
+    //   console.log(`placards promise `, result)
+    // })
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
@@ -496,7 +515,7 @@
             placeholder={player.name}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
-
+          <!-- 
           <input
             class="player-marker"
             type="text"
@@ -504,7 +523,17 @@
             placeholder={player.marker}
             maxlength="1"
             on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} />
+            on:blur={() => updateStoredPlayers(player)} /> -->
+          <EmojiSelector
+            class="player-marker"
+            type="text"
+            bind:value={player.marker}
+            placeholder={player.marker}
+            maxlength="1"
+
+
+            on:emoji={(e) => updateStoredPlayers(player, e)}
+            on:emoji={onEmoji} />
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
         <div class="scoreboard-totals">
