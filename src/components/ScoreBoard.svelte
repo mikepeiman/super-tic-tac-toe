@@ -284,7 +284,7 @@
         transition: all 0.25s;
       }
     }
-        & .player-marker {
+    & .player-marker {
       transition: all 0.25s;
       &.dark {
         background: var(--theme-bg);
@@ -517,9 +517,21 @@
                   width="20"
                   height="20"
                   alt="Icon for direction {direction.name}" />
-                <!-- <div class="direction-name">{direction.name}:</div> -->
-                <!-- <div class="direction-score">{player.dirScoresByIndex[i]}</div> -->
                 <div class="direction-score">{player.dirPointsByIndex[i]}</div>
+              </div>
+            </div>
+          {/each}
+        </div>
+        <div class="scoreboard-totals">
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              <div class="direction-score-section">
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
                 <div class="direction-score">{player.dirBonusesByIndex[i]}</div>
               </div>
             </div>
