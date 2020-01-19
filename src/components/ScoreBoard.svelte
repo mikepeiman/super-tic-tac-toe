@@ -518,7 +518,9 @@
                   height="20"
                   alt="Icon for direction {direction.name}" />
                 <!-- <div class="direction-name">{direction.name}:</div> -->
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
+                <!-- <div class="direction-score">{player.dirScoresByIndex[i]}</div> -->
+                <div class="direction-score">{player.dirPointsByIndex[i]}</div>
+                <div class="direction-score">{player.dirBonusesByIndex[i]}</div>
               </div>
             </div>
           {/each}

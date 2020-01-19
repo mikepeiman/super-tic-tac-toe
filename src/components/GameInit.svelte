@@ -144,7 +144,9 @@
           colorHue: `${(i + 1) * hueInterval + hueOffset}`,
           moves: 0,
           scores: [],
-          dirScoresByIndex: [0, 0, 0, 0]
+          dirScoresByIndex: [0, 0, 0, 0],
+          dirPointsByIndex: [0,0,0,0],
+          dirBonusesByIndex: [0,0,0,0]
         }
       ];
       let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;

@@ -31,7 +31,7 @@
       lines = val;
     });
     // settings = $storeSettings;
-// console.log(`CountPoints => storeSettings.subscribe value #2 => `, settings);
+    // console.log(`CountPoints => storeSettings.subscribe value #2 => `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
@@ -40,7 +40,7 @@
   });
 
   function countPoints() {
-    storePreservePlayerDetails.set(true)
+    storePreservePlayerDetails.set(true);
     // let settings = JSON.parse(localStorage.getItem('settings'))
     console.log(
       "*************__________countPoints called________**************, settings, lines ",
@@ -66,9 +66,18 @@
           direction
         );
         let thisScore = score(settings, direction, player, index);
-        // console.log(`!!!!!! POINTS  ${thisScore} !!!!!!!!!!!!!!!!!!!!!!!!!!`);
-        player["dirScoresByIndex"][index] = thisScore;
-        player["scores"][index]["dirScore"] = thisScore;
+        console.log(
+          `\n\n!!!!!! POINTS ${thisScore.points} + ${thisScore.bonus} !!!!!!!!!!!!!!!!!!!!!!!!!!\n`,
+          thisScore,
+          `\n`
+        );
+        player["dirScoresByIndex"][index] = thisScore.points + thisScore.bonus;
+        player["dirPointsByIndex"][index] = thisScore.points;
+        player["dirBonusesByIndex"][index] = thisScore.bonus;
+        player["scores"][index]["dirScore"] =
+          thisScore.points + thisScore.bonus;
+        player["scores"][index]["dirPoints"] = thisScore.points;
+        player["scores"][index]["dirBonus"] = thisScore.bonus;
         let totalScore = player["dirScoresByIndex"].reduce((a, b) => a + b, 0);
         player["totalScore"] = totalScore;
         // localStorage.setItem(
@@ -86,6 +95,9 @@
   function score(settings, direction, player, idx) {
     let dirLines = [];
     let dirScore = 0;
+    let directionScores = {};
+    let dirPoints = 0;
+    let dirBonus = 0;
     let name = direction.name;
     // console.log(
     //   `DIRECTION SCORING:::   ${name}   :::PLAYER:::   ${player.name} and lines`,
@@ -98,6 +110,8 @@
       let countInLine = 0;
       let countInLoop = 0;
       let points = 0;
+      let bonusPoints = 0;
+
       let rows = settings.rows;
       let columns = settings.columns;
       // console.log(`||||| score(settings, direction, player, idx) |||||| inside of scoring function, settings rows ${rows} columns ${columns}`)
@@ -167,20 +181,26 @@
       }
 
       // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
-      points += lineBonus;
+
       // console.log(
       //   `END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`
       // );
-      dirLines.push({ countInLine: countInLine, points: points });
+
       // console.log(`dirLines `, dirLines)
-      dirScore += points;
+      dirPoints += points;
+      bonusPoints += lineBonus;
+      dirScore += points + lineBonus;
+      dirBonus += bonusPoints;
+      dirLines.push({ countInLine: countInLine, points: points });
     });
     players = players;
     // console.log(
     //   `score closing with direction score ${dirScore} | player: `,
     //   player
     // );
-    return dirScore;
+    player["dirLines"] = dirLines;
+    directionScores = { points: dirPoints, bonus: dirBonus };
+    return directionScores;
   }
 
   function getPlayerFromCellInGameHistory(gh, id) {
@@ -208,9 +228,8 @@
 </script>
 
 <style lang="scss">
-#tally-game-button {
-  
-}
+  #tally-game-button {
+  }
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
