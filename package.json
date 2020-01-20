@@ -12,8 +12,6 @@
     "test": "run-p --race dev cy:run"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^5.12.0",
-    "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "autoprefixer": "^9.7.3",
     "compression": "^1.7.1",
     "emojis-list": "^3.0.0",
