@@ -237,6 +237,6 @@
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
-  <Fa icon={faAbacus} size="1rem" color="#00ccff" secondaryColor="#ffcc00" class="test" />
+  <Fa icon={faAbacus} size="1rem"  color="var(--theme-fg)" secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"  />
   <span class="button-text">Tally Scores</span>
 </button>

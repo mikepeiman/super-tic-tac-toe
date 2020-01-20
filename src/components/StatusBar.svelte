@@ -268,7 +268,7 @@
       color: var(--theme-fg);//hsla(130, 50%, 25%, 1);
     }
     & .dynamic-value {
-      background: hsla(130, 50%, 25%, 1); //var(--player-color);
+      background: hsla(var(--player-color-hue), 50%, 50%, 0.5);// hsla(130, 50%, 25%, 1); //var(--player-color);
       border: none;
       margin-top: 8px;
       color: white;

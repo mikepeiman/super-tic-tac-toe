@@ -159,14 +159,18 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    background: hsla(var(--player-color-hue), 50%, 40%, 0.5);
+    background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
     color: var(--theme-fg);
+    transition: all .1s;
     & svg {
       margin-right: 0.25rem;
     }
     & .button-text {
       position: relative;
-      top: 1px;
+      top: 0;
+    }
+    &:hover {
+      background: var(--player-color);
     }
   }
 

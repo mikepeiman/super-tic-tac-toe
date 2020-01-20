@@ -260,6 +260,7 @@
     display: flex;
     justify-content: space-between;
     background: rgba(0, 0, 0, 0.5);
+    // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
 
   .scoreboard-player {
