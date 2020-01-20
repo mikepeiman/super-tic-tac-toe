@@ -153,12 +153,33 @@
     }
   }
 
+  :global(button.control-button) {
+    font-size: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
+    color: var(--theme-fg);
+    transition: all .1s;
+    & svg {
+      margin-right: 0.25rem;
+    }
+    & .button-text {
+      position: relative;
+      top: 0;
+    }
+    &:hover {
+      background: var(--player-color);
+    }
+  }
+
   .control-button {
     background: rgba(0, 25, 75, 0.25);
     color: #1a1a1a;
-        width: 100%;
+    width: 100%;
     margin: 1rem;
-    padding: 2rem .5rem;
+    padding: 2rem 0.5rem;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -169,31 +190,31 @@
   }
 
   #new-game-button {
-    background: hsla(50, 100%, 50%, .5);
+    background: hsla(50, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(50, 100%, 55%, .75);
+      background: hsla(50, 100%, 55%, 0.75);
     }
   }
   #save-game-button {
-    background: hsla(100, 100%, 50%, .5);
+    background: hsla(100, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(100, 100%, 55%, .75);
+      background: hsla(100, 100%, 55%, 0.75);
     }
   }
   #load-game-button {
-    background: hsla(200, 100%, 50%, .5);
+    background: hsla(200, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(200, 100%, 55%, .75);
+      background: hsla(200, 100%, 55%, 0.75);
     }
   }
   #reset-players-button {
-    background: hsla(0, 100%, 50%, .5);
+    background: hsla(0, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(0, 100%, 55%, .75);
+      background: hsla(0, 100%, 55%, 0.75);
     }
   }
 </style>

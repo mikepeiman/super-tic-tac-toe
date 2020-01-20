@@ -261,20 +261,6 @@
       background: rgba(255, 255, 255, 0.25);
       background: rgba(var(--input-blue), 1);
     }
-    &.control-button {
-      font-size: 1rem;
-      padding: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      & svg {
-        margin-right: .25rem;
-      }
-      & .button-text {
-        position: relative;
-        top: 1px;
-      }
-    }
   }
 
   .game-square {
@@ -591,10 +577,6 @@
         background: rgba(255, 255, 255, 0.25);
         background: rgba(var(--input-blue), 1);
       }
-      &.control-button {
-        font-size: 1rem;
-        padding: 0.5rem;
-      }
     }
     .page-container {
       box-sizing: border-box;
@@ -635,7 +617,7 @@
           class="control-button"
           id="clear-game-button"
           on:click={clearScores}>
-          <Fa icon={faEmptySet} size="1rem" color="#00ccff" secondaryColor="#ffcc00" class="test" />
+          <Fa icon={faEmptySet} size="1rem" color="var(--theme-fg)" secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
           <span class="button-text">Clear Scores</span>
         </button>
       </div>
