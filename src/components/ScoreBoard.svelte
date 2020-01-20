@@ -98,7 +98,6 @@
   function onEmoji(event, player) {
     // let emoji = event.detail;
     console.log(`emoji event ${event}`, event, player);
-    // textContent += event.detail;
   }
   function updateStoredPlayers(player, emoji) {
     console.log(
@@ -114,13 +113,8 @@
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("playerDetails", true);
     storeCurrentPlayer.set(players[currentPlayer.id]);
-    // localStorage.setItem(
-    //   "currentPlayer",
-    //   JSON.stringify(players[currentPlayer.id])
-    // );
     dispatch("playerNameOrMarkerUpdate", players);
     storePreservePlayerDetails.set(true);
-    // localStorage.setItem("preservePlayerDetails", JSON.stringify(true));
   }
 
   async function setPlacardPositions() {
@@ -143,7 +137,6 @@
       console.log(
         `=======================   setPlacardPositions()   ========================`
       );
-      // placard.style = `top: ${appViewport.height / 7.5}px;`
     });
   }
 
@@ -154,20 +147,8 @@
   }
 
   async function addStyles() {
-    // console.log(
-    //   `\n***window object***innerWidth ${window.innerWidth}\n`,
-    //   window
-    // );
     await players;
     await document.getElementById("gameboard");
-    // let scoreboards = new Promise((resolve) => {
-    //   let promisedPlacards = document.querySelectorAll(".scoreboard-player");
-    //   let placard = promisedPlacards[0];
-    //   return placard
-    // })
-    // scoreboards.then((result) => {
-    //   console.log(`placards promise `, result)
-    // })
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
@@ -259,6 +240,7 @@
     width: max-content;
     max-width: 100%;
     position: relative;
+    z-index: -2;
   }
   .scores-wrap {
     display: flex;
@@ -293,6 +275,7 @@
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
+    z-index: -1;
     & .player-name {
       transition: all 0.25s;
       &.dark {
@@ -334,7 +317,7 @@
     }
   }
 
-  :global(.svelte-emoji-picker__trigger) {
+  :global(#sapper .svelte-emoji-picker__trigger) {
     min-height: 2rem;
     margin-right: 0.25rem;
     display: flex;
@@ -343,16 +326,18 @@
     text-align: center;
   }
 
-  :global(.svelte-emoji-picker) {
+  :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
     color: var(--theme-fg);
     z-index: 999;
-    box-shadow: none;
-    border: 2px solid var(--theme-fg);
+    box-shadow: 0 0 5px 5px var(--theme-fg);
+    border: 5px solid var(--player-color);
     & .svelte-emoji-picker__search {
       background: var(--theme-bg);
       color: var(--theme-fg);
       height: 1.5rem;
+      border-radius: 5px 5px 0 0;
+
       & input::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
         color: var(--theme-fg);
@@ -376,7 +361,20 @@
     }
     & .svelte-emoji-picker__emoji-detail {
       background: var(--theme-bg);
-      color: var(--theme-fg);
+      color: var(--player-color);
+      padding: 0;
+      font-size: 0.8em;
+      font-weight: bold;
+      height: 3em;
+      line-height: 4em;
+      z-index: -1;
+      position: absolute;
+      width: 22rem;
+      margin: 0 -0.5rem -1rem -0.5rem;
+      text-align: center;
+      bottom: 18px;
+      right: 9px;
+      border: none;
     }
     & .svelte-emoji-picker__emoji-list {
       height: 10rem;
@@ -598,8 +596,8 @@
             bind:value={player.marker}
             placeholder={player.marker}
             maxlength="1"
-            on:emoji={e => updateStoredPlayers(player, e)}
-            on:emoji={onEmoji} />
+            style={`--this-player-color-main: ${player.colorMain}`}
+            on:emoji={e => updateStoredPlayers(player, e)} />
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
         <div class="scoreboard-totals">
