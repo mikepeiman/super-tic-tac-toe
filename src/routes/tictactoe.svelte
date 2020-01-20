@@ -215,7 +215,7 @@
     font-size: 1.1rem;
     padding-left: 0.25rem;
     width: 5ch;
-    border-bottom: 1px solid $input-blue;
+    // border-bottom: 1px solid $input-blue;
     // margin: 0.5rem;
     justify-self: flex-end;
   }

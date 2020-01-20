@@ -347,19 +347,26 @@
     background: var(--theme-bg);
     color: var(--theme-fg);
     z-index: 999;
+    box-shadow: none;
+    border: 2px solid var(--theme-fg);
     & .svelte-emoji-picker__search {
       background: var(--theme-bg);
       color: var(--theme-fg);
-      & input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      height: 1.5rem;
+      & input::-webkit-input-placeholder {
+        /* Chrome/Opera/Safari */
         color: var(--theme-fg);
       }
-      & input::-moz-placeholder { /* Firefox 19+ */
+      & input::-moz-placeholder {
+        /* Firefox 19+ */
         color: var(--theme-fg);
       }
-      & input:-ms-input-placeholder { /* IE 10+ */
+      & input:-ms-input-placeholder {
+        /* IE 10+ */
         color: var(--theme-fg);
       }
-      & input:-moz-placeholder { /* Firefox 18- */
+      & input:-moz-placeholder {
+        /* Firefox 18- */
         color: var(--theme-fg);
       }
     }
@@ -369,6 +376,18 @@
     }
     & .svelte-emoji-picker__emoji-detail {
       background: var(--theme-bg);
+      color: var(--theme-fg);
+    }
+    & .svelte-emoji-picker__emoji-list {
+      height: 10rem;
+    }
+    & .svelte-emoji-picker__emoji-tabs .svelte-tabs ul.svelte-tabs__tab-list {
+      overflow: auto;
+    }
+    & .svelte-tabs__tab-panel h3 {
+      color: var(--theme-fg);
+    }
+    & .fa-svelte {
       color: var(--theme-fg);
     }
   }
