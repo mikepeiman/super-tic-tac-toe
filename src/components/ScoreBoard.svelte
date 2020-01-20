@@ -346,9 +346,31 @@
   :global(.svelte-emoji-picker) {
     background: var(--theme-bg);
     color: var(--theme-fg);
-    // & .svelte-emoji-picker__search {}
-    // & .svelte-emoji-picker__emoji-tabs {}
-    // & .svelte-emoji-picker__emoji-detail {}
+    z-index: 999;
+    & .svelte-emoji-picker__search {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      & input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: var(--theme-fg);
+      }
+      & input::-moz-placeholder { /* Firefox 19+ */
+        color: var(--theme-fg);
+      }
+      & input:-ms-input-placeholder { /* IE 10+ */
+        color: var(--theme-fg);
+      }
+      & input:-moz-placeholder { /* Firefox 18- */
+        color: var(--theme-fg);
+      }
+    }
+    & .svelte-emoji-picker__emoji-tabs {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+    }
+    & .svelte-emoji-picker__emoji-detail {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+    }
   }
 
   .highlighted {

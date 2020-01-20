@@ -193,7 +193,7 @@
 
   .statusbar-container {
     grid-area: statusbar;
-    z-index: 10;
+    // z-index: 10;
     min-height: 15vh;
     max-height: 15vh;
   }
