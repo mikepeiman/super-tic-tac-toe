@@ -336,11 +336,19 @@
 
   :global(.svelte-emoji-picker__trigger) {
     min-height: 2rem;
-    margin-right: .25rem;
+    margin-right: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+  }
+
+  :global(.svelte-emoji-picker) {
+    background: var(--theme-bg);
+    color: var(--theme-fg);
+    // & .svelte-emoji-picker__search {}
+    // & .svelte-emoji-picker__emoji-tabs {}
+    // & .svelte-emoji-picker__emoji-detail {}
   }
 
   .highlighted {
