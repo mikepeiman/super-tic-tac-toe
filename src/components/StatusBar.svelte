@@ -333,7 +333,7 @@
   #buttons-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     grid-area: controls;
     padding: 8px;
     justify-self: flex-end;
@@ -418,6 +418,7 @@
     }
     #buttons-wrapper {
       flex-direction: row;
+      align-items: center;
     }
     // #tally-points-wrapper {
     //   top: 0;

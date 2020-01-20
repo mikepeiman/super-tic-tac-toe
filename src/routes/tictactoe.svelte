@@ -438,8 +438,9 @@
 
       & #buttons-wrapper {
         justify-content: space-around;
-        flex-direction: row;
+        flex-direction: column;
         margin-right: 1rem;
+        align-items: flex-end;
       }
       & #modal-wrapper {
         top: 0;
