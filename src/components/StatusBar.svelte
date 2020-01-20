@@ -519,6 +519,7 @@
             class="player-name"
             style={`--player-color: ${currentPlayer.colorMain}`}>
             {currentPlayer.name}
+            {currentPlayer.marker}
           </h2>
         </div>
 

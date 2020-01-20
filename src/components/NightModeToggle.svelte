@@ -128,6 +128,9 @@
 
   .toggle-text {
     color: var(--theme-fg);
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .slider {
@@ -139,7 +142,7 @@
     // left: 0;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 1.4rem;
     transition: 0.4s;
   }
 
@@ -175,6 +178,12 @@
       align-items: center;
       margin-right: 2rem;
     }
+  .toggle-text {
+    color: var(--theme-fg);
+    position: absolute;
+    top: -0.5rem;
+    right: 0;
+  }
     .slider {
       background-color: #ccc;
       width: 60px;
@@ -184,7 +193,7 @@
       // left: 0;
       position: absolute;
       right: 0;
-      top: 0.5rem;
+      top: 1rem;
       transition: 0.4s;
     }
     .slider:before {
