@@ -206,10 +206,6 @@
   $title-padding-vertical: 0.25rem;
   $calc-padding: 2 * $title-padding-horizontal;
   .player-indicator {
-    // border-top: 12px solid var(--player-color);
-    // border-bottom: 6px solid var(--player-color);
-    // outline: 6.5px solid rgba(0, 0, 0, 0.5);
-    // outline-offset: -6.5px;
     color: #eee;
     transition: all 0.5s;
     display: flex;
@@ -291,7 +287,7 @@
   }
   #total-moves .dynamic-value {
   }
-  .statusbar-details-wrapper {
+  .statusbar {
     width: 100%;
     display: grid;
     /* justify-items: center; */
@@ -486,10 +482,7 @@
       font-size: 100%;
     }
     .player-indicator {
-      border-bottom: 6px solid var(--player-color-dark);
-      // box-shadow: 0 0 15px var(--player-color-light);
-      // outline: 19px solid rgba(0, 0, 0, 0.5);
-      // outline-offset: -13px;
+      // border-bottom: 6px solid var(--player-color-dark);
     }
   }
 
@@ -506,15 +499,15 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <div class="player-indicator player-0" style={`--player-color: #006f98`}>
+    <div class="player-indicator"}>
       <h2 class="player-indicator-heading">Loading players data...</h2>
     </div>
   {:else}
     <div
-      class="player-indicator player-0"
+      class="player-indicator"
       style={`--player-color: ${currentPlayer.colorMain}`}>
 
-      <div class="statusbar-details-wrapper">
+      <div class="statusbar">
         <div class="player-status-detail" id="player-name">
           <h2
             class="player-name"

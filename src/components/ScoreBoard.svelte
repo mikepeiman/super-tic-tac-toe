@@ -270,7 +270,7 @@
     top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
-    outline: 5px solid var(--theme-bg);
+    // outline: 5px solid var(--theme-bg)
     min-width: max-content;
     transform-origin: top left;
     transform: scale(var(--scale-width));
@@ -392,7 +392,8 @@
   }
 
   .highlighted {
-    outline: 5px solid var(--theme-fg);
+    // outline: 5px solid var(--theme-fg);
+    box-shadow: 0 0 5px 5px var(--player-color-light);
     position: relative;
     transition: all 0.25s;
     min-width: max-content;
