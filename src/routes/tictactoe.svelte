@@ -216,7 +216,7 @@
     padding-left: 0.25rem;
     width: 5ch;
     border-bottom: 1px solid $input-blue;
-    margin: 0.5rem;
+    // margin: 0.5rem;
     justify-self: flex-end;
   }
   .settings-wrapper {

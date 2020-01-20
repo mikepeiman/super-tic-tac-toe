@@ -103,9 +103,12 @@
   function updateStoredPlayers(player, emoji) {
     console.log(
       `ScoreBoard => updateStoredPlayers: input on:blur, this player marker ${player.marker}, name: ${player.name} `,
-      player, emoji
+      player,
+      emoji
     );
-    player.marker = emoji.detail
+    if (emoji) {
+      player.marker = emoji.detail;
+    }
     storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("players", JSON.stringify(players));
@@ -330,6 +333,16 @@
       }
     }
   }
+
+  :global(.svelte-emoji-picker__trigger) {
+    min-height: 2rem;
+    margin-right: .25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   .highlighted {
     outline: 5px solid var(--theme-fg);
     position: relative;
@@ -360,28 +373,34 @@
     margin-right: 0.5rem;
   }
 
-  .total-score {
+  :global(.total-score) {
     // background: var(--player-color);
     padding: 0.25rem;
-    margin: 0 0.5rem;
+    margin: 0.25rem;
     display: flex;
     justify-content: space-between;
+    & input {
+      margin: 0 0.25rem;
+    }
   }
 
   .total-score-number {
     background: var(--theme-bg);
-    padding: 0.5rem;
-    margin: 0.25rem;
+    // padding: 0.5rem;
+    // margin: 0.25rem;
     border-radius: 2px;
     max-width: 5ch;
     min-width: 3ch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: var(--player-color);
     text-align: right;
   }
   .player-name {
     background: var(--theme-bg);
     padding: 0.5rem;
-    margin: 0.25rem;
+    // margin: 0.25rem;
     border-radius: 2px;
     max-width: 10ch;
     min-width: 10ch;
@@ -390,7 +409,7 @@
   .player-marker {
     background: var(--theme-bg);
     padding: 0.5rem;
-    margin: 0.25rem;
+    // margin: 0.25rem;
     border-radius: 2px;
     min-width: 2ch;
     display: flex;
@@ -515,7 +534,7 @@
             placeholder={player.name}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
-          <!-- 
+
           <input
             class="player-marker"
             type="text"
@@ -523,16 +542,14 @@
             placeholder={player.marker}
             maxlength="1"
             on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} /> -->
+            on:blur={() => updateStoredPlayers(player)} />
           <EmojiSelector
             class="player-marker"
             type="text"
             bind:value={player.marker}
             placeholder={player.marker}
             maxlength="1"
-
-
-            on:emoji={(e) => updateStoredPlayers(player, e)}
+            on:emoji={e => updateStoredPlayers(player, e)}
             on:emoji={onEmoji} />
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
