@@ -371,41 +371,41 @@
     display: flex;
   }
 
-  :global(#tally-game-button) {
-    font-size: 0.75rem;
-    background: hsla(130, 50%, 35%, 1);
-    border: 2px solid rgba(0, 0, 0, 0);
+  // :global(#tally-game-button) {
+  //   font-size: 0.75rem;
+  //   background: hsla(130, 50%, 35%, 1);
+  //   border: 2px solid rgba(0, 0, 0, 0);
 
-    &:hover {
-      background: hsla(130, 50%, 45%, 1);
-      cursor: pointer;
-      border: 2px solid hsla(130, 50%, 70%, 1);
-    }
-  }
+  //   &:hover {
+  //     background: hsla(130, 50%, 45%, 1);
+  //     cursor: pointer;
+  //     border: 2px solid hsla(130, 50%, 70%, 1);
+  //   }
+  // }
 
-  :global(#clear-game-button) {
-    font-size: 0.75rem;
-    background: hsla(130, 50%, 35%, 1);
-    border: 2px solid rgba(0, 0, 0, 0);
+  // :global(#clear-game-button) {
+  //   font-size: 0.75rem;
+  //   background: hsla(130, 50%, 35%, 1);
+  //   border: 2px solid rgba(0, 0, 0, 0);
 
-    &:hover {
-      background: hsla(130, 50%, 45%, 1);
-      cursor: pointer;
-      border: 2px solid hsla(130, 50%, 70%, 1);
-    }
-  }
+  //   &:hover {
+  //     background: hsla(130, 50%, 45%, 1);
+  //     cursor: pointer;
+  //     border: 2px solid hsla(130, 50%, 70%, 1);
+  //   }
+  // }
 
-  :global(#game-menu-button) {
-    font-size: 0.75rem;
-    background: hsla(130, 50%, 35%, 1);
-    border: 2px solid rgba(0, 0, 0, 0);
+  // :global(#game-menu-button) {
+  //   font-size: 0.75rem;
+  //   background: hsla(130, 50%, 35%, 1);
+  //   border: 2px solid rgba(0, 0, 0, 0);
 
-    &:hover {
-      background: hsla(130, 50%, 45%, 1);
-      cursor: pointer;
-      border: 2px solid hsla(130, 50%, 70%, 1);
-    }
-  }
+  //   &:hover {
+  //     background: hsla(130, 50%, 45%, 1);
+  //     cursor: pointer;
+  //     border: 2px solid hsla(130, 50%, 70%, 1);
+  //   }
+  // }
 
   @media screen and (min-width: 600px) {
     body {

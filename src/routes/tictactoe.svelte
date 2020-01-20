@@ -261,20 +261,6 @@
       background: rgba(255, 255, 255, 0.25);
       background: rgba(var(--input-blue), 1);
     }
-    &.control-button {
-      font-size: 1rem;
-      padding: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      & svg {
-        margin-right: .25rem;
-      }
-      & .button-text {
-        position: relative;
-        top: 1px;
-      }
-    }
   }
 
   .game-square {
@@ -590,10 +576,6 @@
       &:hover {
         background: rgba(255, 255, 255, 0.25);
         background: rgba(var(--input-blue), 1);
-      }
-      &.control-button {
-        font-size: 1rem;
-        padding: 0.5rem;
       }
     }
     .page-container {
