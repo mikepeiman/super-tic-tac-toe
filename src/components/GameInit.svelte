@@ -1,6 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
-  import SettingsMenu from "./SettingsMenu.svelte";
+  import SettingsInit from "./SettingsInit.svelte";
   const dispatch = createEventDispatcher();
   import { writable } from "svelte/store";
   import {
@@ -203,4 +203,4 @@
 
 </style>
 
-<SettingsMenu on:updateGameSettings={updateGameSettings} />
+<SettingsInit on:updateGameSettings={updateGameSettings} />

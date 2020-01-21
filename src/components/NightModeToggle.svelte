@@ -4,6 +4,7 @@
 
   const light = "#ededed";
   const dark = "#1a1a1a";
+  let elements;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
@@ -58,7 +59,11 @@
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
-    let elements = [page, settings];
+    if (settings) {
+      elements = [page, settings];
+    } else {
+      elements = [page];
+    }
     playerNames.forEach(name => {
       elements.push(name);
     });
@@ -81,7 +86,12 @@
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
-    let elements = [page, settings];
+    if (settings) {
+      elements = [page, settings];
+    } else {
+      elements = [page];
+    }
+
     playerNames.forEach(name => {
       elements.push(name);
     });
@@ -178,12 +188,12 @@
       align-items: center;
       margin-right: 2rem;
     }
-  .toggle-text {
-    color: var(--theme-fg);
-    position: absolute;
-    top: -0.5rem;
-    right: 0;
-  }
+    .toggle-text {
+      color: var(--theme-fg);
+      position: absolute;
+      top: -0.5rem;
+      right: 0;
+    }
     .slider {
       background-color: #ccc;
       width: 60px;
