@@ -87,21 +87,14 @@
 
   .loading-settings-message {
     padding: 1rem;
-    // background: #1a1a1a;
     color: #eeeeee;
   }
   .settings-menu-heading {
-    // color: #1a1a1a;
-    // background: darken($input-blue, 30%);
     color: white;
-    // border-bottom: 5px solid var(--player-color);
-
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    // margin-bottom: 0.5rem;
     & h2 {
-      // padding: 0.5rem;
       font-size: 125%;
     }
     & .loading {
@@ -113,8 +106,7 @@
 
   .settings-wrapper {
     padding: 0.5rem;
-    background: var(--theme-bg); //black;//#122032;
-    // border-bottom: 6px solid var(--player-color);
+    background: var(--theme-bg); 
     border-top: 3px solid var(--player-color);
     border-bottom: 3px solid var(--player-color);
     margin: 0;
@@ -265,19 +257,9 @@
   }
 
   @media screen and (min-width: 600px) {
-    body {
-      font-size: 80%;
-    }
-    .settings-wrapper {
-      & label {
-        font-size: 100%;
-      }
-    }
+
   }
   @media screen and (min-width: 900px) {
-    body {
-      font-size: 90%;
-    }
 
     .settings-wrapper {
       padding: 0.5rem 0.5rem 0.5rem 0;
@@ -329,22 +311,15 @@
   }
 
   @media screen and (min-width: 1200px) {
-    body {
-      font-size: 100%;
-    }
+
   }
 
   @media screen and (min-width: 1500px) {
-    body {
-      font-size: 110%;
-    }
+
   }
 </style>
 
 {#if initialized}
-  <!-- <div class="settings-menu-heading">
-    <h2>Game Settings</h2>
-  </div> -->
   <div
     class="settings-wrapper settings-menu"
     style={`--player-color: ${currentPlayer.colorMain}`}>
