@@ -168,9 +168,9 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". . optionswidget"
-      "scoreboard gameboard ."
-      "scoreboard gameboard SettingsMenu";
+      ". . ."
+      "scoreboard gameboard optionswidget"
+      "scoreboard gameboard .";
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
@@ -491,9 +491,9 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . optionswidget"
-        "scoreboard gameboard ."
-        "scoreboard gameboard SettingsMenu";
+        ". . ."
+        "scoreboard gameboard optionswidget"
+        "scoreboard gameboard .";
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
@@ -686,9 +686,9 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . optionswidget"
-        "scoreboard gameboard ."
-        "scoreboard gameboard SettingsMenu";
+        ". . ."
+        "scoreboard gameboard optionswidget"
+        "scoreboard gameboard .";
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
