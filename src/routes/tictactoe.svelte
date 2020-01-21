@@ -705,7 +705,6 @@
 </div> -->
 
 {#await players then players}
-  {#await settings then settings}
 
       <div
         class="page-container"
@@ -774,5 +773,4 @@
         </div>
       </div>
 
-  {/await}
 {/await}
