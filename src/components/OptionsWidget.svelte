@@ -76,7 +76,7 @@
 
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    
+
     storeState.subscribe(value => {
       state = value;
       movesRemaining = state.movesRemaining;
@@ -294,42 +294,6 @@
     display: flex;
   }
 
-  // :global(#tally-game-button) {
-  //   font-size: 0.75rem;
-  //   background: hsla(130, 50%, 35%, 1);
-  //   border: 2px solid rgba(0, 0, 0, 0);
-
-  //   &:hover {
-  //     background: hsla(130, 50%, 45%, 1);
-  //     cursor: pointer;
-  //     border: 2px solid hsla(130, 50%, 70%, 1);
-  //   }
-  // }
-
-  // :global(#clear-game-button) {
-  //   font-size: 0.75rem;
-  //   background: hsla(130, 50%, 35%, 1);
-  //   border: 2px solid rgba(0, 0, 0, 0);
-
-  //   &:hover {
-  //     background: hsla(130, 50%, 45%, 1);
-  //     cursor: pointer;
-  //     border: 2px solid hsla(130, 50%, 70%, 1);
-  //   }
-  // }
-
-  // :global(#game-menu-button) {
-  //   font-size: 0.75rem;
-  //   background: hsla(130, 50%, 35%, 1);
-  //   border: 2px solid rgba(0, 0, 0, 0);
-
-  //   &:hover {
-  //     background: hsla(130, 50%, 45%, 1);
-  //     cursor: pointer;
-  //     border: 2px solid hsla(130, 50%, 70%, 1);
-  //   }
-  // }
-
   @media screen and (min-width: 600px) {
     body {
       font-size: 80%;
@@ -352,11 +316,7 @@
       position: relative;
     }
     .player-indicator {
-      // border-top: 12px solid var(--player-color);
       border-top: none;
-      // border-bottom: 6px solid var(--player-color);
-      // outline: 19px solid rgba(0, 0, 0, 0.5);
-      // outline-offset: -13px;
       color: #eee;
       transition: all 0.5s;
       display: flex;
@@ -424,35 +384,24 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <div class="player-indicator" }>
-      <h2 class="player-indicator-heading">Loading players data...</h2>
-    </div>
+    <h2 class="player-indicator-heading">Loading players data...</h2>
   {:else}
-    <div
-      class="player-indicator"
-      style={`--player-color: ${currentPlayer.colorMain}`}>
-
-      <div class="statusbar">
-
-        <div class="buttons-wrapper" id="buttons-wrapper">
-          <div id="theme-switch-wrapper">
-            <NightModeToggle />
-          </div>
-          <!-- <div id="tally-points-wrapper">
+    <div class="buttons-wrapper" id="buttons-wrapper">
+      <div id="theme-switch-wrapper">
+        <NightModeToggle />
+      </div>
+      <!-- <div id="tally-points-wrapper">
             <CountPoints {players} on:playersScored={playersScored} />
           </div> -->
-          <div class="modal-wrapper" id="menu-modal-wrapper">
-            <Modal>
-              <MenuModal />
-            </Modal>
-          </div>
-          <div class="modal-wrapper" id="settings-modal-wrapper">
-            <Modal>
-              <SettingsModal />
-            </Modal>
-          </div>
-
-        </div>
+      <div class="modal-wrapper" id="menu-modal-wrapper">
+        <Modal>
+          <MenuModal />
+        </Modal>
+      </div>
+      <div class="modal-wrapper" id="settings-modal-wrapper">
+        <Modal>
+          <SettingsModal />
+        </Modal>
       </div>
     </div>
   {/if}
