@@ -1,5 +1,5 @@
 <script>
-  import GameInit from "./GameInit.svelte";
+  import SettingsMenu from "./SettingsMenu.svelte";
 
   export let message;
 </script>
@@ -13,4 +13,4 @@
 </style>
 
 <h2 class="modal-title">{message}</h2>
-<GameInit />
+<SettingsMenu />
