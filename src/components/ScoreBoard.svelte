@@ -165,6 +165,10 @@
     // let scaleValue = windowWidth / width / 5;
     let scaleValue = windowWidth / width / placardWidthRatio;
     let scaleWidth = `--scale-width: ${scaleValue}`;
+    document.documentElement.style.setProperty(
+      "--placard-scale-value",
+      scaleValue
+    );
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
       let pColor = `--player-color: ${players[i].colorMain};`;

@@ -187,8 +187,12 @@
   }
 
   #tally-points-wrapper {
-    margin: 0rem 0rem 1.5rem 1rem;
+    margin: 0rem 2rem 1.5rem 1rem;
     display: flex;
+    // width: 100%;
+    // transform: scale(var(--placard-scale-value));
+    // width: 237px;
+    // transform-origin: top left;
   }
 
   .statusbar-container {
