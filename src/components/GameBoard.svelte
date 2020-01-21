@@ -157,7 +157,7 @@
       gameHistoryFlat = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       if (gameHistoryFlat.length > 0) {
         storeGameInProgress.set(true);
-        localStorage.setItem("gameInProgress", true);
+        
       } else {
         storeGameInProgress.set(false);
         localStorage.removeItem("gameInProgress");

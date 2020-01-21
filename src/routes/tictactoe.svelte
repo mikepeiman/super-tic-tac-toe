@@ -16,6 +16,7 @@
     storeViewportSize,
     storeState,
     storeMoveNumber,
+    storeMovesRemaining,
     storePlayers,
     storeCurrentPlayer,
     storeDirectionArrays,
@@ -28,10 +29,16 @@
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
 
-  $: state = null;
-  $: moveNumber = 0;
-  $: movesRemaining = 0;
-  let players, settings, currentPlayer, gameboardWidth;
+  // $: state = null;
+  // $: moveNumber = 0;
+  // $: movesRemaining = 0;
+  let players,
+    settings,
+    currentPlayer,
+    gameboardWidth,
+    moveNumber,
+    movesRemaining,
+    state;
 
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
@@ -42,19 +49,10 @@
       );
     }
   });
-
-  onMount(() => {
-    console.log(`TicTacToe.svelte onMount, emojis ${emojis[55]}`);
-    storeState.subscribe(val => {
-      state = val;
-    });
-    storePlayers.subscribe(value => {
-      players = value;
-      // console.log(`TicTacToe => storePlayers subscribed`, value);
-    });
-    storeSettings.subscribe(value => {
-      console.log(`TicTacToe => storeSettings.subscribe value => `, value);
-      settings = value;
+  storeSettings.subscribe(value => {
+    console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+    settings = value;
+    if (typeof window !== "undefined") {
       let lsMovesFromTurnHistory = JSON.parse(
         localStorage.getItem("turnHistory")
       );
@@ -62,11 +60,31 @@
         lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
           .length;
       }
-
-      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
-      state.movesRemaining = movesRemaining;
+      // state.movesRemaining = movesRemaining;
+      storeMovesRemaining.set(movesRemaining);
+    }
+  });
+
+  onMount(() => {
+    console.log(`TicTacToe.svelte onMount, emojis ${emojis[55]}`);
+
+    storeState.subscribe(value => {
+      state = value;
+      movesRemaining = state.movesRemaining;
+      moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+      if (!moveNumber) {
+        moveNumber = 0;
+      }
     });
+    storeState.subscribe(val => {
+      state = val;
+    });
+    storePlayers.subscribe(value => {
+      players = value;
+      // console.log(`TicTacToe => storePlayers subscribed`, value);
+    });
+
     storeGameboardWidth.subscribe(val => {
       gameboardWidth = val;
     });

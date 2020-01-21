@@ -37,47 +37,29 @@
           .length;
       }
 
-      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
       state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
       state = value;
-      // console.log(
-      //   `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
-      //   value
-      // );
-      // console.log(
-      //   `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
-      //   value
-      // );
       movesRemaining = state.movesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
-      // console.log(
-      //   `StatusBar => storeState subscribed - move after LS: ${moveNumber}`
-      // );
     });
     players = $storePlayers;
-    // console.log(`StatusBar => onMount(() #1 state`, state);
     state = $storeState;
-    // console.log(`StatusBar => onMount(() #2 state`, state);
     settings = $storeSettings;
     if (localStorage.getItem("gameInProgress")) {
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     }
-    // currentPlayer = $storeCurrentPlayer;
-    // console.log(`//////////////     StatusBar => onMount() `, state, players);
     if (!currentPlayer) {
       console.log(`StatusBar => if (!(currentPlayer)), set to players[0]`);
       currentPlayer = players[0];
