@@ -706,7 +706,7 @@
 
 {#await players then players}
   {#await settings then settings}
-    {#await state then state}
+
       <div
         class="page-container"
         style={`--player-color: ${currentPlayer.colorMain}`}>
@@ -773,6 +773,6 @@
           <StatusBar />
         </div>
       </div>
-    {/await}
+
   {/await}
 {/await}
