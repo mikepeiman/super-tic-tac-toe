@@ -3,7 +3,7 @@
   import GameBoard from "./../components/GameBoard.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
-  import StatusBar from "./../components/StatusBar.svelte";
+  import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
@@ -98,7 +98,7 @@
   });
 
   function resetGame() {
-    console.log(`TicTacToe => reset bubbled from StatusBar`);
+    console.log(`TicTacToe => reset bubbled from OptionsWidget`);
   }
 
   function moveNotification(cell) {
@@ -168,7 +168,7 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". . statusbar"
+      ". . optionswidget"
       "scoreboard gameboard ."
       "scoreboard gameboard SettingsMenu";
     min-height: 100vh;
@@ -227,8 +227,8 @@
     // transform-origin: top left;
   }
 
-  .statusbar-container {
-    grid-area: statusbar;
+  .optionswidget-container {
+    grid-area: optionswidget;
     min-height: 10vh;
   }
 
@@ -401,7 +401,7 @@
     }
   }
 
-  :global(.statusbar-slim-wrapper) {
+  :global(.optionswidget-slim-wrapper) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -491,7 +491,7 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . statusbar"
+        ". . optionswidget"
         "scoreboard gameboard ."
         "scoreboard gameboard SettingsMenu";
       min-height: 100vh;
@@ -502,7 +502,7 @@
       grid-template-rows: 5vh 5vh auto;
       transition: all 0.25s;
     }
-    .statusbar-container {
+    .optionswidget-container {
       min-height: 15vh;
       max-height: 15vh;
     }
@@ -686,7 +686,7 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . statusbar"
+        ". . optionswidget"
         "scoreboard gameboard ."
         "scoreboard gameboard SettingsMenu";
       min-height: 100vh;
@@ -733,7 +733,7 @@
         </div>
         <div class="gameboard-container">
           {#if currentPlayer}
-            <div class="statusbar-slim-wrapper">
+            <div class="optionswidget-slim-wrapper">
 
               <div class="player-status-detail" id="player-name">
                 <h2
@@ -768,8 +768,8 @@
 
           <GameBoard />
         </div>
-        <div class="statusbar-container">
-          <StatusBar />
+        <div class="optionswidget-container">
+          <OptionsWidget />
         </div>
       </div>
 
