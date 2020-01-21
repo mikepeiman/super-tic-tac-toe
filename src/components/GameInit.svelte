@@ -1,6 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
-  import MainMenu from "./MainMenu.svelte";
+  import SettingsMenu from "./SettingsMenu.svelte";
   const dispatch = createEventDispatcher();
   import { writable } from "svelte/store";
   import {
@@ -193,7 +193,7 @@
   }
 
   function updateGameSettings(e) {
-    console.log(`GameInit => reset bubbled from MainMenu settings change`, e);
+    console.log(`GameInit => reset bubbled from SettingsMenu settings change`, e);
     settings = e.detail;
     // storeSettings.set(e.detail);
   }
@@ -230,4 +230,4 @@
   }
 </style>
 
-<MainMenu on:updateGameSettings={updateGameSettings} />
+<SettingsMenu on:updateGameSettings={updateGameSettings} />

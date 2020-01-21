@@ -1,5 +1,6 @@
 <script>
-  import Content from "./modalOne.svelte";
+  import MenuModal from "./GameMenuModal.svelte";
+  import SettingsModal from "./SettingsModal.svelte";
   import NightModeToggle from "./NightModeToggle.svelte";
   import Modal from "svelte-simple-modal";
   import { getContext } from "svelte";
@@ -127,60 +128,6 @@
     players = e.detail;
     localStorage.setItem("state", JSON.stringify(state));
     dispatch("playersScored", players);
-  }
-
-  function resetGame() {
-    localStorage.removeItem("gameboard");
-    localStorage.removeItem("gameHistoryFlat");
-    localStorage.removeItem("gameHistoryTurns");
-    localStorage.removeItem("turnHistory");
-    localStorage.removeItem("lines");
-    localStorage.removeItem("moveNumber");
-    let currentPlayerId = state.currentPlayer.id;
-    localStorage.setItem(
-      "state",
-      JSON.stringify({
-        lastTicked: "",
-        currentPlayer: players[0],
-        movesRemaining: settings.movesPerTurn,
-        turn: 0,
-        gameHistory: [],
-        turnHistory: [],
-        clickCount: 0,
-        moveNumber: 0,
-        reset: false
-      })
-    );
-    localStorage.removeItem("gameInProgress");
-
-    players.forEach(player => {
-      player.lines = [];
-      player.totalScore = 0;
-      player.dirScoresByIndex = [0, 0, 0, 0];
-    });
-    localStorage.setItem("players", JSON.stringify(players));
-    location.reload();
-    dispatch("resetGame", true);
-  }
-
-  function resetPlayers() {
-    storePreservePlayerDetails.set(false);
-    localStorage.removeItem("preservePlayerDetails");
-    localStorage.removeItem("players");
-    localStorage.removeItem("state");
-    localStorage.removeItem("currentPlayer");
-    localStorage.removeItem("directionArrays");
-    localStorage.removeItem("state");
-    resetGame();
-    location.reload();
-    dispatch("resetGame", true);
-  }
-
-  function saveGame() {
-    // storeGameInProgress.set(true);
-  }
-  function loadGame() {
-    // storeGameInProgress.set(false);
   }
 
   function setSingleInputWidth(input) {
@@ -342,7 +289,7 @@
     padding: 1rem;
   }
 
-  #modal-wrapper {
+  #menu-modal-wrapper {
     top: -3px;
     position: relative;
   }
@@ -416,7 +363,7 @@
     //   top: 0;
     //   position: relative;
     // }
-    #modal-wrapper {
+    #menu-modal-wrapper {
       top: 0;
       position: relative;
     }
@@ -510,9 +457,14 @@
           <!-- <div id="tally-points-wrapper">
             <CountPoints {players} on:playersScored={playersScored} />
           </div> -->
-          <div id="modal-wrapper">
+          <div class="modal-wrapper" id="menu-modal-wrapper">
             <Modal>
-              <Content />
+              <MenuModal />
+            </Modal>
+          </div>
+          <div class="modal-wrapper" id="settings-modal-wrapper">
+            <Modal>
+              <SettingsModal />
             </Modal>
           </div>
 

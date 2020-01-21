@@ -1,6 +1,6 @@
 <script>
   import { onMount, getContext } from "svelte";
-  import modalOneContent from "./modalOneContent.svelte";
+  import GameSettingsModalContent from "./GameSettingsModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
 
   const { open } = getContext("simple-modal");
@@ -23,7 +23,7 @@
 
   onMount(() => {
     storeViewportSize.subscribe(val => {
-      console.log(`storeViewportSize from modalOne: `, val);
+      console.log(`storeViewportSize from GameMenuModal: `, val);
       vWidth = val.width;
     });
 
@@ -64,7 +64,7 @@
   });
 
   const showModal = () => {
-    open(modalOneContent, { message: "Game Controls:" }, styling);
+    open(GameSettingsModalContent, { message: "Game Settings:" }, styling);
     console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`)
   };
 </script>
@@ -86,7 +86,7 @@
 
 <button
   class="control-button"
-  id="game-menu-button"
+  id="settings-menu-button"
   on:click={showModal}>
-  Game Menu
+  Settings
 </button>

@@ -31,20 +31,20 @@
   // let settings = Object.assign({}, initialSettings);
 
   onMount(() => {
-    console.log(`MainMenu onMount(), settings`, settings);
+    console.log(`SettingsMenu onMount(), settings`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
-      console.log(`MainMenu => currentPlayer from store: `, currentPlayer);
+      console.log(`SettingsMenu => currentPlayer from store: `, currentPlayer);
     });
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    console.log(`MainMenu => currentPlayer from ls: `, currentPlayer);
+    console.log(`SettingsMenu => currentPlayer from ls: `, currentPlayer);
     initializeSettingsFromLS();
     initialized = true;
     setAllInputWidths();
     storeSettings.set(settings);
     storeSettings.subscribe(value => {
-      console.log(`MainMenu => storeSettings.subscribe value => `, value);
+      console.log(`SettingsMenu => storeSettings.subscribe value => `, value);
     });
   });
 

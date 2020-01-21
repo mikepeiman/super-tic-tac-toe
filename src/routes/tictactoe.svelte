@@ -4,7 +4,7 @@
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
   import StatusBar from "./../components/StatusBar.svelte";
-  import MainMenu from "./../components/MainMenu.svelte";
+  import SettingsMenu from "./../components/SettingsMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
   // import Fa from "svelte-fa";
@@ -15,6 +15,7 @@
     storeGameboardWidth,
     storeViewportSize,
     storeState,
+    storeMoveNumber,
     storePlayers,
     storeCurrentPlayer,
     storeDirectionArrays,
@@ -68,6 +69,13 @@
     });
     storeGameboardWidth.subscribe(val => {
       gameboardWidth = val;
+    });
+    storeMoveNumber.subscribe(val => {
+      moveNumber = val;
+      let lsMoveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+      if (lsMoveNumber) {
+        moveNumber = lsMoveNumber;
+      }
     });
   });
 
@@ -142,9 +150,9 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-        ". . statusbar"
-        "scoreboard gameboard ."
-        "scoreboard gameboard mainmenu";
+      ". . statusbar"
+      "scoreboard gameboard ."
+      "scoreboard gameboard SettingsMenu";
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
@@ -206,9 +214,9 @@
     min-height: 10vh;
   }
 
-  .mainmenu-container {
+  .SettingsMenu-container {
     z-index: 9;
-    grid-area: mainmenu;
+    grid-area: SettingsMenu;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -467,7 +475,7 @@
       grid-template-areas:
         ". . statusbar"
         "scoreboard gameboard ."
-        "scoreboard gameboard mainmenu";
+        "scoreboard gameboard SettingsMenu";
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
@@ -507,7 +515,7 @@
         margin-right: 1rem;
         align-items: flex-end;
       }
-      & #modal-wrapper {
+      & #menu-modal-wrapper {
         top: 0;
       }
       & #tally-points-wrapper,
@@ -524,7 +532,7 @@
       // margin-top: 1rem;
     }
 
-    .mainmenu-container {
+    .SettingsMenu-container {
       & .settings-wrapper {
         padding: 0.5rem 1.5rem;
       }
@@ -639,7 +647,7 @@
       align-items: center;
       margin-right: 0;
     }
-    .mainmenu-container {
+    .SettingsMenu-container {
       border-top: 6px solid rgba(0, 0, 0, 0);
     }
     button {
@@ -662,7 +670,7 @@
       grid-template-areas:
         ". . statusbar"
         "scoreboard gameboard ."
-        "scoreboard gameboard mainmenu";
+        "scoreboard gameboard SettingsMenu";
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
@@ -684,12 +692,10 @@
       <div
         class="page-container"
         style={`--player-color: ${currentPlayer.colorMain}`}>
-        <div class="mainmenu-container">
+        <div class="SettingsMenu-container">
           <GameInit />
         </div>
-        <div class="statusbar-container">
-          <StatusBar />
-        </div>
+
         <div class="scoreboard-container">
           <div id="tally-points-wrapper">
 
@@ -744,6 +750,9 @@
           {/if}
 
           <GameBoard />
+        </div>
+        <div class="statusbar-container">
+          <StatusBar />
         </div>
       </div>
     {/await}

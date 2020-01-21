@@ -25,6 +25,7 @@ let state = writable({
 });
 let directionArrays = writable(false);
 let currentPlayer = writable(false);
+let moveNumber = writable(false);
 let gameInProgress = writable(false);
 let preservePlayerDetails = writable(false);
 let gameHistoryFlat = writable(false);
@@ -79,6 +80,15 @@ export const storeState = {
     localStorage.setItem("state", JSON.stringify(val));
   }
 };
+
+export const storeMoveNumber = {
+  subscribe: moveNumber.subscribe,
+  set: val => {
+    moveNumber.set(val);
+    localStorage.setItem("moveNumber", JSON.stringify(val));
+  }
+};
+
 export const storeDirectionArrays = {
   subscribe: directionArrays.subscribe,
   set: val => {
