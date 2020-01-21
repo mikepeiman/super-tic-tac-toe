@@ -259,6 +259,7 @@
   .scoreboard-totals {
     display: flex;
     justify-content: space-between;
+    border-radius: 0 0 5px 5px;
     background: rgba(0, 0, 0, 0.5);
     // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
@@ -266,6 +267,7 @@
   .scoreboard-player {
     background: var(--player-color);
     position: absolute;
+    border-radius: 5px;
     left: 0;
     top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
@@ -393,7 +395,7 @@
 
   .highlighted {
     // outline: 5px solid var(--theme-fg);
-    box-shadow: 0 0 5px 5px var(--player-color-light);
+    box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
     position: relative;
     transition: all 0.25s;
     min-width: max-content;

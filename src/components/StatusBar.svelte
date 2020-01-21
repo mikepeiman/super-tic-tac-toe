@@ -427,7 +427,7 @@
     .player-indicator {
       // border-top: 12px solid var(--player-color);
       border-top: none;
-      border-bottom: 6px solid var(--player-color);
+      // border-bottom: 6px solid var(--player-color);
       // outline: 19px solid rgba(0, 0, 0, 0.5);
       // outline-offset: -13px;
       color: #eee;
