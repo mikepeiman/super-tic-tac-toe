@@ -706,71 +706,69 @@
 
 {#await players then players}
 
-      <div
-        class="page-container"
-        style={`--player-color: ${currentPlayer.colorMain}`}>
-        <div class="SettingsMenu-container">
-          <GameInit />
-        </div>
+  <div
+    class="page-container"
+    style={`--player-color: ${currentPlayer.colorMain}`}>
+    <GameInit />
 
-        <div class="scoreboard-container">
-          <div id="tally-points-wrapper">
+    <div class="scoreboard-container">
+      <div id="tally-points-wrapper">
 
-            <CountPoints {players} on:playersScored={playersScored} />
-            <button
-              class="control-button"
-              id="clear-game-button"
-              on:click={clearScores}>
-              <Fa
-                icon={faEmptySet}
-                color="var(--theme-fg)"
-                secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%,
-                60%, 1)" />
-              <span class="button-text">Clear Scores</span>
-            </button>
-          </div>
-          <ScoreBoard />
-        </div>
-        <div class="gameboard-container">
-          {#if currentPlayer}
-            <div class="optionswidget-slim-wrapper">
-
-              <div class="player-status-detail" id="player-name">
-                <h2
-                  class="player-name"
-                  style={`--player-color: ${currentPlayer.colorMain}`}>
-                  {currentPlayer.name}
-                </h2>
-                <span>{currentPlayer.marker}</span>
-              </div>
-
-              <div
-                id="moves-wrapper"
-                style={`--moves-wrapper-width: ${gameboardWidth}px`}>
-                <div class="player-status-detail" id="turn-moves">
-                  <span class="dynamic-value">{movesRemaining}</span>
-                  <p class="dynamic-wrapper">moves remaining in turn,</p>
-                  <span class="dynamic-value">{moveNumber}</span>
-                  <p class="dynamic-wrapper">
-                    {#if settings.rows}
-                      of {settings.rows * settings.columns} total moves played
-                    {/if}
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          {:else}
-            <div class="player-status-detail" id="player-name">
-              <h2>Loading...</h2>
-            </div>
-          {/if}
-
-          <GameBoard />
-        </div>
-        <div class="optionswidget-container">
-          <OptionsWidget />
-        </div>
+        <CountPoints {players} on:playersScored={playersScored} />
+        <button
+          class="control-button"
+          id="clear-game-button"
+          on:click={clearScores}>
+          <Fa
+            icon={faEmptySet}
+            color="var(--theme-fg)"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <span class="button-text">Clear Scores</span>
+        </button>
       </div>
+      <ScoreBoard />
+    </div>
+    <div class="gameboard-container">
+      {#if currentPlayer}
+        <div class="optionswidget-slim-wrapper">
+
+          <div class="player-status-detail" id="player-name">
+            <h2
+              class="player-name"
+              style={`--player-color: ${currentPlayer.colorMain}`}>
+              {currentPlayer.name}
+            </h2>
+            <span>{currentPlayer.marker}</span>
+          </div>
+
+          <div
+            id="moves-wrapper"
+            style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+            <div class="player-status-detail" id="turn-moves">
+              <span class="dynamic-value">{movesRemaining}</span>
+              <p class="dynamic-wrapper">moves remaining in turn,</p>
+              <span class="dynamic-value">{moveNumber}</span>
+              <p class="dynamic-wrapper">
+                {#if settings.rows}
+                  of {settings.rows * settings.columns} total moves played
+                {/if}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      {:else}
+        <div class="player-status-detail" id="player-name">
+          <h2>Loading...</h2>
+        </div>
+      {/if}
+
+      <GameBoard />
+    </div>
+    <div class="optionswidget-container">
+      <OptionsWidget />
+    </div>
+  </div>
 
 {/await}

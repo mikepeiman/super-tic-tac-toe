@@ -46,11 +46,11 @@
   function countPoints() {
     storePreservePlayerDetails.set(true);
     // let settings = JSON.parse(localStorage.getItem('settings'))
-    console.log(
-      "*************__________countPoints called________**************, settings, lines ",
-      settings,
-      lines
-    );
+    // console.log(
+    //   "*************__________countPoints called________**************, settings, lines ",
+    //   settings,
+    //   lines
+    // );
     // console.log(
     //   "players from countPoints before checking localStorage: ",
     //   players
@@ -65,16 +65,16 @@
     players.forEach(player => {
       // console.log(`CountPoints => players.forEach player, lines: `, lines);
       player.scores.forEach((direction, index) => {
-        console.log(
-          `||| player ||| ${player.name} |||.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
-          direction
-        );
+        // console.log(
+        //   `||| player ||| ${player.name} |||.scores.forEach direction.name and index: ${direction.name}, ${index} !!!!!!!!!!!!!!!!!!!!!!!!!!`,
+        //   direction
+        // );
         let thisScore = score(settings, direction, player, index);
-        console.log(
-          `\n\n!!!!!! POINTS ${thisScore.points} + ${thisScore.bonus} !!!!!!!!!!!!!!!!!!!!!!!!!!\n`,
-          thisScore,
-          `\n`
-        );
+        // console.log(
+        //   `\n\n!!!!!! POINTS ${thisScore.points} + ${thisScore.bonus} !!!!!!!!!!!!!!!!!!!!!!!!!!\n`,
+        //   thisScore,
+        //   `\n`
+        // );
         player["dirScoresByIndex"][index] = thisScore.points + thisScore.bonus;
         player["dirPointsByIndex"][index] = thisScore.points;
         player["dirBonusesByIndex"][index] = thisScore.bonus;
