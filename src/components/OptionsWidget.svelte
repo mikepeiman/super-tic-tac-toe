@@ -138,23 +138,21 @@
     flex-direction: column;
     align-items: flex-end;
     grid-area: controls;
-    padding: 8px;
+    padding: 0;
+    width: 6rem;
     justify-self: flex-end;
     justify-content: space-between;
-    & button {
+    & button.control-button {
       margin: 0.5rem;
+      width: 100%;
+      min-height: 2rem;
+      height: 100%;
+      max-height: 3rem;
+      display: block;
     }
     & .options-control-wrapper {
       margin: 0.5rem;
     }
-  }
-
-#theme-switch-wrapper {
-  margin: 0;
-}
-  #menu-modal-wrapper {
-    top: -3px;
-    position: relative;
   }
 
   .inputs-wrapper {
@@ -162,22 +160,10 @@
   }
 
   @media screen and (min-width: 600px) {
-    body {
-      font-size: 80%;
-    }
+
   }
   @media screen and (min-width: 900px) {
-    body {
-      font-size: 90%;
-    }
-    #buttons-wrapper {
 
-    }
-
-    #menu-modal-wrapper {
-      top: 0;
-      position: relative;
-    }
   }
 
   @media screen and (min-width: 1100px) {

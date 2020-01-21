@@ -42,7 +42,7 @@
         placardFactor && addStyles();
       }
 
-      console.log(`\n***window object***innerWidth ${window.innerWidth}\n`);
+      console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
     }
   }
 

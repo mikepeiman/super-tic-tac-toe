@@ -157,7 +157,6 @@
       gameHistoryFlat = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       if (gameHistoryFlat.length > 0) {
         storeGameInProgress.set(true);
-        
       } else {
         storeGameInProgress.set(false);
         localStorage.removeItem("gameInProgress");
@@ -195,9 +194,18 @@
     cellHeight = parseInt(
       ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
     );
+    console.log(`W:${cellWidth} > H:${cellHeight} cellSize: ${cellSize}`);
+    if(gameboardContainerWidth > gameboardContainerHeight) {
     console.log(
-      `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
+      `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
     );
+    } else {
+          console.log(
+      `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+    );
+    }
+    
+
     // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
     if (cellWidth >= cellHeight) {
       console.log(`W:${cellWidth} > H:${cellHeight}`);

@@ -136,27 +136,7 @@
 <style lang="scss" global>
   :global(:root) {
     --input-blue: 50, 200, 255;
-    // --theme-bg: #1a1a1a;
-    // --theme-color: #efefef;
   }
-  // [data-theme="dark"] {
-  //   --theme-bg: #efefef;
-  //   --theme-color: #1a1a1a;
-  // }
-
-  // body {
-  //   transition: all 0.25s;
-  //   &.dark-theme {
-  //     background: var(--theme-bg);
-  //     background: #1a1a1a;
-  //     transition: all.25s;
-  //   }
-  //   &.light-theme {
-  //     background: var(--theme-bg);
-  //     background: white;
-  //     transition: all.25s;
-  //   }
-  // }
 
   $input-blue: rgba(50, 200, 255, 1);
 
@@ -168,15 +148,14 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". . ."
-      "scoreboard gameboard optionswidget"
-      "scoreboard gameboard .";
+      ". gameboard ."
+      "scoreboard gameboard optionswidget";
+    grid-template-columns: 20vw 70vw 10vw;
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 5vh 5vh auto;
+    grid-template-rows: 5vh auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -230,6 +209,8 @@
   .optionswidget-container {
     grid-area: optionswidget;
     height: fit-content;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .SettingsMenu-container {
@@ -491,15 +472,14 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . ."
-        "scoreboard gameboard optionswidget"
-        "scoreboard gameboard .";
+        ". gameboard ."
+        "scoreboard gameboard optionswidget";
+      grid-template-columns: 20vw 70vw 10vw;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
       max-width: 100vw;
-      grid-template-columns: 20vw 60vw 20vw;
-      grid-template-rows: 5vh 5vh auto;
+      grid-template-rows: 5vh auto;
       transition: all 0.25s;
     }
     .optionswidget-container {
@@ -656,8 +636,6 @@
   }
 
   @media screen and (min-width: 1100px) {
-    .page-container {
-    }
   }
 
   @media screen and (min-width: 900px) {
@@ -686,15 +664,14 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". . ."
-        "scoreboard gameboard optionswidget"
-        "scoreboard gameboard .";
+        ". gameboard ."
+        "scoreboard gameboard optionswidget";
+      grid-template-columns: 20vw 70vw 10vw;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
       max-width: 100vw;
-      grid-template-columns: 20vw 60vw 20vw;
-      grid-template-rows: 5vh 5vh auto;
+      grid-template-rows: 5vh auto;
       transition: all 0.25s;
     }
   }

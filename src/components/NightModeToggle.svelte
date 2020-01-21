@@ -115,9 +115,12 @@
   /*Simple css to style it like a toggle switch*/
 
   :global(#theme-switch-wrapper) {
-    display: flex;
+display: -webkit-box;
+    display: block;
+    -webkit-box-align: center;
     align-items: center;
     margin-right: 1rem;
+    width: 100%;
   }
 
   .theme-switch {
@@ -126,7 +129,7 @@
     align-items: center;
     height: 2.5rem;
     position: relative;
-    width: 12ch;
+    // width: 12ch;
   }
 
   .theme-switch input {
@@ -143,7 +146,7 @@
     font-size: 0.75rem;
     font-weight: 400;
     top: -0.25rem;
-    right: 0.5rem;
+    right: 0.75rem;
   }
 
   .slider {
@@ -154,7 +157,7 @@
     cursor: pointer;
     // left: 0;
     position: absolute;
-    right: 0.5rem;
+    right: 0.95rem;
     top: 1rem;
     transition: 0.4s;
   }
