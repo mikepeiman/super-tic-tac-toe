@@ -200,34 +200,7 @@
 </script>
 
 <style lang="scss">
-  $title-margin: 1rem;
-  $title-padding-horizontal: 1rem;
-  $title-padding-vertical: 0.5rem;
-  $calc-padding: 2 * $title-padding-horizontal;
 
-  .player-indicator {
-    width: calc(100% - (2 * #{$title-padding-horizontal}));
-    background: var(--player-color);
-    transition: all 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding: $title-padding-vertical $title-padding-horizontal;
-    border-radius: 5px;
-    border-bottom: 5px solid rgba(0, 255, 155, 0.85);
-
-    & h2 {
-      margin: 0;
-    }
-  }
-
-  .player-status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(155, 55, 255, 0.75);
-  }
 </style>
 
 <SettingsMenu on:updateGameSettings={updateGameSettings} />
