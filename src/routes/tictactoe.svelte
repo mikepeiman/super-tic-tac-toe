@@ -377,46 +377,74 @@
     }
   }
 
-
-
   :global(.statusbar-slim-wrapper) {
     display: flex;
     justify-content: center;
     align-items: center;
-    & .player-name {
+    margin-bottom: 1rem;
+    color: var(--theme-fg);
+    & #player-name {
       background: var(--player-color);
-      // padding: .5rem;
-      // font-size: 1rem;
+      padding: 0 3rem 0 1rem;
+      position: relative;
       margin: 0 1rem 0 0;
       border-radius: 5px;
-      height: 2rem;
-    width: 2rem;
+      height: 3rem;
+      box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & h2 {
+        font-size: 1.25rem;
+        margin: 0 0.5rem 0 0;
+        & #text {
+          font-size: 3rem;
+        }
+      }
+      & span {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        height: 3rem;
+        align-self: center;
+        justify-self: center;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 1.25rem;
+        right: 0;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+      }
     }
     & #moves-wrapper {
-    display: flex;
-    flex-direction: row;
-    & .player-status-detail {
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      height: 3rem;
-      align-items: center;
-      & .dynamic-value {
-        margin: 0;
-        padding: 0;
-        background: var(--player-color);
-        height: 2rem;
-        width: 2rem;
-        border-radius: 5px;
+      & .player-status-detail {
         display: flex;
+        flex-direction: row;
         justify-content: center;
+        height: 3rem;
         align-items: center;
-      }
-      & .dynamic-wrapper {
-        padding: 0.5rem;
+        & .dynamic-value {
+          margin: 0;
+          padding: 0;
+          background: var(--player-color);
+          height: 2rem;
+          width: 2rem;
+          border-radius: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        & .dynamic-wrapper {
+          padding: 0.5rem;
+        }
       }
     }
-  }
   }
 
   // @media screen and (min-width: 320px) and (max-width: 820px) and (orientation: portrait) {
@@ -684,16 +712,17 @@
         </div>
         <div class="gameboard-container">
           {#if currentPlayer}
-<div class="statusbar-slim-wrapper">
-  
+            <div class="statusbar-slim-wrapper">
+
               <div class="player-status-detail" id="player-name">
                 <h2
                   class="player-name"
                   style={`--player-color: ${currentPlayer.colorMain}`}>
-                  {currentPlayer.name} {currentPlayer.marker}
+                  {currentPlayer.name}
                 </h2>
+                <span>{currentPlayer.marker}</span>
               </div>
-  
+
               <div
                 id="moves-wrapper"
                 style={`--moves-wrapper-width: ${gameboardWidth}px`}>
@@ -708,14 +737,13 @@
                   </p>
                 </div>
               </div>
-              
-</div>
+
+            </div>
           {:else}
             <div class="player-status-detail" id="player-name">
               <h2>Loading...</h2>
             </div>
           {/if}
-
 
           <GameBoard />
         </div>

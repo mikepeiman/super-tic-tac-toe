@@ -298,6 +298,7 @@
     }
     & .player-marker {
       transition: all 0.25s;
+      width: 2ch;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
@@ -463,10 +464,11 @@
   }
   .player-marker {
     background: var(--theme-bg);
-    padding: 0.5rem;
+    // padding: 0.5rem;
     // margin: 0.25rem;
     border-radius: 2px;
-    min-width: 2ch;
+    min-width: 3ch;
+    max-width: 3ch;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -533,49 +535,6 @@
 {#await players then players}
   <!-- {#await state then state} -->
   <div class="scoreboard-container-inner">
-    <!-- <span class="debug-output">Placard factor: {placardFactor}</span> -->
-    <div class="debug-output">
-      <label for="viewportWidth">
-        V-Width:
-        <input name="viewportWidth" type="number" bind:value={windowWidth} />
-      </label>
-      <label for="viewportHeight">
-        V-Height:
-        <input name="viewportHeight" type="number" bind:value={windowHeight} />
-      </label>
-      <label for="placardFactor">
-        PF:
-        <input
-          name="placardFactor"
-          type="number"
-          step=".25"
-          bind:value={placardFactor} />
-      </label>
-      <label for="viewportRatio">
-        VR (W:H):
-        <input
-          name="viewportRatio"
-          type="number"
-          step=".25"
-          bind:value={appViewport.ratio} />
-      </label>
-      <label for="placardWidthRatio">
-        VW / PF / 100:
-        <input
-          name="placardWidthRatio"
-          type="number"
-          step=".25"
-          bind:value={placardWidthRatio} />
-      </label>
-      <label for="placardViewRatio">
-        PF * VR:
-        <input
-          name="placardViewRatio"
-          type="number"
-          step=".25"
-          bind:value={placardViewRatio} />
-      </label>
-    </div>
     {#each players as player}
       <div
         class="scoreboard-player"
