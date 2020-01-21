@@ -141,6 +141,12 @@
     padding: 8px;
     justify-self: flex-end;
     justify-content: space-between;
+    & button {
+      margin: 0.5rem;
+    }
+    & .options-control-wrapper {
+      margin: 0.5rem;
+    }
   }
 
 #theme-switch-wrapper {
@@ -189,15 +195,15 @@
     <h2 class="player-indicator-heading">Loading players data...</h2>
   {:else}
     <div class="buttons-wrapper" id="buttons-wrapper">
-      <div id="theme-switch-wrapper">
+      <div  class="modal-wrapper options-control-wrapper" id="theme-switch-wrapper">
         <NightModeToggle />
       </div>
-      <div class="modal-wrapper" id="menu-modal-wrapper">
+      <div class="modal-wrapper options-control-wrapper" id="menu-modal-wrapper">
         <Modal>
           <MenuModal />
         </Modal>
       </div>
-      <div class="modal-wrapper" id="settings-modal-wrapper">
+      <div class="modal-wrapper options-control-wrapper" id="settings-modal-wrapper">
         <Modal>
           <SettingsModal />
         </Modal>

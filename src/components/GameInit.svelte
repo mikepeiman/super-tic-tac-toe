@@ -140,7 +140,7 @@
           marker: "x",
           colorMain: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
           colorLight: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 65%, 1)`,
-          colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 60%, 35%, 1)`,
+          colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 35%, 1)`,
           colorHue: `${(i + 1) * hueInterval + hueOffset}`,
           moves: 0,
           scores: [],

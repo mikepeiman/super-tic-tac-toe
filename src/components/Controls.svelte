@@ -141,7 +141,7 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
+    background: hsla(var(--player-color-hue), 75%, 50%, 0.5);
     color: var(--theme-fg);
     transition: all .1s;
     & svg {

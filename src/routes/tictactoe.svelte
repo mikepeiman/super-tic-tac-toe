@@ -229,7 +229,7 @@
 
   .optionswidget-container {
     grid-area: optionswidget;
-    min-height: 10vh;
+    height: fit-content;
   }
 
   .SettingsMenu-container {
