@@ -164,10 +164,15 @@
     transition: all .1s;
     & svg {
       margin-right: 0.25rem;
+      align-self: center;
+      font-size: 1.25rem;
     }
     & .button-text {
       position: relative;
       top: 0;
+      font-size: .75rem;
+      width: auto;
+      align-self: center;
     }
     &:hover {
       background: var(--player-color);

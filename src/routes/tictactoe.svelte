@@ -142,17 +142,15 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      "statusbar statusbar statusbar"
-      "mainmenu mainmenu mainmenu"
-      "scoreboard gameboard gameboard";
+        ". . statusbar"
+        "scoreboard gameboard ."
+        "scoreboard gameboard mainmenu";
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
     grid-template-columns: 20vw 60vw 20vw;
-    grid-template-rows: 16vh 13vh auto;
-    // background: var(--player-color);
-    // background-image: linear-gradient(125deg, var(--theme-bg), rgba(26,26,26, 0.7));
+    grid-template-rows: 5vh 5vh auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -467,15 +465,16 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        "statusbar statusbar statusbar"
-        "mainmenu mainmenu mainmenu"
-        "scoreboard gameboard gameboard";
-      min-height: calc(100vh - 10px);
-      max-height: calc(100vh - 10px);
-      // min-width: calc(100vw - 12px);
+        ". . statusbar"
+        "scoreboard gameboard ."
+        "scoreboard gameboard mainmenu";
+      min-height: 100vh;
+      max-height: 100vh;
+      min-width: 100vw;
       max-width: 100vw;
       grid-template-columns: 20vw 60vw 20vw;
-      grid-template-rows: 16vh 13vh auto;
+      grid-template-rows: 5vh 5vh auto;
+      transition: all 0.25s;
     }
     .statusbar-container {
       min-height: 15vh;
@@ -632,7 +631,6 @@
 
   @media screen and (min-width: 1100px) {
     .page-container {
-      grid-template-rows: 16vh 13vh auto;
     }
   }
 
@@ -662,15 +660,16 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        "statusbar statusbar statusbar"
-        "scoreboard  . ."
+        ". . statusbar"
+        "scoreboard gameboard ."
         "scoreboard gameboard mainmenu";
-      min-height: calc(100vh - 10px);
-      max-height: calc(100vh - 10px);
-      // min-width: calc(100vw - 12px);
+      min-height: 100vh;
+      max-height: 100vh;
+      min-width: 100vw;
       max-width: 100vw;
       grid-template-columns: 20vw 60vw 20vw;
-      // grid-template-rows: 18vh 7vh auto;
+      grid-template-rows: 5vh 5vh auto;
+      transition: all 0.25s;
     }
   }
 </style>
@@ -701,7 +700,6 @@
               on:click={clearScores}>
               <Fa
                 icon={faEmptySet}
-                size="1rem"
                 color="var(--theme-fg)"
                 secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%,
                 60%, 1)" />
