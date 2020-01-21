@@ -296,9 +296,9 @@
         transition: all 0.25s;
       }
     }
-    & .player-marker {
+    & input.player-marker {
       transition: all 0.25s;
-      width: 2ch;
+      width: 3.5ch;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
@@ -467,8 +467,8 @@
     // padding: 0.5rem;
     // margin: 0.25rem;
     border-radius: 2px;
-    min-width: 3ch;
-    max-width: 3ch;
+    min-width: 3.5ch;
+    max-width: 3.5ch;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,47 +493,18 @@
   //   }
   // }
   @media screen and (min-width: 600px) {
-    body {
-      font-size: 80%;
-    }
   }
   @media screen and (min-width: 900px) {
-    body {
-      font-size: 90%;
-    }
-
-    .scoreboard-player {
-      // left: 16px;
-    }
   }
 
   @media screen and (min-width: 1200px) {
-    body {
-      font-size: 100%;
-    }
   }
 
   @media screen and (min-width: 1500px) {
-    body {
-      font-size: 110%;
-    }
-  }
-
-  .debug-output {
-    visibility: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #ccc;
-    color: black;
-    padding: 8px;
-    z-index: 99;
-    width: 100%;
   }
 </style>
 
 {#await players then players}
-  <!-- {#await state then state} -->
   <div class="scoreboard-container-inner">
     {#each players as player}
       <div
@@ -601,4 +572,3 @@
     {/each}
   </div>
 {/await}
-<!-- {/await}  -->
