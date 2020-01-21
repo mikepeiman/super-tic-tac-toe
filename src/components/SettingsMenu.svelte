@@ -34,44 +34,28 @@
     console.log(`SettingsMenu onMount(), settings`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
-      console.log(`SettingsMenu => currentPlayer from store: `, currentPlayer);
     });
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    console.log(`SettingsMenu => currentPlayer from ls: `, currentPlayer);
     initializeSettingsFromLS();
-    initialized = true;
     setAllInputWidths();
     storeSettings.set(settings);
-    storeSettings.subscribe(value => {
-      console.log(`SettingsMenu => storeSettings.subscribe value => `, value);
-    });
   });
 
   function initializeSettingsFromLS() {
     let gameInProgress = localStorage.getItem("gameInProgress");
     let ls = JSON.parse(localStorage.getItem("settings"));
     if (ls !== null) {
-      console.log(
-        `loadSettingsFromLS >>>>>>>>>>>> NOT NULL \n\n`,
-        ls,
-        `\nCurrent settings: \n`,
-        settings
-      );
       settings = ls;
       storeSettings.set(ls);
-      // setTimeout(() => {
-      //   initialized = true;
-      // }, 5000);
+      initialized = true;
     }
   }
 
   function setSingleInputWidth(input) {
     if (!input.classList.contains("player-marker")) {
-      console.log(`this input is !NOT a player-marker `, input)
       input.style.width = `${input.value.toString().length + 0.5}ch`;
     } else {
-      console.log(`this input IS a player-marker `, input)
       input.style.width = `3ch`;
     }
   }
@@ -86,10 +70,6 @@
 
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    console.log(
-      `triggerGameBoardUpdate settings should write to LS, eg #players ${settings.numberOfPlayers}: `,
-      settings
-    );
     storeSettings.set(settings);
     setSingleInputWidth(e.target);
   }
