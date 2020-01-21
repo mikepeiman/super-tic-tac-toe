@@ -12,6 +12,7 @@
   import { writable } from "svelte/store";
   import {
     storeSettings,
+    storeGameboardWidth,
     storeViewportSize,
     storeState,
     storePlayers,
@@ -27,24 +28,10 @@
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
 
   $: state = null;
-  let players;
-  $: settings = null;
-  let currentPlayer;
+  $: moveNumber = 0;
+  $: movesRemaining = 0;
+  let players, settings, currentPlayer, gameboardWidth;
 
-  storeState.subscribe(value => {
-    // console.log(`TicTacToe => storeState.subscribe value => `, value);
-    // state = value
-  });
-  storeSettings.subscribe(value => {
-    // console.log(`TicTacToe => storeSettings.subscribe value => `, value);
-  });
-  storeGameInProgress.subscribe(value => {
-    // console.log(`TicTacToe => storeGameInProgress subscribed`, value);
-  });
-
-  storePreservePlayerDetails.subscribe(value => {
-    // console.log(`TicTacToe => storePreservePlayerDetails subscribed`, value);
-  });
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
     if (typeof window !== "undefined") {
@@ -56,10 +43,31 @@
   });
 
   onMount(() => {
-    console.log(`TicTacToe.svelte onMount, emojis `, emojis);
+    console.log(`TicTacToe.svelte onMount, emojis ${emojis[55]}`);
+    storeState.subscribe(val => {
+      state = val;
+    });
     storePlayers.subscribe(value => {
       players = value;
       // console.log(`TicTacToe => storePlayers subscribed`, value);
+    });
+    storeSettings.subscribe(value => {
+      console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+      settings = value;
+      let lsMovesFromTurnHistory = JSON.parse(
+        localStorage.getItem("turnHistory")
+      );
+      if (lsMovesFromTurnHistory) {
+        lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
+          .length;
+      }
+
+      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
+      movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
+      state.movesRemaining = movesRemaining;
+    });
+    storeGameboardWidth.subscribe(val => {
+      gameboardWidth = val;
     });
   });
 
@@ -197,9 +205,7 @@
 
   .statusbar-container {
     grid-area: statusbar;
-    // z-index: 10;
-    min-height: 15vh;
-    max-height: 15vh;
+    min-height: 10vh;
   }
 
   .mainmenu-container {
@@ -369,6 +375,48 @@
       padding: 0.5rem 0 0 0;
       border-bottom: 2.5px solid #eeeeee;
     }
+  }
+
+
+
+  :global(.statusbar-slim-wrapper) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .player-name {
+      background: var(--player-color);
+      // padding: .5rem;
+      // font-size: 1rem;
+      margin: 0 1rem 0 0;
+      border-radius: 5px;
+      height: 2rem;
+    width: 2rem;
+    }
+    & #moves-wrapper {
+    display: flex;
+    flex-direction: row;
+    & .player-status-detail {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      height: 3rem;
+      align-items: center;
+      & .dynamic-value {
+        margin: 0;
+        padding: 0;
+        background: var(--player-color);
+        height: 2rem;
+        width: 2rem;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      & .dynamic-wrapper {
+        padding: 0.5rem;
+      }
+    }
+  }
   }
 
   // @media screen and (min-width: 320px) and (max-width: 820px) and (orientation: portrait) {
@@ -604,32 +652,74 @@
 </div> -->
 
 {#await players then players}
-  <div
-    class="page-container"
-    style={`--player-color: ${currentPlayer.colorMain}`}>
-    <div class="mainmenu-container">
-      <GameInit />
-    </div>
-    <div class="statusbar-container">
-      <StatusBar />
-    </div>
-    <div class="scoreboard-container">
-      <div id="tally-points-wrapper">
+  {#await settings then settings}
+    {#await state then state}
+      <div
+        class="page-container"
+        style={`--player-color: ${currentPlayer.colorMain}`}>
+        <div class="mainmenu-container">
+          <GameInit />
+        </div>
+        <div class="statusbar-container">
+          <StatusBar />
+        </div>
+        <div class="scoreboard-container">
+          <div id="tally-points-wrapper">
 
-        <CountPoints {players} on:playersScored={playersScored} />
-        <button
-          class="control-button"
-          id="clear-game-button"
-          on:click={clearScores}>
-          <Fa icon={faEmptySet} size="1rem" color="var(--theme-fg)" secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-          <span class="button-text">Clear Scores</span>
-        </button>
+            <CountPoints {players} on:playersScored={playersScored} />
+            <button
+              class="control-button"
+              id="clear-game-button"
+              on:click={clearScores}>
+              <Fa
+                icon={faEmptySet}
+                size="1rem"
+                color="var(--theme-fg)"
+                secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%,
+                60%, 1)" />
+              <span class="button-text">Clear Scores</span>
+            </button>
+          </div>
+          <ScoreBoard />
+        </div>
+        <div class="gameboard-container">
+          {#if currentPlayer}
+<div class="statusbar-slim-wrapper">
+  
+              <div class="player-status-detail" id="player-name">
+                <h2
+                  class="player-name"
+                  style={`--player-color: ${currentPlayer.colorMain}`}>
+                  {currentPlayer.name} {currentPlayer.marker}
+                </h2>
+              </div>
+  
+              <div
+                id="moves-wrapper"
+                style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+                <div class="player-status-detail" id="turn-moves">
+                  <span class="dynamic-value">{movesRemaining}</span>
+                  <p class="dynamic-wrapper">moves remaining in turn,</p>
+                  <span class="dynamic-value">{moveNumber}</span>
+                  <p class="dynamic-wrapper">
+                    {#if settings.rows}
+                      of {settings.rows * settings.columns} total moves played
+                    {/if}
+                  </p>
+                </div>
+              </div>
+              
+</div>
+          {:else}
+            <div class="player-status-detail" id="player-name">
+              <h2>Loading...</h2>
+            </div>
+          {/if}
+
+
+          <GameBoard />
+        </div>
       </div>
-      <ScoreBoard />
-    </div>
-    <div class="gameboard-container">
-      <GameBoard />
-    </div>
-  </div>
-
+    {/await}
+  {/await}
 {/await}

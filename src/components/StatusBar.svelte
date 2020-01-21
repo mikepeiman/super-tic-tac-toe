@@ -226,11 +226,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    // background: rgba(0, 0, 0, 0.5);
-    // padding: 0.125rem;
-    // width: 100%;
-    // text-transform: lowercase;
-    color: #006f98;
+
     & p {
       font-size: 1rem;
     }
@@ -260,24 +256,25 @@
     & .dynamic-wrapper {
       position: relative;
       width: 21ch;
-      margin: 1rem 0 1rem -0.75rem;
-      color: var(--theme-fg);//hsla(130, 50%, 25%, 1);
+      color: var(--theme-fg); //hsla(130, 50%, 25%, 1);
     }
     & .dynamic-value {
-      background: hsla(var(--player-color-hue), 50%, 50%, 0.5);// hsla(130, 50%, 25%, 1); //var(--player-color);
+      background: hsla(
+        var(--player-color-hue),
+        50%,
+        50%,
+        0.5
+      ); // hsla(130, 50%, 25%, 1); //var(--player-color);
       border: none;
-      margin-top: 8px;
+      margin: 0 0.5ch 0 0;
       color: white;
       font-family: inherit;
       font-weight: 400;
       font-size: 1rem;
-      padding: 0.125rem 0.175rem;
       min-height: 2.25rem;
       min-width: 2.25rem;
       border-radius: 2px;
-      position: absolute;
-      left: -3.8rem;
-      top: 0;
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -317,7 +314,6 @@
     }
   }
   #moves-wrapper {
-    margin-left: 3.8rem;
     grid-area: moves;
     justify-self: center;
     display: flex;
@@ -462,17 +458,15 @@
       top: 0;
     }
     .player-status-detail {
-      margin: 0 1rem;
       & .dynamic-value {
-        min-height: 3rem;
-        min-width: 3rem;
-        margin-top: 0;
-        left: -3.3rem;
+        // min-height: 3rem;
+        // min-width: 3rem;
+        // margin-top: 0;
+        // left: -3.3rem;
       }
       & .dynamic-wrapper {
         position: relative;
         width: 22ch;
-        margin: 1rem;
       }
     }
   }
@@ -499,7 +493,7 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <div class="player-indicator"}>
+    <div class="player-indicator" }>
       <h2 class="player-indicator-heading">Loading players data...</h2>
     </div>
   {:else}
@@ -508,31 +502,7 @@
       style={`--player-color: ${currentPlayer.colorMain}`}>
 
       <div class="statusbar">
-        <div class="player-status-detail" id="player-name">
-          <h2
-            class="player-name"
-            style={`--player-color: ${currentPlayer.colorMain}`}>
-            {currentPlayer.name}
-            {currentPlayer.marker}
-          </h2>
-        </div>
 
-        <div
-          id="moves-wrapper"
-          style={`--moves-wrapper-width: ${gameboardWidth}px`}>
-          <div class="player-status-detail" id="turn-moves">
-
-            <span class="dynamic-value">{movesRemaining}</span>
-            <p class="dynamic-wrapper">moves remaining in turn</p>
-          </div>
-          <div class="player-status-detail" id="total-moves">
-
-            <span class="dynamic-value">{moveNumber}</span>
-            <p class="dynamic-wrapper">
-              of {settings.rows * settings.columns} total moves played
-            </p>
-          </div>
-        </div>
         <div class="buttons-wrapper" id="buttons-wrapper">
           <div id="theme-switch-wrapper">
             <NightModeToggle />
