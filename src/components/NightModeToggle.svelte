@@ -7,27 +7,25 @@
 
   const light = "#ededed";
   const dark = "#1a1a1a";
-  let elements, iconSunrise, iconSunset;
-  let currentThemeDark = false;
+  let elements;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
-    iconSunrise = document.querySelector(".sunrise");
-    iconSunset = document.querySelector(".sunset");
-
-    let currentTheme = localStorage.getItem("theme");
+    const currentTheme = localStorage.getItem("theme");
     currentTheme ? localStorage.getItem("theme") : null;
     toggleSwitch.checked = true;
     initStylesDark();
     if (currentTheme) {
       toggleStyles(currentTheme);
+      // page.classList = `page-container ${currentTheme}`;
+      // page.classList.toggle(currentTheme);
       console.log(`currentTheme from ls exists: ${currentTheme}`);
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       if (currentTheme === "light") {
-        currentThemeDark = false;
+        console.log(`currentTheme from ls is dark: ${currentTheme}`);
         toggleSwitch.checked = false;
         document.documentElement.style.setProperty("--theme-bg", light);
         document.documentElement.style.setProperty("--theme-fg", dark);
@@ -57,22 +55,15 @@
     toggleStyles(currentTheme);
   };
 
-  async function toggleStyles(theme) {
-    console.log('toggleStyles() called -----------======================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  function toggleStyles(theme) {
+    console.log(`toggleStyles() ====---------------=========================>>>>>>>>>>>>>>>>>>>>>> ${theme}`)
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
-    iconSunrise = document.querySelector(".sunrise");
-    iconSunset = document.querySelector(".sunset");
-    console.dir(iconSunrise)
-    console.dir(iconSunset)
-    console.dir(iconSunrise.classList)
-    console.dir(iconSunset.classList)
-    iconSunset.classList.toggle("hidden");
-    iconSunrise.classList.toggle("hidden");
+    const icons = document.querySelectorAll(".icons");
     if (settings) {
       elements = [page, settings];
     } else {
@@ -87,6 +78,11 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
+    if (icons) {
+      icons.forEach(icon => {
+        icon.classList.toggle("hidden")
+      });
+    }
     elements.forEach(el => {
       el.classList.toggle("dark");
       el.classList.toggle("light");
@@ -99,11 +95,8 @@
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
-    // iconSunrise = document.querySelector(".sunrise");
-    // iconSunset = document.querySelector(".sunset");
-    // iconSunset.style.classList.toggle("hidden");
-    // iconSunrise.style.classList.toggle("hidden");
     const settings = document.querySelector(".settings-wrapper");
+    const icons = document.querySelectorAll(".icons");
     if (settings) {
       elements = [page, settings];
     } else {
@@ -119,6 +112,11 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
+    if (icons) {
+      icons.forEach(icon => {
+        icon.classList.toggle("hidden")
+      });
+    }
     elements.forEach(el => {
       el.classList.remove("light");
       el.classList.remove("dark");
@@ -129,7 +127,7 @@
   // make an addStyles to set initial theme class on each element
 </script>
 
-<style lang="scss">
+<style lang="scss" global>
   /*Simple css to style it like a toggle switch*/
 
   :global(#theme-switch-wrapper) {
@@ -236,14 +234,12 @@
   <!-- </div> -->
   <div class="icon sunrise">
     <Fa
-      data-class="sunrise"
       icon={faSunrise}
       color="var(--theme-fg)"
       secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
   </div>
   <div class="icon sunset hidden">
     <Fa
-      data-class="sunset"
       icon={faSunset}
       color="var(--theme-fg)"
       secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />

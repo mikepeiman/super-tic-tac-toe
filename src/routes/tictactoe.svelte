@@ -575,14 +575,6 @@
           font-size: 0.75rem;
         }
       }
-      & .theme-switch {
-        & .toggle-text {
-          width: 11ch;
-        }
-        & .slider {
-          top: 14px;
-        }
-      }
     }
   }
   @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
@@ -689,9 +681,9 @@
         <span class="button-text">Clear Scores</span>
       </button>
     </div>
-    <div class="optionswidget-container">
+    <!-- <div class="optionswidget-container">
       <OptionsWidget />
-    </div>
+    </div> -->
     <!-- </div> -->
     <div class="topmenu-container">
       <TopMenu />
