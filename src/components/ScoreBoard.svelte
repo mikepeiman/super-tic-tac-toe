@@ -42,7 +42,9 @@
         placardFactor && addStyles();
       }
 
-      console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
+      console.log(
+        `\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`
+      );
     }
   }
 
@@ -165,31 +167,42 @@
     // let scaleValue = windowWidth / width / 5;
     let scaleValue = windowWidth / width / placardWidthRatio;
     let scaleWidth = `--scale-width: ${scaleValue}`;
+
     document.documentElement.style.setProperty(
       "--placard-scale-value",
       scaleValue
     );
     // console.log(`scaleValue2: ${scaleValue2}`);
-    placards.forEach((placard, i) => {
-      let pColor = `--player-color: ${players[i].colorMain};`;
-      let positionTop = `--position-top: ${i * (height * scaleValue) +
-        i * 16}px;`;
-      placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
-    });
-    for (let i = 0; i < 3; i++) {
-      let positionTop = `--position-top: ${i * (height * scaleValue) +
-        i * 16}px;`;
-      // console.log(
-      //   `setStyles()!!! --- ||| --- ::: iter ${i}
-      //   scaleValue ${scaleValue}
-      //   scaleValue2 ${scaleValue2}
-      //   windowWidth ${windowWidth}
-      //   placardWidthRatio
-      //   ${placardWidthRatio}
-      //   height * i ${i * height}
-      //     the final top pos: ${positionTop}`
-      // );
+    if (window.innerWidth > 1080) {
+      placards.forEach((placard, i) => {
+        let pColor = `--player-color: ${players[i].colorMain};`;
+        let positionTop = `--position-top: ${i * (height * scaleValue) +
+          i * 16}px;`;
+
+        placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
+      });
+    } else {
+      placards.forEach((placard, i) => {
+        let pColor = `--player-color: ${players[i].colorMain};`;
+
+        placard.style = pColor;
+      });
     }
+
+    // for (let i = 0; i < 3; i++) {
+    //   let positionTop = `--position-top: ${i * (height * scaleValue) +
+    //     i * 16}px;`;
+    //   // console.log(
+    //   //   `setStyles()!!! --- ||| --- ::: iter ${i}
+    //   //   scaleValue ${scaleValue}
+    //   //   scaleValue2 ${scaleValue2}
+    //   //   windowWidth ${windowWidth}
+    //   //   placardWidthRatio
+    //   //   ${placardWidthRatio}
+    //   //   height * i ${i * height}
+    //   //     the final top pos: ${positionTop}`
+    //   // );
+    // }
   }
 
   function addHighlightIfGameInProgress() {
@@ -325,6 +338,79 @@
     }
   }
 
+  @media screen and (max-width: 1080px) and (orientation: portrait) {
+    :global(.scoreboard-container) {
+      align-items: none;
+      justify-content: none;
+    }
+    :global(.scoreboard-container-inner) {
+      display: flex;
+      // max-width: calc(100vw - 1rem);
+      min-width: 100%;
+    }
+    :global(.gameboard-container) {
+      justify-content: center;
+      align-items: center;
+    }
+    .scoreboard-player {
+      display: flex;
+      background: var(--player-color);
+      position: relative;
+      border-radius: 5px;
+      margin: 0;
+      transition: all 0.25s;
+      min-width: max-content;
+      transition: all 0.25s;
+      z-index: -1;
+      & .total-score {
+        flex-direction: column;
+      }
+      & .scoreboard-totals {
+        flex-direction: column;
+      }
+      & .player-name {
+        transition: all 0.25s;
+        &.dark {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+        &.light {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+      }
+      & input.player-marker {
+        transition: all 0.25s;
+        width: 3.5ch;
+        &.dark {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+        &.light {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+      }
+      & .total-score-number {
+        transition: all 0.25s;
+        &.dark {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+        &.light {
+          background: var(--theme-bg);
+          color: var(--theme-fg);
+          transition: all 0.25s;
+        }
+      }
+    }
+  }
+
   :global(#sapper .svelte-emoji-picker__trigger) {
     min-height: 2rem;
     margin-right: 0.25rem;
@@ -413,7 +499,6 @@
     color: rgba(255, 255, 255, 0.5);
     font-weight: 100;
   }
-
   .direction-icon {
     margin: 0.5rem;
     filter: brightness(1) invert(1) opacity(0.5);

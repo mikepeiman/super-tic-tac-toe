@@ -479,19 +479,21 @@
 
   // }
 
-  @media screen and (min-width: 320px) and (max-width: 1080px) and (orientation: portrait) {
+  @media screen and (max-width: 1080px) and (orientation: portrait) {
     .page-container {
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". optionswidget"
-        "scoreboard gameboard";
-      grid-template-columns: 20vw 80vw;
+        "tallypoints optionswidget"
+        "statusbar statusbar"
+        "scoreboard scoreboard"
+        "gameboard gameboard";
+      grid-template-columns: auto;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
       max-width: 100vw;
-      grid-template-rows: 10vh auto;
+      grid-template-rows: 4rem 4rem 8rem auto;
     }
     .optionswidget-container {
       min-height: auto;
@@ -499,12 +501,16 @@
     }
     .statusbar-slim-wrapper {
       position: static;
+      grid-area: statusbar;
       border-radius: 5px;
       & .player-status-detail#player-name {
         border-radius: 0 0 5px 0;
         top: 0;
         // border-radius: 0 5px 0 0;
       }
+    }
+    #tally-points-wrapper {
+      grid-area: tallypoints;
     }
     .optionswidget-container {
       min-height: auto;
@@ -534,50 +540,6 @@
     }
   }
   @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
-  }
-
-  @media screen and (max-width: 900px) and (orientation: portrait) {
-    .page-container {
-      box-sizing: border-box;
-      display: grid;
-      grid-template-areas:
-        "optionswidget"
-        "scoreboard"
-        "gameboard";
-      grid-template-columns: auto;
-      min-height: 100vh;
-      max-height: 100vh;
-      min-width: 100vw;
-      max-width: 100vw;
-      grid-template-rows: 10vh 20vh auto;
-    }
-    
-    .optionswidget-container {
-      min-height: auto;
-      max-height: 10vh;
-      & #buttons-wrapper {
-        flex-direction: row-reverse;
-        width: auto;
-        align-items: center;
-        min-width: 50vw;
-        font-size: 1rem;
-        & .modal-wrapper.options-control-wrapper {
-          margin: 0 0.5rem 0 0;
-        }
-        & button.control-button {
-          width: 7rem;
-          font-size: 0.75rem;
-        }
-      }
-      & .theme-switch {
-        & .toggle-text {
-          width: 11ch;
-        }
-        & .slider {
-          top: 14px;
-        }
-      }
-    }
   }
 
   @media screen and (min-width: 900px) {
@@ -629,60 +591,54 @@
     class="page-container"
     style={`--player-color: ${currentPlayer.colorMain}`}>
     <GameInit />
-
+    <div id="tally-points-wrapper">
+      <CountPoints {players} on:playersScored={playersScored} />
+      <button
+        class="control-button"
+        id="clear-game-button"
+        on:click={clearScores}>
+        <Fa
+          icon={faEmptySet}
+          color="var(--theme-fg)"
+          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+        <span class="button-text">Clear Scores</span>
+      </button>
+    </div>
     <div class="scoreboard-container">
-      <div id="tally-points-wrapper">
-
-        <CountPoints {players} on:playersScored={playersScored} />
-        <button
-          class="control-button"
-          id="clear-game-button"
-          on:click={clearScores}>
-          <Fa
-            icon={faEmptySet}
-            color="var(--theme-fg)"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <span class="button-text">Clear Scores</span>
-        </button>
-      </div>
       <ScoreBoard />
     </div>
-    <div class="gameboard-container">
-      {#if currentPlayer}
-        <div class="statusbar-slim-wrapper">
-
-          <div class="player-status-detail" id="player-name">
-            <h2
-              class="player-name"
-              style={`--player-color: ${currentPlayer.colorMain}`}>
-              {currentPlayer.name}
-            </h2>
-            <span>{currentPlayer.marker}</span>
-          </div>
-
-          <div
-            id="moves-wrapper"
-            style={`--moves-wrapper-width: ${gameboardWidth}px`}>
-            <div class="player-status-detail" id="turn-moves">
-              <span class="dynamic-value">{movesRemaining}</span>
-              <p class="dynamic-wrapper">moves remaining in turn,</p>
-              <span class="dynamic-value">{moveNumber}</span>
-              <p class="dynamic-wrapper">
-                {#if settings.rows}
-                  of {settings.rows * settings.columns} total moves played
-                {/if}
-              </p>
-            </div>
-          </div>
-
-        </div>
-      {:else}
+    {#if currentPlayer}
+      <div class="statusbar-slim-wrapper">
         <div class="player-status-detail" id="player-name">
-          <h2>Loading...</h2>
+          <h2
+            class="player-name"
+            style={`--player-color: ${currentPlayer.colorMain}`}>
+            {currentPlayer.name}
+          </h2>
+          <span>{currentPlayer.marker}</span>
         </div>
-      {/if}
+        <div
+          id="moves-wrapper"
+          style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+          <div class="player-status-detail" id="turn-moves">
+            <span class="dynamic-value">{movesRemaining}</span>
+            <p class="dynamic-wrapper">moves remaining in turn,</p>
+            <span class="dynamic-value">{moveNumber}</span>
+            <p class="dynamic-wrapper">
+              {#if settings.rows}
+                of {settings.rows * settings.columns} total moves played
+              {/if}
+            </p>
+          </div>
+        </div>
 
+      </div>
+    {:else}
+      <div class="player-status-detail" id="player-name">
+        <h2>Loading...</h2>
+      </div>
+    {/if}
+    <div class="gameboard-container">
       <GameBoard />
     </div>
     <div class="optionswidget-container">
