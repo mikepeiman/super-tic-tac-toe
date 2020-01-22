@@ -90,5 +90,7 @@
   <Fa
     icon={faBars}
     color="var(--theme-fg)"
-    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />Menu
+    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
+    secondaryOpacity="1" />
+  Menu
 </button>

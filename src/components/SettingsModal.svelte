@@ -89,6 +89,7 @@
   <Fa
     icon={faSlidersH}
     color="var(--theme-fg)"
-    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-    Settings
+    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
+    secondaryOpacity="1" />
+  Settings
 </button>

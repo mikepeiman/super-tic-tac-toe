@@ -691,7 +691,8 @@
         <Fa
           icon={faEmptySet}
           color="var(--theme-fg)"
-          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
+          secondaryOpacity="1" />
         <span class="button-text">Clear Scores</span>
       </button>
     </div>

@@ -9,6 +9,7 @@
   import CountPoints from "./CountPoints.svelte";
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
+    import { faEraser } from "@fortawesome/pro-solid-svg-icons";
 
   export let state, players;
   import {
@@ -208,9 +209,10 @@
         id="clear-game-button"
         on:click={clearScores}>
         <Fa
-          icon={faEmptySet}
+          icon={faEraser}
           color="var(--theme-fg)"
-          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
+          secondaryOpacity="1" />
         Clear Scores
       </button>
     </div>
