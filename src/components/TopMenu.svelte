@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
+  import { faEmptySet } from "@fortawesome/pro-solid-svg-icons";
     import { faEraser } from "@fortawesome/pro-solid-svg-icons";
 
   export let state, players;

@@ -28,7 +28,7 @@
   } from "../stores.js";
 
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
+  import { faEmptySet } from "@fortawesome/pro-solid-svg-icons";
 
   let players,
     settings,
@@ -501,10 +501,12 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+      min-width: 90vw;
+      max-width: 90vw;
       & #theme-switch-wrapper {
         position: relative;
         width: auto;
-        margin-left: 6rem;
+        left: 3.75rem;
         & .icon {
           position: absolute;
           top: 0.6rem;
@@ -530,24 +532,33 @@
       & button.control-button {
         padding: 0.25rem;
         font-size: 0.75rem;
-        width: 6rem;
+        width: 5rem;
+        margin-right: 0.25rem;
       }
     }
     .gameboard-container {
       justify-content: center;
       align-items: center;
     }
+    .scoreboard-container {
+      min-width: 100vw;
+      max-width: 100vw;
+      overflow: auto;
+    }
     .menu-container {
       grid-area: menucontainer;
       display: flex;
       min-height: 2.5rem;
       max-height: 2.5rem;
+      min-width: 100vw;
+      max-width: 100vw;
     }
     .statusbar-slim-wrapper {
       position: static;
       grid-area: statusbar;
       border-radius: 0;
-      min-width: 100%;
+      min-width: 100vw;
+      max-width: 100vw;
       & .player-status-detail#player-name {
         border-radius: 0 0 5px 0;
         top: 0;

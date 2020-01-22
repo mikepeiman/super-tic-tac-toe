@@ -3,7 +3,7 @@
   import GameSettingsModalContent from "./GameSettingsModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
   import Fa from "sveltejs-fontawesome";
-  import { faSlidersH } from "@fortawesome/pro-duotone-svg-icons";
+  import { faSlidersH } from "@fortawesome/pro-solid-svg-icons";
   const { open } = getContext("simple-modal");
   let styling = {
     window: {

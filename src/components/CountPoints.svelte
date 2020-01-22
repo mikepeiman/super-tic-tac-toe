@@ -17,7 +17,7 @@
   export let players, wrapperClass;
 
   import Fa from "sveltejs-fontawesome";
-  import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
+  import { faAbacus } from "@fortawesome/pro-solid-svg-icons";
 
   $: lines = [];
   $: settings = {};
