@@ -22,15 +22,22 @@
   } from "../stores.js";
 
   let gameboardWidth = "500px";
+  let containerWidth = "1000px";
   $: {
     if (typeof window !== "undefined") {
       let gameboard = document.getElementById("gameboard");
+      let container = document.querySelector(".gameboard-container");
       if (gameboard) {
         gameboardWidth = gameboard.offsetWidth;
+        containerWidth = container.offsetWidth;
         console.log(`setGlobalCSSVars() gameboardwidth ${gameboardWidth}`);
         document.documentElement.style.setProperty(
           "--gameboard-width",
           `${gameboardWidth}px`
+        );
+        document.documentElement.style.setProperty(
+          "--gameboard-container-width",
+          `${containerWidth}px`
         );
       }
       // gameboardWidth;
