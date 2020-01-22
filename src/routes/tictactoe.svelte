@@ -485,11 +485,11 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        "topmenu topmenu"
-        "statusbar statusbar"
-        "scoreboard scoreboard"
-        "gameboard gameboard";
-      grid-template-columns: 6rem auto;
+        "topmenu "
+        "statusbar "
+        "scoreboard "
+        "gameboard ";
+      grid-template-columns: 1fr;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
@@ -499,7 +499,7 @@
     .topmenu-container {
       grid-area: topmenu;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: flex-start;
       & #theme-switch-wrapper {
         position: relative;
@@ -510,10 +510,10 @@
           top: 0.6rem;
           right: 3rem;
           opacity: 1;
-          transition: all .25s;
+          transition: all 0.25s;
           &.hidden {
             opacity: 0;
-            transition: all .25s;
+            transition: all 0.25s;
           }
         }
 
@@ -546,13 +546,27 @@
     .statusbar-slim-wrapper {
       position: static;
       grid-area: statusbar;
-      border-radius: 5px;
+      border-radius: 0;
+      min-width: 100%;
       & .player-status-detail#player-name {
         border-radius: 0 0 5px 0;
         top: 0;
         min-height: 2.5rem;
         max-height: 2.5rem;
-        // border-radius: 0 5px 0 0;
+        position: static;
+        padding: 0;
+        margin: 0;
+        background: var(--player-color);
+        border-radius: 0 2rem 2rem 0;
+        position: static;
+        padding: 0 1rem;
+        min-height: 100%;
+        // box-shadow: none;
+        & h2.player-name {
+          color: var(--theme-fg);
+          background: var(--player-color);
+          min-width: auto;
+        }
       }
     }
     #tally-points-wrapper {

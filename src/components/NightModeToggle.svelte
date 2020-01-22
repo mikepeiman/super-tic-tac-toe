@@ -181,7 +181,7 @@
   }
 
   .slider {
-    background-color: var(--theme-bg);
+    background-color: var(--theme-fg);
     width: 60px;
     height: 26px;
     bottom: 0;
@@ -194,7 +194,7 @@
   }
 
   .slider:before {
-    background-color: var(--theme-fg);
+    background-color: var(--theme-bg);
     bottom: 3px;
     content: "";
     height: 19.5px;
@@ -205,7 +205,7 @@
   }
 
   input:checked + .slider {
-    background: hsla(var(--player-color-hue), 75%, 50%, 0.5);
+    background: var(--player-color); // hsla(var(--player-color-hue), 50%, 50%, 0.75);
   }
 
   input:checked + .slider:before {
