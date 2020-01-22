@@ -379,8 +379,9 @@
     }
   }
 
-  :global(.optionswidget-slim-wrapper) {
+  :global(.statusbar-slim-wrapper) {
     display: flex;
+    font-size: 1rem;
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
@@ -397,19 +398,19 @@
       position: absolute;
       left: 0;
       margin: 0 1rem 0 0;
-      border-radius: 0 0 0 5px;
-      border-bottom: 5px solid var(--player-color);
       height: 3rem;
-
+      border-radius: 0 0 0 5px;
+      // border-bottom: 5px solid var(--player-color);
+      // outline: 2px solid var(--player-color);
+      // outline-offset: -10px;
+      box-shadow: 0 0 4px var(--player-color);
+      background: var(--player-color);
       display: flex;
       justify-content: center;
       align-items: center;
       & h2 {
-        font-size: 1.25rem;
-        margin: 0 0.5rem 0 0;
-        & #text {
-          font-size: 3rem;
-        }
+        font-size: 1rem;
+        margin: 0 1.5rem 0 0;
       }
       & span {
         display: flex;
@@ -420,14 +421,14 @@
         height: 3rem;
         align-self: center;
         justify-self: center;
-        font-size: 1.5rem;
-        position: absolute;
-        top: 1.25rem;
-        right: 0;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        -webkit-transform-origin: top left;
-        transform-origin: top left;
+        font-size: 1rem;
+        // position: absolute;
+        // top: 1.25rem;
+        // right: 0;
+        // -webkit-transform: translate(-50%, -50%);
+        // transform: translate(-50%, -50%);
+        // -webkit-transform-origin: top left;
+        // transform-origin: top left;
       }
     }
     & #moves-wrapper {
@@ -435,6 +436,7 @@
       flex-direction: row;
       position: relative;
       margin: 0 auto;
+      font-size: 1rem;
       & .player-status-detail {
         display: flex;
         flex-direction: row;
@@ -449,13 +451,14 @@
           width: 3rem;
           border-radius: 0;
           outline: 2px solid var(--player-color);
-    outline-offset: -10px;
+          outline-offset: -10px;
           display: flex;
           justify-content: center;
           align-items: center;
         }
         & .dynamic-wrapper {
           padding: 0.5rem;
+          font-size: .85rem;
         }
       }
     }
@@ -717,7 +720,7 @@
     </div>
     <div class="gameboard-container">
       {#if currentPlayer}
-        <div class="optionswidget-slim-wrapper">
+        <div class="statusbar-slim-wrapper">
 
           <div class="player-status-detail" id="player-name">
             <h2

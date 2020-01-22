@@ -838,17 +838,17 @@
     setTimeout(() => {
       gameboard.classList.remove("player-change");
     }, 500);
-    let playerIndicator = document.querySelector(".player-indicator");
-    playerIndicator.classList.remove(`player-${currentPlayer.id}`);
+    let statusBar = document.querySelector(".statusbar-slim-wrapper");
+    statusBar.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
       // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
       // currentPlayer = players[0];`);
       currentPlayer = players[0];
-      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
+      statusBar.style = `--player-color: ${currentPlayer.colorMain}`;
     } else {
       currentPlayer = players[id + 1];
-      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
+      statusBar.style = `--player-color: ${currentPlayer.colorMain}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;
@@ -859,13 +859,7 @@
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
-
-    // console.log(
-    //   `playerChanges, currentPlayer AFTER change:`,
-    //   currentPlayer.name
-    // );
-    // console.log(`playerIndicator`, playerIndicator);
-    playerIndicator.classList.add(`player-${currentPlayer.id}`);
+    statusBar.classList.add(`player-${currentPlayer.id}`);
   }
 </script>
 
