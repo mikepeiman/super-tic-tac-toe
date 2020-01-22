@@ -56,14 +56,19 @@
   };
 
   function toggleStyles(theme) {
-    console.log(`toggleStyles() ====---------------=========================>>>>>>>>>>>>>>>>>>>>>> ${theme}`)
+    console.log(
+      `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
+    );
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
-    const icons = document.querySelectorAll(".icons");
+    const icons = document.querySelectorAll(".icon");
+    console.log(
+      `toggleStyles() ====---------------====={   icons   }===>>>>>>>>>>>>>>>>>>>>>> ${icons}`
+    );
     if (settings) {
       elements = [page, settings];
     } else {
@@ -78,11 +83,17 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
-    if (icons) {
-      icons.forEach(icon => {
-        icon.classList.toggle("hidden")
-      });
-    }
+
+    icons.forEach((icon, i) => {
+      console.log(
+        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      );
+      icon.classList.toggle("hidden");
+      console.log(
+        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      );
+    });
+
     elements.forEach(el => {
       el.classList.toggle("dark");
       el.classList.toggle("light");
@@ -96,7 +107,7 @@
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
-    const icons = document.querySelectorAll(".icons");
+    const icons = document.querySelectorAll(".icon");
     if (settings) {
       elements = [page, settings];
     } else {
@@ -112,11 +123,15 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
-    if (icons) {
-      icons.forEach(icon => {
-        icon.classList.toggle("hidden")
-      });
-    }
+    icons.forEach((icon, i) => {
+      console.log(
+        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      );
+      icon.classList.toggle("hidden");
+      console.log(
+        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      );
+    });
     elements.forEach(el => {
       el.classList.remove("light");
       el.classList.remove("dark");
@@ -166,7 +181,7 @@
   }
 
   .slider {
-    background-color: var(--theme-fg);
+    background-color: var(--theme-bg);
     width: 60px;
     height: 26px;
     bottom: 0;
@@ -179,7 +194,7 @@
   }
 
   .slider:before {
-    background-color: var(--theme-bg);
+    background-color: var(--theme-fg);
     bottom: 3px;
     content: "";
     height: 19.5px;
