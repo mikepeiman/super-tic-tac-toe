@@ -458,7 +458,7 @@
         }
         & .dynamic-wrapper {
           padding: 0.5rem;
-          font-size: .85rem;
+          font-size: 0.85rem;
         }
       }
     }
@@ -479,175 +479,105 @@
 
   // }
 
-  @media screen and (min-width: 320px) and (max-width: 960px) and (orientation: landscape) {
+  @media screen and (min-width: 320px) and (max-width: 1080px) and (orientation: landscape) {
     .page-container {
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        ". gameboard ."
-        "scoreboard gameboard optionswidget";
-      grid-template-columns: 20vw 70vw 10vw;
+        ". optionswidget"
+        "scoreboard gameboard";
+      grid-template-columns: 20vw 80vw;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
       max-width: 100vw;
-      grid-template-rows: 5vh auto;
-      transition: all 0.25s;
+      grid-template-rows: 10vh auto;
     }
     .optionswidget-container {
-      min-height: 15vh;
-      max-height: 15vh;
+      min-height: auto;
+      max-height: 10vh;
     }
-    .player-indicator {
-      height: 100%;
-      min-height: 15vh;
-      max-height: 15vh;
-      & #moves-wrapper {
-        flex-direction: row;
-        min-width: 50vw;
-        justify-content: space-between;
-        margin: 0;
-      }
-      & #turn-moves {
+    .statusbar-slim-wrapper {
+      position: static;
+      border-radius: 5px;
+      & .player-status-detail#player-name {
+        border-radius: 0 0 5px 0;
         top: 0;
+        // border-radius: 0 5px 0 0;
       }
-      & #total-moves {
-        top: 0;
-      }
-      & #player-name::before {
-        border: 0;
-        display: none;
-      }
-
+    }
+    .optionswidget-container {
+      min-height: auto;
+      max-height: 10vh;
       & #buttons-wrapper {
-        justify-content: space-around;
-        flex-direction: column;
-        margin-right: 1rem;
-        align-items: flex-end;
-      }
-      & #menu-modal-wrapper {
-        top: 0;
-      }
-      & #tally-points-wrapper,
-      #clear-points-wrapper {
-        top: 0;
-      }
-    }
-    .gameboard-container {
-      align-items: center;
-      // margin-top: 1rem;
-    }
-
-    .scoreboard-container {
-      // margin-top: 1rem;
-    }
-
-    .SettingsMenu-container {
-      & .settings-wrapper {
-        padding: 0.5rem 1.5rem;
-      }
-    }
-    @media (max-width: 400px) {
-      #moves-wrapper {
-        margin-left: 3.8rem;
-        grid-area: moves;
-        justify-self: center;
-        display: flex;
-        flex-direction: column;
+        flex-direction: row-reverse;
+        width: auto;
         align-items: center;
-        justify-content: center;
-        // min-width: var(--moves-wrapper-width);
-        & .player-status-detail {
-          & .dynamic-value {
-            min-height: 2rem;
-            /* height: 2rem; */
-            font-size: 0.75rem;
-            margin: 0;
-            top: 0.5rem;
-            position: initial;
-          }
-          & .dynamic-wrapper {
-            font-size: 0.75rem;
-            margin: 0 0 0 0.25rem;
-          }
+        min-width: 50vw;
+        font-size: 1rem;
+        & .modal-wrapper.options-control-wrapper {
+          margin: 0 0.5rem 0 0;
         }
-      }
-      .player-indicator {
-        & #buttons-wrapper {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          grid-area: controls;
-          padding: 8px;
-          margin-right: 0;
-          justify-self: flex-end;
-          justify-content: space-between;
-          & button {
-            min-height: 1.5rem;
-          }
-          & #tally-game-button {
-            font-size: 0.5rem;
-            border: none;
-            height: 2rem;
-            &:hover {
-              border: none;
-            }
-          }
-          & #game-menu-button {
-            font-size: 0.5rem;
-            border: none;
-            height: 2rem;
-            &:hover {
-              border: none;
-            }
-          }
-        }
-        & #player-name h2 {
+        & button.control-button {
+          width: 7rem;
           font-size: 0.75rem;
         }
       }
-    }
-    @media (min-width: 820px) {
-      #moves-wrapper {
-        margin-left: 3.8rem;
-        grid-area: moves;
-        justify-self: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        // min-width: var(--moves-wrapper-width);
-      }
-      #buttons-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        grid-area: controls;
-        padding: 8px;
-        justify-self: flex-end;
-        justify-content: space-between;
-        &:nth-child(1) {
-          top: 3px;
+      & .theme-switch {
+        & .toggle-text {
+          width: 11ch;
         }
-        &:nth-child(2) {
-          top: -3px;
+        & .slider {
+          top: 14px;
         }
       }
     }
   }
-
   @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
-    .gameboard-container {
-      align-items: center;
-      margin-top: 1rem;
-    }
-
-    .scoreboard-container {
-      margin-top: 1rem;
-    }
   }
 
-  @media screen and (min-width: 1100px) {
+  @media screen and (max-width: 900px) and (orientation: portrait) {
+    .page-container {
+      box-sizing: border-box;
+      display: grid;
+      grid-template-areas:
+        "optionswidget"
+        "scoreboard"
+        "gameboard";
+      grid-template-columns: auto;
+      min-height: 100vh;
+      max-height: 100vh;
+      min-width: 100vw;
+      max-width: 100vw;
+      grid-template-rows: 10vh 20vh auto;
+    }
+    
+    .optionswidget-container {
+      min-height: auto;
+      max-height: 10vh;
+      & #buttons-wrapper {
+        flex-direction: row-reverse;
+        width: auto;
+        align-items: center;
+        min-width: 50vw;
+        font-size: 1rem;
+        & .modal-wrapper.options-control-wrapper {
+          margin: 0 0.5rem 0 0;
+        }
+        & button.control-button {
+          width: 7rem;
+          font-size: 0.75rem;
+        }
+      }
+      & .theme-switch {
+        & .toggle-text {
+          width: 11ch;
+        }
+        & .slider {
+          top: 14px;
+        }
+      }
+    }
   }
 
   @media screen and (min-width: 900px) {
