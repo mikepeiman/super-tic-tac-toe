@@ -479,7 +479,7 @@
 
   // }
 
-  @media screen and (min-width: 320px) and (max-width: 1080px) and (orientation: landscape) {
+  @media screen and (min-width: 320px) and (max-width: 1080px) and (orientation: portrait) {
     .page-container {
       box-sizing: border-box;
       display: grid;
