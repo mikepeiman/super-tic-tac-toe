@@ -250,7 +250,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" global>
   :root {
   }
   .scoreboard-container-inner {
@@ -339,21 +339,34 @@
   }
 
   @media screen and (max-width: 1080px) and (orientation: portrait) {
+    .statusbar-slim-wrapper {
+      max-width: 100%;
+      position: static;
+      & #player-name {
+        margin: 0 .5rem 0 0;
+        // min-width: auto;
+      }
+    }
     :global(.scoreboard-container) {
       align-items: none;
       justify-content: none;
     }
     :global(.scoreboard-container-inner) {
       display: flex;
+    
       // max-width: calc(100vw - 1rem);
       min-width: 100%;
     }
     :global(.gameboard-container) {
       justify-content: center;
       align-items: center;
+      & #player-name {
+        display: none;
+      }
     }
     .scoreboard-player {
       display: flex;
+      flex-direction: column;
       background: var(--player-color);
       position: relative;
       border-radius: 5px;
@@ -363,13 +376,15 @@
       transition: all 0.25s;
       z-index: -1;
       & .total-score {
-        flex-direction: column;
+        // flex-direction: column;
       }
       & .scoreboard-totals {
-        flex-direction: column;
+        // flex-direction: column;
       }
       & .player-name {
         transition: all 0.25s;
+        display: none;
+        margin: 0;
         &.dark {
           background: var(--theme-bg);
           color: var(--theme-fg);
@@ -381,7 +396,7 @@
           transition: all 0.25s;
         }
       }
-      & input.player-marker {
+      & .player-marker {
         transition: all 0.25s;
         width: 3.5ch;
         &.dark {
@@ -601,7 +616,7 @@
             class="player-name"
             type="text"
             bind:value={player.name}
-            placeholder={player.name}
+            placeholder={`${player.name} ${player.marker}`}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
 

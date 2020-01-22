@@ -5,6 +5,7 @@
   import CountPoints from "./../components/CountPoints.svelte";
   import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
+  import TopMenu from "./../components/TopMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
   // import Fa from "svelte-fa";
@@ -210,9 +211,9 @@
     justify-content: flex-end;
   }
 
-  .SettingsMenu-container {
+  .Settingsmenu-container {
     z-index: 9;
-    grid-area: SettingsMenu;
+    grid-area: Settingsmenu;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -484,20 +485,63 @@
       box-sizing: border-box;
       display: grid;
       grid-template-areas:
-        "tallypoints optionswidget"
+        "topmenu topmenu"
         "statusbar statusbar"
         "scoreboard scoreboard"
         "gameboard gameboard";
-      grid-template-columns: auto;
+      grid-template-columns: 6rem auto;
       min-height: 100vh;
       max-height: 100vh;
       min-width: 100vw;
       max-width: 100vw;
       grid-template-rows: 4rem 4rem 8rem auto;
     }
-    .optionswidget-container {
-      min-height: auto;
-      max-height: 10vh;
+    .topmenu-container {
+      grid-area: topmenu;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      & #theme-switch-wrapper {
+        position: relative;
+        width: auto;
+        margin-left: 6rem;
+        & .icon {
+          position: absolute;
+          top: 0.6rem;
+          right: 3rem;
+          opacity: 1;
+          transition: all .25s;
+          &.hidden {
+            opacity: 0;
+            transition: all .25s;
+          }
+        }
+
+        & svg {
+          font-size: 1.75rem;
+          margin-right: 1.25rem;
+          position: relative;
+          top: 3px;
+        }
+      }
+      & .modal-wrapper.options-control-wrapper {
+        margin-right: 0.5rem;
+      }
+      & button.control-button {
+        padding: 0.25rem;
+        font-size: 0.75rem;
+        width: 6rem;
+      }
+    }
+    .gameboard-container {
+      justify-content: center;
+      align-items: center;
+    }
+    .menu-container {
+      grid-area: menucontainer;
+      display: flex;
+      min-height: 2.5rem;
+      max-height: 2.5rem;
     }
     .statusbar-slim-wrapper {
       position: static;
@@ -506,15 +550,17 @@
       & .player-status-detail#player-name {
         border-radius: 0 0 5px 0;
         top: 0;
+        min-height: 2.5rem;
+        max-height: 2.5rem;
         // border-radius: 0 5px 0 0;
       }
     }
     #tally-points-wrapper {
       grid-area: tallypoints;
+      display: none;
     }
     .optionswidget-container {
-      min-height: auto;
-      max-height: 10vh;
+      display: none;
       & #buttons-wrapper {
         flex-direction: row-reverse;
         width: auto;
@@ -547,7 +593,7 @@
       align-items: center;
       margin-right: 0;
     }
-    .SettingsMenu-container {
+    .settingsmenu-container {
       border-top: 6px solid rgba(0, 0, 0, 0);
     }
     button {
@@ -591,19 +637,7 @@
     class="page-container"
     style={`--player-color: ${currentPlayer.colorMain}`}>
     <GameInit />
-    <div id="tally-points-wrapper">
-      <CountPoints {players} on:playersScored={playersScored} />
-      <button
-        class="control-button"
-        id="clear-game-button"
-        on:click={clearScores}>
-        <Fa
-          icon={faEmptySet}
-          color="var(--theme-fg)"
-          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-        <span class="button-text">Clear Scores</span>
-      </button>
-    </div>
+
     <div class="scoreboard-container">
       <ScoreBoard />
     </div>
@@ -641,8 +675,26 @@
     <div class="gameboard-container">
       <GameBoard />
     </div>
+    <!-- <div class="menu-container"> -->
+    <div id="tally-points-wrapper">
+      <CountPoints {players} on:playersScored={playersScored} />
+      <button
+        class="control-button"
+        id="clear-game-button"
+        on:click={clearScores}>
+        <Fa
+          icon={faEmptySet}
+          color="var(--theme-fg)"
+          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+        <span class="button-text">Clear Scores</span>
+      </button>
+    </div>
     <div class="optionswidget-container">
       <OptionsWidget />
+    </div>
+    <!-- </div> -->
+    <div class="topmenu-container">
+      <TopMenu />
     </div>
   </div>
 

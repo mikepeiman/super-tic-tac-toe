@@ -2,6 +2,8 @@
   import { onMount, getContext } from "svelte";
   import GameMenuModalContent from "./GameMenuModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
+  import Fa from "sveltejs-fontawesome";
+  import { faBars } from "@fortawesome/pro-duotone-svg-icons";
 
   const { open } = getContext("simple-modal");
   let styling = {
@@ -65,7 +67,7 @@
 
   const showModal = () => {
     open(GameMenuModalContent, { message: "Game Controls:" }, styling);
-    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`)
+    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
   };
 </script>
 
@@ -84,9 +86,9 @@
   }
 </style>
 
-<button
-  class="control-button"
-  id="game-menu-button"
-  on:click={showModal}>
-  Game Menu
+<button class="control-button" id="game-menu-button" on:click={showModal}>
+  <Fa
+    icon={faBars}
+    color="var(--theme-fg)"
+    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />Menu
 </button>

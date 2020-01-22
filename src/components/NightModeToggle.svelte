@@ -1,28 +1,33 @@
 <script>
   import { onMount } from "svelte";
+  import Fa from "sveltejs-fontawesome";
+  import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
+  import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
 
   const light = "#ededed";
   const dark = "#1a1a1a";
-  let elements;
+  let elements, iconSunrise, iconSunset;
+  let currentThemeDark = false;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
-    const currentTheme = localStorage.getItem("theme");
+    iconSunrise = document.querySelector(".sunrise");
+    iconSunset = document.querySelector(".sunset");
+
+    let currentTheme = localStorage.getItem("theme");
     currentTheme ? localStorage.getItem("theme") : null;
     toggleSwitch.checked = true;
     initStylesDark();
     if (currentTheme) {
       toggleStyles(currentTheme);
-      // page.classList = `page-container ${currentTheme}`;
-      // page.classList.toggle(currentTheme);
       console.log(`currentTheme from ls exists: ${currentTheme}`);
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       if (currentTheme === "light") {
-        console.log(`currentTheme from ls is dark: ${currentTheme}`);
+        currentThemeDark = false;
         toggleSwitch.checked = false;
         document.documentElement.style.setProperty("--theme-bg", light);
         document.documentElement.style.setProperty("--theme-fg", dark);
@@ -52,13 +57,22 @@
     toggleStyles(currentTheme);
   };
 
-  function toggleStyles(theme) {
+  async function toggleStyles(theme) {
+    console.log('toggleStyles() called -----------======================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
+    iconSunrise = document.querySelector(".sunrise");
+    iconSunset = document.querySelector(".sunset");
+    console.dir(iconSunrise)
+    console.dir(iconSunset)
+    console.dir(iconSunrise.classList)
+    console.dir(iconSunset.classList)
+    iconSunset.classList.toggle("hidden");
+    iconSunrise.classList.toggle("hidden");
     if (settings) {
       elements = [page, settings];
     } else {
@@ -85,6 +99,10 @@
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
+    // iconSunrise = document.querySelector(".sunrise");
+    // iconSunset = document.querySelector(".sunset");
+    // iconSunset.style.classList.toggle("hidden");
+    // iconSunrise.style.classList.toggle("hidden");
     const settings = document.querySelector(".settings-wrapper");
     if (settings) {
       elements = [page, settings];
@@ -115,7 +133,7 @@
   /*Simple css to style it like a toggle switch*/
 
   :global(#theme-switch-wrapper) {
-display: -webkit-box;
+    display: -webkit-box;
     display: block;
     -webkit-box-align: center;
     align-items: center;
@@ -157,8 +175,8 @@ display: -webkit-box;
     cursor: pointer;
     // left: 0;
     position: absolute;
-    right: 0.95rem;
-    top: 1rem;
+    right: 0;
+    top: 0.5rem;
     transition: 0.4s;
   }
 
@@ -216,6 +234,20 @@ display: -webkit-box;
   <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
   <!-- </div> -->
-  <span class="toggle-text">Dark Mode</span>
+  <div class="icon sunrise">
+    <Fa
+      data-class="sunrise"
+      icon={faSunrise}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <div class="icon sunset hidden">
+    <Fa
+      data-class="sunset"
+      icon={faSunset}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <!-- <span class="toggle-text">Dark Mode</span> -->
 
 </label>
