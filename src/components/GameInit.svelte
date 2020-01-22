@@ -10,6 +10,7 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
+    storeGameboardWidth,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
     storeGameHistoryFlat
@@ -19,6 +20,7 @@
   $: state = {};
   $: players = {};
   let settings = {};
+  let gameboardWidth;
   $: scoreDirections = [
     {
       id: 1,
@@ -76,16 +78,11 @@
     storeSettings.subscribe(value => {
       settings = value;
       ({ numberOfPlayers } = settings);
-      // ***
-      // DO NOT DO THE FOLLOWING - INFITINE LOOP!
-      // storeSettings.set(value)
-      // ***
-      console.log(
-        `GameInit => subscribed to settings, numberOfPlayers = ${numberOfPlayers}`
-      );
 
     });
-    // settings = $storeSettings;
+    storeGameboardWidth.subscribe(val => {
+      gameboardWidth = val;
+    })
     state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
@@ -122,7 +119,6 @@
     }
   });
 
-  afterUpdate(() => {});
 
   function initializePlayers() {
     let hueOffset = 110;

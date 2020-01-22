@@ -29,9 +29,6 @@
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
 
-  // $: state = null;
-  // $: moveNumber = 0;
-  // $: movesRemaining = 0;
   let players,
     settings,
     currentPlayer,
@@ -387,15 +384,23 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
+    border-radius: 0 0 5px 5px;
     color: var(--theme-fg);
+    min-width: var(--gameboard-width);
+    max-width: var(--gameboard-width);
+    background: var(--theme-bg);
+    box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
+    position: relative;
     & #player-name {
-      background: var(--player-color);
+      background: var(--theme-bg);
       padding: 0 3rem 0 1rem;
-      position: relative;
+      position: absolute;
+      left: 0;
       margin: 0 1rem 0 0;
-      border-radius: 5px;
+      border-radius: 0 0 0 5px;
+      border-bottom: 5px solid var(--player-color);
       height: 3rem;
-      box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
+
       display: flex;
       justify-content: center;
       align-items: center;
@@ -428,6 +433,8 @@
     & #moves-wrapper {
       display: flex;
       flex-direction: row;
+      position: relative;
+      margin: 0 auto;
       & .player-status-detail {
         display: flex;
         flex-direction: row;
@@ -437,10 +444,12 @@
         & .dynamic-value {
           margin: 0;
           padding: 0;
-          background: var(--player-color);
-          height: 2rem;
-          width: 2rem;
-          border-radius: 5px;
+          background: var(--theme-bg);
+          height: 3rem;
+          width: 3rem;
+          border-radius: 0;
+          outline: 2px solid var(--player-color);
+    outline-offset: -10px;
           display: flex;
           justify-content: center;
           align-items: center;

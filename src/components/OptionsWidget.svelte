@@ -21,7 +21,21 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  let gameboardWidth = "420px";
+  let gameboardWidth = "500px";
+  $: {
+    if (typeof window !== "undefined") {
+      let gameboard = document.getElementById("gameboard");
+      if (gameboard) {
+        gameboardWidth = gameboard.offsetWidth;
+        console.log(`setGlobalCSSVars() gameboardwidth ${gameboardWidth}`);
+        document.documentElement.style.setProperty(
+          "--gameboard-width",
+          `${gameboardWidth}px`
+        );
+      }
+      // gameboardWidth;
+    }
+  }
   $: currentPlayer = {};
 
   let colorMain, colorLight, colorDark, colorHue;
@@ -96,7 +110,6 @@
       currentPlayer = players[0];
       storeCurrentPlayer.set(currentPlayer);
     }
-
     setAllInputWidths();
   });
 
@@ -132,7 +145,6 @@
 </script>
 
 <style lang="scss">
-
   #buttons-wrapper {
     display: flex;
     flex-direction: column;
@@ -160,20 +172,15 @@
   }
 
   @media screen and (min-width: 600px) {
-
   }
   @media screen and (min-width: 900px) {
-
   }
 
   @media screen and (min-width: 1100px) {
-
   }
 
   @media screen and (min-width: 1500px) {
-
   }
-
 </style>
 
 {#await currentPlayer then currentPlayer}
@@ -181,15 +188,21 @@
     <h2 class="player-indicator-heading">Loading players data...</h2>
   {:else}
     <div class="buttons-wrapper" id="buttons-wrapper">
-      <div  class="modal-wrapper options-control-wrapper" id="theme-switch-wrapper">
+      <div
+        class="modal-wrapper options-control-wrapper"
+        id="theme-switch-wrapper">
         <NightModeToggle />
       </div>
-      <div class="modal-wrapper options-control-wrapper" id="menu-modal-wrapper">
+      <div
+        class="modal-wrapper options-control-wrapper"
+        id="menu-modal-wrapper">
         <Modal>
           <MenuModal />
         </Modal>
       </div>
-      <div class="modal-wrapper options-control-wrapper" id="settings-modal-wrapper">
+      <div
+        class="modal-wrapper options-control-wrapper"
+        id="settings-modal-wrapper">
         <Modal>
           <SettingsModal />
         </Modal>

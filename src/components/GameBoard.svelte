@@ -17,8 +17,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  let customMarkerSize;
-  let currentPlayerMark;
+  let customMarkerSize, currentPlayerMark, gameboardWidth;
   let settings = {};
   $: state = {};
   $: moveNumber = 0;
@@ -195,16 +194,15 @@
       ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
     );
     console.log(`W:${cellWidth} > H:${cellHeight} cellSize: ${cellSize}`);
-    if(gameboardContainerWidth > gameboardContainerHeight) {
-    console.log(
-      `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
-    );
+    if (gameboardContainerWidth > gameboardContainerHeight) {
+      console.log(
+        `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      );
     } else {
-          console.log(
-      `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
-    );
+      console.log(
+        `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      );
     }
-    
 
     // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
     if (cellWidth >= cellHeight) {
