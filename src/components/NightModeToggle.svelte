@@ -3,6 +3,8 @@
   import Fa from "sveltejs-fontawesome";
   import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
   import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
+  import { faSun } from "@fortawesome/pro-solid-svg-icons";
+  import { faMoon } from "@fortawesome/pro-solid-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
 
   const light = "#ededed";
@@ -205,7 +207,9 @@
   }
 
   input:checked + .slider {
-    background: var(--player-color); // hsla(var(--player-color-hue), 50%, 50%, 0.75);
+    background: var(
+      --player-color
+    ); // hsla(var(--player-color-hue), 50%, 50%, 0.75);
   }
 
   input:checked + .slider:before {
@@ -220,20 +224,6 @@
     border-radius: 50%;
   }
   @media (min-width: 900px) {
-    // .slider:before {
-    //   bottom: 3px;
-    //   // height: 26px;
-    //   left: 5px;
-    //   // width: 26px;
-    // }
-
-    // input:checked + .slider:before {
-    //   transform: translateX(31px);
-    // }
-
-    // .slider.round {
-    //   border-radius: 34px;
-    // }
   }
 </style>
 
@@ -247,7 +237,7 @@
   <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
   <!-- </div> -->
-  <div class="icon sunrise">
+  <!-- <div class="icon sunrise">
     <Fa
       icon={faSunrise}
       color="var(--theme-fg)"
@@ -256,6 +246,18 @@
   <div class="icon sunset hidden">
     <Fa
       icon={faSunset}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div> -->
+  <div class="icon sun">
+    <Fa
+      icon={faSun}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <div class="icon moon hidden">
+    <Fa
+      icon={faMoon}
       color="var(--theme-fg)"
       secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
   </div>

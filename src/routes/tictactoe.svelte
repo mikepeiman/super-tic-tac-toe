@@ -520,10 +520,10 @@
         }
 
         & svg {
-          font-size: 1.75rem;
-          margin-right: 1.25rem;
-          position: relative;
-          top: 3px;
+          font-size: 20px;
+          position: absolute;
+          top: .25rem;
+          left: -.3rem;
         }
       }
       & .modal-wrapper.options-control-wrapper {
