@@ -16,6 +16,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
   import EmojiSelector from "svelte-emoji-selector";
+  let updateCount = 0
   $: windowWidth = 0;
   $: windowHeight = 0;
   $: appViewport = {};
@@ -32,14 +33,15 @@
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
-    if (typeof window !== "undefined") {
+    // if (typeof window !== "undefined") {
       if (players.length > 0) {
-        numberOfPlayers && addStyles();
-        window.innerWidth && addStyles();
-        placardFactor && addStyles();
+        console.log(`reactive addStyles, players.length > 0`)
+        // numberOfPlayers && addStyles(`updated numberOfPlayers ${numberOfPlayers}`);
+        // window.innerWidth && addStyles("updated window.innerWidth");
+        // placardFactor && addStyles("updated placardFactor");
       }
-      console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
-    }
+      // console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
+    // }
   }
   onMount(() => {
     getViewportSize();
@@ -53,15 +55,15 @@
     );
     // setPlacardPositions();
     storeSettings.subscribe(value => {
-      // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
       ({ numberOfPlayers } = settings);
-      addStyles();
+      // addStyles();
     });
     players = $storePlayers;
     state = $storeState;
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
       if (value === null) {
         currentPlayer = players[0];
@@ -84,7 +86,9 @@
     );
   });
   afterUpdate(() => {
-    // console.log(`afterUpdate()`)
+    updateCount++
+    console.log(`afterUpdate() count: ${updateCount}`)
+    addStyles(`addStyles() from afterUpdate`);
     addHighlightIfGameInProgress();
   });
   function onEmoji(event, player) {
@@ -134,9 +138,11 @@
     e.target.select();
     document.execCommand("selectall", null, false);
   }
-  async function addStyles() {
+  async function addStyles(message) {
+    console.log(`addStyles message => ${message}`)
     await players;
-    await document.getElementById("gameboard");
+    console.log(`addStyles message => ${message} awaited players, now continuing`)
+    // await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;
@@ -180,6 +186,7 @@
     }
   }
   function addHighlightIfGameInProgress() {
+    console.log(`addHighlightIfGameInProgress()`)
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {

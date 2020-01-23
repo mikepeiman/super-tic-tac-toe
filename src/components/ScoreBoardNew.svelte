@@ -40,9 +40,10 @@
   $: {
     if (typeof window !== "undefined") {
       if (players.length > 0) {
-        numberOfPlayers && addStyles();
-        window.innerWidth && addStyles();
-        placardFactor && addStyles();
+        console.log(`reactive addStyles, players.length > 0`)
+        numberOfPlayers && addStyles(`updated numberOfPlayers, ${numberOfPlayers}`);
+        // window.innerWidth && addStyles("updated window.innerWidth");
+        // placardFactor && addStyles("updated placardFactor");
       }
 
       // console.log(
@@ -56,7 +57,7 @@
     window.addEventListener(
       "resize",
       function() {
-        // console.log("resize!");
+        console.log("resized window calling addStyles!!!");
         addStyles();
       },
       true
@@ -67,7 +68,7 @@
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
       settings = value;
       ({ numberOfPlayers } = settings);
-      addStyles();
+      // addStyles();
     });
     players = $storePlayers;
     state = $storeState;
@@ -151,9 +152,11 @@
     document.execCommand("selectall", null, false);
   }
 
-  async function addStyles() {
+  async function addStyles(message) {
+    console.log(`addStyles message => ${message}`)
     await players;
-    await document.getElementById("gameboard");
+    console.log(`addStyles message => ${message} awaited players, now continuing`)
+    // await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
     let height = placard.offsetHeight;

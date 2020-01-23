@@ -613,6 +613,7 @@
       display: none;
     }
     .scoreboardnew-container {
+      grid-area: scoreboard;
       min-width: 100vw;
       max-width: 100vw;
       overflow: auto;
@@ -744,7 +745,7 @@
       <ScoreBoard />
     </div>
     <div class="scoreboardnew-container">
-      <ScoreBoardNew />
+      <!-- <ScoreBoardNew /> -->
     </div>
     {#if currentPlayer}
       <div class="statusbar-slim-wrapper">
