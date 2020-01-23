@@ -34,8 +34,8 @@ let gameHistoryFlat = writable(false);
 let players = writable(false);
 let gameHistoryTurns = writable([]);
 let buttonStyles = writable({
-  _color: "var(--theme-fg)",
-  _secondaryColor: "var(--player-color-light)",
+  _color: "var(--player-color-light)",
+  _secondaryColor: "var(--theme-fg)",
   _secondaryOpacity: "1"
 });
 

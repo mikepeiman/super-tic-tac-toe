@@ -151,7 +151,7 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". statusbar sidemenu"
+      "statusbar statusbar sidemenu"
       "scoreboard gameboard sidemenu";
     grid-template-columns: 20vw 70vw 10vw;
     min-height: 100vh;
@@ -186,7 +186,7 @@
     align-items: flex-start;
     height: fit-content;
     margin-left: 3rem;
-    background: var(--player-color-dark);
+    // background: var(--player-color-dark);
     padding: 0.5rem;
     border-radius: 0 0 0 5px;
     & #theme-switch-wrapper {
@@ -220,6 +220,10 @@
       font-size: 0.75rem;
       width: 5rem;
       margin-right: 0.25rem;
+      background: rgba(255, 255, 255, 0.15);
+      &:hover {
+        background: var(--player-color-dark);
+      }
     }
   }
 
@@ -275,21 +279,36 @@
       background: var(--theme-bg);
       left: 0;
       height: 3rem;
-      box-shadow: 0 0 4px var(--player-color);
+      // box-shadow: 0 0 4px var(--player-color);
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 0 0 5px 0;
       top: 0;
       margin: 0;
-      background: var(--player-color);
-      border-radius: 0 2rem 2rem 5px;
+      padding: 0;
+      // background: var(--player-color);
+      // border-radius: 0 2rem 2rem 5px;
       position: static;
-      padding: 0 1rem;
       min-height: 100%;
       max-height: 2.5rem;
+      width: 18vw;
+      background: rgba(255, 255, 255, 0.15);
+      border-right: 2px solid var(--player-color);
+      border-bottom: 2px solid var(--player-color);
+      // &::after {
+      // CSS rounded triangle
+      // content: "";
+      // position: absolute;
+      // left: 4rem;
+      // width: 3rem;
+      // height: 0;
+      // border-top: 1.5rem solid transparent;
+      // border-left: 2rem solid var(--player-color);
+      // border-bottom: 1.5rem solid transparent;
+      // border-radius: 2rem;
+      // }
       & h2 {
-        font-size: 1rem;
+        font-size: 1.25rem;
         margin: 0 1.5rem 0 0;
       }
       & span {
@@ -301,7 +320,9 @@
         height: 3rem;
         align-self: center;
         justify-self: center;
-        font-size: 1rem;
+        font-size: 2rem;
+        position: relative;
+        top: -5px;
         // position: absolute;
         // top: 1.25rem;
         // right: 0;
@@ -774,7 +795,8 @@
       <GameBoard />
     </div>
     <!-- <div class="menu-container"> -->
-    <div id="tally-points-wrapper">
+
+    <!-- <div id="tally-points-wrapper">
       <CountPoints on:playersScored={playersScored} />
       <button
         class="control-button"
@@ -787,7 +809,8 @@
           secondaryOpacity={_secondaryOpacity} />
         <span class="button-text">Clear Scores</span>
       </button>
-    </div>
+    </div> -->
+
     <div class="topmenu-container">
       <TopMenu />
     </div>
