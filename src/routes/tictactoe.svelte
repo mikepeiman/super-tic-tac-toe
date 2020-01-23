@@ -6,7 +6,7 @@
   import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
   import TopMenu from "./../components/TopMenu.svelte";
-    import SideMenu from "./../components/SideMenu.svelte";
+  import SideMenu from "./../components/SideMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
   // import Fa from "svelte-fa";
@@ -177,8 +177,8 @@
     display: flex;
     flex-direction: column;
     color: #eee;
-    justify-content: flex-start;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
     height: auto;
     // margin-right: 1rem;
     // background: #1a1a1a;
@@ -187,7 +187,7 @@
       z-index: 8;
     }
   }
-  
+
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
@@ -200,6 +200,105 @@
     align-items: flex-start;
   }
 
+  .statusbar-slim-wrapper {
+    grid-area: statusbar;
+    display: flex;
+    font-size: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-radius: 0 0 5px 5px;
+    color: var(--theme-fg);
+    min-width: 100%;
+    // min-width: var(--gameboard-width);
+    // max-width: var(--gameboard-width);
+    background: var(--theme-bg);
+    box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
+    position: relative;
+    height: 3rem;
+    & #player-name {
+      background: var(--theme-bg);
+      padding: 0 3rem 0 1rem;
+      position: absolute;
+      left: 0;
+      margin: 0 1rem 0 0;
+      height: 3rem;
+      border-radius: 0 0 0 5px;
+      // border-bottom: 5px solid var(--player-color);
+      // outline: 2px solid var(--player-color);
+      // outline-offset: -10px;
+      box-shadow: 0 0 4px var(--player-color);
+      background: var(--player-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 0 5px 0;
+      top: 0;
+      min-height: 2.5rem;
+      max-height: 2.5rem;
+      position: static;
+      padding: 0;
+      margin: 0;
+      background: var(--player-color);
+      border-radius: 0 2rem 2rem 0;
+      position: static;
+      padding: 0 1rem;
+      min-height: 100%;
+      & h2 {
+        font-size: 1rem;
+        margin: 0 1.5rem 0 0;
+      }
+      & span {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        height: 3rem;
+        align-self: center;
+        justify-self: center;
+        font-size: 1rem;
+        // position: absolute;
+        // top: 1.25rem;
+        // right: 0;
+        // -webkit-transform: translate(-50%, -50%);
+        // transform: translate(-50%, -50%);
+        // -webkit-transform-origin: top left;
+        // transform-origin: top left;
+      }
+    }
+    & #moves-wrapper {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      margin: 0 auto;
+      font-size: 1rem;
+      & .player-status-detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        height: 3rem;
+        align-items: center;
+        & .dynamic-value {
+          margin: 0;
+          padding: 0;
+          background: var(--theme-bg);
+          height: 3rem;
+          width: 3rem;
+          border-radius: 0;
+          outline: 2px solid var(--player-color);
+          outline-offset: -10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        & .dynamic-wrapper {
+          padding: 0.5rem;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
   #tally-points-wrapper {
     margin: 0rem 2rem 1.5rem 1rem;
     display: flex;
@@ -216,7 +315,7 @@
     justify-content: flex-end;
   }
 
-  .Settingsmenu-container {
+  .settingsmenu-container {
     z-index: 9;
     grid-area: Settingsmenu;
     margin: 0;
@@ -385,92 +484,6 @@
     }
   }
 
-  :global(.statusbar-slim-wrapper) {
-    grid-area: statusbar;
-    display: flex;
-    font-size: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-radius: 0 0 5px 5px;
-    color: var(--theme-fg);
-    min-width: var(--gameboard-width);
-    max-width: var(--gameboard-width);
-    background: var(--theme-bg);
-    box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
-    position: relative;
-    & #player-name {
-      background: var(--theme-bg);
-      padding: 0 3rem 0 1rem;
-      position: absolute;
-      left: 0;
-      margin: 0 1rem 0 0;
-      height: 3rem;
-      border-radius: 0 0 0 5px;
-      // border-bottom: 5px solid var(--player-color);
-      // outline: 2px solid var(--player-color);
-      // outline-offset: -10px;
-      box-shadow: 0 0 4px var(--player-color);
-      background: var(--player-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      & h2 {
-        font-size: 1rem;
-        margin: 0 1.5rem 0 0;
-      }
-      & span {
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        justify-content: center;
-        height: 3rem;
-        align-self: center;
-        justify-self: center;
-        font-size: 1rem;
-        // position: absolute;
-        // top: 1.25rem;
-        // right: 0;
-        // -webkit-transform: translate(-50%, -50%);
-        // transform: translate(-50%, -50%);
-        // -webkit-transform-origin: top left;
-        // transform-origin: top left;
-      }
-    }
-    & #moves-wrapper {
-      display: flex;
-      flex-direction: row;
-      position: relative;
-      margin: 0 auto;
-      font-size: 1rem;
-      & .player-status-detail {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        height: 3rem;
-        align-items: center;
-        & .dynamic-value {
-          margin: 0;
-          padding: 0;
-          background: var(--theme-bg);
-          height: 3rem;
-          width: 3rem;
-          border-radius: 0;
-          outline: 2px solid var(--player-color);
-          outline-offset: -10px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        & .dynamic-wrapper {
-          padding: 0.5rem;
-          font-size: 0.85rem;
-        }
-      }
-    }
-  }
-
   // @media screen and (min-width: 320px) and (max-width: 820px) and (orientation: portrait) {
 
   //   html {
@@ -487,6 +500,9 @@
   // }
 
   @media screen and (max-width: 1080px) and (orientation: portrait) {
+    .sidemenu-container {
+      display: none;
+    }
     .page-container {
       box-sizing: border-box;
       display: grid;
@@ -528,8 +544,8 @@
         & svg {
           font-size: 20px;
           position: absolute;
-          top: .25rem;
-          left: -.3rem;
+          top: 0.25rem;
+          left: -0.3rem;
         }
       }
       & .modal-wrapper.options-control-wrapper {
@@ -726,14 +742,10 @@
         <span class="button-text">Clear Scores</span>
       </button>
     </div>
-    <!-- <div class="optionswidget-container">
-      <OptionsWidget />
-    </div> -->
-    <!-- </div> -->
     <div class="topmenu-container">
       <TopMenu />
     </div>
-        <div class="sidemenu-container">
+    <div class="sidemenu-container">
       <SideMenu />
     </div>
   </div>
