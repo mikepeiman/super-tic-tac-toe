@@ -6,6 +6,7 @@
   import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
   import TopMenu from "./../components/TopMenu.svelte";
+    import SideMenu from "./../components/SideMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
   import emojis from "emojis-list";
   // import Fa from "svelte-fa";
@@ -146,8 +147,8 @@
     box-sizing: border-box;
     display: grid;
     grid-template-areas:
-      ". gameboard ."
-      "scoreboard gameboard optionswidget";
+      ". statusbar sidemenu"
+      "scoreboard gameboard sidemenu";
     grid-template-columns: 20vw 70vw 10vw;
     min-height: 100vh;
     max-height: 100vh;
@@ -167,6 +168,10 @@
     }
   }
 
+  .topmenu-container {
+    display: none;
+  }
+
   .gameboard-container {
     grid-area: gameboard;
     display: flex;
@@ -182,7 +187,7 @@
       z-index: 8;
     }
   }
-
+  
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
@@ -381,6 +386,7 @@
   }
 
   :global(.statusbar-slim-wrapper) {
+    grid-area: statusbar;
     display: flex;
     font-size: 1rem;
     justify-content: center;
@@ -726,6 +732,9 @@
     <!-- </div> -->
     <div class="topmenu-container">
       <TopMenu />
+    </div>
+        <div class="sidemenu-container">
+      <SideMenu />
     </div>
   </div>
 
