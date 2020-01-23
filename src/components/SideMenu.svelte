@@ -8,8 +8,8 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-solid-svg-icons";
-    import { faEraser } from "@fortawesome/pro-solid-svg-icons";
+  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
+    import { faEraser } from "@fortawesome/pro-duotone-svg-icons";
 
   export let state, players;
   import {
@@ -213,7 +213,7 @@
           color="var(--theme-fg)"
           secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
           secondaryOpacity="1" />
-        Clear Scores
+        <div class="button-text">Clear Scores</div>
       </button>
     </div>
 

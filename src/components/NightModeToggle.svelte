@@ -1,8 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import Fa from "sveltejs-fontawesome";
-  import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
-  import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
   import { faSun } from "@fortawesome/pro-solid-svg-icons";
   import { faMoon } from "@fortawesome/pro-solid-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
@@ -141,6 +141,8 @@
     });
   }
 
+  let buttonStyles = `color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"`
   // make an addStyles to set initial theme class on each element
 </script>
 

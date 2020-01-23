@@ -131,7 +131,13 @@
     align-items: center;
     & .subgroup {
       display: flex;
+      justify-content: center;
       width: 100%;
+      & button.control-button {
+        font-size: 1.25rem;
+        padding: 1rem 4rem;
+        margin: 1rem;
+      }
     }
   }
 
@@ -139,11 +145,11 @@
     font-size: 1rem;
     padding: 0.5rem;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-content: center;
     background: hsla(var(--player-color-hue), 75%, 50%, 0.5);
     color: var(--theme-fg);
-    transition: all .1s;
+    transition: all 0.1s;
     & svg {
       margin-right: 0.25rem;
       align-self: center;
@@ -152,7 +158,7 @@
     & .button-text {
       position: relative;
       top: 0;
-      font-size: .75rem;
+      font-size: 0.75rem;
       width: auto;
       align-self: center;
     }

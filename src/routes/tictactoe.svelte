@@ -30,7 +30,7 @@
   } from "../stores.js";
 
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-solid-svg-icons";
+  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
 
   let players,
     settings,
@@ -131,6 +131,10 @@
     });
     storePlayers.set(players);
   }
+
+  let buttonStyles = `color="var(--theme-bg)"
+          secondaryColor="hsla(calc(var(--player-color-hue) + 160), 100%, 70%, 1)"
+          secondaryOpacity="1"`;
 </script>
 
 <style lang="scss" global>
@@ -183,6 +187,9 @@
     align-items: flex-start;
     height: fit-content;
     margin-left: 3rem;
+    background: var(--player-color-dark);
+    padding: 0.5rem;
+    border-radius: 0 0 0 5px;
     & #theme-switch-wrapper {
       position: relative;
       width: auto;
@@ -207,7 +214,7 @@
       }
     }
     & .modal-wrapper.options-control-wrapper {
-      margin-right: 0.5rem;
+      margin: 0.25rem;
     }
     & button.control-button {
       padding: 0.25rem;
@@ -267,32 +274,21 @@
     height: 3rem;
     & #player-name {
       background: var(--theme-bg);
-      padding: 0 3rem 0 1rem;
-      position: absolute;
       left: 0;
-      margin: 0 1rem 0 0;
       height: 3rem;
-      border-radius: 0 0 0 5px;
-      // border-bottom: 5px solid var(--player-color);
-      // outline: 2px solid var(--player-color);
-      // outline-offset: -10px;
       box-shadow: 0 0 4px var(--player-color);
-      background: var(--player-color);
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 0 0 5px 0;
       top: 0;
-      min-height: 2.5rem;
-      max-height: 2.5rem;
-      position: static;
-      padding: 0;
       margin: 0;
       background: var(--player-color);
-      border-radius: 0 2rem 2rem 0;
+      border-radius: 0 2rem 2rem 5px;
       position: static;
       padding: 0 1rem;
       min-height: 100%;
+      max-height: 2.5rem;
       & h2 {
         font-size: 1rem;
         margin: 0 1.5rem 0 0;
@@ -648,19 +644,14 @@
       min-width: 100vw;
       max-width: 100vw;
       & .player-status-detail#player-name {
-        border-radius: 0 0 5px 0;
         top: 0;
-        min-height: 2.5rem;
         max-height: 2.5rem;
-        position: static;
-        padding: 0;
         margin: 0;
         background: var(--player-color);
         border-radius: 0 2rem 2rem 0;
         position: static;
         padding: 0 1rem;
         min-height: 100%;
-        // box-shadow: none;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
@@ -792,9 +783,7 @@
         on:click={clearScores}>
         <Fa
           icon={faEmptySet}
-          color="var(--theme-fg)"
-          secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
-          secondaryOpacity="1" />
+          buttonStyles />
         <span class="button-text">Clear Scores</span>
       </button>
     </div>

@@ -17,7 +17,7 @@
   let players
 
   import Fa from "sveltejs-fontawesome";
-  import { faAbacus } from "@fortawesome/pro-solid-svg-icons";
+  import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
 
   $: lines = [];
   $: settings = {};

@@ -3,7 +3,7 @@
   import GameMenuModalContent from "./GameMenuModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
   import Fa from "sveltejs-fontawesome";
-  import { faBars } from "@fortawesome/pro-solid-svg-icons";
+  import { faBars } from "@fortawesome/pro-duotone-svg-icons";
 
   const { open } = getContext("simple-modal");
   let styling = {
