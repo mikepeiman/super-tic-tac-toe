@@ -14,7 +14,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  let players
+  let players;
 
   import Fa from "sveltejs-fontawesome";
   import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
@@ -124,21 +124,21 @@
       let shorterDimension = rows < columns ? rows : columns;
       let len = line.length;
       // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
-      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteLine}`)
+      // console.log(` -*-*-*-*-*-*-* ${direction.name} Line length ${len}, bonus set: ${bonusForCompleteLine}`)
       let equalSides = rows === columns ? rows : false;
       // console.log(`has equal sides? ${equalSides}`)
       let lineBonus = bonusForCompleteLine;
       if (len >= longerDimension) {
         lineBonus = bonusForCompleteLine;
-        // console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- meets or exceeds LONGER ------------------------ ****************** ${lineBonus}`)
       } else if (len >= shorterDimension) {
         lineBonus = Math.ceil(
           bonusForCompleteLine / (longerDimension / shorterDimension)
         );
-        // console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- meets or exceeds SHORTER ------------------------ ****************** ${lineBonus}`)
       } else {
         lineBonus = 0;
-        // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
         // console.log(`scoring ${move.id}`);
@@ -184,22 +184,23 @@
         points += countInLoop - (settings.cellsToScore - 1);
       }
 
-      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
-
-      // console.log(
-      //   `END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`
-      // );
-
-      // console.log(`dirLines `, dirLines)
       dirPoints += points;
       bonusPoints += lineBonus;
       dirScore += points + lineBonus;
       dirBonus += bonusPoints;
       dirLines.push({ countInLine: countInLine, points: points });
+
+      // console.log(`dirLines `, dirLines)
+      // console.log(
+      //   `:::   ${player.name} points: ${points}, dirPoints ${dirPoints}, bonus points ${bonusPoints}, dir bonus ${dirBonus}`
+      // );
+      // console.log(
+      //   `:::   ${player.name} score for direction ${direction.name}: ${dirScore}`
+      // );
     });
     players = players;
     // console.log(
-    //   `score closing with direction score ${dirScore} | player: `,
+    //   `DIRECTION ${direction.name} score closing with direction score ${dirScore} | player: `,
     //   player
     // );
     player["dirLines"] = dirLines;

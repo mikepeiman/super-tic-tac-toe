@@ -364,6 +364,7 @@
       }
     }
   }
+
   async function createDirectionArrays() {
     for (let i = 1; i <= 4; i++) {
       await makeLinesFrom(i);
@@ -381,7 +382,7 @@
         players[i].scores[x]["lines"] = lines[scoreDirections[x].name];
       }
     }
-    // storePlayers.set(players);
+    storePlayers.set(players);
   }
 
   async function makeLinesFrom(dir) {
