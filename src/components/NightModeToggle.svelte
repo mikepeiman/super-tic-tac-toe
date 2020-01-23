@@ -13,6 +13,10 @@
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
+    document.documentElement.style.setProperty(
+      "--input-blue",
+      "rgba(50, 200, 255, 1)"
+    );
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
@@ -42,14 +46,46 @@
     const toggleSwitch = document.querySelector("#night-mode-toggle");
 
     if (e.target.checked) {
-      // page.classList = "page-container dark";
-      // toggleSwitch.checked = true;
+      console.log(
+        `toggleTheme() => CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
+        e.target
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
+        toggleSwitch
+      );
+      toggleSwitch.checked = true;
+      e.target.dispatchEvent(new Event('change'))
+      console.log(
+        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
+      );
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       localStorage.setItem("theme", "dark");
     } else {
-      // page.classList = "page-container light";
+      console.log(
+        `toggleTheme() => NOT CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
+        e.target
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
+        toggleSwitch
+      );
       e.target.checked = false;
+      e.target.dispatchEvent(new Event('change'))
+      console.log(
+        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
+      );
       document.documentElement.style.setProperty("--theme-bg", light);
       document.documentElement.style.setProperty("--theme-fg", dark);
       localStorage.setItem("theme", "light");
@@ -58,6 +94,8 @@
   };
 
   function toggleStyles(theme) {
+    const toggleSwitch = document.querySelector("#night-mode-toggle");
+    // toggleSwitch.click()
     // console.log(
     //   `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
     // );
@@ -142,7 +180,7 @@
   }
 
   let buttonStyles = `color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"`
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"`;
   // make an addStyles to set initial theme class on each element
 </script>
 
@@ -169,9 +207,6 @@
 
   .theme-switch input {
     display: none;
-  }
-
-  .slider-wrapper {
   }
 
   .toggle-text {
@@ -209,6 +244,7 @@
   }
 
   input:checked + .slider {
+    // transform: translateX(31px);
     background: var(
       --player-color
     ); // hsla(var(--player-color-hue), 50%, 50%, 0.75);
@@ -225,8 +261,7 @@
   .slider.round:before {
     border-radius: 50%;
   }
-  @media (min-width: 900px) {
-  }
+
 </style>
 
 <label class="theme-switch" for="night-mode-toggle">

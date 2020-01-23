@@ -185,7 +185,7 @@
     -webkit-box-align: start;
     align-items: flex-start;
     height: fit-content;
-    margin-left: 3rem;
+    margin-left: 1rem;
     // background: var(--player-color-dark);
     padding: 0.5rem;
     border-radius: 0 0 0 5px;
@@ -206,19 +206,22 @@
       }
 
       & svg {
-        font-size: 20px;
+        font-size: 24px;
         position: absolute;
         top: 0.25rem;
         left: -0.3rem;
+      }
+      & .icon svg {
+        font-size: 20px;
       }
     }
     & .modal-wrapper.options-control-wrapper {
       margin: 0.25rem;
     }
     & button.control-button {
-      padding: 0.25rem;
+      padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
-      width: 5rem;
+      width: 6rem;
       margin-right: 0.25rem;
       background: rgba(255, 255, 255, 0.15);
       &:hover {
@@ -291,7 +294,7 @@
       position: static;
       min-height: 100%;
       max-height: 2.5rem;
-      width: 18vw;
+      width: 19vw;
       background: rgba(255, 255, 255, 0.15);
       border-right: 2px solid var(--player-color);
       border-bottom: 2px solid var(--player-color);
