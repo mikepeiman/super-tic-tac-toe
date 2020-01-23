@@ -4,6 +4,8 @@
   import { storeViewportSize } from "./../stores.js";
   import Fa from "sveltejs-fontawesome";
   import { faBars } from "@fortawesome/pro-duotone-svg-icons";
+  import { storeButtonStyles } from "../stores.js";
+  let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   const { open } = getContext("simple-modal");
   let styling = {
@@ -89,8 +91,8 @@
 <button class="control-button" id="game-menu-button" on:click={showModal}>
   <Fa
     icon={faBars}
-    color="var(--theme-fg)"
-    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
-    secondaryOpacity="1" />
+    color={_color}
+    secondaryColor={_secondaryColor}
+    secondaryOpacity={_secondaryOpacity} />
   Menu
 </button>

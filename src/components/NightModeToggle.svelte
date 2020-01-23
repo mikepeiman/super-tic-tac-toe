@@ -7,7 +7,7 @@
   import { faMoon } from "@fortawesome/pro-solid-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
 
-  const light = "#ededed";
+  const light = "#edededed";
   const dark = "#1a1a1a";
   let elements;
   onMount(() => {

@@ -1,6 +1,5 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-
   const dispatch = createEventDispatcher();
   import {
     storeSettings,
@@ -11,36 +10,41 @@
     storeGameInProgress,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeButtonStyles
   } from "../stores.js";
-
-  let players;
 
   import Fa from "sveltejs-fontawesome";
   import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
 
-  $: lines = [];
-  $: settings = {};
+  let players,
+    lines,
+    settings,
+    buttonStyles,
+    _color,
+    _secondaryColor,
+    _secondaryOpacity;
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`CountPoints => storeSettings.subscribe value #1 inside => `, value);
       settings = value;
     });
     storeDirectionArrays.subscribe(val => {
-      // console.log(
-      //   `CountPoints store subscription to storeDirectionArrays: `,
-      //   val
-      // );
       lines = val;
     });
-    // settings = $storeSettings;
-    // console.log(`CountPoints => storeSettings.subscribe value #2 => `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
     }
     console.log(`CountPoints onMount(), players, settings`, players, settings);
+    storeButtonStyles.subscribe(val => {
+      buttonStyles = val;
+      ({ _color, _secondaryColor, _secondaryOpacity } = buttonStyles);
+      console.log(
+        `countpoints, buttonstyles from store, color ${_color} secondaryColor ${_secondaryColor} length ${val.length}`,
+        val
+      );
+    });
   });
 
   function countPoints() {
@@ -240,8 +244,8 @@
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
   <Fa
     icon={faAbacus}
-    color="var(--theme-fg)"
-    secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"
-    secondaryOpacity="1" />
+    color={_color}
+    secondaryColor={_secondaryColor}
+    secondaryOpacity={_secondaryOpacity} />
   <span class="button-text">Tally Scores</span>
 </button>

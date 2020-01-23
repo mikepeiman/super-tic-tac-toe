@@ -21,6 +21,7 @@
     storeMoveNumber,
     storeMovesRemaining,
     storePlayers,
+    storeButtonStyles,
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
@@ -28,6 +29,8 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+
+  let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
@@ -131,10 +134,6 @@
     });
     storePlayers.set(players);
   }
-
-  let buttonStyles = `color="var(--theme-bg)"
-          secondaryColor="hsla(calc(var(--player-color-hue) + 160), 100%, 70%, 1)"
-          secondaryOpacity="1"`;
 </script>
 
 <style lang="scss" global>
@@ -783,7 +782,9 @@
         on:click={clearScores}>
         <Fa
           icon={faEmptySet}
-          buttonStyles />
+          color={_color}
+          secondaryColor={_secondaryColor}
+          secondaryOpacity={_secondaryOpacity} />
         <span class="button-text">Clear Scores</span>
       </button>
     </div>
