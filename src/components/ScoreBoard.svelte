@@ -2,9 +2,6 @@
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-  import Fa from "sveltejs-fontawesome";
-  import { faMedal } from "@fortawesome/pro-duotone-svg-icons";
-  // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
   export let state, players, highlighted;
   import {
     storeSettings,
@@ -18,9 +15,7 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
-
   import EmojiSelector from "svelte-emoji-selector";
-
   $: windowWidth = 0;
   $: windowHeight = 0;
   $: appViewport = {};
@@ -34,7 +29,6 @@
   $: totalMovesInGame = 0;
   let settings = {};
   $: gameUnderway = false;
-
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
@@ -44,13 +38,9 @@
         window.innerWidth && addStyles();
         placardFactor && addStyles();
       }
-
-      console.log(
-        `\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`
-      );
+      console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
     }
   }
-
   onMount(() => {
     getViewportSize();
     window.addEventListener(
@@ -61,7 +51,6 @@
       },
       true
     );
-
     // setPlacardPositions();
     storeSettings.subscribe(value => {
       // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
@@ -94,12 +83,10 @@
       appViewport.height
     );
   });
-
   afterUpdate(() => {
     // console.log(`afterUpdate()`)
     addHighlightIfGameInProgress();
   });
-
   function onEmoji(event, player) {
     // let emoji = event.detail;
     console.log(`emoji event ${event}`, event, player);
@@ -121,11 +108,9 @@
     dispatch("playerNameOrMarkerUpdate", players);
     storePreservePlayerDetails.set(true);
   }
-
   async function setPlacardPositions() {
     await players;
     let placards = await document.querySelectorAll(".scoreboard-player");
-
     placards.forEach((placard, i) => {
       let height = placard.offsetHeight;
       let width = placard.offsetWidth;
@@ -144,13 +129,11 @@
       );
     });
   }
-
   function highlight(e) {
     console.log(`highlight target `, e.target);
     e.target.select();
     document.execCommand("selectall", null, false);
   }
-
   async function addStyles() {
     await players;
     await document.getElementById("gameboard");
@@ -170,44 +153,32 @@
     // let scaleValue = windowWidth / width / 5;
     let scaleValue = windowWidth / width / placardWidthRatio;
     let scaleWidth = `--scale-width: ${scaleValue}`;
-
     document.documentElement.style.setProperty(
       "--placard-scale-value",
       scaleValue
     );
     // console.log(`scaleValue2: ${scaleValue2}`);
-    if (window.innerWidth > 1080) {
-      placards.forEach((placard, i) => {
-        let pColor = `--player-color: ${players[i].colorMain};`;
-        let positionTop = `--position-top: ${i * (height * scaleValue) +
-          i * 16}px;`;
-
-        placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
-      });
-    } else {
-      placards.forEach((placard, i) => {
-        let pColor = `--player-color: ${players[i].colorMain};`;
-
-        placard.style = pColor;
-      });
+    placards.forEach((placard, i) => {
+      let pColor = `--player-color: ${players[i].colorMain};`;
+      let positionTop = `--position-top: ${i * (height * scaleValue) +
+        i * 16}px;`;
+      placard.style = `${pColor}; ${scaleWidth}; ${positionTop};`;
+    });
+    for (let i = 0; i < 3; i++) {
+      let positionTop = `--position-top: ${i * (height * scaleValue) +
+        i * 16}px;`;
+      // console.log(
+      //   `setStyles()!!! --- ||| --- ::: iter ${i}
+      //   scaleValue ${scaleValue}
+      //   scaleValue2 ${scaleValue2}
+      //   windowWidth ${windowWidth}
+      //   placardWidthRatio
+      //   ${placardWidthRatio}
+      //   height * i ${i * height}
+      //     the final top pos: ${positionTop}`
+      // );
     }
-
-    // for (let i = 0; i < 3; i++) {
-    //   let positionTop = `--position-top: ${i * (height * scaleValue) +
-    //     i * 16}px;`;
-    //   // console.log(
-    //   //   `setStyles()!!! --- ||| --- ::: iter ${i}
-    //   //   scaleValue ${scaleValue}
-    //   //   scaleValue2 ${scaleValue2}
-    //   //   windowWidth ${windowWidth}
-    //   //   placardWidthRatio
-    //   //   ${placardWidthRatio}
-    //   //   height * i ${i * height}
-    //   //     the final top pos: ${positionTop}`
-    //   // );
-    // }
   }
-
   function addHighlightIfGameInProgress() {
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
@@ -253,7 +224,7 @@
   }
 </script>
 
-<style lang="scss" global>
+<style lang="scss">
   :root {
   }
   .scoreboard-container-inner {
@@ -275,7 +246,6 @@
     display: flex;
     flex-direction: column;
   }
-
   .scoreboard-totals {
     display: flex;
     justify-content: space-between;
@@ -283,7 +253,6 @@
     background: rgba(0, 0, 0, 0.5);
     // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
-
   .scoreboard-player {
     background: var(--player-color);
     position: absolute;
@@ -340,95 +309,6 @@
       }
     }
   }
-
-  @media screen and (max-width: 1080px) and (orientation: portrait) {
-    .statusbar-slim-wrapper {
-      max-width: 100%;
-      position: static;
-      & #player-name {
-        margin: 0 0.5rem 0 0;
-        // min-width: auto;
-      }
-    }
-    :global(.scoreboard-container) {
-      align-items: none;
-      justify-content: none;
-    }
-    :global(.scoreboard-container-inner) {
-      display: flex;
-
-      // max-width: calc(100vw - 1rem);
-      min-width: 100%;
-    }
-    :global(.gameboard-container) {
-      justify-content: center;
-      align-items: center;
-      & #player-name {
-        display: none;
-      }
-    }
-    .scoreboard-player {
-      display: flex;
-      flex-direction: column;
-      background: var(--player-color);
-      position: relative;
-      border-radius: 5px;
-      margin: 0;
-      transition: all 0.25s;
-      min-width: max-content;
-      transition: all 0.25s;
-      z-index: -1;
-      & .total-score {
-        // flex-direction: column;
-      }
-      & .scoreboard-totals {
-        // flex-direction: column;
-      }
-      & .player-name {
-        transition: all 0.25s;
-        display: none;
-        margin: 0;
-        &.dark {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-        &.light {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-      }
-      & .player-marker {
-        transition: all 0.25s;
-        width: 3.5ch;
-        &.dark {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-        &.light {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-      }
-      & .total-score-number {
-        transition: all 0.25s;
-        &.dark {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-        &.light {
-          background: var(--theme-bg);
-          color: var(--theme-fg);
-          transition: all 0.25s;
-        }
-      }
-    }
-  }
-
   :global(#sapper .svelte-emoji-picker__trigger) {
     min-height: 2rem;
     margin-right: 0.25rem;
@@ -437,7 +317,6 @@
     align-items: center;
     text-align: center;
   }
-
   :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
     color: var(--theme-fg);
@@ -449,7 +328,6 @@
       color: var(--theme-fg);
       height: 1.5rem;
       border-radius: 5px 5px 0 0;
-
       & input::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
         color: var(--theme-fg);
@@ -501,7 +379,6 @@
       color: var(--theme-fg);
     }
   }
-
   .highlighted {
     // outline: 5px solid var(--theme-fg);
     box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
@@ -531,7 +408,6 @@
     justify-self: flex-end;
     margin-right: 0.5rem;
   }
-
   :global(.total-score) {
     // background: var(--player-color);
     padding: 0.25rem;
@@ -542,7 +418,6 @@
       margin: 0 0.25rem;
     }
   }
-
   .total-score-number {
     background: var(--theme-bg);
     // padding: 0.5rem;
@@ -578,15 +453,28 @@
     text-align: center;
     color: var(--player-color);
   }
-
+  // @media screen and (min-width: 960px) {
+  //   .scoreboard-player {
+  //     background: var(--player-color);
+  //     margin: 0 1rem 1rem 1rem;
+  //     transition: all 0.25s;
+  //     border: 5px solid #1a1a1a;
+  //     // min-width: calc(100% - 10px - 1rem);
+  //     transform: scale(1);
+  //   }
+  //   .highlighted {
+  //     transform: scale(1.025);
+  //     border: 5px solid #eeeeee;
+  //     position: relative;
+  //     transition: all 0.25s;
+  //   }
+  // }
   @media screen and (min-width: 600px) {
   }
   @media screen and (min-width: 900px) {
   }
-
   @media screen and (min-width: 1200px) {
   }
-
   @media screen and (min-width: 1500px) {
   }
 </style>
@@ -603,7 +491,7 @@
             class="player-name"
             type="text"
             bind:value={player.name}
-            placeholder={`${player.name} ${player.marker}`}
+            placeholder={player.name}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
 
@@ -626,41 +514,35 @@
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
         <div class="scoreboard-totals">
-          <div class="scoreboard-points">
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div class="direction-score-section">
-                  <img
-                    class="direction-icon"
-                    src={direction.iconSrc}
-                    width="20"
-                    height="20"
-                    alt="Icon for direction {direction.name}" />
-                  <div class="direction-score">
-                    {player.dirPointsByIndex[i]}
-                  </div>
-                </div>
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              <div class="direction-score-section">
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
+                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
               </div>
-            {/each}
-          </div>
-          <div class="scoreboard-bonuses">
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div class="direction-score-section">
-                  <img
-                    class="direction-icon"
-                    src={direction.iconSrc}
-                    width="20"
-                    height="20"
-                    alt="Icon for direction {direction.name}" />
-                  <div class="direction-score">
-                    {player.dirBonusesByIndex[i]}
-                  </div>
-                </div>
-              </div>
-            {/each}
-          </div>
+            </div>
+          {/each}
         </div>
+        <!-- <div class="scoreboard-totals">
+          {#each player.scores as direction, i}
+            <div class="scoreboard-direction">
+              <div class="direction-score-section">
+                <img
+                  class="direction-icon"
+                  src={direction.iconSrc}
+                  width="20"
+                  height="20"
+                  alt="Icon for direction {direction.name}" />
+                <div class="direction-score">{player.dirBonusesByIndex[i]}</div>
+              </div>
+            </div>
+          {/each}
+        </div> -->
       </div>
     {/each}
   </div>

@@ -1,7 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
-  import ScoreBoard from "./../components/ScoreBoardNew.svelte";
+  import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
+  import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
   import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
@@ -154,7 +155,7 @@
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-rows: 5vh auto;
+    grid-template-rows: 10vh auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -231,7 +232,9 @@
       z-index: 8;
     }
   }
-
+  .scoreboardnew-container {
+    display: none;
+  }
   .scoreboard-container {
     grid-area: scoreboard;
     margin: 0;
@@ -607,6 +610,9 @@
       align-items: center;
     }
     .scoreboard-container {
+      display: none;
+    }
+    .scoreboardnew-container {
       min-width: 100vw;
       max-width: 100vw;
       overflow: auto;
@@ -736,6 +742,9 @@
 
     <div class="scoreboard-container">
       <ScoreBoard />
+    </div>
+    <div class="scoreboardnew-container">
+      <ScoreBoardNew />
     </div>
     {#if currentPlayer}
       <div class="statusbar-slim-wrapper">
