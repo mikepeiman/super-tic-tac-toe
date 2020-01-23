@@ -607,22 +607,9 @@
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
 
-          <input
-            class="player-marker"
-            type="text"
-            bind:value={player.marker}
-            placeholder={player.marker}
-            maxlength="1"
-            on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} />
-          <EmojiSelector
-            class="player-marker"
-            type="text"
-            bind:value={player.marker}
-            placeholder={player.marker}
-            maxlength="1"
-            style={`--this-player-color-main: ${player.colorMain}`}
-            on:emoji={e => updateStoredPlayers(player, e)} />
+          <div
+            class="player-marker">{player.marker}</div>
+
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
         <div class="scoreboard-totals">

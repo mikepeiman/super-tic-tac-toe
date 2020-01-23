@@ -98,36 +98,36 @@
     });
     storeGameHistoryFlat.subscribe(value => {});
     storeGameHistoryTurns.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
       let ghls = localStorage.getItem("gameHistoryTurns");
       let parsedGhls = JSON.parse(ghls);
-      console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
+      // console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
     });
     await grid.length;
     setCellSize();
     window.addEventListener(
       "resize",
       async function() {
-        console.log("GameBoard resize!");
+        // console.log("GameBoard resize!");
         await setCellSize();
-        console.log("GameBoard resize awaited cellSize!");
+        // console.log("GameBoard resize awaited cellSize!");
         resetGameBoard();
-        console.log("GameBoard resize reset gameboard!");
+        // console.log("GameBoard resize reset gameboard!");
       },
       true
     );
     storeCellSize.subscribe(value => {
-      console.log(`GameBoard => storeCellSize subscribed`, value);
+      // console.log(`GameBoard => storeCellSize subscribed`, value);
       // cellSize = value;
     });
 
-    console.log(
-      `GameBoard component mounted, gameboard el W:${gameboardContainerWidth} H:${gameboardContainerHeight}`
-    );
-    console.log(
-      `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
-    );
-    console.log(`GameBoard component mounted, and final size: ${cellSize}`);
+    // console.log(
+    //   `GameBoard component mounted, gameboard el W:${gameboardContainerWidth} H:${gameboardContainerHeight}`
+    // );
+    // console.log(
+    //   `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
+    // );
+    // console.log(`GameBoard component mounted, and final size: ${cellSize}`);
 
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
@@ -138,18 +138,18 @@
     let playerDetails = localStorage.getItem("preservePlayerDetails");
 
     if (gameInProgress) {
-      console.log(
-        `GameBoard => if (gameInProgress) we should be redrawing the moves...`
-      );
+      // console.log(
+      //   `GameBoard => if (gameInProgress) we should be redrawing the moves...`
+      // );
       buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
       renderGameBoardReload(delayMS);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-      console.log(
-        `Checking bool existence of LS gameHistoryTurns: ${Boolean(
-          gameHistoryTurns
-        )}`
-      );
+      // console.log(
+      //   `Checking bool existence of LS gameHistoryTurns: ${Boolean(
+      //     gameHistoryTurns
+      //   )}`
+      // );
       if (!gameHistoryTurns) {
         gameHistoryTurns = [];
       }
@@ -162,11 +162,11 @@
       }
       if (currentPlayer === false) {
         let currentPlayerLS = JSON.parse(localStorage.getItem("currentPlayer"));
-        console.log(
-          `GameBoard if (currentPlayer === false) `,
-          currentPlayer,
-          currentPlayerLS
-        );
+        // console.log(
+        //   `GameBoard if (currentPlayer === false) `,
+        //   currentPlayer,
+        //   currentPlayerLS
+        // );
         storeCurrentPlayer.set(currentPlayerLS);
       }
     } else {

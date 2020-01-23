@@ -34,7 +34,7 @@
       if (gameboard) {
         gameboardWidth = gameboard.offsetWidth;
         containerWidth = container.offsetWidth;
-        console.log(`setGlobalCSSVars() gameboardwidth ${gameboardWidth}`);
+        // console.log(`setGlobalCSSVars() gameboardwidth ${gameboardWidth}`);
         document.documentElement.style.setProperty(
           "--gameboard-width",
           `${gameboardWidth}px`
@@ -60,7 +60,7 @@
       let colorHueVar = "--player-color-hue";
 
       let styles = `--player-color: ${colorMain}; --player-color-light: ${colorLight}; --player-color-dark: ${colorDark}; --player-hue: ${colorHue};`;
-      console.log(`Styles of player color from currentPlayer: `, styles);
+      // console.log(`Styles of player color from currentPlayer: `, styles);
       document.documentElement.style.setProperty(colorMainVar, colorMain);
       document.documentElement.style.setProperty(colorLightVar, colorLight);
       document.documentElement.style.setProperty(colorDarkVar, colorDark);
@@ -77,7 +77,7 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      console.log(`StatusBar => storeSettings.subscribe value => `, value);
+      // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
       let lsMovesFromTurnHistory = JSON.parse(
         localStorage.getItem("turnHistory")
@@ -95,7 +95,7 @@
       currentPlayer = value;
     });
     storeGameboardWidth.subscribe(val => {
-      console.log(`from statusBar => gameboard el width: `, val);
+      // console.log(`from statusBar => gameboard el width: `, val);
       gameboardWidth = val;
     });
 
