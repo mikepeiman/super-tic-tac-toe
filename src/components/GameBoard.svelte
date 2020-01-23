@@ -80,10 +80,15 @@
   let rows, columns, size, numberOfPlayers, sizeFactor;
   ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
   $: rows && resetGameBoard(`reactive resetGameBoard() from rows  ${rows}`);
-  $: columns && resetGameBoard(`reactive resetGameBoard() from columns ${columns}`);
+  $: columns &&
+    resetGameBoard(`reactive resetGameBoard() from columns ${columns}`);
   $: size && resetGameBoard(`reactive resetGameBoard() from size ${size}`);
-  $: numberOfPlayers && resetGameBoard(`reactive resetGameBoard() from numberOfPlayers ${numberOfPlayers}`);
-  $: sizeFactor && resetGameBoard(`reactive resetGameBoard() from sizeFactor ${sizeFactor}`);
+  $: numberOfPlayers &&
+    resetGameBoard(
+      `reactive resetGameBoard() from numberOfPlayers ${numberOfPlayers}`
+    );
+  $: sizeFactor &&
+    resetGameBoard(`reactive resetGameBoard() from sizeFactor ${sizeFactor}`);
 
   onMount(async () => {
     storeSettings.subscribe(value => {
@@ -114,7 +119,7 @@
       async function() {
         // console.log("GameBoard resize!");
         // await setCellSize();
-        setCellSize()
+        setCellSize();
         // console.log("GameBoard resize awaited cellSize!");
         resetGameBoard();
         // console.log("GameBoard resize reset gameboard!");
@@ -191,15 +196,21 @@
 
     // await grid.length
     gameboardContainerWidth = gameboardContainer.offsetWidth;
-
     gameboardContainerHeight = gameboardContainer.offsetHeight;
     cellWidth = parseInt(
-      ((gameboardContainerWidth / settings.columns) * settings.sizeFactor) / 100
+      (((gameboardContainerWidth / settings.columns) * settings.sizeFactor) /
+        100) *
+        0.9
     );
     cellHeight = parseInt(
-      ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
+      (((gameboardContainerHeight / settings.rows) * settings.sizeFactor) /
+        100) *
+        0.9
     );
-    // console.log(`W:${cellWidth} > H:${cellHeight} cellSize: ${cellSize}`);
+    console.log(
+      `gameboardContainerWidth:${gameboardContainerWidth} | gameboardContainerHeight:${gameboardContainerHeight} cellSize: ${cellSize}`
+    );
+    console.log(`W:${cellWidth} | H:${cellHeight} cellSize: ${cellSize}`);
     if (gameboardContainerWidth > gameboardContainerHeight) {
       // console.log(
       //   `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
@@ -220,7 +231,6 @@
     }
     storeCellSize.set(cellSize);
     // let gameboardContainerWidth = settings.columns * cellSize
-
   }
 
   function moveNotification(e) {
@@ -551,7 +561,7 @@
     //   resizeCells()
     // })
     console.log(`resizeCells() function about to be called `);
-     resizeCells();
+    resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       await renderGameBoardReload(0);

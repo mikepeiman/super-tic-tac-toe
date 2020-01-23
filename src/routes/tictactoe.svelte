@@ -225,11 +225,13 @@
     justify-content: center;
     align-items: center;
     height: auto;
+    max-height: 90vh;
     // margin-right: 1rem;
     // background: #1a1a1a;
     z-index: 0;
     & .gameboard-board {
       z-index: 8;
+      max-height: 85vh;
     }
   }
   .scoreboardnew-container {
