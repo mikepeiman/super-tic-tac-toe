@@ -1,10 +1,10 @@
 <script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
-  import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
+  // import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
-  import OptionsWidget from "./../components/OptionsWidget.svelte";
+  // import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
   import TopMenu from "./../components/TopMenu.svelte";
   import SideMenu from "./../components/SideMenu.svelte";

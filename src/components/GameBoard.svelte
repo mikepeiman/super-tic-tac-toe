@@ -88,7 +88,7 @@
     });
 
     storePlayers.subscribe(value => {
-      players = value;
+      // players = value;
     });
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
@@ -176,7 +176,7 @@
     }
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      storePlayers.set(players);
+      // storePlayers.set(players);
     }
   });
 
@@ -365,8 +365,7 @@
         players[i].scores[x]["lines"] = lines[scoreDirections[x].name];
       }
     }
-    localStorage.setItem("players", JSON.stringify(players));
-    storePlayers.set(players);
+    // storePlayers.set(players);
   }
 
   async function makeLinesFrom(dir) {
@@ -439,7 +438,7 @@
     }
     lines = lines;
     storeDirectionArrays.set(lines);
-    localStorage.setItem("directionArrays", JSON.stringify(lines));
+    // localStorage.setItem("directionArrays", JSON.stringify(lines));
     await players;
     addDirectionArraysToPlayerObjects();
   }
@@ -530,21 +529,23 @@
     await createDirectionArrays();
     await addDirectionArraysToPlayerObjects();
     return grid;
-    console.log(`grid array from inside buildGameGrid: `, grid);
   }
 
   async function resetGameBoard() {
     // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
 
     // grid = []
-    await buildGameGrid(
+    buildGameGrid(
       settings.rows,
       settings.columns,
       cellSize,
       settings.gutter
     );
+    // waitedGrid.then(() => {
+    //   resizeCells()
+    // })
     // console.log(`New resizeCells() function about to be called `);
-    await resizeCells();
+     resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       await renderGameBoardReload(0);
@@ -881,6 +882,7 @@
   }
 </style>
 
+{@debug grid}
 {#if grid.length}
   <div id="gameboard" class="gameboard-board">
     {#each grid as row}

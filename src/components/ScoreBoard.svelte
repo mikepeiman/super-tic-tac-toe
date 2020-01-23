@@ -16,33 +16,54 @@
     storeGameHistoryFlat
   } from "../stores.js";
   import EmojiSelector from "svelte-emoji-selector";
-  let updateCount = 0
-  $: windowWidth = 0;
-  $: windowHeight = 0;
-  $: appViewport = {};
-  $: placardFactor = 2.5;
+  let updateCount = 0;
+  let windowWidth = 0;
+  let windowHeight = 0;
+  let appViewport = {};
+  let placardFactor = 2.5;
   $: placardViewRatio = placardFactor * appViewport.ratio;
   $: placardWidthRatio = appViewport.width / placardFactor / 100;
-  $: players = [];
-  $: state = {};
-  $: currentPlayer = {};
-  $: moveNumber = 0;
-  $: totalMovesInGame = 0;
+  players = [];
+  state = {};
+  let currentPlayer = {};
+  let moveNumber = 0;
+  let totalMovesInGame = 0;
   let settings = {};
-  $: gameUnderway = false;
+  let gameUnderway = false;
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
     // if (typeof window !== "undefined") {
-      if (players.length > 0) {
-        console.log(`reactive addStyles, players.length > 0`)
-        // numberOfPlayers && addStyles(`updated numberOfPlayers ${numberOfPlayers}`);
-        // window.innerWidth && addStyles("updated window.innerWidth");
-        // placardFactor && addStyles("updated placardFactor");
-      }
-      // console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
+    if (players.length > 0) {
+      console.log(`reactive addStyles, players.length > 0`);
+      // numberOfPlayers && addStyles(`updated numberOfPlayers ${numberOfPlayers}`);
+      // window.innerWidth && addStyles("updated window.innerWidth");
+      // placardFactor && addStyles("updated placardFactor");
+    }
+    // console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
     // }
   }
+  
+    storeSettings.subscribe(value => {
+      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+      settings = value;
+      ({ numberOfPlayers } = settings);
+      // addStyles();
+    });
+    storeCurrentPlayer.subscribe(value => {
+      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+      currentPlayer = value;
+      if (value === null) {
+        currentPlayer = players[0];
+      }
+    });
+    storePlayers.subscribe(value => {
+      // players = value;
+    });
+    storeViewportSize.subscribe(val => {
+      console.log(`ScoreBoard subscribed to app viewport size: `, val);
+      appViewport = val;
+    });
   onMount(() => {
     getViewportSize();
     window.addEventListener(
@@ -53,41 +74,20 @@
       },
       true
     );
-    // setPlacardPositions();
-    storeSettings.subscribe(value => {
-      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
-      settings = value;
-      ({ numberOfPlayers } = settings);
-      // addStyles();
-    });
     players = $storePlayers;
     state = $storeState;
-    storeCurrentPlayer.subscribe(value => {
-      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
-      currentPlayer = value;
-      if (value === null) {
-        currentPlayer = players[0];
-      }
-    });
-    storePlayers.subscribe(value => {
-      players = value;
-    });
-    storeViewportSize.subscribe(val => {
-      console.log(`ScoreBoard subscribed to app viewport size: `, val);
-      appViewport = val;
-    });
-    console.log(
-      `ScoreBoard subscribed to app viewport size: `,
-      appViewport.width
-    );
-    console.log(
-      `ScoreBoard subscribed to app viewport size: `,
-      appViewport.height
-    );
+    // console.log(
+    //   `ScoreBoard subscribed to app viewport size: `,
+    //   appViewport.width
+    // );
+    // console.log(
+    //   `ScoreBoard subscribed to app viewport size: `,
+    //   appViewport.height
+    // );
   });
   afterUpdate(() => {
-    updateCount++
-    console.log(`afterUpdate() count: ${updateCount}`)
+    updateCount++;
+    console.log(`afterUpdate() count: ${updateCount}`);
     addStyles(`addStyles() from afterUpdate`);
     addHighlightIfGameInProgress();
   });
@@ -105,8 +105,6 @@
       player.marker = emoji.detail;
     }
     storePlayers.set(players);
-    localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("playerDetails", true);
     storeCurrentPlayer.set(players[currentPlayer.id]);
     dispatch("playerNameOrMarkerUpdate", players);
@@ -139,9 +137,11 @@
     document.execCommand("selectall", null, false);
   }
   async function addStyles(message) {
-    console.log(`addStyles message => ${message}`)
+    console.log(`addStyles message => ${message}`);
     await players;
-    console.log(`addStyles message => ${message} awaited players, now continuing`)
+    console.log(
+      `addStyles message => ${message} awaited players, now continuing`
+    );
     // await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -186,7 +186,7 @@
     }
   }
   function addHighlightIfGameInProgress() {
-    console.log(`addHighlightIfGameInProgress()`)
+    console.log(`addHighlightIfGameInProgress()`);
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
@@ -486,7 +486,11 @@
   }
 </style>
 
+
 {#await players then players}
+{@debug players}
+{@debug state}
+{@debug settings}
   <div class="scoreboard-container-inner">
     {#each players as player}
       <div

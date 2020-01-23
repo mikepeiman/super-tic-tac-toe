@@ -113,6 +113,7 @@
         //   `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
         // );
         initializeCurrentPlayer();
+        storePlayers.set(players);
       }
     } else {
       initializePlayers();
@@ -160,7 +161,6 @@
       });
     }
     // players = players
-    storePlayers.set(players);
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (!gameInProgress) {
       initializeCurrentPlayer();
