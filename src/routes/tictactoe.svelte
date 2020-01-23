@@ -783,7 +783,7 @@
     </div>
     <!-- <div class="menu-container"> -->
     <div id="tally-points-wrapper">
-      <CountPoints {players} on:playersScored={playersScored} />
+      <CountPoints on:playersScored={playersScored} />
       <button
         class="control-button"
         id="clear-game-button"

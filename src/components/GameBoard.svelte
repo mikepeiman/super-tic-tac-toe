@@ -79,7 +79,11 @@
 
   let rows, columns, size, numberOfPlayers, sizeFactor;
   ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
-  $: rows, columns, size, numberOfPlayers, sizeFactor && resetGameBoard();
+  $: rows && resetGameBoard(`reactive resetGameBoard() from rows  ${rows}`);
+  $: columns && resetGameBoard(`reactive resetGameBoard() from columns ${columns}`);
+  $: size && resetGameBoard(`reactive resetGameBoard() from size ${size}`);
+  $: numberOfPlayers && resetGameBoard(`reactive resetGameBoard() from numberOfPlayers ${numberOfPlayers}`);
+  $: sizeFactor && resetGameBoard(`reactive resetGameBoard() from sizeFactor ${sizeFactor}`);
 
   onMount(async () => {
     storeSettings.subscribe(value => {
@@ -93,7 +97,7 @@
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
-      await grid.length;
+      // await grid.length;
       resetGameBoard();
     });
     storeGameHistoryFlat.subscribe(value => {});
@@ -103,13 +107,14 @@
       let parsedGhls = JSON.parse(ghls);
       // console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
     });
-    await grid.length;
+    // await grid.length;
     setCellSize();
     window.addEventListener(
       "resize",
       async function() {
         // console.log("GameBoard resize!");
-        await setCellSize();
+        // await setCellSize();
+        setCellSize()
         // console.log("GameBoard resize awaited cellSize!");
         resetGameBoard();
         // console.log("GameBoard resize reset gameboard!");
@@ -183,9 +188,10 @@
   async function setCellSize() {
     // console.log(`|--|---|--|--|--|--|    setCellSize() called`);
     let gameboardContainer = document.querySelector(".gameboard-container");
-    let gameboard = document.querySelector("#gameboard");
+
+    // await grid.length
     gameboardContainerWidth = gameboardContainer.offsetWidth;
-    let gameboardWidth = gameboard.offsetWidth;
+
     gameboardContainerHeight = gameboardContainer.offsetHeight;
     cellWidth = parseInt(
       ((gameboardContainerWidth / settings.columns) * settings.sizeFactor) / 100
@@ -214,7 +220,7 @@
     }
     storeCellSize.set(cellSize);
     // let gameboardContainerWidth = settings.columns * cellSize
-    storeGameboardWidth.set(gameboardWidth);
+
   }
 
   function moveNotification(e) {
@@ -525,17 +531,17 @@
     }
     await players;
 
-    grid = grid;
+    // grid = grid;
     await createDirectionArrays();
     await addDirectionArraysToPlayerObjects();
     return grid;
   }
 
-  async function resetGameBoard() {
-    // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
+  async function resetGameBoard(message) {
+    console.log(`\n resetGameBoard() called with message `, message, `\n \n`);
 
     // grid = []
-    buildGameGrid(
+    await buildGameGrid(
       settings.rows,
       settings.columns,
       cellSize,
@@ -544,7 +550,7 @@
     // waitedGrid.then(() => {
     //   resizeCells()
     // })
-    // console.log(`New resizeCells() function about to be called `);
+    console.log(`resizeCells() function about to be called `);
      resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
@@ -882,7 +888,7 @@
   }
 </style>
 
-{@debug grid}
+<!-- {@debug grid} -->
 {#if grid.length}
   <div id="gameboard" class="gameboard-board">
     {#each grid as row}

@@ -14,7 +14,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  export let players, wrapperClass;
+  let players
 
   import Fa from "sveltejs-fontawesome";
   import { faAbacus } from "@fortawesome/pro-solid-svg-icons";
@@ -46,11 +46,11 @@
   function countPoints() {
     storePreservePlayerDetails.set(true);
     // let settings = JSON.parse(localStorage.getItem('settings'))
-    // console.log(
-    //   "*************__________countPoints called________**************, settings, lines ",
-    //   settings,
-    //   lines
-    // );
+    console.log(
+      "*************__________countPoints called________**************, settings, lines ",
+      settings,
+      lines
+    );
     // console.log(
     //   "players from countPoints before checking localStorage: ",
     //   players
@@ -92,8 +92,8 @@
     });
     players = players;
     storePlayers.set(players);
-    localStorage.setItem(`players`, JSON.stringify(players));
-    dispatch("playersScored", players);
+    // localStorage.setItem(`players`, JSON.stringify(players));
+    // dispatch("playersScored", players);
   }
 
   function score(settings, direction, player, idx) {
