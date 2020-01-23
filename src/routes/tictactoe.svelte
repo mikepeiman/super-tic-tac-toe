@@ -171,6 +171,50 @@
   .topmenu-container {
     display: none;
   }
+  .sidemenu-container {
+    grid-area: sidemenu;
+    display: -webkit-box;
+    display: flex;
+    flex-direction: column-reverse;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: start;
+    align-items: flex-start;
+    height: fit-content;
+    margin-left: 3rem;
+    & #theme-switch-wrapper {
+      position: relative;
+      width: auto;
+      left: 3.75rem;
+      & .icon {
+        position: absolute;
+        top: 0.6rem;
+        right: 3rem;
+        opacity: 1;
+        transition: all 0.25s;
+        &.hidden {
+          opacity: 0;
+          transition: all 0.25s;
+        }
+      }
+
+      & svg {
+        font-size: 20px;
+        position: absolute;
+        top: 0.25rem;
+        left: -0.3rem;
+      }
+    }
+    & .modal-wrapper.options-control-wrapper {
+      margin-right: 0.5rem;
+    }
+    & button.control-button {
+      padding: 0.25rem;
+      font-size: 0.75rem;
+      width: 5rem;
+      margin-right: 0.25rem;
+    }
+  }
 
   .gameboard-container {
     grid-area: gameboard;
