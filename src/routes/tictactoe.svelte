@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import GameBoard from "./../components/GameBoard.svelte";
-  import ScoreBoard from "./../components/ScoreBoard.svelte";
+  import ScoreBoard from "./../components/ScoreBoardNew.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
   import OptionsWidget from "./../components/OptionsWidget.svelte";
   import SettingsMenu from "./../components/SettingsMenu.svelte";
@@ -544,6 +544,19 @@
       min-width: 100vw;
       max-width: 100vw;
       overflow: auto;
+      & .scoreboard-player {
+        // flex-direction: row;
+        & .scoreboard-totals {
+          // flex-direction: column;
+        }
+        & .direction-icon {
+          margin: 2px;
+        }
+        & .total-score {
+          margin: 0;
+          padding: 0;
+        }
+      }
     }
     .menu-container {
       grid-area: menucontainer;
@@ -605,43 +618,43 @@
   @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
   }
 
-  @media screen and (min-width: 900px) {
-    .gameboard-container {
-      align-items: center;
-      margin-right: 0;
-    }
-    .settingsmenu-container {
-      border-top: 6px solid rgba(0, 0, 0, 0);
-    }
-    button {
-      min-height: 3rem;
-      margin-right: 0.5rem;
-      border-radius: 2px;
-      font-size: 1.25rem;
-      border: none;
-      color: #eeeeee;
-      // background: rgba(var(--input-blue), 0.5);
-      background: rgba(255, 255, 255, 0.15);
-      &:hover {
-        background: rgba(255, 255, 255, 0.25);
-        background: rgba(var(--input-blue), 1);
-      }
-    }
-    .page-container {
-      box-sizing: border-box;
-      display: grid;
-      grid-template-areas:
-        ". gameboard ."
-        "scoreboard gameboard optionswidget";
-      grid-template-columns: 20vw 70vw 10vw;
-      min-height: 100vh;
-      max-height: 100vh;
-      min-width: 100vw;
-      max-width: 100vw;
-      grid-template-rows: 5vh auto;
-      transition: all 0.25s;
-    }
-  }
+  // @media screen and (min-width: 900px) {
+  //   .gameboard-container {
+  //     align-items: center;
+  //     margin-right: 0;
+  //   }
+  //   .settingsmenu-container {
+  //     border-top: 6px solid rgba(0, 0, 0, 0);
+  //   }
+  //   button {
+  //     min-height: 3rem;
+  //     margin-right: 0.5rem;
+  //     border-radius: 2px;
+  //     font-size: 1.25rem;
+  //     border: none;
+  //     color: #eeeeee;
+  //     // background: rgba(var(--input-blue), 0.5);
+  //     background: rgba(255, 255, 255, 0.15);
+  //     &:hover {
+  //       background: rgba(255, 255, 255, 0.25);
+  //       background: rgba(var(--input-blue), 1);
+  //     }
+  //   }
+  //   .page-container {
+  //     box-sizing: border-box;
+  //     display: grid;
+  //     grid-template-areas:
+  //       ". gameboard ."
+  //       "scoreboard gameboard optionswidget";
+  //     grid-template-columns: 20vw 70vw 10vw;
+  //     min-height: 100vh;
+  //     max-height: 100vh;
+  //     min-width: 100vw;
+  //     max-width: 100vw;
+  //     grid-template-rows: 5vh auto;
+  //     transition: all 0.25s;
+  //   }
+  // }
 </style>
 
 <!-- <div class="title-container">

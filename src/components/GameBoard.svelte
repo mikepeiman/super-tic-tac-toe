@@ -181,7 +181,7 @@
   });
 
   async function setCellSize() {
-    console.log(`|--|---|--|--|--|--|    setCellSize() called`);
+    // console.log(`|--|---|--|--|--|--|    setCellSize() called`);
     let gameboardContainer = document.querySelector(".gameboard-container");
     let gameboard = document.querySelector("#gameboard");
     gameboardContainerWidth = gameboardContainer.offsetWidth;
@@ -193,23 +193,23 @@
     cellHeight = parseInt(
       ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
     );
-    console.log(`W:${cellWidth} > H:${cellHeight} cellSize: ${cellSize}`);
+    // console.log(`W:${cellWidth} > H:${cellHeight} cellSize: ${cellSize}`);
     if (gameboardContainerWidth > gameboardContainerHeight) {
-      console.log(
-        `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
-      );
+      // console.log(
+      //   `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      // );
     } else {
-      console.log(
-        `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
-      );
+      // console.log(
+      //   `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      // );
     }
 
     // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
     if (cellWidth >= cellHeight) {
-      console.log(`W:${cellWidth} > H:${cellHeight}`);
+      // console.log(`W:${cellWidth} > H:${cellHeight}`);
       cellSize = cellHeight;
     } else {
-      console.log(`W:${cellWidth} < H:${cellHeight}`);
+      // console.log(`W:${cellWidth} < H:${cellHeight}`);
       cellSize = cellWidth;
     }
     storeCellSize.set(cellSize);
@@ -252,17 +252,17 @@
         len = gameHistoryTurns.length;
       }
     }
-    console.log(
-      `renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `,
-      turnHistory
-    );
-    console.log(
-      `renderGameBoardReload() => gameHistoryTurns and len: ${len}; `,
-      gameHistoryTurns
-    );
-    console.log(
-      `renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `
-    );
+    // console.log(
+    //   `renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `,
+    //   turnHistory
+    // );
+    // console.log(
+    //   `renderGameBoardReload() => gameHistoryTurns and len: ${len}; `,
+    //   gameHistoryTurns
+    // );
+    // console.log(
+    //   `renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `
+    // );
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];

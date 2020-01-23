@@ -45,9 +45,9 @@
         placardFactor && addStyles();
       }
 
-      console.log(
-        `\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`
-      );
+      // console.log(
+      //   `\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`
+      // );
     }
   }
 
@@ -56,7 +56,7 @@
     window.addEventListener(
       "resize",
       function() {
-        console.log("resize!");
+        // console.log("resize!");
         addStyles();
       },
       true
@@ -82,17 +82,17 @@
       players = value;
     });
     storeViewportSize.subscribe(val => {
-      console.log(`ScoreBoard subscribed to app viewport size: `, val);
+      // console.log(`ScoreBoard subscribed to app viewport size: `, val);
       appViewport = val;
     });
-    console.log(
-      `ScoreBoard subscribed to app viewport size: `,
-      appViewport.width
-    );
-    console.log(
-      `ScoreBoard subscribed to app viewport size: `,
-      appViewport.height
-    );
+    // console.log(
+    //   `ScoreBoard subscribed to app viewport size: `,
+    //   appViewport.width
+    // );
+    // console.log(
+    //   `ScoreBoard subscribed to app viewport size: `,
+    //   appViewport.height
+    // );
   });
 
   afterUpdate(() => {

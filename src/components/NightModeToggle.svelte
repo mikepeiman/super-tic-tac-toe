@@ -58,9 +58,9 @@
   };
 
   function toggleStyles(theme) {
-    console.log(
-      `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
-    );
+    // console.log(
+    //   `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
+    // );
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
@@ -68,9 +68,9 @@
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
     const icons = document.querySelectorAll(".icon");
-    console.log(
-      `toggleStyles() ====---------------====={   icons   }===>>>>>>>>>>>>>>>>>>>>>> ${icons}`
-    );
+    // console.log(
+    //   `toggleStyles() ====---------------====={   icons   }===>>>>>>>>>>>>>>>>>>>>>> ${icons}`
+    // );
     if (settings) {
       elements = [page, settings];
     } else {
@@ -87,13 +87,13 @@
     });
 
     icons.forEach((icon, i) => {
-      console.log(
-        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      );
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
       icon.classList.toggle("hidden");
-      console.log(
-        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      );
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
     });
 
     elements.forEach(el => {
@@ -126,13 +126,13 @@
       elements.push(score);
     });
     icons.forEach((icon, i) => {
-      console.log(
-        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      );
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
       icon.classList.toggle("hidden");
-      console.log(
-        `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      );
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
     });
     elements.forEach(el => {
       el.classList.remove("light");
