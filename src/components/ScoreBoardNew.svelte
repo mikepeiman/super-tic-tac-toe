@@ -40,8 +40,9 @@
   $: {
     if (typeof window !== "undefined") {
       if (players.length > 0) {
-        console.log(`reactive addStyles, players.length > 0`)
-        numberOfPlayers && addStyles(`updated numberOfPlayers, ${numberOfPlayers}`);
+        console.log(`reactive addStyles, players.length > 0`);
+        numberOfPlayers &&
+          addStyles(`updated numberOfPlayers, ${numberOfPlayers}`);
         // window.innerWidth && addStyles("updated window.innerWidth");
         // placardFactor && addStyles("updated placardFactor");
       }
@@ -153,9 +154,11 @@
   }
 
   async function addStyles(message) {
-    console.log(`addStyles message => ${message}`)
+    console.log(`addStyles message => ${message}`);
     await players;
-    console.log(`addStyles message => ${message} awaited players, now continuing`)
+    console.log(
+      `addStyles message => ${message} awaited players, now continuing`
+    );
     // await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -256,7 +259,7 @@
   }
 </script>
 
-<style lang="scss" global>
+<style lang="scss">
   :root {
   }
   .scoreboard-container-inner {
@@ -353,17 +356,17 @@
         // min-width: auto;
       }
     }
-    :global(.scoreboard-container) {
+    .scoreboard-container {
       align-items: none;
       justify-content: none;
     }
-    :global(.scoreboard-container-inner) {
+    .scoreboard-container-inner {
       display: flex;
 
       // max-width: calc(100vw - 1rem);
       min-width: 100%;
     }
-    :global(.gameboard-container) {
+    .gameboard-container {
       justify-content: center;
       align-items: center;
       & #player-name {
@@ -432,7 +435,7 @@
     }
   }
 
-  :global(#sapper .svelte-emoji-picker__trigger) {
+  #sapper .svelte-emoji-picker__trigger {
     min-height: 2rem;
     margin-right: 0.25rem;
     display: flex;
@@ -441,7 +444,7 @@
     text-align: center;
   }
 
-  :global(#sapper .svelte-emoji-picker) {
+  #sapper .svelte-emoji-picker {
     background: var(--theme-bg);
     color: var(--theme-fg);
     z-index: 999;
@@ -535,7 +538,7 @@
     margin-right: 0.5rem;
   }
 
-  :global(.total-score) {
+  .total-score {
     // background: var(--player-color);
     padding: 0.25rem;
     margin: 0.25rem;
@@ -544,42 +547,42 @@
     & input {
       margin: 0 0.25rem;
     }
-  }
 
-  .total-score-number {
-    background: var(--theme-bg);
-    // padding: 0.5rem;
-    // margin: 0.25rem;
-    border-radius: 2px;
-    max-width: 5ch;
-    min-width: 3ch;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--player-color);
-    text-align: right;
-  }
-  .player-name {
-    background: var(--theme-bg);
-    padding: 0.5rem;
-    // margin: 0.25rem;
-    border-radius: 2px;
-    max-width: 10ch;
-    min-width: 10ch;
-    color: var(--player-color);
-  }
-  .player-marker {
-    background: var(--theme-bg);
-    // padding: 0.5rem;
-    // margin: 0.25rem;
-    border-radius: 2px;
-    min-width: 3.5ch;
-    max-width: 3.5ch;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--player-color);
+    & .total-score-number {
+      background: var(--theme-bg);
+      // padding: 0.5rem;
+      // margin: 0.25rem;
+      border-radius: 2px;
+      max-width: 5ch;
+      min-width: 3ch;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--player-color);
+      text-align: right;
+    }
+    & .player-name {
+      background: var(--theme-bg);
+      padding: 0.5rem;
+      // margin: 0.25rem;
+      border-radius: 2px;
+      max-width: 10ch;
+      min-width: 10ch;
+      color: var(--player-color);
+    }
+    & .player-marker {
+      background: var(--theme-bg);
+      // padding: 0.5rem;
+      // margin: 0.25rem;
+      border-radius: 2px;
+      min-width: 3.5ch;
+      max-width: 3.5ch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--player-color);
+    }
   }
 
   @media screen and (min-width: 600px) {
@@ -610,8 +613,7 @@
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
 
-          <div
-            class="player-marker">{player.marker}</div>
+          <div class="player-marker">{player.marker}</div>
 
           <div class="total-score-number">{player.totalScore}</div>
         </h3>

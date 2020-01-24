@@ -336,8 +336,14 @@
       // border-radius: 2rem;
       // }
       & h2 {
-        font-size: 1.25rem;
-        margin: 0 1.5rem 0 0;
+        background: rgba(0, 0, 0, 0);
+        padding: 0;
+        margin: 0 1rem 0 0;
+        border-radius: 0;
+        max-width: fit-content;
+        font-size: 1rem;
+        min-width: auto;
+        color: var(--theme-fg);
       }
       & span {
         display: flex;
@@ -700,16 +706,17 @@
         position: absolute;
         left: 0;
         padding: 0 1rem;
-        width: auto;
+        width: 6rem;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
           min-width: auto;
+          margin: 0;
         }
       }
       & #moves-wrapper {
         margin: 0;
-            margin-left: 9rem;
+        margin-left: 9rem;
       }
     }
     #tally-points-wrapper {
