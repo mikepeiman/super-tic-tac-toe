@@ -84,34 +84,34 @@
       gameboardWidth = val;
     })
     state = $storeState;
-    // console.log(`GameInit => onMount() settings = `, settings);
+    console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("preservePlayerDetails");
-    // console.log(`GameInit => onMount() playerDetails = `, playerDetails);
+    console.log(`GameInit => onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
       let turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
 
       state = JSON.parse(localStorage.getItem("state"));
       state.movesRemaining = settings.movesPerTurn - turnHistory.length;
-      // console.log(`GameInit => onMount(), gameInProgress true`);
+      console.log(`GameInit => onMount(), gameInProgress true`);
     } else {
       state.movesRemaining = settings.movesPerTurn;
-      // console.log(`GameInit => onMount(), state `, state);
+      console.log(`GameInit => onMount(), state `, state);
     }
     storeState.set(state);
     localStorage.setItem("state", JSON.stringify(state));
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      // console.log(
-      //   `GameInit => onMount() playerDetails, players `,
-      //   playerDetails,
-      //   players
-      // );
+      console.log(
+        `GameInit => onMount() playerDetails, players `,
+        playerDetails,
+        players
+      );
       storePlayers.set(players);
       if (!gameInProgress) {
-        // console.log(
-        //   `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
-        // );
+        console.log(
+          `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
+        );
         initializeCurrentPlayer();
         storePlayers.set(players);
       }
@@ -122,6 +122,7 @@
 
 
   function initializePlayers() {
+    console.log(`initializePlayers() initializePlayers() initializePlayers() initializePlayers() initializePlayers()!`)
     let hueOffset = 110;
     // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
@@ -151,7 +152,7 @@
       //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
       // );
       scoreDirections.forEach((direction, index) => {
-        // console.log(`GameBoard => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
+        console.log(`GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
         // console.log(
@@ -160,13 +161,14 @@
         // );
       });
     }
-    // players = players
+    players = players
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (!gameInProgress) {
       initializeCurrentPlayer();
     }
     dispatch("playersInitialized", players);
-    // console.log(`GameInit => initialized players done`, players);
+    console.log(`GameInit => initialized players done`, players);
+    storePlayers.set(players)
   }
 
   function initializeCurrentPlayer() {
