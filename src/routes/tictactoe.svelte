@@ -158,6 +158,10 @@
     --input-blue: 50, 200, 255;
   }
 
+  body {
+    color: var(--theme-fg);
+    background: var(--theme-bg);
+  }
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
@@ -259,7 +263,8 @@
     grid-area: gameboard;
     display: flex;
     flex-direction: column;
-    color: #eee;
+    color: var(--theme-fg);
+    background: var(--theme-bg);
     justify-content: center;
     align-items: center;
     height: auto;
@@ -599,8 +604,7 @@
 
   // }
 
-
-// and (orientation: portrait) 
+  // and (orientation: portrait)
   @media screen and (max-width: 900px) {
     .sidemenu-container {
       display: none;
