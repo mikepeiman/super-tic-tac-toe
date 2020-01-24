@@ -686,7 +686,7 @@
       max-width: 100vw;
     }
     .statusbar-slim-wrapper {
-      position: static;
+      position: relative;
       grid-area: statusbar;
       border-radius: 0;
       min-width: 100vw;
@@ -697,9 +697,10 @@
         margin: 0;
         background: var(--player-color);
         border-radius: 0 2rem 2rem 0;
-        position: static;
+        position: absolute;
+        left: 0;
         padding: 0 1rem;
-        min-height: 100%;
+        width: auto;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
@@ -708,6 +709,7 @@
       }
       & #moves-wrapper {
         margin: 0;
+            margin-left: 9rem;
       }
     }
     #tally-points-wrapper {
