@@ -104,8 +104,8 @@
     if (emoji) {
       player.marker = emoji.detail;
     }
+    players = players
     storePlayers.set(players);
-    localStorage.setItem("playerDetails", true);
     storeCurrentPlayer.set(players[currentPlayer.id]);
     dispatch("playerNameOrMarkerUpdate", players);
     storePreservePlayerDetails.set(true);

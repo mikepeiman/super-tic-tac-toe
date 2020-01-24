@@ -335,9 +335,15 @@
       // border-bottom: 1.5rem solid transparent;
       // border-radius: 2rem;
       // }
-      & h2 {
+      & h2.player-name {
         font-size: 1.25rem;
         margin: 0 1.5rem 0 0;
+        background: none;
+        padding: 0.5rem;
+        border-radius: 0;
+        max-width: fit-content;
+        min-width: auto;
+        color: var(--theme-fg);
       }
       & span {
         display: flex;
@@ -350,7 +356,7 @@
         justify-self: center;
         font-size: 2rem;
         position: relative;
-        top: -5px;
+        top: -2px;
         // position: absolute;
         // top: 1.25rem;
         // right: 0;
@@ -709,7 +715,7 @@
       }
       & #moves-wrapper {
         margin: 0;
-            margin-left: 9rem;
+        margin-left: 9rem;
       }
     }
     #tally-points-wrapper {
