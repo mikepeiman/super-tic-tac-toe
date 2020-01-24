@@ -138,6 +138,7 @@
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
+    players = players
     storePlayers.set(players);
   }
 

@@ -109,7 +109,6 @@
     localStorage.removeItem("state");
     localStorage.removeItem("currentPlayer");
     localStorage.removeItem("directionArrays");
-    localStorage.removeItem("state");
     resetGame();
     location.reload();
     dispatch("resetGame", true);
