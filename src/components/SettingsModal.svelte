@@ -2,6 +2,10 @@
   import { onMount, getContext } from "svelte";
   import GameSettingsModalContent from "./GameSettingsModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
+  import Fa from "sveltejs-fontawesome";
+  import { faSlidersH } from "@fortawesome/pro-duotone-svg-icons";
+  import { storeButtonStyles } from "../stores.js";
+  let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   const { open } = getContext("simple-modal");
   let styling = {
@@ -65,7 +69,7 @@
 
   const showModal = () => {
     open(GameSettingsModalContent, { message: "Game Settings:" }, styling);
-    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`)
+    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
   };
 </script>
 
@@ -84,9 +88,11 @@
   }
 </style>
 
-<button
-  class="control-button"
-  id="settings-menu-button"
-  on:click={showModal}>
+<button class="control-button" id="settings-menu-button" on:click={showModal}>
+  <Fa
+    icon={faSlidersH}
+    color={_color}
+    secondaryColor={_secondaryColor}
+    secondaryOpacity={_secondaryOpacity} />
   Settings
 </button>

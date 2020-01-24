@@ -1,13 +1,22 @@
 <script>
   import { onMount } from "svelte";
+  import Fa from "sveltejs-fontawesome";
+  // import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
+  import { faSun } from "@fortawesome/pro-solid-svg-icons";
+  import { faMoon } from "@fortawesome/pro-solid-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
 
-  const light = "#ededed";
+  const light = "#edededed";
   const dark = "#1a1a1a";
-  let elements;
+  let elements, viewport;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
+    document.documentElement.style.setProperty(
+      "--input-blue",
+      "rgba(50, 200, 255, 1)"
+    );
     const page = document.querySelector(".page-container");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
     const currentTheme = localStorage.getItem("theme");
@@ -30,6 +39,14 @@
     }
   });
 
+  function removeUnusedCheckbox() {
+    let width = window.innerWidth;
+    let redundantToggle
+    if(width >= 1080) {
+      redundantToggle = document.getElementsByClassName('.topmenu-wrapper')
+    }
+  }
+
   const toggleTheme = e => {
     // const page = document.querySelector(".page-container");
     // const placards = document.querySelectorAll(".scoreboard-player");
@@ -37,14 +54,46 @@
     const toggleSwitch = document.querySelector("#night-mode-toggle");
 
     if (e.target.checked) {
-      // page.classList = "page-container dark";
-      // toggleSwitch.checked = true;
+      console.log(
+        `toggleTheme() => CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
+        e.target
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
+        toggleSwitch
+      );
+      toggleSwitch.checked = true;
+      e.target.dispatchEvent(new Event('change'))
+      console.log(
+        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
+      );
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       localStorage.setItem("theme", "dark");
     } else {
-      // page.classList = "page-container light";
+      console.log(
+        `toggleTheme() => NOT CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
+        e.target
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
+        toggleSwitch
+      );
       e.target.checked = false;
+      e.target.dispatchEvent(new Event('change'))
+      console.log(
+        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
+      );
+      console.log(
+        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
+          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
+      );
       document.documentElement.style.setProperty("--theme-bg", light);
       document.documentElement.style.setProperty("--theme-fg", dark);
       localStorage.setItem("theme", "light");
@@ -53,12 +102,21 @@
   };
 
   function toggleStyles(theme) {
+    const toggleSwitch = document.querySelector("#night-mode-toggle");
+    // toggleSwitch.click()
+    // console.log(
+    //   `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
+    // );
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
+    const icons = document.querySelectorAll(".icon");
+    // console.log(
+    //   `toggleStyles() ====---------------====={   icons   }===>>>>>>>>>>>>>>>>>>>>>> ${icons}`
+    // );
     if (settings) {
       elements = [page, settings];
     } else {
@@ -73,6 +131,17 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
+
+    icons.forEach((icon, i) => {
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
+      icon.classList.toggle("hidden");
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
+    });
+
     elements.forEach(el => {
       el.classList.toggle("dark");
       el.classList.toggle("light");
@@ -86,6 +155,7 @@
     const playerMarks = document.querySelectorAll(".player-marker");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
+    const icons = document.querySelectorAll(".icon");
     if (settings) {
       elements = [page, settings];
     } else {
@@ -101,6 +171,15 @@
     playerScores.forEach(score => {
       elements.push(score);
     });
+    icons.forEach((icon, i) => {
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
+      icon.classList.toggle("hidden");
+      // console.log(
+      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
+      // );
+    });
     elements.forEach(el => {
       el.classList.remove("light");
       el.classList.remove("dark");
@@ -108,14 +187,16 @@
     });
   }
 
+  let buttonStyles = `color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"`;
   // make an addStyles to set initial theme class on each element
 </script>
 
-<style lang="scss">
+<style lang="scss" global>
   /*Simple css to style it like a toggle switch*/
 
   :global(#theme-switch-wrapper) {
-display: -webkit-box;
+    display: -webkit-box;
     display: block;
     -webkit-box-align: center;
     align-items: center;
@@ -136,9 +217,6 @@ display: -webkit-box;
     display: none;
   }
 
-  .slider-wrapper {
-  }
-
   .toggle-text {
     color: var(--theme-fg);
     position: absolute;
@@ -157,8 +235,8 @@ display: -webkit-box;
     cursor: pointer;
     // left: 0;
     position: absolute;
-    right: 0.95rem;
-    top: 1rem;
+    right: 0;
+    top: 0.5rem;
     transition: 0.4s;
   }
 
@@ -174,7 +252,10 @@ display: -webkit-box;
   }
 
   input:checked + .slider {
-    background: hsla(var(--player-color-hue), 75%, 50%, 0.5);
+    // transform: translateX(31px);
+    background: var(
+      --player-color
+    ); // hsla(var(--player-color-hue), 50%, 50%, 0.75);
   }
 
   input:checked + .slider:before {
@@ -188,22 +269,7 @@ display: -webkit-box;
   .slider.round:before {
     border-radius: 50%;
   }
-  @media (min-width: 900px) {
-    // .slider:before {
-    //   bottom: 3px;
-    //   // height: 26px;
-    //   left: 5px;
-    //   // width: 26px;
-    // }
 
-    // input:checked + .slider:before {
-    //   transform: translateX(31px);
-    // }
-
-    // .slider.round {
-    //   border-radius: 34px;
-    // }
-  }
 </style>
 
 <label class="theme-switch" for="night-mode-toggle">
@@ -216,6 +282,30 @@ display: -webkit-box;
   <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
   <!-- </div> -->
-  <span class="toggle-text">Dark Mode</span>
+  <!-- <div class="icon sunrise">
+    <Fa
+      icon={faSunrise}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <div class="icon sunset hidden">
+    <Fa
+      icon={faSunset}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div> -->
+  <div class="icon sun">
+    <Fa
+      icon={faSun}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <div class="icon moon hidden">
+    <Fa
+      icon={faMoon}
+      color="var(--theme-fg)"
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+  </div>
+  <!-- <span class="toggle-text">Dark Mode</span> -->
 
 </label>

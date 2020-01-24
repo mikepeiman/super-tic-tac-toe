@@ -1,6 +1,5 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-
   const dispatch = createEventDispatcher();
   import {
     storeSettings,
@@ -11,46 +10,51 @@
     storeGameInProgress,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeButtonStyles
   } from "../stores.js";
 
-  export let players, wrapperClass;
-  
   import Fa from "sveltejs-fontawesome";
   import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
 
-  $: lines = [];
-  $: settings = {};
+  let players,
+    lines,
+    settings,
+    buttonStyles,
+    _color,
+    _secondaryColor,
+    _secondaryOpacity;
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`CountPoints => storeSettings.subscribe value #1 inside => `, value);
       settings = value;
     });
     storeDirectionArrays.subscribe(val => {
-      // console.log(
-      //   `CountPoints store subscription to storeDirectionArrays: `,
-      //   val
-      // );
       lines = val;
     });
-    // settings = $storeSettings;
-    // console.log(`CountPoints => storeSettings.subscribe value #2 => `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
     }
     console.log(`CountPoints onMount(), players, settings`, players, settings);
+    storeButtonStyles.subscribe(val => {
+      buttonStyles = val;
+      ({ _color, _secondaryColor, _secondaryOpacity } = buttonStyles);
+      console.log(
+        `countpoints, buttonstyles from store, color ${_color} secondaryColor ${_secondaryColor} length ${val.length}`,
+        val
+      );
+    });
   });
 
   function countPoints() {
     storePreservePlayerDetails.set(true);
     // let settings = JSON.parse(localStorage.getItem('settings'))
-    // console.log(
-    //   "*************__________countPoints called________**************, settings, lines ",
-    //   settings,
-    //   lines
-    // );
+    console.log(
+      "*************__________countPoints called________**************, settings, lines ",
+      settings,
+      lines
+    );
     // console.log(
     //   "players from countPoints before checking localStorage: ",
     //   players
@@ -92,8 +96,8 @@
     });
     players = players;
     storePlayers.set(players);
-    localStorage.setItem(`players`, JSON.stringify(players));
-    dispatch("playersScored", players);
+    // localStorage.setItem(`players`, JSON.stringify(players));
+    // dispatch("playersScored", players);
   }
 
   function score(settings, direction, player, idx) {
@@ -124,21 +128,21 @@
       let shorterDimension = rows < columns ? rows : columns;
       let len = line.length;
       // console.log(`longerDimensions in scorePoints(): rows ${rows} columns ${columns} larger ${longerDimension}. Line length ${len}`)
-      // console.log(` -*-*-*-*-*-*-*    Line length ${len}, bonus set: ${bonusForCompleteLine}`)
+      // console.log(` -*-*-*-*-*-*-* ${direction.name} Line length ${len}, bonus set: ${bonusForCompleteLine}`)
       let equalSides = rows === columns ? rows : false;
       // console.log(`has equal sides? ${equalSides}`)
       let lineBonus = bonusForCompleteLine;
       if (len >= longerDimension) {
         lineBonus = bonusForCompleteLine;
-        // console.log(`THIS LINE ---------------------- meets or excees LONGER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- meets or exceeds LONGER ------------------------ ****************** ${lineBonus}`)
       } else if (len >= shorterDimension) {
         lineBonus = Math.ceil(
           bonusForCompleteLine / (longerDimension / shorterDimension)
         );
-        // console.log(`THIS LINE ---------------------- meets or excees SHORTER ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- meets or exceeds SHORTER ------------------------ ****************** ${lineBonus}`)
       } else {
         lineBonus = 0;
-        // console.log(`THIS LINE ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
+        // console.log(`THIS LINE ${direction.name} ${line} ---------------------- is NOT LONG ENOUGH FOR BONUS ------------------------ ****************** ${lineBonus}`)
       }
       line.forEach(move => {
         // console.log(`scoring ${move.id}`);
@@ -184,22 +188,23 @@
         points += countInLoop - (settings.cellsToScore - 1);
       }
 
-      // console.log(`END OF LINE LOOP:::   ${player.name} points: ${points}`);
-
-      // console.log(
-      //   `END OF LINE LOOP:::   ${player.name} points after lineBonus ${lineBonus}: ${points}`
-      // );
-
-      // console.log(`dirLines `, dirLines)
       dirPoints += points;
       bonusPoints += lineBonus;
       dirScore += points + lineBonus;
       dirBonus += bonusPoints;
       dirLines.push({ countInLine: countInLine, points: points });
+
+      // console.log(`dirLines `, dirLines)
+      // console.log(
+      //   `:::   ${player.name} points: ${points}, dirPoints ${dirPoints}, bonus points ${bonusPoints}, dir bonus ${dirBonus}`
+      // );
+      // console.log(
+      //   `:::   ${player.name} score for direction ${direction.name}: ${dirScore}`
+      // );
     });
     players = players;
     // console.log(
-    //   `score closing with direction score ${dirScore} | player: `,
+    //   `DIRECTION ${direction.name} score closing with direction score ${dirScore} | player: `,
     //   player
     // );
     player["dirLines"] = dirLines;
@@ -237,6 +242,10 @@
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
-  <Fa icon={faAbacus}  color="var(--theme-fg)" secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)"  />
+  <Fa
+    icon={faAbacus}
+    color={_color}
+    secondaryColor={_secondaryColor}
+    secondaryOpacity={_secondaryOpacity} />
   <span class="button-text">Tally Scores</span>
 </button>

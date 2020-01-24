@@ -33,6 +33,15 @@ let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
 let gameHistoryTurns = writable([]);
+let buttonStyles = writable({
+  _color: "var(--input-blue)",
+  _secondaryColor: "var(--input-blue)",
+  _secondaryOpacity: "1"
+});
+
+// color="var(--theme-bg)"
+// secondaryColor="hsla(calc(var(--player-color-hue) + 30), 100%, 70%, 1)"
+// secondaryOpacity="1"
 
 export const storePlayers = {
   subscribe: players.subscribe,
@@ -124,13 +133,13 @@ export const storePreservePlayerDetails = {
   set: val => {
     preservePlayerDetails.set(val);
     if (typeof window !== "undefined") {
-    if (!val) {
-      localStorage.removeItem("preservePlayerDetails");
-    } else {
-      localStorage.setItem("preservePlayerDetails", JSON.stringify(val));
+      if (!val) {
+        localStorage.removeItem("preservePlayerDetails");
+      } else {
+        localStorage.setItem("preservePlayerDetails", JSON.stringify(val));
+      }
     }
   }
-}
 };
 export const storeGameHistoryTurns = {
   subscribe: gameHistoryTurns.subscribe,
@@ -145,5 +154,13 @@ export const storeGameHistoryFlat = {
   set: val => {
     gameHistoryFlat.set(val);
     localStorage.setItem("gameHistoryFlat", JSON.stringify(val));
+  }
+};
+
+export const storeButtonStyles = {
+  subscribe: buttonStyles.subscribe,
+  set: val => {
+    buttonStyles.set(val);
+    localStorage.setItem("buttonStyles", JSON.stringify(val));
   }
 };
