@@ -30,6 +30,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
   let smallScreen = false;
+  let smallScreenMaxWidth = 900;
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
@@ -598,7 +599,9 @@
 
   // }
 
-  @media screen and (max-width: 1080px) and (orientation: portrait) {
+
+// and (orientation: portrait) 
+  @media screen and (max-width: 900px) {
     .sidemenu-container {
       display: none;
     }
@@ -662,7 +665,16 @@
       align-items: center;
     }
     .scoreboard-container {
-      display: none;
+      // display: none;
+      & .scoreboard-container-inner {
+        display: flex;
+        flex-direction: row;
+        max-width: 100vw;
+        & .scoreboard-player {
+          position: static;
+          margin: 0;
+        }
+      }
     }
     .scoreboardnew-container {
       grid-area: scoreboard;
