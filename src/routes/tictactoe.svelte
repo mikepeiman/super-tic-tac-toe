@@ -174,7 +174,7 @@
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-rows: 10vh auto;
+    grid-template-rows: 8vh auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -247,6 +247,7 @@
       width: 6rem;
       margin-right: 0.25rem;
       background: rgba(255, 255, 255, 0.15);
+      border: 2px solid var(--input-blue);
       &:hover {
         background: var(--player-color-dark);
       }
@@ -275,7 +276,7 @@
   }
   .scoreboard-container {
     grid-area: scoreboard;
-    margin: 0;
+    margin: 1rem 0 0 0;
     display: flex;
     max-width: 100%;
     justify-content: flex-start;
@@ -805,8 +806,8 @@
           style={`--moves-wrapper-width: ${gameboardWidth}px`}>
           <div class="player-status-detail" id="turn-moves">
             <span class="dynamic-value">{movesRemaining}</span>
-            <p class="dynamic-wrapper">moves remaining in turn,</p>
-            <span class="dynamic-value">{moveNumber}</span>
+            <p class="dynamic-wrapper">moves remaining in turn</p>
+            <span class="dynamic-value">{moveNumber ? moveNumber : 0}</span>
             <p class="dynamic-wrapper">
               {#if settings.rows}
                 of {settings.rows * settings.columns} total moves played
