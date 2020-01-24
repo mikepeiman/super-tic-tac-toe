@@ -201,7 +201,7 @@
   {#if !currentPlayer.name}
     <h2 class="player-indicator-heading">Loading players data...</h2>
   {:else}
-    <!-- <div class="buttons-wrapper" id="buttons-wrapper"> -->
+
     <div class="modal-wrapper options-control-wrapper">
       <CountPoints {players} on:playersScored={playersScored} />
     </div>
@@ -236,6 +236,6 @@
       id="theme-switch-wrapper">
       <NightModeToggle />
     </div>
-    <!-- </div> -->
+
   {/if}
 {/await}

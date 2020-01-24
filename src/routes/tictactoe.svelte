@@ -9,7 +9,7 @@
   import TopMenu from "./../components/TopMenu.svelte";
   import SideMenu from "./../components/SideMenu.svelte";
   import GameInit from "./../components/GameInit.svelte";
-  import emojis from "emojis-list";
+  // import emojis from "emojis-list";
   // import Fa from "svelte-fa";
   // <Fa icon={abacus} {...faTheme} />
   import { writable } from "svelte/store";
@@ -29,7 +29,7 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
-
+  let smallScreen = false;
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
@@ -68,10 +68,26 @@
       storeMovesRemaining.set(movesRemaining);
     }
   });
+  storeViewportSize.subscribe(val => {
+    console.log(
+      `tictactoe => storeViewportSize W:${val.width} H:${val.height}`
+    );
+    if (val.width < 900) {
+      smallScreen = true;
+    } else {
+      smallScreen = false;
+    }
+  });
 
   onMount(() => {
-    console.log(`TicTacToe.svelte onMount, emojis ${emojis[55]}`);
-
+    console.log(
+      `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
+    );
+    if ($storeViewportSize.width < 900) {
+      smallScreen = true;
+    } else {
+      smallScreen = false;
+    }
     storeState.subscribe(value => {
       state = value;
       movesRemaining = state.movesRemaining;
@@ -108,18 +124,18 @@
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
   }
 
-  function setViewportSize() {
-    let app = document.querySelector("#sapper");
-    console.log(`setViewportSize for app: `, app);
-    let appWidth = app.offsetWidth;
-    let appHeight = app.offsetHeight;
-    let appRatio = (appWidth / appHeight).toFixed(2);
-    storeViewportSize.set({
-      width: appWidth,
-      height: appHeight,
-      ratio: appRatio
-    });
-  }
+  // function setViewportSize() {
+  //   let app = document.querySelector("#sapper");
+  //   console.log(`setViewportSize for app: `, app);
+  //   let appWidth = app.offsetWidth;
+  //   let appHeight = app.offsetHeight;
+  //   let appRatio = (appWidth / appHeight).toFixed(2);
+  //   storeViewportSize.set({
+  //     width: appWidth,
+  //     height: appHeight,
+  //     ratio: appRatio
+  //   });
+  // }
 
   function playersScored(e) {
     players = e.detail;
@@ -185,7 +201,10 @@
     -webkit-box-align: start;
     align-items: flex-start;
     height: fit-content;
-    margin-left: 1rem;
+    margin-left: -1rem;
+    @media screen and (max-width: 1000px) {
+      margin-left: -3rem;
+    }
     // background: var(--player-color-dark);
     padding: 0.5rem;
     border-radius: 0 0 0 5px;
@@ -193,6 +212,10 @@
       position: relative;
       width: auto;
       left: 3.75rem;
+      & .theme-switch {
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+      }
       & .icon {
         position: absolute;
         top: 0.6rem;
@@ -271,7 +294,7 @@
     margin-bottom: 1rem;
     border-radius: 0 0 5px 5px;
     color: var(--theme-fg);
-    min-width: 100%;
+    min-width: 100vw;
     // min-width: var(--gameboard-width);
     // max-width: var(--gameboard-width);
     background: var(--theme-bg);
@@ -291,7 +314,8 @@
       padding: 0;
       // background: var(--player-color);
       // border-radius: 0 2rem 2rem 5px;
-      position: static;
+      position: absolute;
+      left: 0;
       min-height: 100%;
       max-height: 2.5rem;
       width: 19vw;
@@ -339,7 +363,7 @@
       display: flex;
       flex-direction: row;
       position: relative;
-      margin: 0 auto;
+      margin: 0 10vw 0 19vw;
       font-size: 1rem;
       & .player-status-detail {
         display: flex;
@@ -681,6 +705,9 @@
           min-width: auto;
         }
       }
+      & #moves-wrapper {
+        margin: 0;
+      }
     }
     #tally-points-wrapper {
       grid-area: tallypoints;
@@ -814,12 +841,15 @@
       </button>
     </div> -->
 
-    <div class="topmenu-container">
-      <TopMenu />
-    </div>
-    <div class="sidemenu-container">
-      <SideMenu />
-    </div>
+    {#if smallScreen}
+      <div class="topmenu-container">
+        <TopMenu />
+      </div>
+    {:else if !smallScreen}
+      <div class="sidemenu-container">
+        <SideMenu />
+      </div>
+    {/if}
   </div>
 
 {/await}

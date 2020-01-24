@@ -9,7 +9,7 @@
 
   const light = "#edededed";
   const dark = "#1a1a1a";
-  let elements;
+  let elements, viewport;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
@@ -38,6 +38,14 @@
       }
     }
   });
+
+  function removeUnusedCheckbox() {
+    let width = window.innerWidth;
+    let redundantToggle
+    if(width >= 1080) {
+      redundantToggle = document.getElementsByClassName('.topmenu-wrapper')
+    }
+  }
 
   const toggleTheme = e => {
     // const page = document.querySelector(".page-container");
