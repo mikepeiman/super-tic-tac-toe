@@ -30,7 +30,9 @@
     storeGameHistoryFlat
   } from "../stores.js";
   let smallScreen = false;
+  let landscape, portrait;
   let smallScreenMaxWidth = 900;
+  let viewportSize = {width: '', height: ''};
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
@@ -73,7 +75,15 @@
     console.log(
       `tictactoe => storeViewportSize W:${val.width} H:${val.height}`
     );
-    if (val.width < 900) {
+    viewportSize = val;
+    if (val.width > val.height) {
+      landscape = true;
+      portrait = false;
+    } else {
+      portrait = true;
+      landscape = false;
+    }
+    if (val.width < smallScreenMaxWidth) {
       smallScreen = true;
     } else {
       smallScreen = false;
@@ -84,7 +94,7 @@
     console.log(
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
-    if ($storeViewportSize.width < 900) {
+    if (viewportSize.width < smallScreenMaxWidth) {
       smallScreen = true;
     } else {
       smallScreen = false;
@@ -174,12 +184,12 @@
     grid-template-areas:
       "statusbar statusbar sidemenu"
       "scoreboard gameboard sidemenu";
-    grid-template-columns: 20vw 70vw 10vw;
+    grid-template-columns: 20vw 65vw 15vw;
     min-height: 100vh;
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-rows: 8vh auto;
+    grid-template-rows: minmax(8vh, auto) auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -206,10 +216,11 @@
     -webkit-box-align: start;
     align-items: flex-start;
     height: fit-content;
-    margin-left: -1rem;
-    @media screen and (max-width: 1000px) {
-      margin-left: -3rem;
-    }
+    margin-left: 10%;
+    z-index: 9;
+    // @media screen and (max-width: 1000px) {
+    //   margin-left: -3rem;
+    // }
     // background: var(--player-color-dark);
     padding: 0.5rem;
     border-radius: 0 0 0 5px;
@@ -345,7 +356,7 @@
         font-size: 1.25rem;
         margin: 0 1.5rem 0 0;
         background: none;
-        padding: 0.5rem;
+        padding: 0;
         border-radius: 0;
         max-width: fit-content;
         min-width: auto;
@@ -605,7 +616,7 @@
   // }
 
   // and (orientation: portrait)
-  @media screen and (max-width: 900px) and (orientation: portrait) {
+  @media screen and (max-width: 900px) and (min-height: 700px)  {
     .sidemenu-container {
       display: none;
     }
@@ -730,12 +741,13 @@
         position: absolute;
         left: 0;
         padding: 0 1rem;
-        width: 6rem;
+        min-width: 6rem;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
           min-width: auto;
-          margin: 0;
+          margin: 0 0.5rem 0 0;
+          padding: 0;
         }
       }
       & #moves-wrapper {
@@ -765,7 +777,9 @@
       }
     }
   }
-  @media screen and (min-height: 320px) and (max-height: 670px) and (orientation: landscape) {
+  @media screen and (max-height: 700px) and (orientation: landscape) {
+
+
   }
 
   // @media screen and (min-width: 900px) {
@@ -875,11 +889,11 @@
       </button>
     </div> -->
 
-    {#if smallScreen}
+    {#if smallScreen && portrait}
       <div class="topmenu-container">
         <TopMenu />
       </div>
-    {:else if !smallScreen}
+    {:else if !smallScreen || landscape}
       <div class="sidemenu-container">
         <SideMenu />
       </div>
