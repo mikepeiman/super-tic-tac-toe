@@ -605,7 +605,7 @@
   // }
 
   // and (orientation: portrait)
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 900px) and (orientation: portrait) {
     .sidemenu-container {
       display: none;
     }
@@ -656,12 +656,20 @@
       }
       & .modal-wrapper.options-control-wrapper {
         margin-right: 0.5rem;
+        width: 100%;
       }
       & button.control-button {
         padding: 0.25rem;
         font-size: 0.75rem;
         width: 5rem;
         margin-right: 0.25rem;
+        width: 100%;
+        width: -moz-available; /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .gameboard-container {
