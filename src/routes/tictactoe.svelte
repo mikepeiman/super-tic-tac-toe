@@ -331,15 +331,15 @@
       margin: 0;
       padding: 0;
       // background: var(--player-color);
-      // border-radius: 0 2rem 2rem 5px;
+      // border-radius: 0 2rem 2rem 0;
       position: absolute;
       left: 0;
       min-height: 100%;
       max-height: 2.5rem;
       width: 19vw;
-      background: rgba(255, 255, 255, 0.15);
-      border-right: 2px solid var(--player-color);
-      border-bottom: 2px solid var(--player-color);
+      background: none;
+      outline: 2px solid var(--player-color);
+      outline-offset: -4px;
       // &::after {
       // CSS rounded triangle
       // content: "";
