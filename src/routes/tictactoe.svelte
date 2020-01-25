@@ -189,7 +189,7 @@
     max-height: 100vh;
     min-width: 100vw;
     max-width: 100vw;
-    grid-template-rows: minmax(8vh, auto) auto;
+    grid-template-rows: minmax(8vh, 4rem) auto;
     transition: all 0.25s;
     &.dark {
       background: var(--theme-bg);
@@ -275,7 +275,6 @@
     display: flex;
     flex-direction: column;
     color: var(--theme-fg);
-    background: var(--theme-bg);
     justify-content: center;
     align-items: center;
     height: auto;
@@ -779,9 +778,21 @@
     }
   }
   @media screen and (max-height: 700px) and (max-width: 900px) and (orientation: landscape) {
+    .page-container {
+      grid-template-rows: minmax(8vh, 4rem) auto;
+    }
     .gameboard-container {
+      background: none;
+      justify-content: flex-start;
       & #gameboard {
         border: 2px solid var(--player-color-dark);
+        
+      }
+    }
+    .sidemenu-container {
+      margin-left: 0;
+      & #theme-switch-wrapper {
+        height: 2.75rem;
       }
     }
     .scoreboard-container {
@@ -828,43 +839,6 @@
     }
   }
 
-  // @media screen and (min-width: 900px) {
-  //   .gameboard-container {
-  //     align-items: center;
-  //     margin-right: 0;
-  //   }
-  //   .settingsmenu-container {
-  //     border-top: 6px solid rgba(0, 0, 0, 0);
-  //   }
-  //   button {
-  //     min-height: 3rem;
-  //     margin-right: 0.5rem;
-  //     border-radius: 2px;
-  //     font-size: 1.25rem;
-  //     border: none;
-  //     color: #eeeeee;
-  //     // background: rgba(var(--input-blue), 0.5);
-  //     background: rgba(255, 255, 255, 0.15);
-  //     &:hover {
-  //       background: rgba(255, 255, 255, 0.25);
-  //       background: rgba(var(--input-blue), 1);
-  //     }
-  //   }
-  //   .page-container {
-  //     box-sizing: border-box;
-  //     display: grid;
-  //     grid-template-areas:
-  //       ". gameboard ."
-  //       "scoreboard gameboard optionswidget";
-  //     grid-template-columns: 20vw 70vw 10vw;
-  //     min-height: 100vh;
-  //     max-height: 100vh;
-  //     min-width: 100vw;
-  //     max-width: 100vw;
-  //     grid-template-rows: 5vh auto;
-  //     transition: all 0.25s;
-  //   }
-  // }
 </style>
 
 <!-- <div class="title-container">
