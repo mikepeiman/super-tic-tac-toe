@@ -68,6 +68,7 @@
   });
 
   function resetGame() {
+    console.log(`reset game`)
     localStorage.removeItem("gameboard");
     localStorage.removeItem("gameHistoryFlat");
     localStorage.removeItem("gameHistoryTurns");
@@ -109,7 +110,6 @@
     localStorage.removeItem("state");
     localStorage.removeItem("currentPlayer");
     localStorage.removeItem("directionArrays");
-    localStorage.removeItem("state");
     resetGame();
     location.reload();
     dispatch("resetGame", true);

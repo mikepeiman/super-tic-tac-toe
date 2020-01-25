@@ -30,6 +30,7 @@
     storeGameHistoryFlat
   } from "../stores.js";
   let smallScreen = false;
+  let smallScreenMaxWidth = 900;
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
@@ -157,6 +158,10 @@
     --input-blue: 50, 200, 255;
   }
 
+  body {
+    color: var(--theme-fg);
+    background: var(--theme-bg);
+  }
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
@@ -258,7 +263,8 @@
     grid-area: gameboard;
     display: flex;
     flex-direction: column;
-    color: #eee;
+    color: var(--theme-fg);
+    background: var(--theme-bg);
     justify-content: center;
     align-items: center;
     height: auto;
@@ -335,13 +341,13 @@
       // border-bottom: 1.5rem solid transparent;
       // border-radius: 2rem;
       // }
-      & h2 {
-        background: rgba(0, 0, 0, 0);
-        padding: 0;
-        margin: 0 1rem 0 0;
+      & h2.player-name {
+        font-size: 1.25rem;
+        margin: 0 1.5rem 0 0;
+        background: none;
+        padding: 0.5rem;
         border-radius: 0;
         max-width: fit-content;
-        font-size: 1rem;
         min-width: auto;
         color: var(--theme-fg);
       }
@@ -356,7 +362,7 @@
         justify-self: center;
         font-size: 2rem;
         position: relative;
-        top: -5px;
+        top: -2px;
         // position: absolute;
         // top: 1.25rem;
         // right: 0;
@@ -598,7 +604,8 @@
 
   // }
 
-  @media screen and (max-width: 1080px) and (orientation: portrait) {
+  // and (orientation: portrait)
+  @media screen and (max-width: 900px) and (orientation: portrait) {
     .sidemenu-container {
       display: none;
     }
@@ -649,12 +656,20 @@
       }
       & .modal-wrapper.options-control-wrapper {
         margin-right: 0.5rem;
+        width: 100%;
       }
       & button.control-button {
         padding: 0.25rem;
         font-size: 0.75rem;
         width: 5rem;
         margin-right: 0.25rem;
+        width: 100%;
+        width: -moz-available; /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .gameboard-container {
@@ -662,7 +677,16 @@
       align-items: center;
     }
     .scoreboard-container {
-      display: none;
+      // display: none;
+      & .scoreboard-container-inner {
+        display: flex;
+        flex-direction: row;
+        max-width: 100vw;
+        & .scoreboard-player {
+          position: static;
+          margin: 0;
+        }
+      }
     }
     .scoreboardnew-container {
       grid-area: scoreboard;

@@ -32,6 +32,9 @@
     storeDirectionArrays.subscribe(val => {
       lines = val;
     });
+    storePlayers.subscribe(val => {
+      // players = val;
+    })
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
@@ -63,9 +66,16 @@
       let gh = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       // players = JSON.parse(localStorage.getItem("players"))
       players = $storePlayers;
-      // console.log(`countPoints, gameHistoryFlat from LS: `, gh);
+      console.log(
+        `countPoints, gameHistoryFlat from LS, players from $storePlayers `,
+        gh,
+        players
+      );
     }
-
+    console.log(
+      `countPoints, gameHistoryFlat does not exist, players `,
+      players
+    );
     players.forEach(player => {
       // console.log(`CountPoints => players.forEach player, lines: `, lines);
       player.scores.forEach((direction, index) => {
@@ -202,12 +212,13 @@
       //   `:::   ${player.name} score for direction ${direction.name}: ${dirScore}`
       // );
     });
+    player["dirLines"] = dirLines;
     players = players;
     // console.log(
     //   `DIRECTION ${direction.name} score closing with direction score ${dirScore} | player: `,
     //   player
     // );
-    player["dirLines"] = dirLines;
+    
     directionScores = { points: dirPoints, bonus: dirBonus };
     return directionScores;
   }

@@ -69,6 +69,7 @@
       document.documentElement.style.setProperty(colorHueVar, colorHue);
     }
   }
+  // let settings
   $: state = {};
   $: players = {};
   $: settings = {};
@@ -81,17 +82,17 @@
     storeSettings.subscribe(value => {
       // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
-      let lsMovesFromTurnHistory = JSON.parse(
-        localStorage.getItem("turnHistory")
-      );
-      if (lsMovesFromTurnHistory) {
-        lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
-          .length;
-      }
+      // let lsMovesFromTurnHistory = JSON.parse(
+      //   localStorage.getItem("turnHistory")
+      // );
+      // if (lsMovesFromTurnHistory) {
+      //   lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
+      //     .length;
+      // }
 
       // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
-      movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
-      state.movesRemaining = movesRemaining;
+      // movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
+      // state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
       currentPlayer = value;
@@ -112,7 +113,9 @@
         moveNumber = 0;
       }
     });
-    players = $storePlayers;
+    storePlayers.subscribe(val => {
+      players = val
+    })
     state = $storeState;
     settings = $storeSettings;
     if (localStorage.getItem("gameInProgress")) {
@@ -135,9 +138,11 @@
   function clearScores() {
     console.log(`clear scores`);
     players.forEach(player => {
+      console.log(`clear scores player ${player.name}`);
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
+    players = players
     storePlayers.set(players);
   }
 
@@ -196,7 +201,7 @@
   @media screen and (min-width: 1500px) {
   }
 </style>
-
+<!-- {@debug players} -->
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
     <h2 class="player-indicator-heading">Loading players data...</h2>
@@ -209,7 +214,7 @@
       <button
         class="control-button"
         id="clear-game-button"
-        on:click={clearScores}>
+        on:click={() => clearScores()}>
         <Fa
           icon={faEraser}
           color={_color}
