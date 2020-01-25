@@ -786,7 +786,6 @@
       justify-content: flex-start;
       & #gameboard {
         border: 2px solid var(--player-color-dark);
-        
       }
     }
     .sidemenu-container {
@@ -796,6 +795,7 @@
       }
     }
     .scoreboard-container {
+      margin: 0;
       & .scoreboard-player {
         background: none;
         outline: 1px solid var(--player-color);
@@ -821,24 +821,25 @@
             min-width: auto;
             max-width: fit-content;
             width: 6ch;
-            padding: 0 0.25rem;
+            padding: 0;
+            font-size: 0.75rem;
           }
           & .player-marker {
             width: 1.5rem;
             max-width: 1.5rem;
             min-width: 1.5rem;
+            margin: 0;
           }
         }
         & .scoreboard-totals {
           justify-content: space-around;
           & .direction-icon {
-            margin: .15rem;
+            margin: 0.15rem;
           }
         }
       }
     }
   }
-
 </style>
 
 <!-- <div class="title-container">
