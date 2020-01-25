@@ -35,7 +35,7 @@
     playerColor = `--player-color: ${currentPlayer.color}`
     customSize = `--custom-size: ${cellSize}px`;
     customMarkSize = `--custom-mark-size: ${cellSize / 2}px`;
-    customMark = `--player-mark: ${currentPlayer.marker}`;
+    customMark = `--player-mark: ${currentPlayer.mark}`;
     customStyles = `${ggBg}; ${playerColor}; ${customSize}; ${customMarkSize}; ${customMark};`;
     // console.log(`------------Cell => onMount() ${id} row ${row} column ${column} rowFactor ${rowFactor} colFactor ${colFactor} color vars: hue ${hue} alpha ${alpha}`);
   });

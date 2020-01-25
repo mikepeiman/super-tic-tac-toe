@@ -451,6 +451,12 @@
     // border-bottom: 1px solid $input-blue;
     // margin: 0.5rem;
     justify-self: flex-end;
+    &:focus {
+      outline: none;
+      border-bottom: 1px dashed $input-blue;
+      margin-bottom: 0;
+      padding: 0;
+    }
   }
   .settings-wrapper {
     & input {
@@ -550,16 +556,16 @@
         );
       }
       &:hover::after {
-        content: attr(data-marker);
-        font-size: var(--cell-marker-size);
+        content: attr(data-mark);
+        font-size: var(--cell-mark-size);
         position: relative;
         justify-self: center;
         align-self: center;
         background: attr(data-background-color);
       }
       &::after {
-        content: attr(data-marker);
-        font-size: var(--cell-marker-size);
+        content: attr(data-mark);
+        font-size: var(--cell-mark-size);
         position: relative;
         top: -0.15rem;
         justify-self: center;
@@ -817,6 +823,10 @@
         transition: all 0.25s;
         z-index: -1;
         & .total-score {
+          & input {
+            margin: 0;
+            height: 1rem;
+          }
           & .player-name {
             min-width: auto;
             max-width: fit-content;
@@ -824,11 +834,18 @@
             padding: 0;
             font-size: 0.75rem;
           }
-          & .player-marker {
+          & .player-mark {
             width: 1.5rem;
             max-width: 1.5rem;
             min-width: 1.5rem;
             margin: 0;
+            height: 1rem;
+            font-size: 1rem;
+          }
+          & .total-score-number {
+            height: 1rem;
+            margin: 0;
+            padding: 0;
           }
         }
         & .scoreboard-totals {
@@ -867,7 +884,7 @@
             style={`--player-color: ${currentPlayer.colorMain}`}>
             {currentPlayer.name}
           </h2>
-          <span>{currentPlayer.marker}</span>
+          <span>{currentPlayer.mark}</span>
         </div>
         <div
           id="moves-wrapper"

@@ -2,7 +2,16 @@
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
+
+  // Following are the imports for modals, Font Awesome icons and FA component
+  import Modal from "svelte-simple-modal";
+  import Fa from "sveltejs-fontawesome";
+  import { faEdit } from "@fortawesome/pro-duotone-svg-icons";
   export let state, players, highlighted;
+  import { storeButtonStyles } from "../stores.js";
+  let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
+  // end FA/modal imports
+
   import {
     storeSettings,
     storeViewportSize,
@@ -43,27 +52,27 @@
     // console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
     // }
   }
-  
-    storeSettings.subscribe(value => {
-      console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
-      settings = value;
-      ({ numberOfPlayers } = settings);
-      // addStyles();
-    });
-    storeCurrentPlayer.subscribe(value => {
-      console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
-      currentPlayer = value;
-      if (value === null) {
-        currentPlayer = players[0];
-      }
-    });
-    storePlayers.subscribe(value => {
-      players = value;
-    });
-    storeViewportSize.subscribe(val => {
-      console.log(`ScoreBoard subscribed to app viewport size: `, val);
-      appViewport = val;
-    });
+
+  storeSettings.subscribe(value => {
+    console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+    settings = value;
+    ({ numberOfPlayers } = settings);
+    // addStyles();
+  });
+  storeCurrentPlayer.subscribe(value => {
+    console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+    currentPlayer = value;
+    if (value === null) {
+      currentPlayer = players[0];
+    }
+  });
+  storePlayers.subscribe(value => {
+    players = value;
+  });
+  storeViewportSize.subscribe(val => {
+    console.log(`ScoreBoard subscribed to app viewport size: `, val);
+    appViewport = val;
+  });
   onMount(() => {
     getViewportSize();
     window.addEventListener(
@@ -97,14 +106,14 @@
   }
   function updateStoredPlayers(player, emoji) {
     console.log(
-      `ScoreBoard => updateStoredPlayers: input on:blur, this player marker ${player.marker}, name: ${player.name} `,
+      `ScoreBoard => updateStoredPlayers: input on:blur, this player mark ${player.mark}, name: ${player.name} `,
       player,
       emoji
     );
     if (emoji) {
-      player.marker = emoji.detail;
+      player.mark = emoji.detail;
     }
-    players = players
+    players = players;
     storePlayers.set(players);
     storeCurrentPlayer.set(players[currentPlayer.id]);
     dispatch("playerNameOrMarkerUpdate", players);
@@ -165,6 +174,8 @@
     );
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
+      setEmojiSelectorToPlayerMark(placard, players[i])
+      console.dir(placard)
       let pColor = `--player-color: ${players[i].colorMain};`;
       let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
@@ -185,6 +196,14 @@
       // );
     }
   }
+
+function setEmojiSelectorToPlayerMark(placard, player) {
+  let emojiTrigger = placard.children[0].children[2]
+  console.log(`setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `, emojiTrigger)
+  emojiTrigger.setAttribute("data-player-mark", player.mark)
+  console.log(`setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `, emojiTrigger)
+}
+
   function addHighlightIfGameInProgress() {
     console.log(`addHighlightIfGameInProgress()`);
     totalMovesInGame = settings.rows * settings.columns;
@@ -288,7 +307,7 @@
         transition: all 0.25s;
       }
     }
-    & input.player-marker {
+    & input.player-mark {
       transition: all 0.25s;
       width: 3.5ch;
       &.dark {
@@ -316,13 +335,33 @@
       }
     }
   }
-  :global(#sapper .svelte-emoji-picker__trigger) {
-    min-height: 2rem;
-    margin-right: 0.25rem;
+  :global(#sapper button.svelte-emoji-picker__trigger) {
+    min-height: 1rem;
+    // margin-right: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    position: relative;
+    &:before {
+      content: attr(data-player-mark);
+      background: red;
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-height: 1rem;
+      width: 1rem;
+    }
+    //     & svg {
+    //   position: relative;
+    //   &:before {
+    //     content: "";
+    //     background: red;
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //   }
+    // }
   }
   :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
@@ -330,6 +369,8 @@
     z-index: 999;
     box-shadow: 0 0 5px 5px var(--theme-fg);
     border: 5px solid var(--player-color);
+    position: relative;
+
     & .svelte-emoji-picker__search {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -352,6 +393,7 @@
         color: var(--theme-fg);
       }
     }
+
     & .svelte-emoji-picker__emoji-tabs {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -393,7 +435,7 @@
     transition: all 0.25s;
     min-width: max-content;
     // transform: scale(1.025);
-    transform: scale(calc(var(--scale-width) * 1.05));
+    // transform: scale(calc(var(--scale-width) * 1.05));
   }
   .scoreboard-direction {
     // background: rgba(0, 0, 155, 0.5);
@@ -416,13 +458,23 @@
     margin-right: 0.5rem;
   }
   :global(.total-score) {
-    // background: var(--player-color);
+    position: relative;
     padding: 0.25rem;
     margin: 0.25rem;
     display: flex;
     justify-content: space-between;
     & input {
       margin: 0 0.25rem;
+    }
+    & .player-details-icon {
+      margin: 0;
+      padding: 0;
+      height: 1rem;
+      width: 1rem;
+      background: none;
+      position: relative;
+      right: -0.4rem;
+      top: -0.75rem;
     }
   }
   .total-score-number {
@@ -447,7 +499,7 @@
     min-width: 10ch;
     color: var(--player-color);
   }
-  .player-marker {
+  .player-mark {
     background: var(--theme-bg);
     // padding: 0.5rem;
     // margin: 0.25rem;
@@ -506,22 +558,31 @@
             on:blur={() => updateStoredPlayers(player)} />
 
           <input
-            class="player-marker"
+            class="player-mark"
             type="text"
-            bind:value={player.marker}
-            placeholder={player.marker}
+            bind:value={player.mark}
+            placeholder={player.mark}
             maxlength="1"
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
           <EmojiSelector
-            class="player-marker"
+            class="player-mark"
             type="text"
-            bind:value={player.marker}
-            placeholder={player.marker}
+            bind:value={player.mark}
+            placeholder={player.mark}
+            data-player-mark={player.mark}
             maxlength="1"
             style={`--this-player-color-main: ${player.colorMain}`}
             on:emoji={e => updateStoredPlayers(player, e)} />
           <div class="total-score-number">{player.totalScore}</div>
+          <button class="player-details-icon" on:click={() => clearScores()}>
+            <Fa
+              icon={faEdit}
+              color={_color}
+              secondaryColor={player.colorLight}
+              secondaryOpacity={_secondaryOpacity} />
+            <!-- <div class="button-text"></div> -->
+          </button>
         </h3>
         <div class="scoreboard-totals">
           {#each player.scores as direction, i}

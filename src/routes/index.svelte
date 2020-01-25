@@ -282,7 +282,7 @@
             </li>
           </ul>
         </li>
-        <li>Player names and move-markers selected by players</li>
+        <li>Player names and move-marks selected by players</li>
         <li>
           Score the game at any point, as often as you like - you can even
           change the moves-in-row or line bonus settings and see what the scores

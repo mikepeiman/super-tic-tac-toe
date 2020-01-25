@@ -108,12 +108,12 @@
   }
   function updateStoredPlayers(player, emoji) {
     console.log(
-      `ScoreBoard => updateStoredPlayers: input on:blur, this player marker ${player.marker}, name: ${player.name} `,
+      `ScoreBoard => updateStoredPlayers: input on:blur, this player mark ${player.mark}, name: ${player.name} `,
       player,
       emoji
     );
     if (emoji) {
-      player.marker = emoji.detail;
+      player.mark = emoji.detail;
     }
     storePlayers.set(players);
     localStorage.setItem("state", JSON.stringify(state));
@@ -318,7 +318,7 @@
         transition: all 0.25s;
       }
     }
-    & input.player-marker {
+    & input.player-mark {
       transition: all 0.25s;
       width: 3.5ch;
       &.dark {
@@ -405,7 +405,7 @@
           transition: all 0.25s;
         }
       }
-      & .player-marker {
+      & .player-mark {
         transition: all 0.25s;
         width: 3.5ch;
         &.dark {
@@ -570,7 +570,7 @@
       min-width: 10ch;
       color: var(--player-color);
     }
-    & .player-marker {
+    & .player-mark {
       background: var(--theme-bg);
       // padding: 0.5rem;
       // margin: 0.25rem;
@@ -609,11 +609,11 @@
             class="player-name"
             type="text"
             bind:value={player.name}
-            placeholder={`${player.name} ${player.marker}`}
+            placeholder={`${player.name} ${player.mark}`}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
 
-          <div class="player-marker">{player.marker}</div>
+          <div class="player-mark">{player.mark}</div>
 
           <div class="total-score-number">{player.totalScore}</div>
         </h3>
