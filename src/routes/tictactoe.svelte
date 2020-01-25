@@ -32,7 +32,7 @@
   let smallScreen = false;
   let landscape, portrait;
   let smallScreenMaxWidth = 900;
-  let viewportSize = {width: '', height: ''};
+  let viewportSize = { width: "", height: "" };
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
@@ -280,6 +280,7 @@
     align-items: center;
     height: auto;
     max-height: 90vh;
+
     // margin-right: 1rem;
     // background: #1a1a1a;
     z-index: 0;
@@ -616,7 +617,7 @@
   // }
 
   // and (orientation: portrait)
-  @media screen and (max-width: 900px) and (min-height: 700px)  {
+  @media screen and (max-width: 900px) and (min-height: 700px) {
     .sidemenu-container {
       display: none;
     }
@@ -777,9 +778,54 @@
       }
     }
   }
-  @media screen and (max-height: 700px) and (orientation: landscape) {
-
-
+  @media screen and (max-height: 700px) and (max-width: 900px) and (orientation: landscape) {
+    .gameboard-container {
+      & #gameboard {
+        border: 2px solid var(--player-color-dark);
+      }
+    }
+    .scoreboard-container {
+      & .scoreboard-player {
+        background: none;
+        outline: 1px solid var(--player-color);
+        position: static;
+        border-radius: 5px;
+        left: 0;
+        /* top: 0; */
+        margin: 0;
+        -webkit-transition: all 0.25s;
+        transition: all 0.25s;
+        min-width: -webkit-max-content;
+        min-width: -moz-max-content;
+        min-width: max-content;
+        /* -webkit-transform-origin: top left; */
+        /* transform-origin: top left; */
+        /* -webkit-transform: scale(var(--scale-width)); */
+        /* transform: scale(var(--scale-width)); */
+        transform: scale(1);
+        transition: all 0.25s;
+        z-index: -1;
+        & .total-score {
+          & .player-name {
+            min-width: auto;
+            max-width: fit-content;
+            width: 6ch;
+            padding: 0 0.25rem;
+          }
+          & .player-marker {
+            width: 1.5rem;
+            max-width: 1.5rem;
+            min-width: 1.5rem;
+          }
+        }
+        & .scoreboard-totals {
+          justify-content: space-around;
+          & .direction-icon {
+            margin: .15rem;
+          }
+        }
+      }
+    }
   }
 
   // @media screen and (min-width: 900px) {
