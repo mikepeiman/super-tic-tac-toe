@@ -711,14 +711,13 @@
       align-items: center;
     }
     .scoreboard-container {
-      // display: none;
+      margin: 0;
       & .scoreboard-container-inner {
         display: flex;
         flex-direction: row;
         max-width: 100vw;
         & .scoreboard-player {
           position: static;
-          margin: 0;
         }
       }
     }

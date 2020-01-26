@@ -329,7 +329,7 @@
   .scoreboard-totals {
     display: flex;
     justify-content: space-between;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0;// 0 5px 5px;
     background: rgba(0, 0, 0, 0.5);
     // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
@@ -338,16 +338,16 @@
   }
   .scoreboard-player {
     background: var(--player-color);
-    position: absolute;
-    border-radius: 5px;
+    // position: absolute;
+    border-radius: 0;
     left: 0;
-    top: var(--position-top);
+    // top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
     transition: all 0.25s;
     // outline: 5px solid var(--theme-bg)
     min-width: max-content;
     transform-origin: top left;
-    transform: scale(var(--scale-width));
+    // transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
     z-index: -1;
