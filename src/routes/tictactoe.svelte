@@ -819,7 +819,7 @@
       }
     }
     .sidemenu-container {
-      margin-left: 0;
+      margin-left: -1rem;
       & #theme-switch-wrapper {
         height: 2.75rem;
       }
@@ -883,17 +883,28 @@
             font-size: 0.75rem;
           }
           & .player-mark {
-            width: 1.5rem;
-            max-width: 1.5rem;
-            min-width: 1.5rem;
+            width: 1.25rem;
+            max-width: 1.25rem;
+            min-width: 1.25rem;
             margin: 0;
-            height: 1rem;
+            padding: 0;
+            height: 1.25rem;
             font-size: 1rem;
+            
           }
           & .total-score-number {
             height: 1rem;
             margin: 0;
             padding: 0;
+          }
+          & button.svelte-emoji-picker__trigger {
+            max-width: 1.25rem;
+            min-width: 1.25rem;
+            margin: 0;
+            height: 1.25rem;
+            max-height: 1.25rem;
+            min-height: 1.25rem;
+            font-size: 1rem;
           }
         }
         & .scoreboard-totals {

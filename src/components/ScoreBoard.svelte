@@ -105,7 +105,7 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
-  async function toggleDeactivatePlacardsSoEmojiCanPick(e) {
+  function toggleDeactivatePlacardsSoEmojiCanPick(e) {
     console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
     console.log(
       `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
@@ -129,15 +129,15 @@
     p3 = e.target.parentElement.parentElement.parentElement.parentElement;
     if (p1.classList.contains("scoreboard-player")) {
       console.log(`p1 is placard`);
-      thisPlacard = p1
+      thisPlacard = p1;
     }
     if (p2.classList.contains("scoreboard-player")) {
       console.log(`p2 is placard`);
-      thisPlacard = p2
+      thisPlacard = p2;
     }
     if (p3.classList.contains("scoreboard-player")) {
       console.log(`p3 is placard`);
-      thisPlacard = p3
+      thisPlacard = p3;
     }
     console.log(
       `toggleDeactivatePlacardsSoEmojiCanPick() THIS PLACARD: `,
@@ -153,6 +153,21 @@
     });
   }
 
+  async function removeDeactivatePlacardsSoEmojiCanPick() {
+    let placards = document.querySelectorAll(".scoreboard-player");
+    placards.forEach(placard => {
+      console.log(
+        `removeDeactivatePlacardsSoEmojiCanPick() removing... `,
+        placard.classList
+      );
+      placard.classList.remove("deactivated");
+      console.log(
+        `removeDeactivatePlacardsSoEmojiCanPick() removing... `,
+        placard.classList
+      );
+    });
+  }
+
   function updateStoredPlayers(player, emoji, e) {
     console.log(
       `ScoreBoard => updateStoredPlayers: input on:blur, this player mark ${player.mark}, name: ${player.name} `,
@@ -161,9 +176,21 @@
       e
     );
     if (emoji) {
-      toggleDeactivatePlacardsSoEmojiCanPick();
+      removeDeactivatePlacardsSoEmojiCanPick();
       player.mark = emoji.detail;
     }
+    let placards = document.querySelectorAll(".scoreboard-player");
+    placards.forEach(placard => {
+      console.log(
+        `removeDeactivatePlacardsSoEmojiCanPick() removing... `,
+        placard.classList
+      );
+      placard.classList.remove("deactivated");
+      console.log(
+        `removeDeactivatePlacardsSoEmojiCanPick() removing... `,
+        placard.classList
+      );
+    });
     players = players;
     storePlayers.set(players);
     storeCurrentPlayer.set(players[currentPlayer.id]);
@@ -396,21 +423,23 @@
       }
     }
   }
-  :global(#sapper button.svelte-emoji-picker__trigger) {
+  :global(button.svelte-emoji-picker__trigger) {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: relative;
-    width: 100%;
-    width: -moz-available; /* WebKit-based browsers will ignore this. */
-    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    width: fill-available;
-    height: 100%;
-    height: -moz-available; /* WebKit-based browsers will ignore this. */
-    height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    height: fill-available;
-    font-size: 0.75rem;
+    left: 0;
+    top: 0;
+    // width: 100%;
+    // width: -moz-available; /* WebKit-based browsers will ignore this. */
+    // width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    // width: fill-available;
+    // height: 100%;
+    // height: -moz-available; /* WebKit-based browsers will ignore this. */
+    // height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    // height: fill-available;
+    font-size: 1rem;
 
     // &:before {
     //   content: attr(data-player-mark);
@@ -612,9 +641,7 @@
         class="scoreboard-player"
         style={`--viewport-width: ${appViewport.width}`}
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3
-          class="total-score"
-          on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}>
+        <h3 class="total-score">
           <input
             class="player-name"
             type="text"
@@ -639,6 +666,7 @@
             data-player-mark={player.mark}
             maxlength="1"
             style={`--this-player-color-main: ${player.colorMain}`}
+            on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}
             on:emoji={e => updateStoredPlayers(player, e)} />
           <div class="total-score-number">{player.totalScore}</div>
           <button class="player-details-icon" on:click={() => clearScores()}>
