@@ -106,7 +106,14 @@
   }
 
   async function setEmojiPickerPosition(e) {
-    console.log(`setEmojiPickerPosition()`, e.target);
+    let curX = e.clientX;
+    let curY = e.clientY;
+    let winX = window.innerWidth;
+    let winY = window.innerHeight
+
+    console.log(`setEmojiPickerPosition() curX = ${e.clientX} | curY = ${e.clientY}`, e);
+    console.log(`setEmojiPickerPosition() window.innerWidth = ${winX} | window.innerHeight = ${winY}`);
+    console.log(`setEmojiPickerPosition() W factor = ${winX / curX} |H factor = ${winY / curY}`);
     console.log(`setEmojiPickerPosition()`, e.target.parentElement);
     console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement);
     console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement.parentElement);
@@ -114,18 +121,18 @@
     if (emojiPicker) {
       console.log(`Looks like we've got an emoji picker!`, emojiPicker);
     }
-    let parent = e.target.parentElement.parentElement.parentElement
-    parent.appendChild(emojiPicker)
-      var curX = e.clientX;
-  var curY = e.clientY;
+    let parent = e.target.parentElement.parentElement.parentElement.parentElement;
+    // parent.appendChild(emojiPicker)
+
 
 
   // I need the code below to be replaced with transform-translate instead of top/left
   // I can not get this to work with any other method than top/left
   //cursor.style.left = curX - 7 + 'px';
   //cursor.style.top = curY - 7 + 'px';
-  emojiPicker.style.transform = "translate(" + (curX - 7) + "px," + (curY - 7) + "px)";
-  console.log(`"translate(" + ${(curX - 7)} + "px," + ${(curY - 7)} + "px)"`)
+  // emojiPicker.style.transform = "translate(100px, 100px)";
+  // console.log(`"translate(" + ${(curX)} + "px," + ${(curY)} + "px)"`)
+  // emojiPicker.style = `position: absolute; width: 75vw; height: 75vh;`
   }
 
   function updateStoredPlayers(player, emoji, e) {
