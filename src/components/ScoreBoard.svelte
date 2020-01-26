@@ -104,11 +104,36 @@
     // let emoji = event.detail;
     console.log(`emoji event ${event}`, event, player);
   }
-  function updateStoredPlayers(player, emoji) {
+
+  async function setEmojiPickerPosition(e) {
+    console.log(`setEmojiPickerPosition()`, e.target);
+    console.log(`setEmojiPickerPosition()`, e.target.parentElement);
+    console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement);
+    console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement.parentElement);
+    let emojiPicker = await document.querySelector(".svelte-emoji-picker");
+    if (emojiPicker) {
+      console.log(`Looks like we've got an emoji picker!`, emojiPicker);
+    }
+    let parent = e.target.parentElement.parentElement.parentElement
+    parent.appendChild(emojiPicker)
+      var curX = e.clientX;
+  var curY = e.clientY;
+
+
+  // I need the code below to be replaced with transform-translate instead of top/left
+  // I can not get this to work with any other method than top/left
+  //cursor.style.left = curX - 7 + 'px';
+  //cursor.style.top = curY - 7 + 'px';
+  emojiPicker.style.transform = "translate(" + (curX - 7) + "px," + (curY - 7) + "px)";
+  console.log(`"translate(" + ${(curX - 7)} + "px," + ${(curY - 7)} + "px)"`)
+  }
+
+  function updateStoredPlayers(player, emoji, e) {
     console.log(
       `ScoreBoard => updateStoredPlayers: input on:blur, this player mark ${player.mark}, name: ${player.name} `,
       player,
-      emoji
+      emoji,
+      e
     );
     if (emoji) {
       player.mark = emoji.detail;
@@ -128,16 +153,16 @@
       let left = placard.offsetLeft;
       let widthRatio = appViewport.width / width;
       let heightRatio = appViewport.height / height;
-      console.log(
-        `=======================   setPlacardPositions()   ========================`,
-        placard
-      );
-      console.log(
-        `width ${width} height ${height} widthRatio ${widthRatio} heightRatio ${heightRatio}`
-      );
-      console.log(
-        `=======================   setPlacardPositions()   ========================`
-      );
+      // console.log(
+      //   `=======================   setPlacardPositions()   ========================`,
+      //   placard
+      // );
+      // console.log(
+      //   `width ${width} height ${height} widthRatio ${widthRatio} heightRatio ${heightRatio}`
+      // );
+      // console.log(
+      //   `=======================   setPlacardPositions()   ========================`
+      // );
     });
   }
   function highlight(e) {
@@ -146,7 +171,7 @@
     document.execCommand("selectall", null, false);
   }
   async function addStyles(message) {
-    console.log(`addStyles message => ${message}`);
+    // console.log(`addStyles message => ${message}`);
     await players;
     console.log(
       `addStyles message => ${message} awaited players, now continuing`
@@ -175,7 +200,7 @@
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
       setEmojiSelectorToPlayerMark(placard, players[i]);
-      console.dir(placard);
+      // console.dir(placard);
       let pColor = `--player-color: ${players[i].colorMain};`;
       let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
@@ -199,15 +224,15 @@
 
   function setEmojiSelectorToPlayerMark(placard, player) {
     let emojiTrigger = placard.children[0].children[2];
-    console.log(
-      `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
-      emojiTrigger
-    );
+    // console.log(
+    //   `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
+    //   emojiTrigger
+    // );
     emojiTrigger.setAttribute("data-player-mark", player.mark);
-    console.log(
-      `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
-      emojiTrigger
-    );
+    // console.log(
+    //   `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
+    //   emojiTrigger
+    // );
   }
 
   function addHighlightIfGameInProgress() {
@@ -342,13 +367,20 @@
     }
   }
   :global(#sapper button.svelte-emoji-picker__trigger) {
-    min-height: 1rem;
-    // margin-right: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: relative;
+    width: 100%;
+    width: -moz-available; /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
+    height: 100%;
+    height: -moz-available; /* WebKit-based browsers will ignore this. */
+    height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    height: fill-available;
+    font-size: 0.75rem;
 
     // &:before {
     //   content: attr(data-player-mark);
@@ -364,7 +396,6 @@
     //   height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
     //   height: fill-available;
     // }
-
   }
   :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
@@ -551,7 +582,7 @@
         class="scoreboard-player"
         style={`--viewport-width: ${appViewport.width}`}
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3 class="total-score">
+        <h3 class="total-score" on:click={e => setEmojiPickerPosition(e)}>
           <input
             class="player-name"
             type="text"

@@ -29,10 +29,11 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
-  let compact = false;
-  let smallScreen = false;
+  let smallScreenHeight = false;
+  let smallScreenWidth = false;
   let landscape, portrait;
   let smallScreenMaxWidth = 900;
+  let smallScreenMaxHeight = 700;
   let viewportSize = { width: "", height: "" };
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
@@ -85,9 +86,14 @@
       landscape = false;
     }
     if (val.width < smallScreenMaxWidth) {
-      smallScreen = true;
+      smallScreenWidth = true;
     } else {
-      smallScreen = false;
+      smallScreenWidth = false;
+    }
+    if (val.height < smallScreenMaxHeight) {
+      smallScreenHeight = true;
+    } else {
+      smallScreenHeight = false;
     }
   });
 
@@ -96,9 +102,14 @@
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
     if (viewportSize.width < smallScreenMaxWidth) {
-      smallScreen = true;
+      smallScreenWidth = true;
     } else {
-      smallScreen = false;
+      smallScreenWidth = false;
+    }
+    if (viewportSize.height < smallScreenMaxHeight) {
+      smallScreenHeight = true;
+    } else {
+      smallScreenHeight = false;
     }
     storeState.subscribe(value => {
       state = value;
@@ -623,6 +634,11 @@
   // }
 
   // and (orientation: portrait)
+  // ****************************************************************************************************
+  // media query
+  // ----------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------
+  // ****************************************************************************************************
   @media screen and (max-width: 900px) and (min-height: 700px) {
     .sidemenu-container {
       display: none;
@@ -787,9 +803,9 @@
   }
 
   // ****************************************************************************************************
-
+  // media query
   // ----------------------------------------------------------------------------------------------------
-
+  // ----------------------------------------------------------------------------------------------------
   // ****************************************************************************************************
   @media screen and (max-height: 700px) and (max-width: 900px) and (orientation: landscape) {
     .page-container {
@@ -943,11 +959,11 @@
       <GameBoard />
     </div>
 
-    {#if smallScreen && portrait}
+    {#if smallScreenWidth && portrait}
       <div class="topmenu-container">
         <TopMenu />
       </div>
-    {:else if !smallScreen || landscape}
+    {:else if !smallScreenWidth || landscape}
       <div class="sidemenu-container">
         <SideMenu />
       </div>
