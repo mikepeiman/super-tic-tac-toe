@@ -349,30 +349,22 @@
     align-items: center;
     text-align: center;
     position: relative;
-    &:before {
-      content: attr(data-player-mark);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      width: -moz-available; /* WebKit-based browsers will ignore this. */
-      width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-      width: fill-available;
-      height: 100%;
-      height: -moz-available; /* WebKit-based browsers will ignore this. */
-      height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-      height: fill-available;
-    }
-    //     & svg {
-    //   position: relative;
-    //   &:before {
-    //     content: "";
-    //     background: red;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //   }
+
+    // &:before {
+    //   content: attr(data-player-mark);
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   width: -moz-available; /* WebKit-based browsers will ignore this. */
+    //   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    //   width: fill-available;
+    //   height: 100%;
+    //   height: -moz-available; /* WebKit-based browsers will ignore this. */
+    //   height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    //   height: fill-available;
     // }
+
   }
   :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
@@ -484,7 +476,7 @@
       width: 1rem;
       background: none;
       position: relative;
-      right: -0.4rem;
+      right: -0.3rem;
       top: -0.75rem;
     }
   }
@@ -589,8 +581,8 @@
           <button class="player-details-icon" on:click={() => clearScores()}>
             <Fa
               icon={faEdit}
-              color={_color}
-              secondaryColor={player.colorLight}
+              color={`var(--theme-bg)`}
+              secondaryColor={player.colorDark}
               secondaryOpacity={_secondaryOpacity} />
             <!-- <div class="button-text"></div> -->
           </button>

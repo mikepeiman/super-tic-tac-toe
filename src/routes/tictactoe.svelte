@@ -29,6 +29,7 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+  let compact = false;
   let smallScreen = false;
   let landscape, portrait;
   let smallScreenMaxWidth = 900;
@@ -748,6 +749,7 @@
         left: 0;
         padding: 0 1rem;
         min-width: 6rem;
+        outline: none;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
@@ -910,22 +912,6 @@
     <div class="gameboard-container">
       <GameBoard />
     </div>
-    <!-- <div class="menu-container"> -->
-
-    <!-- <div id="tally-points-wrapper">
-      <CountPoints on:playersScored={playersScored} />
-      <button
-        class="control-button"
-        id="clear-game-button"
-        on:click={clearScores}>
-        <Fa
-          icon={faEmptySet}
-          color={_color}
-          secondaryColor={_secondaryColor}
-          secondaryOpacity={_secondaryOpacity} />
-        <span class="button-text">Clear Scores</span>
-      </button>
-    </div> -->
 
     {#if smallScreen && portrait}
       <div class="topmenu-container">
