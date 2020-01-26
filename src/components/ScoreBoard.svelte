@@ -105,24 +105,11 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
+  function editPlayerDetails() {
+    console.log(`editPlayerDetails() clicked`);
+  }
   function toggleDeactivatePlacardsSoEmojiCanPick(e) {
-    console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
-    console.log(
-      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
-      e.target.parentElement
-    );
-    console.log(
-      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
-      e.target.parentElement.parentElement
-    );
-    console.log(
-      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
-      e.target.parentElement.parentElement.parentElement
-    );
-    console.log(
-      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
-      e.target.parentElement.parentElement.parentElement.parentElement
-    );
+    // console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
     let p1, p2, p3, thisPlacard;
     p1 = e.target.parentElement.parentElement;
     p2 = e.target.parentElement.parentElement.parentElement;
@@ -139,15 +126,9 @@
       console.log(`p3 is placard`);
       thisPlacard = p3;
     }
-    console.log(
-      `toggleDeactivatePlacardsSoEmojiCanPick() THIS PLACARD: `,
-      thisPlacard
-    );
     let placards = document.querySelectorAll(".scoreboard-player");
     placards.forEach(placard => {
-      console.log(`Placard forEach `, placard);
       if (thisPlacard !== placard) {
-        console.log(`Placard forEach is NOT our parent `, placard);
         placard.classList.toggle("deactivated");
       }
     });
@@ -398,6 +379,7 @@
     & input.player-mark {
       transition: all 0.25s;
       width: 3.5ch;
+      display: none;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
@@ -430,7 +412,7 @@
     text-align: center;
     position: relative;
     left: 0;
-    top: 0;
+    top: -2px;
     // width: 100%;
     // width: -moz-available; /* WebKit-based browsers will ignore this. */
     // width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
@@ -447,8 +429,8 @@
       content: attr(data-player-mark);
       position: absolute;
       font-size: 1rem;
-      top: 0;
-      left: 0;
+      left: -1px;
+      top: -2px;
       width: 100%;
       width: -moz-available; /* WebKit-based browsers will ignore this. */
       width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
@@ -652,7 +634,6 @@
             placeholder={player.name}
             on:click={highlight}
             on:blur={() => updateStoredPlayers(player)} />
-
           <input
             class="player-mark"
             type="text"
@@ -672,7 +653,9 @@
             on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}
             on:emoji={e => updateStoredPlayers(player, e)} />
           <div class="total-score-number">{player.totalScore}</div>
-          <button class="player-details-icon" on:click={() => clearScores()}>
+          <button
+            class="player-details-icon"
+            on:click={() => editPlayerDetails()}>
             <Fa
               icon={faEdit}
               color={`var(--theme-bg)`}

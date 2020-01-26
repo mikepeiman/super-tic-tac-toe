@@ -853,11 +853,11 @@
       & .scoreboard-player {
         background: none;
         outline: 1px solid var(--player-color);
-        position: absolute;
+        position: static;
         border-radius: 5px;
         left: 0;
         /* top: 0; */
-        margin: 0;
+        margin: 0 0 1rem 1rem;
         -webkit-transition: all 0.25s;
         transition: all 0.25s;
         min-width: -webkit-max-content;
@@ -871,6 +871,8 @@
         transition: all 0.25s;
         z-index: -1;
         & .total-score {
+          height: 1rem;
+          width: auto;
           & input {
             margin: 0;
             height: 1rem;
@@ -878,7 +880,9 @@
           & .player-name {
             min-width: auto;
             max-width: fit-content;
-            width: 6ch;
+            width: 7ch;
+            min-width: 7ch;
+            max-width: 7ch;
             padding: 0;
             font-size: 0.75rem;
           }
@@ -890,7 +894,6 @@
             padding: 0;
             height: 1.25rem;
             font-size: 1rem;
-            
           }
           & .total-score-number {
             height: 1rem;
@@ -905,6 +908,8 @@
             max-height: 1.25rem;
             min-height: 1.25rem;
             font-size: 1rem;
+            left: 0;
+            top: -2px;
           }
         }
         & .scoreboard-totals {
