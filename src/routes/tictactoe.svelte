@@ -785,6 +785,12 @@
       }
     }
   }
+
+  // ****************************************************************************************************
+
+  // ----------------------------------------------------------------------------------------------------
+
+  // ****************************************************************************************************
   @media screen and (max-height: 700px) and (max-width: 900px) and (orientation: landscape) {
     .page-container {
       grid-template-rows: minmax(8vh, 4rem) auto;
@@ -800,6 +806,30 @@
       margin-left: 0;
       & #theme-switch-wrapper {
         height: 2.75rem;
+      }
+    }
+
+    .statusbar-slim-wrapper {
+      & #moves-wrapper .player-status-detail {
+        & .dynamic-value {
+          height: 2rem;
+          width: 2rem;
+          outline: 2px solid var(--player-color);
+          outline-offset: -7px;
+          font-size: 0.75rem;
+        }
+        & .dynamic-wrapper {
+          padding: 0;
+          font-size: 0.75rem;
+        }
+      }
+      & #player-name {
+        & h2.player-name {
+          font-size: 1rem;
+        }
+        & span {
+          font-size: 1.5rem;
+        }
       }
     }
     .scoreboard-container {
