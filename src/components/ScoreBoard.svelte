@@ -318,16 +318,21 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      height: 5.75rem;
+      margin-left: 0.5rem;
     }
     & .add-or-remove-player-button {
       width: 1.5rem;
       height: 1.5rem;
-      margin: 0.25rem;
+      margin: 0.25rem 0;
       font-size: 0.75rem;
-      background: var(--theme-bg);
+      background: var(--player-color-dark);
       color: var(--player-color);
-      border: 2px solid #999;
+      // border: 2px solid var(--player-color-dark);
       border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .scores-wrap {
@@ -645,7 +650,7 @@
         on:click={addPlayer}>
         <Fa
           icon={faPlus}
-          color={`var(--theme-bg)`}
+          color={`var(--theme-fg)`}
           secondaryColor={`var(--theme-fg)`}
           secondaryOpacity={_secondaryOpacity} />
       </div>
@@ -655,7 +660,7 @@
         on:click={removePlayer}>
         <Fa
           icon={faMinus}
-          color={`var(--theme-bg)`}
+          color={`var(--theme-fg)`}
           secondaryColor={`var(--theme-fg)`}
           secondaryOpacity={_secondaryOpacity} />
       </div>
