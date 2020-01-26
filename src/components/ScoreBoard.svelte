@@ -105,8 +105,8 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
-  function editPlayerDetails() {
-    console.log(`editPlayerDetails() clicked`);
+  function editPlayerDetails(player) {
+    console.log(`editPlayerDetails() clicked ${player.name}`);
   }
   function toggleDeactivatePlacardsSoEmojiCanPick(e) {
     // console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
@@ -665,7 +665,7 @@
           <div class="total-score-number">{player.totalScore}</div>
           <button
             class="player-details-icon"
-            on:click={() => editPlayerDetails()}>
+            on:click={() => editPlayerDetails(player)}>
             <Fa
               icon={faEdit}
               color={`var(--theme-bg)`}

@@ -4,7 +4,7 @@
 	"name": "SuperTicTacToe",
 	"short_name": "TicTacToe",
   "display": "minimal-ui",
-  "orientation": "portrait-primary",
+  "orientation": "any",
 	"start_url": "/",
 	"icons": [
 		{
