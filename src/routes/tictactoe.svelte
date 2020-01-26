@@ -842,6 +842,7 @@
       & #player-name {
         & h2.player-name {
           font-size: 1rem;
+          margin: 0 0.5rem 0 0;
         }
         & span {
           font-size: 1.5rem;
@@ -852,12 +853,13 @@
       margin: 0;
       & .scoreboard-player {
         background: none;
-        outline: 1px solid var(--player-color);
+        // background: var(--player-color);
+        border: 2px solid var(--player-color);
         position: static;
         border-radius: 5px;
         left: 0;
         /* top: 0; */
-        margin: 0 0 1rem 1rem;
+        margin: 0 0 .5rem .5rem;
         -webkit-transition: all 0.25s;
         transition: all 0.25s;
         min-width: -webkit-max-content;
@@ -870,6 +872,7 @@
         transform: scale(1);
         transition: all 0.25s;
         z-index: -1;
+
         & .total-score {
           height: 1rem;
           width: auto;
@@ -899,6 +902,7 @@
             height: 1rem;
             margin: 0;
             padding: 0;
+            font-size: 1rem;
           }
           & button.svelte-emoji-picker__trigger {
             max-width: 1.25rem;
@@ -910,12 +914,39 @@
             font-size: 1rem;
             left: 0;
             top: -2px;
+            &:before {
+              left: -1px;
+              top: -2px;
+              font-size: 1rem;
+            }
+          }
+          & .player-details-icon {
+            margin: 0;
+    padding: 0;
+    /* max-height: 20px; */
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+    /* width: 1rem; */
+    background: var(--player-color);
+    position: relative;
+    right: -0.3rem;
+    top: -10px;
+    border-radius: 0 5px 0 2px;
+    right: -10px;
+    padding: 2px;
           }
         }
         & .scoreboard-totals {
           justify-content: space-around;
+          & .scoreboard-direction {
+            & .direction-score-section {
+              font-size: 0.75rem;
+            }
+          }
           & .direction-icon {
             margin: 0.15rem;
+            width: 16px !important;
+            height: 16px !important;
           }
         }
       }

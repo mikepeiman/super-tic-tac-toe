@@ -411,8 +411,10 @@
     align-items: center;
     text-align: center;
     position: relative;
+    width: 4ch;
+    font-size: 1.25rem;
     left: 0;
-    top: -2px;
+    top: 0px;
     // width: 100%;
     // width: -moz-available; /* WebKit-based browsers will ignore this. */
     // width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
@@ -428,9 +430,9 @@
     &:before {
       content: attr(data-player-mark);
       position: absolute;
-      font-size: 1rem;
-      left: -1px;
-      top: -2px;
+      font-size: 1.25rem;
+      left: 0px;
+      top: 20%;
       width: 100%;
       width: -moz-available; /* WebKit-based browsers will ignore this. */
       width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
@@ -553,6 +555,14 @@
       position: relative;
       right: -0.3rem;
       top: -0.75rem;
+    // margin: 0;
+    // padding: 0;
+    // min-height: 1.5rem;
+    // min-width: 1.5rem;
+    // background: var(--player-color);
+    // position: relative;
+    // border-radius: 0 5px 0 2px;
+    // padding: 2px;
     }
   }
   .total-score-number {
