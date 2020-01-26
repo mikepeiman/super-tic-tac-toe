@@ -7,6 +7,8 @@
   import Modal from "svelte-simple-modal";
   import Fa from "sveltejs-fontawesome";
   import { faEdit } from "@fortawesome/pro-duotone-svg-icons";
+  import { faPlus } from "@fortawesome/pro-solid-svg-icons";
+  import { faMinus } from "@fortawesome/pro-solid-svg-icons";
   export let state, players, highlighted;
   import { storeButtonStyles } from "../stores.js";
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
@@ -295,23 +297,38 @@
     if (appWidth < 600) {
       placardFactor = 1.65;
     }
-    // if (appWidth > 1100) {
-    //   placardFactor = 2;
-    // }
-    // if (appWidth > 1500) {
-    //   placardFactor = 2.25;
-    // }
+  }
+
+  function addPlayer() {
+    console.log(`addPlayer() clicked`);
+  }
+  function removePlayer() {
+    console.log(`removePlayer() clicked`);
   }
 </script>
 
 <style lang="scss">
-  :root {
-  }
   .scoreboard-container-inner {
     width: max-content;
     max-width: 100%;
     position: relative;
     z-index: -2;
+    & .add-or-remove-players {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    & .add-or-remove-player-button {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin: 0.25rem;
+      font-size: 0.75rem;
+      background: var(--theme-bg);
+      color: var(--player-color);
+      border: 2px solid #999;
+      border-radius: 5px;
+    }
   }
   .scores-wrap {
     display: flex;
@@ -329,7 +346,7 @@
   .scoreboard-totals {
     display: flex;
     justify-content: space-between;
-    border-radius: 0;// 0 5px 5px;
+    border-radius: 0; // 0 5px 5px;
     background: rgba(0, 0, 0, 0.5);
     // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
@@ -544,14 +561,14 @@
       position: relative;
       right: -0.3rem;
       top: -0.75rem;
-    // margin: 0;
-    // padding: 0;
-    // min-height: 1.5rem;
-    // min-width: 1.5rem;
-    // background: var(--player-color);
-    // position: relative;
-    // border-radius: 0 5px 0 2px;
-    // padding: 2px;
+      // margin: 0;
+      // padding: 0;
+      // min-height: 1.5rem;
+      // min-width: 1.5rem;
+      // background: var(--player-color);
+      // position: relative;
+      // border-radius: 0 5px 0 2px;
+      // padding: 2px;
     }
   }
   .total-score-number {
@@ -619,7 +636,30 @@
 {@debug grid}
 {@debug settings} -->
 {#await players then players}
+
   <div class="scoreboard-container-inner">
+    <div class="add-or-remove-players">
+      <div
+        class="add-or-remove-player-button"
+        id="add-player"
+        on:click={addPlayer}>
+        <Fa
+          icon={faPlus}
+          color={`var(--theme-bg)`}
+          secondaryColor={`var(--theme-fg)`}
+          secondaryOpacity={_secondaryOpacity} />
+      </div>
+      <div
+        class="add-or-remove-player-button"
+        id="remove-player"
+        on:click={removePlayer}>
+        <Fa
+          icon={faMinus}
+          color={`var(--theme-bg)`}
+          secondaryColor={`var(--theme-fg)`}
+          secondaryOpacity={_secondaryOpacity} />
+      </div>
+    </div>
     {#each players as player}
       <div
         class="scoreboard-player"
