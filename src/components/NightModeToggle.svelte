@@ -110,7 +110,7 @@
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
-    const playerMarks = document.querySelectorAll(".player-marker");
+    const playerMarks = document.querySelectorAll(".player-mark");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
     const icons = document.querySelectorAll(".icon");
@@ -152,7 +152,7 @@
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
-    const playerMarks = document.querySelectorAll(".player-marker");
+    const playerMarks = document.querySelectorAll(".player-mark");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
     const icons = document.querySelectorAll(".icon");

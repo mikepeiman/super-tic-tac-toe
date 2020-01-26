@@ -297,14 +297,14 @@
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].colorMain}`;
-          customMarkerSize = `--cell-marker-size: ${Math.floor(
+          customMarkerSize = `--cell-mark-size: ${Math.floor(
             cellSize / 2
           )}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
           cell.style.height = cellSize + "px";
-          cell.setAttribute("data-marker", players[p].marker);
+          cell.setAttribute("data-mark", players[p].mark);
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
           cell.classList.remove("unticked");
@@ -325,7 +325,7 @@
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
-        cell.setAttribute("data-marker", players[p].marker);
+        cell.setAttribute("data-mark", players[p].mark);
         cell.setAttribute("data-ticked", true);
         cell.classList.add("ticked");
         cell.classList.remove("unticked");
@@ -648,7 +648,7 @@
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
-    cell.setAttribute("data-marker", currentPlayer.marker);
+    cell.setAttribute("data-mark", currentPlayer.mark);
     // console.log(
     //   `tickThis(cell) AFTER, cellSize ${cellSize} `,
     //   settings,
@@ -664,7 +664,7 @@
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
     let ggBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
-    currentPlayerMark = `--player-mark: '${currentPlayer.marker}'`;
+    currentPlayerMark = `--player-mark: '${currentPlayer.mark}'`;
     // console.log(
     //   `setCustomStyles: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
     // );
@@ -815,7 +815,7 @@
       //   `thisMoveNum ${thisMoveNum} = moveNumber ${moveNumber} - settings.movesPerTurn ${settings.movesPerTurn} + index ${index} + 1;`
       // );
       move.setAttribute("locked", true);
-      move.setAttribute("data-marker", players[pid].marker);
+      move.setAttribute("data-mark", players[pid].mark);
       turn.move = thisMoveNum;
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";

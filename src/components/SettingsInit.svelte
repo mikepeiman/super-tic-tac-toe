@@ -53,7 +53,7 @@
   }
 
   function setSingleInputWidth(input) {
-    if (!input.classList.contains("player-marker")) {
+    if (!input.classList.contains("player-mark")) {
       input.style.width = `${input.value.toString().length + 0.5}ch`;
     } else {
       input.style.width = `3ch`;

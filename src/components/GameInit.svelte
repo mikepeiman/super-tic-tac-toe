@@ -135,7 +135,7 @@
           id: i,
           name: `Player ${i + 1}`,
           totalScore: 0,
-          marker: "x",
+          mark: "x",
           colorMain: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
           colorLight: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 65%, 1)`,
           colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 35%, 1)`,

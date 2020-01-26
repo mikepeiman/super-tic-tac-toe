@@ -29,6 +29,7 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+  let compact = false;
   let smallScreen = false;
   let landscape, portrait;
   let smallScreenMaxWidth = 900;
@@ -331,15 +332,15 @@
       margin: 0;
       padding: 0;
       // background: var(--player-color);
-      // border-radius: 0 2rem 2rem 5px;
+      // border-radius: 0 2rem 2rem 0;
       position: absolute;
       left: 0;
       min-height: 100%;
       max-height: 2.5rem;
       width: 19vw;
-      background: rgba(255, 255, 255, 0.15);
-      border-right: 2px solid var(--player-color);
-      border-bottom: 2px solid var(--player-color);
+      background: none;
+      outline: 2px solid var(--player-color);
+      outline-offset: -4px;
       // &::after {
       // CSS rounded triangle
       // content: "";
@@ -451,6 +452,12 @@
     // border-bottom: 1px solid $input-blue;
     // margin: 0.5rem;
     justify-self: flex-end;
+    &:focus {
+      outline: none;
+      border-bottom: 1px dashed $input-blue;
+      margin-bottom: 0;
+      padding: 0;
+    }
   }
   .settings-wrapper {
     & input {
@@ -550,16 +557,16 @@
         );
       }
       &:hover::after {
-        content: attr(data-marker);
-        font-size: var(--cell-marker-size);
+        content: attr(data-mark);
+        font-size: var(--cell-mark-size);
         position: relative;
         justify-self: center;
         align-self: center;
         background: attr(data-background-color);
       }
       &::after {
-        content: attr(data-marker);
-        font-size: var(--cell-marker-size);
+        content: attr(data-mark);
+        font-size: var(--cell-mark-size);
         position: relative;
         top: -0.15rem;
         justify-self: center;
@@ -742,6 +749,7 @@
         left: 0;
         padding: 0 1rem;
         min-width: 6rem;
+        outline: none;
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
@@ -777,6 +785,12 @@
       }
     }
   }
+
+  // ****************************************************************************************************
+
+  // ----------------------------------------------------------------------------------------------------
+
+  // ****************************************************************************************************
   @media screen and (max-height: 700px) and (max-width: 900px) and (orientation: landscape) {
     .page-container {
       grid-template-rows: minmax(8vh, 4rem) auto;
@@ -794,12 +808,36 @@
         height: 2.75rem;
       }
     }
+
+    .statusbar-slim-wrapper {
+      & #moves-wrapper .player-status-detail {
+        & .dynamic-value {
+          height: 2rem;
+          width: 2rem;
+          outline: 2px solid var(--player-color);
+          outline-offset: -7px;
+          font-size: 0.75rem;
+        }
+        & .dynamic-wrapper {
+          padding: 0;
+          font-size: 0.75rem;
+        }
+      }
+      & #player-name {
+        & h2.player-name {
+          font-size: 1rem;
+        }
+        & span {
+          font-size: 1.5rem;
+        }
+      }
+    }
     .scoreboard-container {
       margin: 0;
       & .scoreboard-player {
         background: none;
         outline: 1px solid var(--player-color);
-        position: static;
+        position: absolute;
         border-radius: 5px;
         left: 0;
         /* top: 0; */
@@ -817,6 +855,10 @@
         transition: all 0.25s;
         z-index: -1;
         & .total-score {
+          & input {
+            margin: 0;
+            height: 1rem;
+          }
           & .player-name {
             min-width: auto;
             max-width: fit-content;
@@ -824,11 +866,18 @@
             padding: 0;
             font-size: 0.75rem;
           }
-          & .player-marker {
+          & .player-mark {
             width: 1.5rem;
             max-width: 1.5rem;
             min-width: 1.5rem;
             margin: 0;
+            height: 1rem;
+            font-size: 1rem;
+          }
+          & .total-score-number {
+            height: 1rem;
+            margin: 0;
+            padding: 0;
           }
         }
         & .scoreboard-totals {
@@ -867,7 +916,7 @@
             style={`--player-color: ${currentPlayer.colorMain}`}>
             {currentPlayer.name}
           </h2>
-          <span>{currentPlayer.marker}</span>
+          <span>{currentPlayer.mark}</span>
         </div>
         <div
           id="moves-wrapper"
@@ -893,22 +942,6 @@
     <div class="gameboard-container">
       <GameBoard />
     </div>
-    <!-- <div class="menu-container"> -->
-
-    <!-- <div id="tally-points-wrapper">
-      <CountPoints on:playersScored={playersScored} />
-      <button
-        class="control-button"
-        id="clear-game-button"
-        on:click={clearScores}>
-        <Fa
-          icon={faEmptySet}
-          color={_color}
-          secondaryColor={_secondaryColor}
-          secondaryOpacity={_secondaryOpacity} />
-        <span class="button-text">Clear Scores</span>
-      </button>
-    </div> -->
 
     {#if smallScreen && portrait}
       <div class="topmenu-container">
