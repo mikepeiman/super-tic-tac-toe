@@ -105,11 +105,52 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
-  async function toggleDeactivatePlacardsSoEmojiCanPick() {
-    let placards = document.querySelectorAll(".scoreboard-player")
+  async function toggleDeactivatePlacardsSoEmojiCanPick(e) {
+    console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
+    console.log(
+      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
+      e.target.parentElement
+    );
+    console.log(
+      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
+      e.target.parentElement.parentElement
+    );
+    console.log(
+      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
+      e.target.parentElement.parentElement.parentElement
+    );
+    console.log(
+      `toggleDeactivatePlacardsSoEmojiCanPick() parent: `,
+      e.target.parentElement.parentElement.parentElement.parentElement
+    );
+    let p1, p2, p3, thisPlacard;
+    p1 = e.target.parentElement.parentElement;
+    p2 = e.target.parentElement.parentElement.parentElement;
+    p3 = e.target.parentElement.parentElement.parentElement.parentElement;
+    if (p1.classList.contains("scoreboard-player")) {
+      console.log(`p1 is placard`);
+      thisPlacard = p1
+    }
+    if (p2.classList.contains("scoreboard-player")) {
+      console.log(`p2 is placard`);
+      thisPlacard = p2
+    }
+    if (p3.classList.contains("scoreboard-player")) {
+      console.log(`p3 is placard`);
+      thisPlacard = p3
+    }
+    console.log(
+      `toggleDeactivatePlacardsSoEmojiCanPick() THIS PLACARD: `,
+      thisPlacard
+    );
+    let placards = document.querySelectorAll(".scoreboard-player");
     placards.forEach(placard => {
-      placard.classList.toggle('deactivated')
-    })
+      console.log(`Placard forEach `, placard);
+      if (thisPlacard !== placard) {
+        console.log(`Placard forEach is NOT our parent `, placard);
+        placard.classList.toggle("deactivated");
+      }
+    });
   }
 
   function updateStoredPlayers(player, emoji, e) {
@@ -120,7 +161,7 @@
       e
     );
     if (emoji) {
-      toggleDeactivatePlacardsSoEmojiCanPick()
+      toggleDeactivatePlacardsSoEmojiCanPick();
       player.mark = emoji.detail;
     }
     players = players;
@@ -295,6 +336,9 @@
     background: rgba(0, 0, 0, 0.5);
     // background: hsla(var(--player-color-hue), 50%, 50%, 0.5);
   }
+  :global(.scoreboard-player.deactivated) {
+    pointer-events: none;
+  }
   .scoreboard-player {
     background: var(--player-color);
     position: absolute;
@@ -310,9 +354,7 @@
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
     z-index: -1;
-    & .deactivated {
-      pointer-events: none;
-    }
+
     & .player-name {
       transition: all 0.25s;
       &.dark {
@@ -570,7 +612,9 @@
         class="scoreboard-player"
         style={`--viewport-width: ${appViewport.width}`}
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3 class="total-score" on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}>
+        <h3
+          class="total-score"
+          on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}>
           <input
             class="player-name"
             type="text"
