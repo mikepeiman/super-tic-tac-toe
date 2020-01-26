@@ -105,34 +105,11 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
-  async function setEmojiPickerPosition(e) {
-    let curX = e.clientX;
-    let curY = e.clientY;
-    let winX = window.innerWidth;
-    let winY = window.innerHeight
-
-    console.log(`setEmojiPickerPosition() curX = ${e.clientX} | curY = ${e.clientY}`, e);
-    console.log(`setEmojiPickerPosition() window.innerWidth = ${winX} | window.innerHeight = ${winY}`);
-    console.log(`setEmojiPickerPosition() W factor = ${winX / curX} |H factor = ${winY / curY}`);
-    console.log(`setEmojiPickerPosition()`, e.target.parentElement);
-    console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement);
-    console.log(`setEmojiPickerPosition()`, e.target.parentElement.parentElement.parentElement);
-    let emojiPicker = await document.querySelector(".svelte-emoji-picker");
-    if (emojiPicker) {
-      console.log(`Looks like we've got an emoji picker!`, emojiPicker);
-    }
-    let parent = e.target.parentElement.parentElement.parentElement.parentElement;
-    // parent.appendChild(emojiPicker)
-
-
-
-  // I need the code below to be replaced with transform-translate instead of top/left
-  // I can not get this to work with any other method than top/left
-  //cursor.style.left = curX - 7 + 'px';
-  //cursor.style.top = curY - 7 + 'px';
-  // emojiPicker.style.transform = "translate(100px, 100px)";
-  // console.log(`"translate(" + ${(curX)} + "px," + ${(curY)} + "px)"`)
-  // emojiPicker.style = `position: absolute; width: 75vw; height: 75vh;`
+  async function toggleDeactivatePlacardsSoEmojiCanPick() {
+    let placards = document.querySelectorAll(".scoreboard-player")
+    placards.forEach(placard => {
+      placard.classList.toggle('deactivated')
+    })
   }
 
   function updateStoredPlayers(player, emoji, e) {
@@ -143,6 +120,7 @@
       e
     );
     if (emoji) {
+      toggleDeactivatePlacardsSoEmojiCanPick()
       player.mark = emoji.detail;
     }
     players = players;
@@ -332,6 +310,9 @@
     // margin-bottom: var(--custom-marginBottom);
     transition: all 0.25s;
     z-index: -1;
+    & .deactivated {
+      pointer-events: none;
+    }
     & .player-name {
       transition: all 0.25s;
       &.dark {
@@ -589,7 +570,7 @@
         class="scoreboard-player"
         style={`--viewport-width: ${appViewport.width}`}
         class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3 class="total-score" on:click={e => setEmojiPickerPosition(e)}>
+        <h3 class="total-score" on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}>
           <input
             class="player-name"
             type="text"
