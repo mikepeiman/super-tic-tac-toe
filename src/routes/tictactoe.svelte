@@ -713,6 +713,15 @@
     .scoreboard-container {
       margin: 0;
       & .scoreboard-container-inner {
+
+    & .add-or-remove-players {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 5.75rem;
+      margin-left: 0.5rem;
+    }
         display: flex;
         flex-direction: row;
         max-width: 100vw;
