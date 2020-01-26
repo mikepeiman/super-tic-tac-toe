@@ -440,21 +440,24 @@
     // height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
     // height: fill-available;
     font-size: 1rem;
-
-    // &:before {
-    //   content: attr(data-player-mark);
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   width: -moz-available; /* WebKit-based browsers will ignore this. */
-    //   width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    //   width: fill-available;
-    //   height: 100%;
-    //   height: -moz-available; /* WebKit-based browsers will ignore this. */
-    //   height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    //   height: fill-available;
-    // }
+    & svg {
+      visibility: hidden;
+    }
+    &:before {
+      content: attr(data-player-mark);
+      position: absolute;
+      font-size: 1rem;
+      top: 0;
+      left: 0;
+      width: 100%;
+      width: -moz-available; /* WebKit-based browsers will ignore this. */
+      width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+      width: fill-available;
+      height: 100%;
+      height: -moz-available; /* WebKit-based browsers will ignore this. */
+      height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+      height: fill-available;
+    }
   }
   :global(#sapper .svelte-emoji-picker) {
     background: var(--theme-bg);
