@@ -805,7 +805,7 @@
       & .scoreboard-player {
         background: none;
         outline: 1px solid var(--player-color);
-        position: static;
+        position: absolute;
         border-radius: 5px;
         left: 0;
         /* top: 0; */

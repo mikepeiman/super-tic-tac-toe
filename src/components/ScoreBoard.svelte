@@ -174,8 +174,8 @@
     );
     // console.log(`scaleValue2: ${scaleValue2}`);
     placards.forEach((placard, i) => {
-      setEmojiSelectorToPlayerMark(placard, players[i])
-      console.dir(placard)
+      setEmojiSelectorToPlayerMark(placard, players[i]);
+      console.dir(placard);
       let pColor = `--player-color: ${players[i].colorMain};`;
       let positionTop = `--position-top: ${i * (height * scaleValue) +
         i * 16}px;`;
@@ -197,12 +197,18 @@
     }
   }
 
-function setEmojiSelectorToPlayerMark(placard, player) {
-  let emojiTrigger = placard.children[0].children[2]
-  console.log(`setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `, emojiTrigger)
-  emojiTrigger.setAttribute("data-player-mark", player.mark)
-  console.log(`setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `, emojiTrigger)
-}
+  function setEmojiSelectorToPlayerMark(placard, player) {
+    let emojiTrigger = placard.children[0].children[2];
+    console.log(
+      `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
+      emojiTrigger
+    );
+    emojiTrigger.setAttribute("data-player-mark", player.mark);
+    console.log(
+      `setEmojiSelectorToPlayerMark(placard, player) emojiTrigger `,
+      emojiTrigger
+    );
+  }
 
   function addHighlightIfGameInProgress() {
     console.log(`addHighlightIfGameInProgress()`);
@@ -345,12 +351,17 @@ function setEmojiSelectorToPlayerMark(placard, player) {
     position: relative;
     &:before {
       content: attr(data-player-mark);
-      background: red;
       position: absolute;
       top: 0;
       left: 0;
-      min-height: 1rem;
-      width: 1rem;
+      width: 100%;
+      width: -moz-available; /* WebKit-based browsers will ignore this. */
+      width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+      width: fill-available;
+      height: 100%;
+      height: -moz-available; /* WebKit-based browsers will ignore this. */
+      height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+      height: fill-available;
     }
     //     & svg {
     //   position: relative;
