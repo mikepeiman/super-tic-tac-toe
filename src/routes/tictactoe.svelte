@@ -1011,7 +1011,7 @@
       <GameBoard />
     </div>
 
-    {#if smallScreenWidth && portrait}
+    {#if smallScreenWidth}
       <div class="topmenu-container">
         <TopMenu />
       </div>

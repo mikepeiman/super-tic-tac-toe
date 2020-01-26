@@ -41,17 +41,6 @@
   let gameUnderway = false;
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
-  $: {
-    // if (typeof window !== "undefined") {
-    if (players.length > 0) {
-      console.log(`reactive addStyles, players.length > 0`);
-      // numberOfPlayers && addStyles(`updated numberOfPlayers ${numberOfPlayers}`);
-      // window.innerWidth && addStyles("updated window.innerWidth");
-      // placardFactor && addStyles("updated placardFactor");
-    }
-    // console.log(`\n***window object***    innerWidth ${window.innerWidth}    innerHeight ${window.innerHeight}\n`);
-    // }
-  }
 
   storeSettings.subscribe(value => {
     console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
@@ -157,7 +146,7 @@
       e
     );
     if (emoji) {
-      removeDeactivatePlacardsSoEmojiCanPick();
+      // removeDeactivatePlacardsSoEmojiCanPick();
       player.mark = emoji.detail;
     }
     let placards = document.querySelectorAll(".scoreboard-player");
@@ -207,9 +196,9 @@
   async function addStyles(message) {
     // console.log(`addStyles message => ${message}`);
     await players;
-    console.log(
-      `addStyles message => ${message} awaited players, now continuing`
-    );
+    // console.log(
+    //   `addStyles message => ${message} awaited players, now continuing`
+    // );
     // await document.getElementById("gameboard");
     let placards = document.querySelectorAll(".scoreboard-player");
     let placard = placards[0];
@@ -270,7 +259,7 @@
   }
 
   function addHighlightIfGameInProgress() {
-    console.log(`addHighlightIfGameInProgress()`);
+    // console.log(`addHighlightIfGameInProgress()`);
     totalMovesInGame = settings.rows * settings.columns;
     moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     if (moveNumber >= totalMovesInGame || moveNumber < 1) {
@@ -283,7 +272,7 @@
   }
   function getViewportSize() {
     let app = document.querySelector("#sapper");
-    console.log(`getViewportSize for app: `, app);
+    // console.log(`getViewportSize for app: `, app);
     let appWidth = app.offsetWidth;
     let appHeight = app.offsetHeight;
     let appRatio = parseFloat((appWidth / appHeight).toFixed(2));
