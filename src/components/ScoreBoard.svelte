@@ -301,7 +301,7 @@
 
   function addPlayer() {
     console.log(
-      `addPlayer() clicked #players ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
+      `addPlayer() clicked increasing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
     let num = settings.numberOfPlayers + 1;
     settings["numberOfPlayers"] = num;
@@ -310,7 +310,7 @@
   }
   function removePlayer() {
     console.log(
-      `addPlayer() clicked #players ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
+      `removePlayer() clicked reducing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
     let num = settings.numberOfPlayers - 1;
     settings["numberOfPlayers"] = num;
