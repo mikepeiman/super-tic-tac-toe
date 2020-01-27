@@ -300,7 +300,13 @@
   }
 
   function addPlayer() {
-    console.log(`addPlayer() clicked`);
+    console.log(
+      `addPlayer() clicked #players ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
+    );
+    let num = settings.numberOfPlayers + 1;
+    settings["numberOfPlayers"] = num;
+    console.log(settings);
+    storeSettings.set(settings);
   }
   function removePlayer() {
     console.log(`removePlayer() clicked`);
