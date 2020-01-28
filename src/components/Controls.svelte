@@ -97,7 +97,8 @@
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
-    localStorage.setItem("players", JSON.stringify(players));
+    // localStorage.setItem("players", JSON.stringify(players));
+    
     storeCurrentPlayer.set(players[0]);
     location.reload();
     dispatch("resetGame", true);
@@ -116,10 +117,10 @@
   }
 
   function saveGame() {
-    // storeGameInProgress.set(true);
+    alert(`Save game function not yet implemented`)
   }
   function loadGame() {
-    // storeGameInProgress.set(false);
+    alert(`Load game function not yet implemented`)
   }
 </script>
 

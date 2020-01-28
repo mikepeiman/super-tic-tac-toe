@@ -112,7 +112,7 @@
         console.log(
           `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
         );
-        initializeCurrentPlayer();
+        setCurrentPlayerZero();
         storePlayers.set(players);
       }
     } else {
@@ -164,30 +164,17 @@
     players = players
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (!gameInProgress) {
-      initializeCurrentPlayer();
+      setCurrentPlayerZero();
     }
     dispatch("playersInitialized", players);
     console.log(`GameInit => initialized players done`, players);
     storePlayers.set(players)
   }
 
-  function initializeCurrentPlayer() {
+  function setCurrentPlayerZero() {
     state.currentPlayer = players[0];
     storeCurrentPlayer.set(players[0]);
     // console.log(`GameInit => initializePlayers run (currentPlayer reset to 0)`);
-  }
-
-  function setCurrentPlayer() {
-    // console.log(`GameInit => setCurrentPlayer subscribed`, value);
-    let ls = JSON.parse(localStorage.getItem("currentPlayer"));
-    // console.log(`GameInit => setCurrentPlayer LS`, ls);
-    if (value !== false) {
-      // console.log(`GameInit => setCurrentPlayer subscribed, value !== false`);
-      localStorage.setItem("currentPlayer", JSON.stringify(value));
-    } else {
-      // console.log(`GameInit => setCurrentPlayer subscribed, value === false`);
-      storeCurrentPlayer.set(ls);
-    }
   }
 
   function updateGameSettings(e) {

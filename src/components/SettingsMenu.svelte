@@ -331,6 +331,8 @@
         placeholder={settings.numberOfPlayers}
         bind:value={settings.numberOfPlayers}
         on:input={triggerGameBoardUpdate}
+        min="1"
+        max="8"
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>

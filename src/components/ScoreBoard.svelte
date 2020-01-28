@@ -298,24 +298,68 @@
       placardFactor = 1.65;
     }
   }
+  function resetGame() {
+    console.log(`reset game`);
+    localStorage.removeItem("gameboard");
+    localStorage.removeItem("gameHistoryFlat");
+    localStorage.removeItem("gameHistoryTurns");
+    localStorage.removeItem("turnHistory");
+    localStorage.removeItem("lines");
+    localStorage.removeItem("moveNumber");
+
+    localStorage.setItem(
+      "state",
+      JSON.stringify({
+        lastTicked: "",
+        currentPlayer: players[0],
+        movesRemaining: settings.movesPerTurn,
+        turn: 0,
+        gameHistory: [],
+        turnHistory: [],
+        clickCount: 0,
+        moveNumber: 0,
+        reset: false
+      })
+    );
+    // localStorage.removeItem("gameInProgress");
+
+    players.forEach(player => {
+      player.lines = [];
+      player.totalScore = 0;
+      player.dirScoresByIndex = [0, 0, 0, 0];
+    });
+    // localStorage.setItem("players", JSON.stringify(players));
+    storePlayers.set(players)
+    // storeCurrentPlayer.set(players[0]);
+    // location.reload();
+    dispatch("resetGame", true);
+  }
 
   function addPlayer() {
     console.log(
       `addPlayer() clicked increasing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
-    let num = settings.numberOfPlayers + 1;
-    settings["numberOfPlayers"] = num;
-    console.log(settings);
-    storeSettings.set(settings);
+    if (settings.numberOfPlayers < 8) {
+      console.log(`addPlayer() clicked below 8`);
+      let num = settings.numberOfPlayers + 1;
+      settings.numberOfPlayers = num;
+      // console.log(settings);
+      storeSettings.set(settings);
+      resetGame();
+    }
   }
   function removePlayer() {
     console.log(
       `removePlayer() clicked reducing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
-    let num = settings.numberOfPlayers - 1;
-    settings["numberOfPlayers"] = num;
-    console.log(settings);
-    storeSettings.set(settings);
+    if (settings.numberOfPlayers > 1) {
+      console.log(`addPlayer() clicked above 1`);
+      let num = settings.numberOfPlayers - 1;
+      settings.numberOfPlayers = num;
+      // console.log(settings);
+      storeSettings.set(settings);
+      resetGame();
+    }
   }
 </script>
 
@@ -327,17 +371,17 @@
     z-index: -2;
     & .add-or-remove-players {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
       height: 5.75rem;
       margin-left: 0.5rem;
     }
     & .add-or-remove-player-button {
-      width: 1.5rem;
-      height: 1.5rem;
-      margin: 0.25rem 0;
-      font-size: 0.75rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      margin: 0 0.5rem;
+      font-size: 1.25rem;
       background: var(--player-color-dark);
       color: var(--player-color);
       // border: 2px solid var(--player-color-dark);
