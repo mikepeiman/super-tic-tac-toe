@@ -283,24 +283,24 @@
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
-        for (let j = 0; j < settings.movesPerTurn; j++) {
+        for (let j = 0; j < turn.length; j++) {
           // console.log(
           //   `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
           //   turn,
           //   `\n\n`
           // );
           let move = turn[j];
-          // console.log(
-          //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
-          //   move,
-          //   `\n\n`
-          // );
+          console.log(
+            `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+            move,
+            `\n\n`,
+            `move.player`,
+            move.player
+          );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].colorMain}`;
-          customMarkerSize = `--cell-mark-size: ${Math.floor(
-            cellSize / 2
-          )}px`;
+          customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 2)}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
