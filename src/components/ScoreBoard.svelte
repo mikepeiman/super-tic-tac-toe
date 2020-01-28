@@ -59,7 +59,9 @@
   });
   storePlayers.subscribe(value => {
     players = value;
-    console.log(`ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+    console.log(
+      `ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`
+    );
   });
   storeViewportSize.subscribe(val => {
     console.log(`ScoreBoard subscribed to app viewport size: `, val);
@@ -330,7 +332,7 @@
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
     // localStorage.setItem("players", JSON.stringify(players));
-    storePlayers.set(players)
+    storePlayers.set(players);
     // storeCurrentPlayer.set(players[0]);
     // location.reload();
     dispatch("resetGame", true);
@@ -340,26 +342,40 @@
     console.log(
       `addPlayer() clicked increasing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
-    if (settings.numberOfPlayers < 8) {
-      console.log(`addPlayer() clicked below 8`);
-      let num = settings.numberOfPlayers + 1;
-      settings.numberOfPlayers = num;
-      // console.log(settings);
-      storeSettings.set(settings);
-      resetGame();
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    if (!gameInProgress) {
+      if (settings.numberOfPlayers < 8) {
+        console.log(`addPlayer() clicked below 8`);
+        let num = settings.numberOfPlayers + 1;
+        settings.numberOfPlayers = num;
+        // console.log(settings);
+        storeSettings.set(settings);
+        resetGame();
+      }
+    } else {
+      alert(
+        "There appears to be a game in progress, reset game in order to change number of players"
+      );
     }
   }
   function removePlayer() {
     console.log(
       `removePlayer() clicked reducing #players from ${settings.numberOfPlayers}, ${settings["numberOfPlayers"]}`
     );
-    if (settings.numberOfPlayers > 1) {
-      console.log(`addPlayer() clicked above 1`);
-      let num = settings.numberOfPlayers - 1;
-      settings.numberOfPlayers = num;
-      // console.log(settings);
-      storeSettings.set(settings);
-      resetGame();
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    if (!gameInProgress) {
+      if (settings.numberOfPlayers > 1) {
+        console.log(`addPlayer() clicked above 1`);
+        let num = settings.numberOfPlayers - 1;
+        settings.numberOfPlayers = num;
+        // console.log(settings);
+        storeSettings.set(settings);
+        resetGame();
+      }
+    } else {
+      alert(
+        "There appears to be a game in progress, reset game in order to change number of players"
+      );
     }
   }
 </script>
@@ -694,7 +710,7 @@
   }
 </style>
 
-{@debug players}
+<!-- {@debug players} -->
 <!-- {@debug grid} -->
 <!-- {@debug settings} -->
 {#await players then players}
