@@ -89,10 +89,20 @@
     // let attrRows = el.getAttribute["rows"];
     // let attrColumns = el.getAttribute["columns"];
     // let attrMoves = el.getAttribute["movesPerTurn"];
-    let thisAttr = el.getAttribute("name")
-    console.log(
-      `computeViableMoves(el) this attr ${thisAttr}`
-    );
+    let thisAttr = el.getAttribute("name");
+    console.log(`computeViableMoves(el) this attr ${thisAttr}`);
+    if ((thisAttr === "players")) {
+      console.log(`this el is number of players ${el.value}`);
+    }
+    if ((thisAttr === "rows")) {
+      console.log(`this el is number of rows ${el.value}`);
+    }
+    if ((thisAttr === "columns")) {
+      console.log(`this el is number of columns ${el.value}`);
+    }
+    if ((thisAttr === "movesPerTurn")) {
+      console.log(`this el is number of movesPerTurn ${el.value}`);
+    }
     let rows = settings.rows;
     let columns = settings.columns;
     let num = settings.numberOfPlayers;
@@ -438,7 +448,6 @@
         max="100"
         step="5"
         min="10"
-        
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
