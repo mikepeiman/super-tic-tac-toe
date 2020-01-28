@@ -15,7 +15,8 @@
   } from "../stores.js";
 
   let currentPlayer;
-  $: computedMoves = (settings.rows * settings.columns) / settings.numberOfPlayers;
+  $: computedMoves =
+    (settings.rows * settings.columns) / settings.numberOfPlayers;
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -41,7 +42,7 @@
     initializeSettingsFromLS();
     setAllInputWidths();
     storeSettings.set(settings);
-    computeViableMoves();
+    // computeViableMoves();
   });
 
   function initializeSettingsFromLS() {
@@ -78,9 +79,20 @@
 
   function highlight(e) {
     e.target.select();
+    console.log(`highlight func`, e.target);
+    // computeViableMoves(e.target);
   }
 
-  function computeViableMoves() {
+  function computeViableMoves(el) {
+    console.log(`computeViableMoves(el) `, el);
+    // let attrNum = el.getAttribute["players"];
+    // let attrRows = el.getAttribute["rows"];
+    // let attrColumns = el.getAttribute["columns"];
+    // let attrMoves = el.getAttribute["movesPerTurn"];
+    let thisAttr = el.getAttribute("name")
+    console.log(
+      `computeViableMoves(el) this attr ${thisAttr}`
+    );
     let rows = settings.rows;
     let columns = settings.columns;
     let num = settings.numberOfPlayers;
@@ -89,12 +101,13 @@
       `rows ${rows} columns ${columns} players ${num}, movesPerPlayer ${movesPerPlayer}`
     );
     // for each number up to movesPerPlayer, iterate and calculate for modulo integer
-    // present options as: 
+    // present options as:
     //      "For {x} rows X {x} columns, viable moves per turn are: "
     //      "For {x} columns and {x} moves per turn, viable rows are: "
     //      "For {x} rows and {x} moves per turns, viable columns are: "
     // do not present for players; that is a primary selection.
     // UI: highlight values that are not whole numbers in settings, automatically insert viable options as formatted above
+    // Perhaps show this section via js only when that particular input is active - likely a good solutionbundleRenderer.renderToStream
     // ***note: work on loading indicator next, get some pretty style, feel better each time it reloads (x1000s)
   }
 </script>
@@ -353,6 +366,7 @@
         on:input={triggerGameBoardUpdate}
         min="1"
         max="8"
+        on:focus={e => computeViableMoves(e.target)}
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
@@ -363,6 +377,7 @@
         type="number"
         placeholder={settings.rows}
         bind:value={settings.rows}
+        on:focus={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -374,6 +389,7 @@
         type="number"
         placeholder={settings.columns}
         bind:value={settings.columns}
+        on:focus={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -385,6 +401,7 @@
         type="number"
         placeholder={settings.movesPerTurn}
         bind:value={settings.movesPerTurn}
+        on:focus={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -421,15 +438,22 @@
         max="100"
         step="5"
         min="10"
+        
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
-  <h2 class="settings-wrapper viable-grid">Total moves per player: {computedMoves}</h2>
-  <h2 class="settings-wrapper viable-grid">Avg. moves per turn: {computedMoves}</h2>
-  <h2 class="settings-wrapper viable-grid">Number of rounds: {computedMoves / settings.movesPerTurn}</h2>
+  <h2 class="settings-wrapper viable-grid">
+    Total moves per player: {computedMoves}
+  </h2>
+  <h2 class="settings-wrapper viable-grid">
+    Avg. moves per turn: {computedMoves}
+  </h2>
+  <h2 class="settings-wrapper viable-grid">
+    Number of rounds: {computedMoves / settings.movesPerTurn}
+  </h2>
   <div class="output-value">{computedMoves}</div>
   <!--  -->
 {:else}
