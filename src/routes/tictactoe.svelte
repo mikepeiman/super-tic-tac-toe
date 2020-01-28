@@ -124,7 +124,7 @@
     });
     storePlayers.subscribe(value => {
       players = value;
-console.log(`tictactoe => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+// console.log(`tictactoe => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
 
     storeGameboardWidth.subscribe(val => {

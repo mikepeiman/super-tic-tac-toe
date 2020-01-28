@@ -114,9 +114,9 @@
       }
     });
     storePlayers.subscribe(val => {
-      players = val
-      console.log(`SideMenu => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
-    })
+      players = val;
+      // console.log(`SideMenu => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+    });
     state = $storeState;
     settings = $storeSettings;
     if (localStorage.getItem("gameInProgress")) {
@@ -143,7 +143,7 @@
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
-    players = players
+    players = players;
     storePlayers.set(players);
   }
 
@@ -202,6 +202,7 @@
   @media screen and (min-width: 1500px) {
   }
 </style>
+
 <!-- {@debug players} -->
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}

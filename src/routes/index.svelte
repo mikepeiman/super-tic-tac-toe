@@ -1,6 +1,6 @@
 <script>
-  const emojis = require("emojis-list");
-  console.log(emojis);
+  // const emojis = require("emojis-list");
+  // console.log(emojis);
 </script>
 
 <style lang="scss">

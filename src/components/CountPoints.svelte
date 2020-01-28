@@ -34,7 +34,7 @@
     });
     storePlayers.subscribe(val => {
       players = val;
-      console.log(`CountPoints => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+      // console.log(`CountPoints => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     })
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (gameInProgress) {

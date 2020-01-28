@@ -66,12 +66,39 @@
   ({ numberOfPlayers } = settings);
   $: {
     if (typeof window !== "undefined") {
-      console.log(`GameInit => reactive log for numberOfPlayers - we have window`)
+      console.log(
+        `GameInit => reactive log for numberOfPlayers - we have window`
+      );
       let playerDetails = localStorage.getItem("preservePlayerDetails");
-      // if (!playerDetails) {
-        console.log(`GameInit => reactive log for numberOfPlayers: ${numberOfPlayers} - we have !playerDetails`)
+      if (!playerDetails) {
+        console.log(
+          `GameInit => reactive log for numberOfPlayers: ${numberOfPlayers} - we have !playerDetails`
+        );
         numberOfPlayers && initializePlayers();
-      // }
+      } else {
+        console.log(
+          `We have player details in existence. Now time to modify players array rather than initialize it. How to determine which way to modify, and what argument to pass the function?`
+        );
+        let LSplayers = localStorage.getItem("players")
+        if(LSplayers) {
+          LSplayers = JSON.parse(LSplayers)
+        }
+        let len = LSplayers.length
+        console.log(` LS players length: ${len}`)
+        let len2 = players.length
+         console.log(` var players length: ${len2}`)
+         let num2 = settings.numberOfPlayers
+          console.log(` settings.numberOfPlayers: ${settings.numberOfPlayers}`)
+        if(num2 > len) {
+modifyPlayers("add")
+        } else if (num2 < len) {
+modifyPlayers("remove")
+        } else {
+          console.log(`I see no change in players needed`)
+        }
+        
+        // numberOfPlayers && modifyPlayers();
+      }
     }
   }
 
@@ -80,11 +107,10 @@
     storeSettings.subscribe(value => {
       settings = value;
       ({ numberOfPlayers } = settings);
-
     });
     storeGameboardWidth.subscribe(val => {
       gameboardWidth = val;
-    })
+    });
     state = $storeState;
     console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
@@ -122,9 +148,10 @@
     }
   });
 
-
   function initializePlayers() {
-    console.log(`initializePlayers() initializePlayers() initializePlayers() initializePlayers() initializePlayers()!`)
+    console.log(
+      `initializePlayers() initializePlayers() initializePlayers() initializePlayers() initializePlayers()!`
+    );
     let hueOffset = 110;
     // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
@@ -145,8 +172,8 @@
           moves: 0,
           scores: [],
           dirScoresByIndex: [0, 0, 0, 0],
-          dirPointsByIndex: [0,0,0,0],
-          dirBonusesByIndex: [0,0,0,0]
+          dirPointsByIndex: [0, 0, 0, 0],
+          dirBonusesByIndex: [0, 0, 0, 0]
         }
       ];
       let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
@@ -154,7 +181,10 @@
       //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
       // );
       scoreDirections.forEach((direction, index) => {
-        console.log(`GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `, lines)
+        console.log(
+          `GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `,
+          lines
+        );
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
         // console.log(
@@ -163,14 +193,77 @@
         // );
       });
     }
-    players = players
+    players = players;
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (!gameInProgress) {
       setCurrentPlayerZero();
     }
     dispatch("playersInitialized", players);
     console.log(`GameInit => initialized players done`, players);
-    storePlayers.set(players)
+    storePlayers.set(players);
+  }
+
+  function modifyPlayers(increment) {
+
+    console.log(`|||   MODIFY PLAYERS  ${increment}  |||`);
+    if(increment === "remove") {
+      players.pop()
+      players = players
+    } else {
+      let newIndex = players.length
+      console.log(`modify players ADD, currently num players ${newIndex}`)
+      players = [...players, setPlayerAttributes(newIndex)];
+    }
+    // players = [];
+    for (let i = 0; i < settings.numberOfPlayers; i++) {
+      players[i]["scores"] = []
+      // players = [...players, setPlayerAttributes(i)];
+      // let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
+      // console.log(
+      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
+      // );
+      scoreDirections.forEach((direction, index) => {
+        console.log(
+          `GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `,
+          lines
+        );
+        players[i]["scores"].push(direction);
+        players[i]["scores"][index]["lines"] = lines[direction.name];
+        // console.log(
+        //   `GameInit => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `,
+        //   players[i]["scores"][index]
+        // );
+      });
+    }
+    players = players;
+    let gameInProgress = localStorage.getItem("gameInProgress");
+    if (!gameInProgress) {
+      setCurrentPlayerZero();
+    }
+    dispatch("playersInitialized", players);
+    console.log(`GameInit => initialized players done`, players);
+    storePlayers.set(players);
+  }
+
+  function setPlayerAttributes(i) {
+    let hueOffset = 110;
+    let hueInterval = 180 / settings.numberOfPlayers;
+
+    return {
+      id: i,
+      name: `Player ${i + 1}`,
+      totalScore: 0,
+      mark: "x",
+      colorMain: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
+      colorLight: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 65%, 1)`,
+      colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 35%, 1)`,
+      colorHue: `${(i + 1) * hueInterval + hueOffset}`,
+      moves: 0,
+      scores: [],
+      dirScoresByIndex: [0, 0, 0, 0],
+      dirPointsByIndex: [0, 0, 0, 0],
+      dirBonusesByIndex: [0, 0, 0, 0]
+    };
   }
 
   function setCurrentPlayerZero() {

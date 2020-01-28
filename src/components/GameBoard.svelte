@@ -98,7 +98,7 @@
 
     storePlayers.subscribe(value => {
       players = value;
-      console.log(`GameBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+      // console.log(`GameBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
