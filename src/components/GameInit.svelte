@@ -150,8 +150,8 @@
 
   function initializePlayers() {
     console.log(`initializePlayers()`);
-    let hueOffset = 110;
-    let hueInterval = 180 / settings.numberOfPlayers;
+    let hueOffset = 0;
+    let hueInterval = 360 / settings.numberOfPlayers;
 
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
@@ -200,13 +200,13 @@
       let lastPlayer = players[players.length - 1];
       let hueStart = lastPlayer.colorHue;
       let hues = players.map(player => parseInt(player.colorHue));
-      let maxDiff = maxDifference(hues)
-      console.dir(setPlayerAttributes(lastIndex));
+      let maxDiff = maxDifference(hues);
+      console.dir(addNewPlayer(lastIndex, hueStart));
       console.log(
         `modify players ADD, currently num players ${lastIndex} hueStart: ${hueStart} maxDiff: ${maxDiff}`,
         hues
       );
-      players = [...players, setPlayerAttributes(lastIndex, hueStart)];
+      players = [...players, addNewPlayer(lastIndex, 0)];
     }
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players[i]["scores"] = [];
@@ -215,6 +215,7 @@
         players[i]["scores"][index]["lines"] = lines[direction.name];
       });
     }
+    resetPlayerColors(360);
     players = players;
     let gameInProgress = localStorage.getItem("gameInProgress");
     if (!gameInProgress) {
@@ -225,46 +226,60 @@
     storePlayers.set(players);
   }
 
-  function maxDifferenceByBruteForce() {
-    let max = 0;
-    for(let i = 0; i < arr.length; i++) {
-      for(let j = i + 1; j < arr.length; j++) {
-        if(arr[i] < arr[j]) {
-          max = Math.max(max, arr[j] - arr[i])
-        }
-      }
-    }
-  }
-
   function maxDifference(arr) {
     let maxDiff = arr[1] - arr[0];
-    let minEle = arr[0]
+    let minEle = arr[0];
 
-    for(let i = 1 ; i < arr.length; i++) {
-      if((arr[i] - minEle) > maxDiff) {
-        maxDiff = arr[i] - minEle
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] - minEle > maxDiff) {
+        maxDiff = arr[i] - minEle;
       }
-      if(arr[i] < minEle) {
-        minEle = arr[i]
+      if (arr[i] < minEle) {
+        minEle = arr[i];
       }
     }
   }
 
-  function setPlayerAttributes(lastIndex, hueStart) {
-    console.log(`setPlayerAttributes(${lastIndex}, ${hueStart} ${typeof hueStart})`)
+  function resetPlayerColors(spread) {
+    console.log(`resetPlayerColors()`);
+
+    // for (let i = 0; i < settings.numberOfPlayers; i++) {
+    //   players = [...players, {}];
+    // }
+    players.forEach((player, i) => {
+      let hueOffset = 0;
+      let hueInterval = parseInt(spread / settings.numberOfPlayers);
+      let newHue = i * hueInterval + hueOffset;
+      while (newHue > 360) {
+        newHue = newHue - 360;
+      }
+      // console.log(`player hue ${player.colorHue}, newHue ${newHue}`);
+      player["colorHue"] = newHue;
+      player["colorLight"] = `hsla(${newHue}, 75%, 65%, 1)`;
+      player["colorMain"] = `hsla(${newHue}, 50%, 50%, 1)`;
+      player["colorDark"] = `hsla(${newHue}, 75%, 35%, 1)`;
+      // console.log(`player hue ${player.colorHue}, player `, player);
+    });
+    players = players;
+    // console.log(players);
+  }
+
+  function addNewPlayer(lastIndex, hueStart) {
+    // console.log(`addNewPlayer(${lastIndex}, ${hueStart})`);
     let newIndex = lastIndex + 1;
     let hueOffset = parseInt(hueStart);
-    let hueInterval = (180 / newIndex);
-    let newHue = (newIndex * hueInterval) + hueOffset;
-    console.log(
-      `newHue before scoping to 360 degrees: ${newHue} ${typeof newHue}`
-    );
+    let hueInterval = parseInt(360 / newIndex);
+    // console.log(`hueInterval ${hueInterval}`);
+    let newHue = newIndex * hueInterval + hueOffset;
+    // console.log(
+    //   `newHue before scoping to 360 degrees: ${newHue} ${typeof newHue}`
+    // );
     while (newHue > 360) {
       newHue = newHue - 360;
     }
-    console.log(
-      `newHue after scoping to 360 degrees: ${newHue} ${typeof newHue}`
-    );
+    // console.log(
+    //   `newHue after scoping to 360 degrees: ${newHue} ${typeof newHue}`
+    // );
     return {
       id: lastIndex,
       name: `Player ${newIndex}`,
