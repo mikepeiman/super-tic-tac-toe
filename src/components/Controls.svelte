@@ -13,7 +13,8 @@
     storeGameInProgress,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeMovesRemaining
   } from "../stores.js";
 
   $: currentPlayer = {};
@@ -48,7 +49,8 @@
     currentPlayer = lsCurrentPlayer;
     storeState.subscribe(value => {
       state = value;
-      movesRemaining = state.movesRemaining;
+      // movesRemaining = state.movesRemaining;
+      movesRemaining = $storeMovesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
@@ -98,7 +100,7 @@
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
     // localStorage.setItem("players", JSON.stringify(players));
-    
+
     storeCurrentPlayer.set(players[0]);
     location.reload();
     dispatch("resetGame", true);

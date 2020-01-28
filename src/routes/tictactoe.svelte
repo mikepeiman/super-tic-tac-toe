@@ -57,6 +57,16 @@
       );
     }
   });
+  storeState.subscribe(value => {
+    state = value;
+    if (typeof window !== "undefined") {
+      movesRemaining = state.movesRemaining;
+      moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
+      if (!moveNumber) {
+        moveNumber = 0;
+      }
+    }
+  });
   storeSettings.subscribe(value => {
     console.log(`TicTacToe => storeSettings.subscribe value => `, value);
     settings = value;
@@ -69,7 +79,7 @@
           .length;
       }
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
-      // state.movesRemaining = movesRemaining;
+      state.movesRemaining = movesRemaining;
       storeMovesRemaining.set(movesRemaining);
     }
   });
@@ -111,20 +121,10 @@
     } else {
       smallScreenHeight = false;
     }
-    storeState.subscribe(value => {
-      state = value;
-      movesRemaining = state.movesRemaining;
-      moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
-      if (!moveNumber) {
-        moveNumber = 0;
-      }
-    });
-    storeState.subscribe(val => {
-      state = val;
-    });
+
     storePlayers.subscribe(value => {
       players = value;
-// console.log(`tictactoe => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
+      // console.log(`tictactoe => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
 
     storeGameboardWidth.subscribe(val => {
