@@ -79,24 +79,24 @@
         console.log(
           `We have player details in existence. Now time to modify players array rather than initialize it. How to determine which way to modify, and what argument to pass the function?`
         );
-        let LSplayers = localStorage.getItem("players")
-        if(LSplayers) {
-          LSplayers = JSON.parse(LSplayers)
+        let LSplayers = localStorage.getItem("players");
+        if (LSplayers) {
+          LSplayers = JSON.parse(LSplayers);
         }
-        let len = LSplayers.length
-        console.log(` LS players length: ${len}`)
-        let len2 = players.length
-         console.log(` var players length: ${len2}`)
-         let num2 = settings.numberOfPlayers
-          console.log(` settings.numberOfPlayers: ${settings.numberOfPlayers}`)
-        if(num2 > len) {
-modifyPlayers("add")
+        let len = LSplayers.length;
+        console.log(` LS players length: ${len}`);
+        let len2 = players.length;
+        console.log(` var players length: ${len2}`);
+        let num2 = settings.numberOfPlayers;
+        console.log(` settings.numberOfPlayers: ${settings.numberOfPlayers}`);
+        if (num2 > len) {
+          modifyPlayers("add");
         } else if (num2 < len) {
-modifyPlayers("remove")
+          modifyPlayers("remove");
         } else {
-          console.log(`I see no change in players needed`)
+          console.log(`I see no change in players needed`);
         }
-        
+
         // numberOfPlayers && modifyPlayers();
       }
     }
@@ -149,11 +149,8 @@ modifyPlayers("remove")
   });
 
   function initializePlayers() {
-    console.log(
-      `initializePlayers() initializePlayers() initializePlayers() initializePlayers() initializePlayers()!`
-    );
+    console.log(`initializePlayers()`);
     let hueOffset = 110;
-    // let hueInterval = (360 / settings.numberOfPlayers)
     let hueInterval = 180 / settings.numberOfPlayers;
 
     players = [];
@@ -177,20 +174,9 @@ modifyPlayers("remove")
         }
       ];
       let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
-      // console.log(
-      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
-      // );
       scoreDirections.forEach((direction, index) => {
-        console.log(
-          `GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `,
-          lines
-        );
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
-        // console.log(
-        //   `GameInit => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `,
-        //   players[i]["scores"][index]
-        // );
       });
     }
     players = players;
@@ -204,35 +190,29 @@ modifyPlayers("remove")
   }
 
   function modifyPlayers(increment) {
-
     console.log(`|||   MODIFY PLAYERS  ${increment}  |||`);
-    if(increment === "remove") {
-      players.pop()
-      players = players
+    if (increment === "remove") {
+      players.pop();
+      players = players;
     } else {
-      let newIndex = players.length
-      console.log(`modify players ADD, currently num players ${newIndex}`)
-      players = [...players, setPlayerAttributes(newIndex)];
+      let lastIndex = players.length;
+      console.log(`modify players ADD, currently num players ${lastIndex}`);
+      let lastPlayer = players[players.length - 1];
+      let hueStart = lastPlayer.colorHue;
+      let hues = players.map(player => parseInt(player.colorHue));
+      let maxDiff = maxDifference(hues)
+      console.dir(setPlayerAttributes(lastIndex));
+      console.log(
+        `modify players ADD, currently num players ${lastIndex} hueStart: ${hueStart} maxDiff: ${maxDiff}`,
+        hues
+      );
+      players = [...players, setPlayerAttributes(lastIndex, hueStart)];
     }
-    // players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
-      players[i]["scores"] = []
-      // players = [...players, setPlayerAttributes(i)];
-      // let bg = `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`;
-      // console.log(
-      //   `GameInit => initializePlayers(), settings.numberOfPlayers = ${settings.numberOfPlayers}, colorMain = ${bg}`
-      // );
+      players[i]["scores"] = [];
       scoreDirections.forEach((direction, index) => {
-        console.log(
-          `GameInit => initializePlayers => scoreDirections.forEach direction: ${direction.name}, lines `,
-          lines
-        );
         players[i]["scores"].push(direction);
         players[i]["scores"][index]["lines"] = lines[direction.name];
-        // console.log(
-        //   `GameInit => initializePlayers => scoreDirections.forEach player[${i}]["scores"][${index}] `,
-        //   players[i]["scores"][index]
-        // );
       });
     }
     players = players;
@@ -245,19 +225,55 @@ modifyPlayers("remove")
     storePlayers.set(players);
   }
 
-  function setPlayerAttributes(i) {
-    let hueOffset = 110;
-    let hueInterval = 180 / settings.numberOfPlayers;
+  function maxDifferenceByBruteForce() {
+    let max = 0;
+    for(let i = 0; i < arr.length; i++) {
+      for(let j = i + 1; j < arr.length; j++) {
+        if(arr[i] < arr[j]) {
+          max = Math.max(max, arr[j] - arr[i])
+        }
+      }
+    }
+  }
 
+  function maxDifference(arr) {
+    let maxDiff = arr[1] - arr[0];
+    let minEle = arr[0]
+
+    for(let i = 1 ; i < arr.length; i++) {
+      if((arr[i] - minEle) > maxDiff) {
+        maxDiff = arr[i] - minEle
+      }
+      if(arr[i] < minEle) {
+        minEle = arr[i]
+      }
+    }
+  }
+
+  function setPlayerAttributes(lastIndex, hueStart) {
+    console.log(`setPlayerAttributes(${lastIndex}, ${hueStart} ${typeof hueStart})`)
+    let newIndex = lastIndex + 1;
+    let hueOffset = parseInt(hueStart);
+    let hueInterval = (180 / newIndex);
+    let newHue = (newIndex * hueInterval) + hueOffset;
+    console.log(
+      `newHue before scoping to 360 degrees: ${newHue} ${typeof newHue}`
+    );
+    while (newHue > 360) {
+      newHue = newHue - 360;
+    }
+    console.log(
+      `newHue after scoping to 360 degrees: ${newHue} ${typeof newHue}`
+    );
     return {
-      id: i,
-      name: `Player ${i + 1}`,
+      id: lastIndex,
+      name: `Player ${newIndex}`,
       totalScore: 0,
       mark: "x",
-      colorMain: `hsla(${(i + 1) * hueInterval + hueOffset}, 50%, 50%, 1)`,
-      colorLight: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 65%, 1)`,
-      colorDark: `hsla(${(i + 1) * hueInterval + hueOffset}, 75%, 35%, 1)`,
-      colorHue: `${(i + 1) * hueInterval + hueOffset}`,
+      colorMain: `hsla(${newHue}, 50%, 50%, 1)`,
+      colorLight: `hsla(${newHue}, 75%, 65%, 1)`,
+      colorDark: `hsla(${newHue}, 75%, 35%, 1)`,
+      colorHue: `${newHue}`,
       moves: 0,
       scores: [],
       dirScoresByIndex: [0, 0, 0, 0],

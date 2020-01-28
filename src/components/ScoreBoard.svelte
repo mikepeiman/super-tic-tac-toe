@@ -90,7 +90,7 @@
   });
   afterUpdate(() => {
     updateCount++;
-    console.log(`afterUpdate() count: ${updateCount}`);
+    // console.log(`afterUpdate() count: ${updateCount}`);
     addStyles(`addStyles() from afterUpdate`);
     addHighlightIfGameInProgress();
   });

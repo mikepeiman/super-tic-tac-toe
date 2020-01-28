@@ -208,10 +208,10 @@
         100) *
         0.9
     );
-    console.log(
-      `gameboardContainerWidth:${gameboardContainerWidth} | gameboardContainerHeight:${gameboardContainerHeight} cellSize: ${cellSize}`
-    );
-    console.log(`W:${cellWidth} | H:${cellHeight} cellSize: ${cellSize}`);
+    // console.log(
+    //   `gameboardContainerWidth:${gameboardContainerWidth} | gameboardContainerHeight:${gameboardContainerHeight} cellSize: ${cellSize}`
+    // );
+    // console.log(`W:${cellWidth} | H:${cellHeight} cellSize: ${cellSize}`);
     if (gameboardContainerWidth > gameboardContainerHeight) {
       // console.log(
       //   `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
@@ -522,9 +522,9 @@
   }
 
   async function buildGameGrid(rows, columns, size, gutter) {
-    console.log(
-      `buildGameGrid called with rows ${rows}, columns ${columns}, size ${size}, gutter ${gutter}`
-    );
+    // console.log(
+    //   `buildGameGrid called with rows ${rows}, columns ${columns}, size ${size}, gutter ${gutter}`
+    // );
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
@@ -550,7 +550,7 @@
   }
 
   async function resetGameBoard(message) {
-    console.log(`\n resetGameBoard() called with message `, message, `\n \n`);
+    // console.log(`\n resetGameBoard() called with message `, message, `\n \n`);
 
     // grid = []
     await buildGameGrid(
@@ -562,7 +562,7 @@
     // waitedGrid.then(() => {
     //   resizeCells()
     // })
-    console.log(`resizeCells() function about to be called `);
+    // console.log(`resizeCells() function about to be called `);
     resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
