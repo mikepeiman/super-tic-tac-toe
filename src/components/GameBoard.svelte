@@ -290,13 +290,13 @@
           //   `\n\n`
           // );
           let move = turn[j];
-          console.log(
-            `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
-            move,
-            `\n\n`,
-            `move.player`,
-            move.player
-          );
+          // console.log(
+          //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
+          //   move,
+          //   `\n\n`,
+          //   `move.player`,
+          //   move.player
+          // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].colorMain}`;

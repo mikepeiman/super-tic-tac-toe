@@ -15,6 +15,7 @@
   } from "../stores.js";
 
   let currentPlayer;
+  let computedMoves;
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -40,6 +41,7 @@
     initializeSettingsFromLS();
     setAllInputWidths();
     storeSettings.set(settings);
+    computeViableMoves();
   });
 
   function initializeSettingsFromLS() {
@@ -77,6 +79,17 @@
   function highlight(e) {
     e.target.select();
   }
+
+  function computeViableMoves() {
+    let rows = settings.rows;
+    let columns = settings.columns;
+    let num = settings.numberOfPlayers;
+    let movesPerPlayer = (rows * columns) / num;
+    console.log(
+      `rows ${rows} columns ${columns} players ${num}, movesPerPlayer ${movesPerPlayer}`
+    );
+    return movesPerPlayer;
+  }
 </script>
 
 <style lang="scss">
@@ -106,7 +119,7 @@
 
   .settings-wrapper {
     padding: 0.5rem;
-    background: var(--theme-bg); 
+    background: var(--theme-bg);
     border-top: 3px solid var(--player-color);
     border-bottom: 3px solid var(--player-color);
     margin: 0;
@@ -257,10 +270,8 @@
   }
 
   @media screen and (min-width: 600px) {
-
   }
   @media screen and (min-width: 900px) {
-
     .settings-wrapper {
       padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
@@ -311,11 +322,13 @@
   }
 
   @media screen and (min-width: 1200px) {
-
   }
 
   @media screen and (min-width: 1500px) {
+  }
 
+  .viable-grid {
+    background: green;
   }
 </style>
 
@@ -407,6 +420,8 @@
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
+  <h2 class="settings-wrapper viable-grid">Computed viable moves per turn</h2>
+  <!--  -->
 {:else}
   <div class="settings-menu-heading">
     <h2 class="loading">Loading Settings...</h2>
