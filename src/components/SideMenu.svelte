@@ -115,6 +115,7 @@
     });
     storePlayers.subscribe(val => {
       players = val
+      console.log(`SideMenu => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     })
     state = $storeState;
     settings = $storeSettings;

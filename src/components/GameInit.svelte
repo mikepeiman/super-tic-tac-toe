@@ -66,8 +66,10 @@
   ({ numberOfPlayers } = settings);
   $: {
     if (typeof window !== "undefined") {
+      console.log(`GameInit => reactive log for numberOfPlayers - we have window`)
       let playerDetails = localStorage.getItem("preservePlayerDetails");
       if (!playerDetails) {
+        console.log(`GameInit => reactive log for numberOfPlayers - we have !playerDetails`)
         numberOfPlayers && initializePlayers();
       }
     }

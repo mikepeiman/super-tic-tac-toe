@@ -97,7 +97,8 @@
     });
 
     storePlayers.subscribe(value => {
-      // players = value;
+      players = value;
+      console.log(`GameBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
@@ -371,8 +372,8 @@
     }
   }
 
-  function addDirectionArraysToPlayerObjects() {
-    // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
+  function addDirectionArraysToPlayers() {
+    // console.log(`\n\n addDirectionArraysToPlayers `, players, settings.numberOfPlayers, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       // next loop is to set the four direction array to each player object .scores property
       for (let x = 0; x <= 3; x++) {
@@ -457,7 +458,7 @@
     storeDirectionArrays.set(lines);
     // localStorage.setItem("directionArrays", JSON.stringify(lines));
     await players;
-    addDirectionArraysToPlayerObjects();
+    addDirectionArraysToPlayers();
   }
 
   function makeLineFrom(start, pattern) {
@@ -544,7 +545,7 @@
 
     // grid = grid;
     await createDirectionArrays();
-    await addDirectionArraysToPlayerObjects();
+    await addDirectionArraysToPlayers();
     return grid;
   }
 
@@ -844,12 +845,12 @@
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
-    storePreservePlayerDetails.set(true);
+    // storePreservePlayerDetails.set(true);
     turnHistory = [];
   }
 
   function playerChange() {
-    storePreservePlayerDetails.set(true);
+    // storePreservePlayerDetails.set(true);
     turnHistory = [];
     let gameboard = document.getElementById("gameboard");
     gameboard.classList.add("player-change");

@@ -59,6 +59,7 @@
   });
   storePlayers.subscribe(value => {
     players = value;
+    console.log(`ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
   });
   storeViewportSize.subscribe(val => {
     console.log(`ScoreBoard subscribed to app viewport size: `, val);
@@ -693,9 +694,9 @@
   }
 </style>
 
-<!-- {@debug players}
-{@debug grid}
-{@debug settings} -->
+{@debug players}
+<!-- {@debug grid} -->
+<!-- {@debug settings} -->
 {#await players then players}
 
   <div class="scoreboard-container-inner">

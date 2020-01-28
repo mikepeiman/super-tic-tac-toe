@@ -82,6 +82,7 @@
     });
     storePlayers.subscribe(value => {
       players = value;
+      console.log(`ScoreBoardNew => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
     storeViewportSize.subscribe(val => {
       // console.log(`ScoreBoard subscribed to app viewport size: `, val);
