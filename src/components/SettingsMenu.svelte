@@ -15,7 +15,7 @@
   } from "../stores.js";
 
   let currentPlayer;
-  let computedMoves;
+  $: computedMoves = (settings.rows * settings.columns) / settings.numberOfPlayers;
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -88,7 +88,14 @@
     console.log(
       `rows ${rows} columns ${columns} players ${num}, movesPerPlayer ${movesPerPlayer}`
     );
-    return movesPerPlayer;
+    // for each number up to movesPerPlayer, iterate and calculate for modulo integer
+    // present options as: 
+    //      "For {x} rows X {x} columns, viable moves per turn are: "
+    //      "For {x} columns and {x} moves per turn, viable rows are: "
+    //      "For {x} rows and {x} moves per turns, viable columns are: "
+    // do not present for players; that is a primary selection.
+    // UI: highlight values that are not whole numbers in settings, automatically insert viable options as formatted above
+    // ***note: work on loading indicator next, get some pretty style, feel better each time it reloads (x1000s)
   }
 </script>
 
@@ -420,7 +427,10 @@
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
-  <h2 class="settings-wrapper viable-grid">Computed viable moves per turn</h2>
+  <h2 class="settings-wrapper viable-grid">Total moves per player: {computedMoves}</h2>
+  <h2 class="settings-wrapper viable-grid">Avg. moves per turn: {computedMoves}</h2>
+  <h2 class="settings-wrapper viable-grid">Number of rounds: {computedMoves / settings.movesPerTurn}</h2>
+  <div class="output-value">{computedMoves}</div>
   <!--  -->
 {:else}
   <div class="settings-menu-heading">
