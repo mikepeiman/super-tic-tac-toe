@@ -15,6 +15,7 @@
   } from "../stores.js";
 
   let currentPlayer;
+  let viableGameFlag = true;
   $: computedMovesPerPlayer =
     (settings.rows * settings.columns) / settings.numberOfPlayers;
   $: viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
@@ -22,12 +23,21 @@
     // if (computedMovesPerPlayer)
     if (!Number.isInteger(viableRoundsForGame)) {
       viableRoundsForGame = "Not viable!";
+      viableGameFlag = false;
     } else {
       viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
+      viableGameFlag = true;
     }
   }
+  // below factors snippet from https://stackoverflow.com/a/43802308/7875457
+  const factors = number =>
+    Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
+  // end factors snippet
+
   let computeThis = 0;
-  let computedFactors = [];
+  $: computedFactorsViableMoves = [];
+  $: computedFactorsViableRows = [];
+  $: computedFactorsViableColumns = [];
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -53,6 +63,13 @@
     initializeSettingsFromLS();
     setAllInputWidths();
     storeSettings.set(settings);
+    let rows = settings.rows;
+    let columns = settings.columns;
+    let numPlayers = settings.numberOfPlayers;
+    let movesPerTurn = settings.movesPerTurn;
+    computedFactorsViableMoves = factors((rows * columns) / numPlayers);
+    computedFactorsViableRows = factors((movesPerTurn * columns) / numPlayers);
+    computedFactorsViableColumns = factors((movesPerTurn * rows) / numPlayers);
   });
 
   function initializeSettingsFromLS() {
@@ -108,6 +125,20 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
+    computedFactorsViableMoves = factors((rows * columns) / numPlayers);
+    let elRows = document.querySelector("#rows");
+    let elColumns = document.querySelector("#columns");
+    let elMovesPerTurn = document.querySelector("#movesPerTurn");
+    let alertBg = `rgba(255,15,25,0.2)`;
+    if (viableGameFlag === false) {
+      elRows.style = `background: ${alertBg};`;
+      elColumns.style = `background: ${alertBg};`;
+      elMovesPerTurn.style = `background: ${alertBg};`;
+    } else {
+      elRows.style = `background: none;`;
+      elColumns.style = `background: none;`;
+      elMovesPerTurn.style = `background: none;`;
+    }
 
     if (thisAttr === "players") {
       console.log(`this el is number of players ${el.value}`);
@@ -127,15 +158,10 @@
       // settingsMenu.appendChild(computedWidget);
     }
 
-    // below factors snippet from https://stackoverflow.com/a/43802308/7875457
-    const factors = number =>
-      Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
-    // end factors snippet
     console.log(`Factors of ${computeThis} `, factors(computeThis));
     console.log(
       `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
     );
-    computedFactors = factors((rows * columns) / numPlayers);
 
     // for each number up to movesPerPlayer, iterate and calculate for modulo integer
     // present options as:
@@ -154,7 +180,15 @@
     font-size: 24px;
   }
   $input-blue: rgba(50, 200, 255, 1);
-
+  .not-viable {
+    &:before {
+      content: "< Not a viable value for each player to have equal turns!";
+      color: red;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
   .loading-settings-message {
     padding: 1rem;
     color: #eeeeee;
@@ -432,7 +466,7 @@
         min="1"
         max="8"
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
@@ -444,7 +478,7 @@
         placeholder={settings.rows}
         bind:value={settings.rows}
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -457,7 +491,7 @@
         placeholder={settings.columns}
         bind:value={settings.columns}
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -470,7 +504,7 @@
         placeholder={settings.movesPerTurn}
         bind:value={settings.movesPerTurn}
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -483,7 +517,7 @@
         placeholder={settings.cellsToScore}
         bind:value={settings.cellsToScore}
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -496,7 +530,7 @@
         placeholder={settings.bonusForCompleteLine}
         bind:value={settings.bonusForCompleteLine}
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -512,7 +546,7 @@
         step="5"
         min="10"
         on:focus={e => computeViableMoves(e.target)}
-        on:change={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -525,8 +559,16 @@
       <span class="computed-value">{computedMovesPerPlayer}</span>
     </span>
     <span class="computed-span">
-      COMPUTED FACTORS
-      <span class="computed-value">{computedFactors}</span>
+      COMPUTED FACTORS for viable rows
+      <span class="computed-value">{computedFactorsViableRows}</span>
+    </span>
+    <span class="computed-span">
+      COMPUTED FACTORS for viable columns
+      <span class="computed-value">{computedFactorsViableRows}</span>
+    </span>
+    <span class="computed-span">
+      COMPUTED FACTORS for viable moves per turn
+      <span class="computed-value">{computedFactorsViableMoves}</span>
     </span>
     <span class="computed-span">
       Viable rounds per game
