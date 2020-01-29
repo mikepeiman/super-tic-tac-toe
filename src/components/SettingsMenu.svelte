@@ -18,14 +18,23 @@
   let viableGameFlag = true;
   $: computedMovesPerPlayer =
     (settings.rows * settings.columns) / settings.numberOfPlayers;
-  $: viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
   $: {
-    // if (computedMovesPerPlayer)
-    if (!Number.isInteger(viableRoundsForGame)) {
-      viableRoundsForGame = "Not viable!";
+    if (!Number.isInteger(computedMovesPerPlayer)) {
+      computedMovesPerPlayer = "Not viable!";
       viableGameFlag = false;
     } else {
-      viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
+      computedMovesPerPlayer =
+        (settings.rows * settings.columns) / settings.numberOfPlayers;
+      viableGameFlag = true;
+    }
+  }
+  $: viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
+  $: {
+    if (!Number.isInteger(viableRoundsPerGame)) {
+      viableRoundsPerGame = "Not viable!";
+      viableGameFlag = false;
+    } else {
+      viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
       viableGameFlag = true;
     }
   }
@@ -42,6 +51,7 @@
   let initialSettings = {
     numberOfPlayers: 3,
     movesPerTurn: 4,
+    roundsPerGame: 8,
     cellsToScore: 3,
     bonusForCompleteLine: 12,
     rows: 8,
@@ -51,9 +61,11 @@
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
+  let roundsPerGame;
+  // $: ({ roundsPerGame } = settings);
   // let settings = Object.assign({}, initialSettings);
 
-  onMount(() => {
+  onMount(async () => {
     console.log(`SettingsMenu onMount(), settings`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
@@ -67,12 +79,27 @@
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
     let movesPerTurn = settings.movesPerTurn;
+    roundsPerGame = await viableRoundsPerGame;
+    settings.roundsPerGame = viableRoundsPerGame;
     console.log(
-      `Invalid values? rows ${rows} columns ${columns} numPlayers ${numPlayers} movesPerTurn ${movesPerTurn}`
+      `Invalid values? rows ${rows} columns ${columns} numPlayers ${numPlayers} movesPerTurn ${movesPerTurn} roundsPerGame ${roundsPerGame}`
     );
-    computedFactorsViableMoves = factors(Math.round((rows * columns) / numPlayers));
-    computedFactorsViableRows = factors(Math.round((movesPerTurn * columns) / numPlayers));
-    computedFactorsViableColumns = factors(Math.round((movesPerTurn * rows) / numPlayers));
+    if (viableGameFlag) {
+      computedFactorsViableMoves = factors(
+        Math.round((rows * columns) / numPlayers)
+      );
+      computedFactorsViableRows = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+      );
+      computedFactorsViableColumns = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+      );
+    } else {
+      computedFactorsViableMoves = "Not viable. Change columns, rows, or moves";
+      computedFactorsViableRows = "Not viable. Change columns, rows, or moves";
+      computedFactorsViableColumns =
+        "Not viable. Change columns, rows, or moves";
+    }
   });
 
   function initializeSettingsFromLS() {
@@ -112,10 +139,6 @@
     console.log(`highlight func`, e.target);
   }
 
-  function setComputedWidget() {
-    let widget = document.querySelector("#computed-widget");
-  }
-
   function computeViableMoves(el) {
     console.log(`computeViableMoves(el) `, el);
     let thisAttr = el.getAttribute("name");
@@ -128,9 +151,29 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
-    computedFactorsViableMoves = factors(Math.round((rows * columns) / numPlayers));
-    computedFactorsViableRows = factors(Math.round((movesPerTurn * columns) / numPlayers));
-    computedFactorsViableColumns = factors(Math.round((movesPerTurn * rows) / numPlayers));
+    settings.roundsPerGame = viableRoundsPerGame;
+    if (typeof viableRoundsPerGame !== "string") {
+      roundsPerGame = viableRoundsPerGame;
+    } else {
+      roundsPerGame = Math.ceil(computedMovesPerPlayer / settings.movesPerTurn);
+    }
+    if (viableGameFlag) {
+      computedFactorsViableMoves = factors(
+        Math.round((rows * columns) / numPlayers)
+      );
+      computedFactorsViableRows = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+      );
+      computedFactorsViableColumns = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+      );
+    } else {
+      computedFactorsViableMoves = "Not viable. Change columns, rows, or moves";
+      computedFactorsViableRows = "Not viable. Change columns, rows, or moves";
+      computedFactorsViableColumns =
+        "Not viable. Change columns, rows, or moves";
+    }
+
     let elRows = document.querySelector("#rows");
     let elColumns = document.querySelector("#columns");
     let elMovesPerTurn = document.querySelector("#movesPerTurn");
@@ -164,10 +207,22 @@
     }
 
     console.log(`Factors of ${computeThis} `, factors(computeThis));
-    console.log(`Factors of ${computedMovesPerPlayer} `, factors(computedMovesPerPlayer));
-    console.log(`Factors of ${computedFactorsViableMoves} `, factors(computedFactorsViableMoves));
-    console.log(`Factors of ${computedFactorsViableRows} `, factors(computedFactorsViableRows));
-    console.log(`Factors of ${computedFactorsViableColumns} `, factors(computedFactorsViableColumns));
+    console.log(
+      `Factors of ${computedMovesPerPlayer} `,
+      factors(computedMovesPerPlayer)
+    );
+    console.log(
+      `Factors of ${computedFactorsViableMoves} `,
+      factors(computedFactorsViableMoves)
+    );
+    console.log(
+      `Factors of ${computedFactorsViableRows} `,
+      factors(computedFactorsViableRows)
+    );
+    console.log(
+      `Factors of ${computedFactorsViableColumns} `,
+      factors(computedFactorsViableColumns)
+    );
     console.log(
       `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
     );
@@ -444,6 +499,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
     & span {
       &.computed-span {
         width: 100%;
@@ -451,6 +507,8 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
+        word-break: break-all;
       }
       &.computed-value {
         color: rgba(0, 155, 255, 1);
@@ -518,6 +576,19 @@
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
+    <label for="roundsPerGame" id="roundsPerGame">
+      <div class="label-content">rounds per game</div>
+      <input
+        name="roundsPerGame"
+        type="number"
+        placeholder={settings.roundsPerGame}
+        bind:value={settings.roundsPerGame}
+        on:focus={e => computeViableMoves(e.target)}
+        on:keyup={e => computeViableMoves(e.target)}
+        on:input={triggerGameBoardUpdate}
+        on:click={highlight}
+        style="width: 2.5ch;" />
+    </label>
     <label for="cellsToScore" id="cellsToScore">
       <div class="label-content">in a row to score</div>
       <input
@@ -563,26 +634,31 @@
     </label>
   </div>
   <div class="settings-wrapper viable-game" id="computed-widget">
+  {#if viableGameFlag}
     <span class="computed-span">
       Total moves per player:
       <span class="computed-value">{computedMovesPerPlayer}</span>
     </span>
     <span class="computed-span">
-      COMPUTED FACTORS for viable rows
+      Viable rows:
       <span class="computed-value">{computedFactorsViableRows}</span>
     </span>
     <span class="computed-span">
-      COMPUTED FACTORS for viable columns
+      Viable columns:
       <span class="computed-value">{computedFactorsViableColumns}</span>
     </span>
     <span class="computed-span">
-      COMPUTED FACTORS for viable moves per turn
+      Viable moves per turn:
       <span class="computed-value">{computedFactorsViableMoves}</span>
     </span>
     <span class="computed-span">
-      Viable rounds per game
-      <span class="computed-value">{viableRoundsForGame}</span>
+      Rounds per game as given:
+      <span class="computed-value">{viableRoundsPerGame}</span>
     </span>
+    {:else}
+    <h2>Invalid settings - uneven number of turns or rounds!</h2>
+    <h2>Change number of rows, columns, or moves per turn until valid configuration is found.</h2>
+    {/if}
   </div>
 
   <!--  -->
