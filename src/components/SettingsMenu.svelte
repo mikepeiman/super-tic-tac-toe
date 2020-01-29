@@ -15,8 +15,17 @@
   } from "../stores.js";
 
   let currentPlayer;
-  $: computedMoves =
+  $: computedMovesPerPlayer =
     (settings.rows * settings.columns) / settings.numberOfPlayers;
+  $: viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
+  $: {
+    // if (computedMovesPerPlayer)
+    if (!Number.isInteger(viableRoundsForGame)) {
+      viableRoundsForGame = "Not viable!";
+    } else {
+      viableRoundsForGame = computedMovesPerPlayer / settings.movesPerTurn;
+    }
+  }
   let computeThis = 0;
   let computedFactors = [];
   let initialized = false;
@@ -513,17 +522,15 @@
   <div class="settings-wrapper viable-game" id="computed-widget">
     <span class="computed-span">
       Total moves per player:
-      <span class="computed-value">{computedMoves}</span>
+      <span class="computed-value">{computedMovesPerPlayer}</span>
     </span>
     <span class="computed-span">
       COMPUTED FACTORS
       <span class="computed-value">{computedFactors}</span>
     </span>
     <span class="computed-span">
-      Possible moves per turn
-      <span class="computed-value">
-        {computedMoves / settings.movesPerTurn}
-      </span>
+      Viable rounds per game
+      <span class="computed-value">{viableRoundsForGame}</span>
     </span>
   </div>
 
