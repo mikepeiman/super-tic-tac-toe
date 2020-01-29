@@ -17,6 +17,8 @@
   let currentPlayer;
   $: computedMoves =
     (settings.rows * settings.columns) / settings.numberOfPlayers;
+  let computeThis = 0;
+  let computedFactors = [];
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -42,7 +44,6 @@
     initializeSettingsFromLS();
     setAllInputWidths();
     storeSettings.set(settings);
-    // computeViableMoves();
   });
 
   function initializeSettingsFromLS() {
@@ -80,36 +81,53 @@
   function highlight(e) {
     e.target.select();
     console.log(`highlight func`, e.target);
-    // computeViableMoves(e.target);
+  }
+
+  function setComputedWidget() {
+    let widget = document.querySelector("#computed-widget");
   }
 
   function computeViableMoves(el) {
     console.log(`computeViableMoves(el) `, el);
-    // let attrNum = el.getAttribute["players"];
-    // let attrRows = el.getAttribute["rows"];
-    // let attrColumns = el.getAttribute["columns"];
-    // let attrMoves = el.getAttribute["movesPerTurn"];
     let thisAttr = el.getAttribute("name");
     console.log(`computeViableMoves(el) this attr ${thisAttr}`);
-    if ((thisAttr === "players")) {
-      console.log(`this el is number of players ${el.value}`);
-    }
-    if ((thisAttr === "rows")) {
-      console.log(`this el is number of rows ${el.value}`);
-    }
-    if ((thisAttr === "columns")) {
-      console.log(`this el is number of columns ${el.value}`);
-    }
-    if ((thisAttr === "movesPerTurn")) {
-      console.log(`this el is number of movesPerTurn ${el.value}`);
-    }
+    let computedWidget = document.querySelector("#computed-widget");
+    let menu = document.querySelector(".settings-menu");
+    // el.parentElement.appendChild(computedWidget);
     let rows = settings.rows;
     let columns = settings.columns;
-    let num = settings.numberOfPlayers;
-    let movesPerPlayer = (rows * columns) / num;
+    let numPlayers = settings.numberOfPlayers;
+    let movesPerPlayer = (rows * columns) / numPlayers;
+    let movesPerTurn = settings.movesPerTurn;
+
+    if (thisAttr === "players") {
+      console.log(`this el is number of players ${el.value}`);
+    } else if (thisAttr === "rows") {
+      console.log(`this el is number of rows ${el.value}`);
+      computeThis = columns * movesPerTurn;
+      // compute viable value for this, based on given columns and moves per turn
+    } else if (thisAttr === "columns") {
+      console.log(`this el is number of columns ${el.value}`);
+      computeThis = rows * movesPerTurn;
+      // compute viable value for this, based on given row and moves per turn
+    } else if (thisAttr === "movesPerTurn") {
+      console.log(`this el is number of movesPerTurn ${el.value}`);
+      computeThis = columns * rows;
+      // compute viable value for this, based on given columns and rows
+    } else {
+      // settingsMenu.appendChild(computedWidget);
+    }
+
+    // below factors snippet from https://stackoverflow.com/a/43802308/7875457
+    const factors = number =>
+      Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
+    // end factors snippet
+    console.log(`Factors of ${computeThis} `, factors(computeThis));
     console.log(
-      `rows ${rows} columns ${columns} players ${num}, movesPerPlayer ${movesPerPlayer}`
+      `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
     );
+    computedFactors = factors((rows * columns) / numPlayers);
+
     // for each number up to movesPerPlayer, iterate and calculate for modulo integer
     // present options as:
     //      "For {x} rows X {x} columns, viable moves per turn are: "
@@ -146,12 +164,13 @@
       transition: all 0.25s;
     }
   }
-
+  .modal-title {
+    border-bottom: 3px solid var(--player-color);
+  }
   .settings-wrapper {
     padding: 0.5rem;
     background: var(--theme-bg);
-    border-top: 3px solid var(--player-color);
-    border-bottom: 3px solid var(--player-color);
+    // border-top: 3px solid var(--player-color);
     margin: 0;
     height: auto;
     display: grid;
@@ -314,7 +333,9 @@
       & label {
         display: grid;
         grid-template-columns: 1fr 5fr;
-        grid-template-areas: "settings-input settings-label";
+        grid-template-areas:
+          "settings-input settings-label"
+          "computed computed";
         // display: -webkit-box;
         font-size: 100%;
         // display: flex;
@@ -360,6 +381,31 @@
   .viable-grid {
     background: green;
   }
+
+  #computed-widget {
+    grid-area: computed;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    color: var(--player-color-light);
+    outline: 2px dashed var(--player-color-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    & span {
+      &.computed-span {
+        width: 100%;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      &.computed-value {
+        color: rgba(0, 155, 255, 1);
+      }
+      // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
+    }
+  }
 </style>
 
 {#if initialized}
@@ -377,6 +423,7 @@
         min="1"
         max="8"
         on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:click={highlight}
         style="width: 2.5ch;" />
     </label>
@@ -388,6 +435,7 @@
         placeholder={settings.rows}
         bind:value={settings.rows}
         on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -400,6 +448,7 @@
         placeholder={settings.columns}
         bind:value={settings.columns}
         on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -412,6 +461,7 @@
         placeholder={settings.movesPerTurn}
         bind:value={settings.movesPerTurn}
         on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -423,6 +473,8 @@
         type="number"
         placeholder={settings.cellsToScore}
         bind:value={settings.cellsToScore}
+        on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -434,6 +486,8 @@
         type="number"
         placeholder={settings.bonusForCompleteLine}
         bind:value={settings.bonusForCompleteLine}
+        on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
@@ -448,22 +502,31 @@
         max="100"
         step="5"
         min="10"
+        on:focus={e => computeViableMoves(e.target)}
+        on:change={e => computeViableMoves(e.target)}
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
-  <h2 class="settings-wrapper viable-grid">
-    Total moves per player: {computedMoves}
-  </h2>
-  <h2 class="settings-wrapper viable-grid">
-    Avg. moves per turn: {computedMoves}
-  </h2>
-  <h2 class="settings-wrapper viable-grid">
-    Number of rounds: {computedMoves / settings.movesPerTurn}
-  </h2>
-  <div class="output-value">{computedMoves}</div>
+  <div class="settings-wrapper viable-game" id="computed-widget">
+    <span class="computed-span">
+      Total moves per player:
+      <span class="computed-value">{computedMoves}</span>
+    </span>
+    <span class="computed-span">
+      COMPUTED FACTORS
+      <span class="computed-value">{computedFactors}</span>
+    </span>
+    <span class="computed-span">
+      Possible moves per turn
+      <span class="computed-value">
+        {computedMoves / settings.movesPerTurn}
+      </span>
+    </span>
+  </div>
+
   <!--  -->
 {:else}
   <div class="settings-menu-heading">
