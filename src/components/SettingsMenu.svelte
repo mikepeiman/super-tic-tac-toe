@@ -1,5 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
+  import ConfigureGameToggle from "./ConfigureGameToggle.svelte";
   const dispatch = createEventDispatcher();
 
   import {
@@ -62,6 +63,7 @@
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
   let roundsPerGame;
+  let configureByBoardOrByMoves = "board";
   // $: ({ roundsPerGame } = settings);
   // let settings = Object.assign({}, initialSettings);
 
@@ -503,6 +505,9 @@
 </style>
 
 {#if initialized}
+  <div class="configuration-toggle-wrapper">
+    <ConfigureGameToggle />
+  </div>
   <div
     class="settings-wrapper settings-menu"
     style={`--player-color: ${currentPlayer.colorMain}`}>

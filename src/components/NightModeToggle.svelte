@@ -279,21 +279,7 @@
     type="checkbox"
     id="night-mode-toggle"
     on:click={toggleTheme} />
-  <!-- <div class="slider-wrapper"> -->
   <div class="slider round" />
-  <!-- </div> -->
-  <!-- <div class="icon sunrise">
-    <Fa
-      icon={faSunrise}
-      color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-  </div>
-  <div class="icon sunset hidden">
-    <Fa
-      icon={faSunset}
-      color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-  </div> -->
   <div class="icon sun">
     <Fa
       icon={faSun}
@@ -306,6 +292,4 @@
       color="var(--theme-fg)"
       secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
   </div>
-  <!-- <span class="toggle-text">Dark Mode</span> -->
-
 </label>
