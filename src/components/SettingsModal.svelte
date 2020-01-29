@@ -8,19 +8,23 @@
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   const { open } = getContext("simple-modal");
+
   let styling = {
     window: {
       background: "none",
-      padding: "5rem"
+      padding: "5rem",
+      width: "100%",
+      maxWidth: "90vw",
+      maxHeight: "90vh",
+      margin: "5vh 5vw",
+      background: "var(--theme-bg)"
     },
     close: {
       width: "3rem",
       height: "3rem"
     },
     content: {
-      padding: "2rem",
       borderRadius: "5px",
-      background: "#1a1a1a"
     }
   };
   let vWidth;

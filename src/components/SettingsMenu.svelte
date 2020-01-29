@@ -44,9 +44,9 @@
   // end factors snippet
 
   let computeThis = 0;
-  $: computedFactorsViableMoves = [];
-  $: computedFactorsViableRows = [];
-  $: computedFactorsViableColumns = [];
+  $: viableMoves = [];
+  $: viableRows = [];
+  $: viableColumns = [];
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -75,31 +75,7 @@
     initializeSettingsFromLS();
     setAllInputWidths();
     storeSettings.set(settings);
-    let rows = settings.rows;
-    let columns = settings.columns;
-    let numPlayers = settings.numberOfPlayers;
-    let movesPerTurn = settings.movesPerTurn;
-    roundsPerGame = await viableRoundsPerGame;
-    settings.roundsPerGame = viableRoundsPerGame;
-    console.log(
-      `Invalid values? rows ${rows} columns ${columns} numPlayers ${numPlayers} movesPerTurn ${movesPerTurn} roundsPerGame ${roundsPerGame}`
-    );
-    if (viableGameFlag) {
-      computedFactorsViableMoves = factors(
-        Math.round((rows * columns) / numPlayers)
-      );
-      computedFactorsViableRows = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
-      );
-      computedFactorsViableColumns = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
-      );
-    } else {
-      computedFactorsViableMoves = "Not viable. Change columns, rows, or moves";
-      computedFactorsViableRows = "Not viable. Change columns, rows, or moves";
-      computedFactorsViableColumns =
-        "Not viable. Change columns, rows, or moves";
-    }
+    calculateViableFactors();
   });
 
   function initializeSettingsFromLS() {
@@ -138,6 +114,37 @@
     e.target.select();
     console.log(`highlight func`, e.target);
   }
+  async function calculateViableFactors() {
+    let rows = settings.rows;
+    let columns = settings.columns;
+    let numPlayers = settings.numberOfPlayers;
+    let movesPerTurn = settings.movesPerTurn;
+    // roundsPerGame = await viableRoundsPerGame;
+    settings.roundsPerGame = await viableRoundsPerGame;
+    if (typeof viableRoundsPerGame !== "string") {
+      roundsPerGame = await viableRoundsPerGame;
+    } else {
+      roundsPerGame = Math.ceil(computedMovesPerPlayer / settings.movesPerTurn);
+    }
+    if (viableGameFlag) {
+      viableMoves = factors(Math.round((rows * columns) / numPlayers));
+      viableRows = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+      );
+      viableRows = [...viableRows, viableRows[viableRows.length - 1] * 2];
+      viableColumns = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+      );
+      viableColumns = [
+        ...viableColumns,
+        viableColumns[viableColumns.length - 1] * 2
+      ];
+    } else {
+      viableMoves = "Not viable. Change columns, rows, or moves";
+      viableRows = "Not viable. Change columns, rows, or moves";
+      viableColumns = "Not viable. Change columns, rows, or moves";
+    }
+  }
 
   function computeViableMoves(el) {
     console.log(`computeViableMoves(el) `, el);
@@ -151,29 +158,7 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
-    settings.roundsPerGame = viableRoundsPerGame;
-    if (typeof viableRoundsPerGame !== "string") {
-      roundsPerGame = viableRoundsPerGame;
-    } else {
-      roundsPerGame = Math.ceil(computedMovesPerPlayer / settings.movesPerTurn);
-    }
-    if (viableGameFlag) {
-      computedFactorsViableMoves = factors(
-        Math.round((rows * columns) / numPlayers)
-      );
-      computedFactorsViableRows = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
-      );
-      computedFactorsViableColumns = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
-      );
-    } else {
-      computedFactorsViableMoves = "Not viable. Change columns, rows, or moves";
-      computedFactorsViableRows = "Not viable. Change columns, rows, or moves";
-      computedFactorsViableColumns =
-        "Not viable. Change columns, rows, or moves";
-    }
-
+    calculateViableFactors();
     let elRows = document.querySelector("#rows");
     let elColumns = document.querySelector("#columns");
     let elMovesPerTurn = document.querySelector("#movesPerTurn");
@@ -206,26 +191,26 @@
       // settingsMenu.appendChild(computedWidget);
     }
 
-    console.log(`Factors of ${computeThis} `, factors(computeThis));
-    console.log(
-      `Factors of ${computedMovesPerPlayer} `,
-      factors(computedMovesPerPlayer)
-    );
-    console.log(
-      `Factors of ${computedFactorsViableMoves} `,
-      factors(computedFactorsViableMoves)
-    );
-    console.log(
-      `Factors of ${computedFactorsViableRows} `,
-      factors(computedFactorsViableRows)
-    );
-    console.log(
-      `Factors of ${computedFactorsViableColumns} `,
-      factors(computedFactorsViableColumns)
-    );
-    console.log(
-      `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
-    );
+    // console.log(`Factors of ${computeThis} `, factors(computeThis));
+    // console.log(
+    //   `Factors of ${computedMovesPerPlayer} `,
+    //   factors(computedMovesPerPlayer)
+    // );
+    // console.log(
+    //   `Factors of ${viableMoves} `,
+    //   factors(viableMoves)
+    // );
+    // console.log(
+    //   `Factors of ${viableRows} `,
+    //   factors(viableRows)
+    // );
+    // console.log(
+    //   `Factors of ${viableColumns} `,
+    //   factors(viableColumns)
+    // );
+    // console.log(
+    //   `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
+    // );
 
     // for each number up to movesPerPlayer, iterate and calculate for modulo integer
     // present options as:
@@ -234,7 +219,7 @@
     //      "For {x} rows and {x} moves per turns, viable columns are: "
     // do not present for players; that is a primary selection.
     // UI: highlight values that are not whole numbers in settings, automatically insert viable options as formatted above
-    // Perhaps show this section via js only when that particular input is active - likely a good solutionbundleRenderer.renderToStream
+    // Perhaps show this section via js only when that particular input is active - likely a good solution
     // ***note: work on loading indicator next, get some pretty style, feel better each time it reloads (x1000s)
   }
 </script>
@@ -325,6 +310,7 @@
         border-bottom: 1px solid darken($input-blue, 30%);
         font-size: 1em;
         position: relative;
+        text-align: end;
 
         padding: 0;
         &:focus {
@@ -439,10 +425,8 @@
       height: auto;
       & label {
         display: grid;
-        grid-template-columns: 1fr 5fr;
-        grid-template-areas:
-          "settings-input settings-label"
-          "computed computed";
+        grid-template-columns: 1fr 4fr 4fr;
+        grid-template-areas: "settings-input settings-label computed";
         // display: -webkit-box;
         font-size: 100%;
         // display: flex;
@@ -549,6 +533,11 @@
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
+      <div class="settings-wrapper viable-game" id="computed-widget">
+        <span class="computed-span">
+          <span class="computed-value">{viableRows}</span>
+        </span>
+      </div>
     </label>
     <label for="columns" id="columns">
       <div class="label-content">columns</div>
@@ -562,6 +551,11 @@
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
+      <div class="settings-wrapper viable-game" id="computed-widget">
+        <span class="computed-span">
+          <span class="computed-value">{viableColumns}</span>
+        </span>
+      </div>
     </label>
     <label for="movesPerTurn" id="movesPerTurn">
       <div class="label-content">moves per turn</div>
@@ -575,19 +569,11 @@
         on:input={triggerGameBoardUpdate}
         on:click={highlight}
         style="width: 2.5ch;" />
-    </label>
-    <label for="roundsPerGame" id="roundsPerGame">
-      <div class="label-content">rounds per game</div>
-      <input
-        name="roundsPerGame"
-        type="number"
-        placeholder={settings.roundsPerGame}
-        bind:value={settings.roundsPerGame}
-        on:focus={e => computeViableMoves(e.target)}
-        on:keyup={e => computeViableMoves(e.target)}
-        on:input={triggerGameBoardUpdate}
-        on:click={highlight}
-        style="width: 2.5ch;" />
+      <div class="settings-wrapper viable-game" id="computed-widget">
+        <span class="computed-span">
+          <span class="computed-value">{viableMoves}</span>
+        </span>
+      </div>
     </label>
     <label for="cellsToScore" id="cellsToScore">
       <div class="label-content">in a row to score</div>
@@ -634,30 +620,35 @@
     </label>
   </div>
   <div class="settings-wrapper viable-game" id="computed-widget">
-  {#if viableGameFlag}
-    <span class="computed-span">
-      Total moves per player:
-      <span class="computed-value">{computedMovesPerPlayer}</span>
-    </span>
-    <span class="computed-span">
-      Viable rows:
-      <span class="computed-value">{computedFactorsViableRows}</span>
-    </span>
-    <span class="computed-span">
-      Viable columns:
-      <span class="computed-value">{computedFactorsViableColumns}</span>
-    </span>
-    <span class="computed-span">
-      Viable moves per turn:
-      <span class="computed-value">{computedFactorsViableMoves}</span>
-    </span>
-    <span class="computed-span">
-      Rounds per game as given:
-      <span class="computed-value">{viableRoundsPerGame}</span>
-    </span>
+    {#if viableGameFlag}
+      <span class="computed-span">
+        Total moves per player:
+        <span class="computed-value">{computedMovesPerPlayer}</span>
+      </span>
+      <span class="computed-span">
+        Viable rows:
+        <span class="computed-value">{viableRows}</span>
+      </span>
+      <span class="computed-span">
+        Viable columns:
+        <span class="computed-value">{viableColumns}</span>
+      </span>
+      <span class="computed-span">
+        Viable moves per turn:
+        <span class="computed-value">{viableMoves}</span>
+      </span>
+      <span class="computed-span">
+        Rounds per game as given:
+        <span class="computed-value">{viableRoundsPerGame}</span>
+      </span>
     {:else}
-    <h2>Invalid settings - uneven number of turns or rounds!</h2>
-    <h2>Change number of rows, columns, or moves per turn until valid configuration is found.</h2>
+      <span class="computed-span">
+        <h2>Invalid settings - uneven number of turns or rounds!</h2>
+        <p>
+          Change number of rows, columns, or moves per turn until valid
+          configuration is found.
+        </p>
+      </span>
     {/if}
   </div>
 
