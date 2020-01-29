@@ -67,9 +67,12 @@
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
     let movesPerTurn = settings.movesPerTurn;
-    computedFactorsViableMoves = factors((rows * columns) / numPlayers);
-    computedFactorsViableRows = factors((movesPerTurn * columns) / numPlayers);
-    computedFactorsViableColumns = factors((movesPerTurn * rows) / numPlayers);
+    console.log(
+      `Invalid values? rows ${rows} columns ${columns} numPlayers ${numPlayers} movesPerTurn ${movesPerTurn}`
+    );
+    computedFactorsViableMoves = factors(Math.round((rows * columns) / numPlayers));
+    computedFactorsViableRows = factors(Math.round((movesPerTurn * columns) / numPlayers));
+    computedFactorsViableColumns = factors(Math.round((movesPerTurn * rows) / numPlayers));
   });
 
   function initializeSettingsFromLS() {
@@ -125,7 +128,9 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
-    computedFactorsViableMoves = factors((rows * columns) / numPlayers);
+    computedFactorsViableMoves = factors(Math.round((rows * columns) / numPlayers));
+    computedFactorsViableRows = factors(Math.round((movesPerTurn * columns) / numPlayers));
+    computedFactorsViableColumns = factors(Math.round((movesPerTurn * rows) / numPlayers));
     let elRows = document.querySelector("#rows");
     let elColumns = document.querySelector("#columns");
     let elMovesPerTurn = document.querySelector("#movesPerTurn");
@@ -159,6 +164,10 @@
     }
 
     console.log(`Factors of ${computeThis} `, factors(computeThis));
+    console.log(`Factors of ${computedMovesPerPlayer} `, factors(computedMovesPerPlayer));
+    console.log(`Factors of ${computedFactorsViableMoves} `, factors(computedFactorsViableMoves));
+    console.log(`Factors of ${computedFactorsViableRows} `, factors(computedFactorsViableRows));
+    console.log(`Factors of ${computedFactorsViableColumns} `, factors(computedFactorsViableColumns));
     console.log(
       `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
     );
@@ -564,7 +573,7 @@
     </span>
     <span class="computed-span">
       COMPUTED FACTORS for viable columns
-      <span class="computed-value">{computedFactorsViableRows}</span>
+      <span class="computed-value">{computedFactorsViableColumns}</span>
     </span>
     <span class="computed-span">
       COMPUTED FACTORS for viable moves per turn
