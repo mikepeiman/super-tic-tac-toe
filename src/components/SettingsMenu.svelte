@@ -30,56 +30,8 @@
       settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
     computedMovesPerPlayer =
       (settings.rows * settings.columns) / settings.numberOfPlayers;
-    {
-      // if (!Number.isInteger(computedMovesPerPlayer)) {
-      //   computedMovesPerPlayer = "Not viable!";
-      //   viableGameFlag = false;
-      //   viableMovesFlag = false;
-      // } else {
-      //   computedMovesPerPlayer =
-      //     (settings.rows * settings.columns) / settings.numberOfPlayers;
-      //   viableGameFlag = true;
-      //   viableMovesFlag = true;
-      // }
-    }
-    {
-      // if (!Number.isInteger(computedRoundsPerGame)) {
-      //   computedRoundsPerGame = "Not viable!";
-      //   viableGameFlag = false;
-      //   viableRoundsFlag = false;
-      // } else {
-      //   computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
-      //   viableGameFlag = true;
-      //   viableRoundsFlag = true;
-      // }
-    }
   }
-  // $: computedGameMoves =
-  //   settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
-  // $: computedMovesPerPlayer =
-  //   (settings.rows * settings.columns) / settings.numberOfPlayers;
-  // $: {
-  //   if (!Number.isInteger(computedMovesPerPlayer)) {
-  //     computedMovesPerPlayer = "Not viable!";
-  //     viableGameFlag = false;
-  //     viableMovesFlag = false;
-  //   } else {
-  //     computedMovesPerPlayer =
-  //       (settings.rows * settings.columns) / settings.numberOfPlayers;
-  //     viableGameFlag = true;
-  //     viableMovesFlag = true;
-  //   }
-  // }
-  // $: computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
 
-  // below factors snippet from https://stackoverflow.com/a/43802308/7875457
-  const factors = number =>
-    Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
-  // end factors snippet
-
-  $: viableMoves = [];
-  $: viableRows = [];
-  $: viableColumns = [];
   let initialized = false;
   let initialSettings = {
     numberOfPlayers: 3,
@@ -95,8 +47,19 @@
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
 
+    // below factors snippet from https://stackoverflow.com/a/43802308/7875457
+  const factors = number =>
+    Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
+  // end factors snippet
+  $: totalMoves =
+    settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
+  $: totalMovesFactors = factors(totalMoves);
+  $: viableMoves = [];
+  $: viableRows = [];
+  $: viableColumns = [];
+
   onMount(async () => {
-    console.log(`SettingsMenu onMount(), settings`, settings);
+    console.log(`SettingsMenu => onMount(), settings, totalMoves ${totalMoves}, totalMovesFactors ${totalMovesFactors}`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
     });
@@ -153,7 +116,6 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerTurn = settings.movesPerTurn;
     let roundsPerGame = settings.roundsPerGame;
-    // roundsPerGame = await computedRoundsPerGame;
     if (toggleConfigurationFlag) {
       if (rowsUndetermined) {
         rows = settings.rows = "?";
@@ -710,7 +672,7 @@
               </label>
             </div>
             <span class="computed-span">
-              {#each viableRows as factor}
+              {#each totalMovesFactors as factor}
                 <span class="factor-item" on:click={e => setFactorValue(e)}>
                   {factor}
                 </span>
@@ -730,7 +692,7 @@
               </label>
             </div>
             <span class="computed-span">
-              {#each viableColumns as factor}
+              {#each totalMovesFactors as factor}
                 <span class="factor-item" on:click={e => setFactorValue(e)}>
                   {factor}
                 </span>
