@@ -1,23 +1,29 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
   import Fa from "sveltejs-fontawesome";
   // import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
   // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
   import { faSun } from "@fortawesome/pro-solid-svg-icons";
   import { faMoon } from "@fortawesome/pro-solid-svg-icons";
-  // import { storeViewportSize } from "./../stores.js";
+  import { storeToggleConfiguration } from "../stores.js";
 
   const light = "#edededed";
   const dark = "#1a1a1a";
   let elements, viewport;
   onMount(() => {
-
+    storeToggleConfiguration.subscribe(val => {
+      console.log(`storeToggleConfiguration subscription val ${val}`)
+    })
   });
 
   const toggleTheme = e => {
+    console.log(
+      `configureGameToggle component => toggleTheme() => toggle checked? ${e.target.checked} `
+    );
+    storeToggleConfiguration.set(e.target.checked)
+    dispatch("toggleConfiguration", e.target.checked);
   };
-
-
 </script>
 
 <style lang="scss" global>
@@ -98,7 +104,6 @@
   .slider.round:before {
     border-radius: 50%;
   }
-
 </style>
 
 <label class="theme-switch" for="night-mode-toggle">

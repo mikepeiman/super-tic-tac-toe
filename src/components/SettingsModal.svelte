@@ -12,7 +12,7 @@
   let styling = {
     window: {
       background: "none",
-      padding: "5rem",
+      padding: "2rem",
       width: "100%",
       maxWidth: "90vw",
       maxHeight: "90vh",

@@ -226,6 +226,10 @@
     calculateViableFactors();
     triggerGameBoardUpdate
   }
+
+  function toggleConfiguration(e) {
+    console.log(`SettingsMenu => responding to event dispatched from configuration toggle `, e.detail)
+  }
 </script>
 
 <style lang="scss">
@@ -535,7 +539,7 @@
 {#if initialized}
   <div class="configuration-toggle-wrapper">
     <div class="configuration-item">
-      <ConfigureGameToggle />
+      <ConfigureGameToggle on:toggleConfiguration={toggleConfiguration} />
     </div>
   </div>
   <div class="configuration-toggle-wrapper">
@@ -595,7 +599,7 @@
       <div class="settings-wrapper viable-game" id="computed-widget">
         <span class="computed-span">
           {#each viableColumns as factor}
-            <span class="factor-item">{factor}</span>
+            <span class="factor-item" on:click={e => setFactorValue(e)}>{factor}</span>
           {/each}
         </span>
       </div>
@@ -614,8 +618,9 @@
         style="width: 2.5ch;" />
       <div class="settings-wrapper viable-game" id="computed-widget">
         <span class="computed-span">
+        
           {#each viableMoves as factor}
-            <span class="factor-item">{factor}</span>
+            <span class="factor-item" on:click={e => setFactorValue(e)}>{factor}</span>
           {/each}
         </span>
       </div>
@@ -664,54 +669,6 @@
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
-
-  <!--   
-  <div class="settings-wrapper viable-game" id="computed-widget">
-    {#if viableGameFlag}
-      <span class="computed-span">
-        Total moves per player:
-        <span class="computed-value">{computedMovesPerPlayer}</span>
-      </span>
-      <span class="computed-span">
-        Viable rows:
-        <span class="computed-value">{viableRows}</span>
-      </span>
-      <span class="computed-span">
-        Viable columns:
-        <span class="computed-value">{viableColumns}</span>
-      </span>
-      <span class="computed-span">
-        Viable moves per turn:
-        <span class="computed-value">{viableMoves}</span>
-      </span>
-      <span class="computed-span">
-        Rounds per game as given:
-        <span class="computed-value">{viableRoundsPerGame}</span>
-      </span>
-    {:else}
-      {#if !viableMovesFlag}
-        <span class="computed-span">
-
-          <h2>Invalid settings - uneven number of turns!</h2>
-          <p>
-            Change number of rows, columns, or moves per turn until valid
-            configuration is found.
-          </p>
-        </span>
-      {/if}
-      {#if !viableRoundsFlag}
-        <span class="computed-span">
-          <h2>Invalid settings - uneven number of rounds!</h2>
-          <p>
-            Change number of rows, columns, or moves per turn until valid
-            configuration is found.
-          </p>
-        </span>
-      {/if}
-    {/if}
-  </div> -->
-
-  <!--  -->
 {:else}
   <div class="settings-menu-heading">
     <h2 class="loading">Loading Settings...</h2>

@@ -29,6 +29,7 @@ let moveNumber = writable(false);
 let movesRemaining = writable(false);
 let gameInProgress = writable(false);
 let preservePlayerDetails = writable(false);
+let toggleConfiguration = writable(false);
 let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
@@ -42,6 +43,13 @@ let buttonStyles = writable({
 // color="var(--theme-bg)"
 // secondaryColor="hsla(calc(var(--player-color-hue) + 30), 100%, 70%, 1)"
 // secondaryOpacity="1"
+export const storeToggleConfiguration = {
+  subscribe: toggleConfiguration.subscribe,
+  set: val => {
+    toggleConfiguration.set(val);
+    localStorage.setItem("toggleConfiguration", JSON.stringify(val));
+  }
+};
 
 export const storePlayers = {
   subscribe: players.subscribe,
