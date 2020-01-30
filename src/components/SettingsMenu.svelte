@@ -20,9 +20,9 @@
   let viableMovesFlag = true;
   let viableRoundsFlag = true;
   let toggleConfigurationFlag = false;
-  let initializeUndeterminedRows = true;
+  let rowsUndetermined = false;
   let configuredRows = "?";
-  let initializeUndeterminedColumns = true;
+  let columnsUndetermined = false;
   let configuredColumns = "?";
   let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame;
   $: {
@@ -155,43 +155,56 @@
     let roundsPerGame = settings.roundsPerGame;
     // roundsPerGame = await computedRoundsPerGame;
     if (toggleConfigurationFlag) {
-      if (initializeUndeterminedRows) {
+      if (rowsUndetermined) {
         rows = settings.rows = "?";
-        initializeUndeterminedRows = false;
       }
-      if (initializeUndeterminedColumns) {
+      if (columnsUndetermined) {
         columns = settings.columns = "?";
-        initializeUndeterminedColumns = false;
       }
       console.log(
         `rows ${rows} and columns ${columns}, typeof rows ${typeof rows} typeof columns ${typeof columns}`
       );
 
-      if (typeof rows !== "string") {
-        console.log(`rows !== string: ${typeof rows}`);
+      if (typeof configuredRows !== "string") {
+        console.log(`configuredRows !== string: ${typeof configuredRows}`);
         viableRows = factors(
           Math.round(movesPerTurn * numPlayers * roundsPerGame)
         );
         viableColumns = factors(
-          Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+          Math.round(
+            (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
+          )
         );
       } else {
-        console.log(`rows === string: ${typeof rows}`);
-        viableRows = factors(movesPerTurn * numPlayers * roundsPerGame);
+        if (typeof configuredColumns !== "string") {
+          viableRows = factors(
+            Math.round(
+              (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
+            )
+          );
+        }
+        console.log(`configuredRows === string: ${typeof configuredRows}`);
       }
-      if (typeof columns !== "string") {
-        console.log(`columns !== string: ${typeof columns}`);
+      if (typeof configuredColumns !== "string") {
+        console.log(
+          `configuredColumns !== string: ${typeof configuredColumns}`
+        );
         viableColumns = factors(
           Math.round(movesPerTurn * numPlayers * roundsPerGame)
         );
-        viableRows = factors(
-          Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
-        );
       } else {
-        console.log(`columns === string: ${typeof columns}`);
+        if (typeof configuredRows !== "string") {
+          viableColumns = factors(
+            Math.round(
+              (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
+            )
+          );
+        }
+        console.log(
+          `configuredColumns === string: ${typeof configuredColumns}`
+        );
         viableColumns = factors(movesPerTurn * numPlayers * roundsPerGame);
       }
-
       console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`);
     } else {
       if (typeof computedRoundsPerGame !== "string") {
@@ -201,8 +214,11 @@
           computedMovesPerPlayer / settings.movesPerTurn
         );
       }
+      storeSettings.set(settings);
     }
-    storeSettings.set(settings);
+    if (!rowsUndetermined && !columnsUndetermined) {
+      storeSettings.set(settings);
+    }
   }
 
   function setFactorValue(e) {
@@ -226,9 +242,11 @@
     settings[id] = val;
     if (id === "rows") {
       configuredRows = val;
+      rowsUndetermined = false;
     }
     if (id === "columns") {
       configuredColumns = val;
+      columnsUndetermined = false;
     }
     // storeSettings.set(settings);
     console.log(`settings updated? #2 ${settings.rows}`);
