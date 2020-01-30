@@ -47,19 +47,24 @@
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
 
-    // below factors snippet from https://stackoverflow.com/a/43802308/7875457
+  // below factors snippet from https://stackoverflow.com/a/43802308/7875457
   const factors = number =>
     Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
   // end factors snippet
+
+  let totalMoves, totalMovesFactors
   $: totalMoves =
     settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
   $: totalMovesFactors = factors(totalMoves);
   $: viableMoves = [];
-  $: viableRows = [];
-  $: viableColumns = [];
+  $: viableRows = totalMovesFactors;
+  $: viableColumns = totalMovesFactors;
 
   onMount(async () => {
-    console.log(`SettingsMenu => onMount(), settings, totalMoves ${totalMoves}, totalMovesFactors ${totalMovesFactors}`, settings);
+    console.log(
+      `SettingsMenu => onMount(), settings, totalMoves ${totalMoves}, totalMovesFactors ${totalMovesFactors}`,
+      settings
+    );
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
     });
@@ -119,9 +124,11 @@
     if (toggleConfigurationFlag) {
       if (rowsUndetermined) {
         rows = settings.rows = "?";
+        viableRows = totalMovesFactors
       }
       if (columnsUndetermined) {
         columns = settings.columns = "?";
+        viableColumns = totalMovesFactors
       }
       console.log(
         `rows ${rows} and columns ${columns}, typeof rows ${typeof rows} typeof columns ${typeof columns}`
@@ -129,43 +136,44 @@
 
       if (typeof configuredRows !== "string") {
         console.log(`configuredRows !== string: ${typeof configuredRows}`);
-        viableRows = factors(
-          Math.round(movesPerTurn * numPlayers * roundsPerGame)
-        );
-        viableColumns = factors(
-          Math.round(
-            (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
-          )
-        );
+        // viableRows = factors(
+        //   Math.round(movesPerTurn * numPlayers * roundsPerGame)
+        // );
+        // viableColumns = factors(
+        //   Math.round(
+        //     (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
+        //   )
+        // );
       } else {
         if (typeof configuredColumns !== "string") {
-          viableRows = factors(
-            Math.round(
-              (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
-            )
-          );
+          console.log(`configuredRows !== string && confyiguredColumns !== string`);
+          // viableRows = factors(
+          //   Math.round(
+          //     (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
+          //   )
+          // );
         }
-        console.log(`configuredRows === string: ${typeof configuredRows}`);
+        
       }
       if (typeof configuredColumns !== "string") {
         console.log(
           `configuredColumns !== string: ${typeof configuredColumns}`
         );
-        viableColumns = factors(
-          Math.round(movesPerTurn * numPlayers * roundsPerGame)
-        );
+        // viableColumns = factors(
+        //   Math.round(movesPerTurn * numPlayers * roundsPerGame)
+        // );
       } else {
         if (typeof configuredRows !== "string") {
-          viableColumns = factors(
-            Math.round(
-              (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
-            )
-          );
+          // viableColumns = factors(
+          //   Math.round(
+          //     (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
+          //   )
+          // );
         }
         console.log(
           `configuredColumns === string: ${typeof configuredColumns}`
         );
-        viableColumns = factors(movesPerTurn * numPlayers * roundsPerGame);
+        // viableColumns = factors(movesPerTurn * numPlayers * roundsPerGame);
       }
       console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`);
     } else {
@@ -190,9 +198,13 @@
       `setFactorValue() => e.target.textContent `,
       e.target.textContent
     );
-
+    let rows = settings.rows;
+    let columns = settings.columns;
+    let numPlayers = settings.numberOfPlayers;
+    let movesPerTurn = settings.movesPerTurn;
+    let roundsPerGame = settings.roundsPerGame;
     // let id = e.target.offsetParent.id;
-
+    e.target.classList.add("highlighted");
     let id = e.target.parentElement.parentElement.children[0].children[0].id;
     console.log(`setFactorValue() => e.target.id `, id);
     let el = document.getElementById(id);
@@ -203,12 +215,21 @@
     console.log(`settings updated? #1 ${settings.rows}`);
     settings[id] = val;
     if (id === "rows") {
+      console.log(`This is ROW`);
       configuredRows = val;
       rowsUndetermined = false;
+      viableColumns = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / configuredRows)
+      );
     }
     if (id === "columns") {
+      console.log(`This is COLUMN`);
       configuredColumns = val;
       columnsUndetermined = false;
+      viableRows = factors(
+        Math.round(
+          (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns)
+      );
     }
     // storeSettings.set(settings);
     console.log(`settings updated? #2 ${settings.rows}`);
@@ -519,6 +540,10 @@
           cursor: pointer;
         }
       }
+      &.highlighted {
+        background: var(--player-color);
+        transition: all 0.25s;
+      }
       // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
     }
   }
@@ -532,6 +557,7 @@
     background: var(--theme-bg);
     & .configuration-item {
       margin: 1rem;
+      background: rgba(0, 0, 0, 0);
     }
     & .toggled {
       background: var(--player-color-dark);
@@ -672,7 +698,7 @@
               </label>
             </div>
             <span class="computed-span">
-              {#each totalMovesFactors as factor}
+              {#each viableRows as factor}
                 <span class="factor-item" on:click={e => setFactorValue(e)}>
                   {factor}
                 </span>
@@ -692,7 +718,7 @@
               </label>
             </div>
             <span class="computed-span">
-              {#each totalMovesFactors as factor}
+              {#each viableColumns as factor}
                 <span class="factor-item" on:click={e => setFactorValue(e)}>
                   {factor}
                 </span>
