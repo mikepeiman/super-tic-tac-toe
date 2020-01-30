@@ -19,6 +19,7 @@
   let initialSettings = {
     numberOfPlayers: 3,
     movesPerTurn: 4,
+    roundsPerGame: 8,
     cellsToScore: 3,
     bonusForCompleteLine: 12,
     rows: 8,

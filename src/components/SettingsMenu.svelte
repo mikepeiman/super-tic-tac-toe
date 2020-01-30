@@ -20,34 +20,54 @@
   let viableMovesFlag = true;
   let viableRoundsFlag = true;
   let toggleConfigurationFlag = false;
-  $: computedGameMoves =
-    settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
-  $: computedMovesPerPlayer =
-    (settings.rows * settings.columns) / settings.numberOfPlayers;
+  let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame
   $: {
-    if (!Number.isInteger(computedMovesPerPlayer)) {
-      computedMovesPerPlayer = "Not viable!";
-      viableGameFlag = false;
-      viableMovesFlag = false;
-    } else {
-      computedMovesPerPlayer =
-        (settings.rows * settings.columns) / settings.numberOfPlayers;
-      viableGameFlag = true;
-      viableMovesFlag = true;
+    computedGameMoves =
+      settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
+    computedMovesPerPlayer =
+      (settings.rows * settings.columns) / settings.numberOfPlayers;
+    {
+      if (!Number.isInteger(computedMovesPerPlayer)) {
+        computedMovesPerPlayer = "Not viable!";
+        viableGameFlag = false;
+        viableMovesFlag = false;
+      } else {
+        computedMovesPerPlayer =
+          (settings.rows * settings.columns) / settings.numberOfPlayers;
+        viableGameFlag = true;
+        viableMovesFlag = true;
+      }
     }
-  }
-  $: viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
-  $: {
-    if (!Number.isInteger(viableRoundsPerGame)) {
-      viableRoundsPerGame = "Not viable!";
+    {
+    if (!Number.isInteger(computedRoundsPerGame)) {
+      computedRoundsPerGame = "Not viable!";
       viableGameFlag = false;
       viableRoundsFlag = false;
     } else {
-      viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
+      computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
       viableGameFlag = true;
       viableRoundsFlag = true;
     }
   }
+  }
+  // $: computedGameMoves =
+  //   settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
+  // $: computedMovesPerPlayer =
+  //   (settings.rows * settings.columns) / settings.numberOfPlayers;
+  // $: {
+  //   if (!Number.isInteger(computedMovesPerPlayer)) {
+  //     computedMovesPerPlayer = "Not viable!";
+  //     viableGameFlag = false;
+  //     viableMovesFlag = false;
+  //   } else {
+  //     computedMovesPerPlayer =
+  //       (settings.rows * settings.columns) / settings.numberOfPlayers;
+  //     viableGameFlag = true;
+  //     viableMovesFlag = true;
+  //   }
+  // }
+  // $: computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
+
   // below factors snippet from https://stackoverflow.com/a/43802308/7875457
   const factors = number =>
     Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
@@ -71,10 +91,7 @@
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
-  let roundsPerGame;
-  let configureByBoardOrByMoves = "board";
-  // $: ({ roundsPerGame } = settings);
-  // let settings = Object.assign({}, initialSettings);
+
 
   onMount(async () => {
     console.log(`SettingsMenu onMount(), settings`, settings);
@@ -132,13 +149,20 @@
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
     let movesPerTurn = settings.movesPerTurn;
-    // roundsPerGame = await viableRoundsPerGame;
-    settings.roundsPerGame = await viableRoundsPerGame;
-    if (typeof viableRoundsPerGame !== "string") {
-      roundsPerGame = await viableRoundsPerGame;
+    let roundsPerGame = settings.roundsPerGame;
+    // roundsPerGame = await computedRoundsPerGame;
+    if(toggleConfigurationFlag) {
+      roundsPerGame
+    } else {
+          if (typeof computedRoundsPerGame !== "string") {
+      roundsPerGame = await computedRoundsPerGame;
     } else {
       roundsPerGame = Math.ceil(computedMovesPerPlayer / settings.movesPerTurn);
     }
+      // settings.roundsPerGame = roundsPerGame
+      // storeSettings.set(settings)
+    }
+    storeSettings.set(settings)
     if (viableGameFlag) {
       viableMoves = factors(Math.round((rows * columns) / numPlayers));
       viableRows = factors(
@@ -172,12 +196,15 @@
     console.log(`computeViableMoves(el) this attr ${thisAttr}`);
     let computedWidget = document.querySelector("#computed-widget");
     let menu = document.querySelector(".settings-menu");
-    // el.parentElement.appendChild(computedWidget);
+
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
+
+
+
     calculateViableFactors();
     let elRows = document.querySelector("#rows");
     let elColumns = document.querySelector("#columns");
@@ -618,7 +645,6 @@
           bind:value={settings.movesPerTurn}
           on:input={triggerGameBoardUpdate}
           min="1"
-          max="8"
           on:focus={e => computeViableMoves(e.target)}
           on:keyup={e => computeViableMoves(e.target)}
           on:click={highlight} />
@@ -631,7 +657,6 @@
           bind:value={settings.roundsPerGame}
           on:input={triggerGameBoardUpdate}
           min="1"
-          max="8"
           on:focus={e => computeViableMoves(e.target)}
           on:keyup={e => computeViableMoves(e.target)}
           on:click={highlight} />
