@@ -100,6 +100,7 @@
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
     initializeSettingsFromLS();
+    viableGameFlag = true;
     setAllInputWidths();
     storeSettings.set(settings);
     calculateViableFactors();
@@ -241,16 +242,15 @@
   function setFactorValue(e) {
     console.log(`setFactorValue() => e `, e);
     console.log(`setFactorValue() => e.target.innerText `, e.target.innerText);
-    console.log(
-      `setFactorValue() => e.target.offsetParent.id `,
-      e.target.offsetParent.id
-    );
-    let id = e.target.offsetParent.id;
+    console.log(`setFactorValue() => e.target.id `, e.target.id);
+    // let id = e.target.offsetParent.id;
+
+    let id = e.target.parentElement.parentElement.children[0].children[0].id;
     let el = document.getElementById(id);
-    let input = el.children[1];
+    // let input = el.children[1];
     let val = parseInt(e.target.innerText);
-    console.log(`setFactorValue() => el, input `, el, input);
-    input.value = val;
+    console.log(`setFactorValue() => el, input id ${id}`, el);
+    el.value = val;
     console.log(`settings updated? #1 ${settings.rows}`);
     settings[id] = val;
     storeSettings.set(settings);
@@ -697,76 +697,67 @@
           on:click={highlight} />
         .
       </div>
-      <p class="settings-content">
-        Select your prefered gameboard configuration below:
-      </p>
-      <div class="configuration-row">
-        <div class="settings-wrapper viable-game" id="computed-widget">
-          <div class="settings-text">
-            <label for="rows" id="rows">
-              <div class="label-content">Rows:</div>
-              <input
-                name="rows"
-                type="number"
-                class="settings-input"
-                placeholder={settings.rows}
-                bind:value={settings.rows}
-                on:focus={e => computeViableMoves(e.target)}
-                on:keyup={e => computeViableMoves(e.target)}
-                on:input={triggerGameBoardUpdate}
-                on:click={highlight} />
-            </label>
+      <div class="settings-content">
+        <p>Select your prefered gameboard configuration below:</p>
+        <div class="configuration-row">
+          <div class="settings-wrapper viable-game" id="computed-widget">
+            <div class="settings-text">
+              <label for="rows" id="rows">
+                <div class="label-content">Rows:</div>
+                <input
+                  name="rows"
+                  type="number"
+                  class="settings-input"
+                  placeholder="?" />
+              </label>
+            </div>
+            <span class="computed-span">
+              {#each viableRows as factor}
+                <span class="factor-item" on:click={e => setFactorValue(e)}>
+                  {factor}
+                </span>
+              {/each}
+            </span>
           </div>
-          <span class="computed-span">
-            {#each viableRows as factor}
-              <span class="factor-item" on:click={e => setFactorValue(e)}>
-                {factor}
-              </span>
-            {/each}
-          </span>
-        </div>
-        <div class="settings-wrapper viable-game" id="computed-widget">
-          <div class="settings-text">
-            <label for="columns" id="columns">
-              <div class="label-content">Columns:</div>
-              <input
-                name="columns"
-                type="number"
-                class="settings-input"
-                placeholder={settings.columns}
-                bind:value={settings.columns}
-                on:focus={e => computeViableMoves(e.target)}
-                on:keyup={e => computeViableMoves(e.target)}
-                on:input={triggerGameBoardUpdate}
-                on:click={highlight} />
-            </label>
+          <div class="settings-wrapper viable-game" id="computed-widget">
+            <div class="settings-text">
+              <label for="columns" id="columns">
+                <div class="label-content">Columns:</div>
+                <input
+                  name="columns"
+                  type="number"
+                  class="settings-input"
+                  placeholder="?" />
+              </label>
+            </div>
+            <span class="computed-span">
+              {#each viableColumns as factor}
+                <span class="factor-item" on:click={e => setFactorValue(e)}>
+                  {factor}
+                </span>
+              {/each}
+            </span>
           </div>
-          <span class="computed-span">
-            {#each viableColumns as factor}
-              <span class="factor-item" on:click={e => setFactorValue(e)}>
-                {factor}
-              </span>
-            {/each}
-          </span>
         </div>
+        <label for="sizeFactor" id="sizeFactor">
+          <div class="label-content">Board size (%)</div>
+          <input
+            name="sizeFactor"
+            type="number"
+            class="settings-input"
+            placeholder={settings.sizeFactor}
+            bind:value={settings.sizeFactor}
+            max="100"
+            step="5"
+            min="10"
+            on:focus={e => computeViableMoves(e.target)}
+            on:keyup={e => computeViableMoves(e.target)}
+            on:input={triggerGameBoardUpdate}
+            on:click={highlight} />
+          <!-- <i class="percent-symbol">%</i> -->
+        </label>
       </div>
-      <label for="sizeFactor" id="sizeFactor">
-        <div class="label-content">Board size (%)</div>
-        <input
-          name="sizeFactor"
-          type="number"
-          class="settings-input"
-          placeholder={settings.sizeFactor}
-          bind:value={settings.sizeFactor}
-          max="100"
-          step="5"
-          min="10"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
-          on:input={triggerGameBoardUpdate}
-          on:click={highlight} />
-        <!-- <i class="percent-symbol">%</i> -->
-      </label>
+
     </div>
   {:else}
     <div
