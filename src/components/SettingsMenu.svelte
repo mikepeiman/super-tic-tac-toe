@@ -205,12 +205,6 @@
     storeSettings.set(settings);
   }
 
-  function computeViableMoves(el) {
-    console.log(`computeViableMoves(el) `, el);
-
-    calculateViableFactors();
-  }
-
   function setFactorValue(e) {
     console.log(`setFactorValue() => e `, e);
     console.log(`setFactorValue() => e.target.innerText `, e.target.innerText);
@@ -626,8 +620,8 @@
           on:input={triggerGameBoardUpdate}
           min="1"
           max="8"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:click={highlight} />
         players, each receiving
         <input
@@ -639,8 +633,8 @@
           bind:value={settings.movesPerTurn}
           on:input={triggerGameBoardUpdate}
           min="1"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:click={highlight} />
         moves per turn. They will engage in battle for
         <input
@@ -652,8 +646,8 @@
           bind:value={settings.roundsPerGame}
           on:input={triggerGameBoardUpdate}
           min="1"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:click={highlight} />
         rounds before a victor is determined. This constitutes {computedGameMoves}
         total moves. It will take
@@ -664,8 +658,8 @@
           id="cellsToScore"
           placeholder={settings.cellsToScore}
           bind:value={settings.cellsToScore}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         moves in a row to score, and a complete line will receive a bonus of
@@ -676,8 +670,8 @@
           id="bonusForCompleteLine"
           placeholder={settings.bonusForCompleteLine}
           bind:value={settings.bonusForCompleteLine}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         .
@@ -737,8 +731,8 @@
             max="100"
             step="5"
             min="10"
-            on:focus={e => computeViableMoves(e.target)}
-            on:keyup={e => computeViableMoves(e.target)}
+            on:focus={e => calculateViableFactors(e.target)}
+            on:keyup={e => calculateViableFactors(e.target)}
             on:input={triggerGameBoardUpdate}
             on:click={highlight} />
           <!-- <i class="percent-symbol">%</i> -->
@@ -763,8 +757,8 @@
           on:input={triggerGameBoardUpdate}
           min="1"
           max="8"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:click={highlight} />
       </label>
       <label for="rows" id="rows">
@@ -775,8 +769,8 @@
           class="settings-input"
           placeholder={settings.rows}
           bind:value={settings.rows}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         <div class="settings-wrapper viable-game" id="computed-widget">
@@ -797,8 +791,8 @@
           class="settings-input"
           placeholder={settings.columns}
           bind:value={settings.columns}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         <div class="settings-wrapper viable-game" id="computed-widget">
@@ -819,8 +813,8 @@
           class="settings-input"
           placeholder={settings.movesPerTurn}
           bind:value={settings.movesPerTurn}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         <div class="settings-wrapper viable-game" id="computed-widget">
@@ -842,8 +836,8 @@
           class="settings-input"
           placeholder={settings.cellsToScore}
           bind:value={settings.cellsToScore}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
       </label>
@@ -855,8 +849,8 @@
           class="settings-input"
           placeholder={settings.bonusForCompleteLine}
           bind:value={settings.bonusForCompleteLine}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
       </label>
@@ -871,8 +865,8 @@
           max="100"
           step="5"
           min="10"
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
           on:input={triggerGameBoardUpdate}
           on:click={highlight} />
         <!-- <i class="percent-symbol">%</i> -->
