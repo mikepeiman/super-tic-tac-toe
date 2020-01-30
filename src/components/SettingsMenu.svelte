@@ -115,7 +115,23 @@
   }
 
   async function calculateViableFactors() {
-    console.log(`calculateViableFactors()`);
+    // console.log(`calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`);
+    // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
+    let len = totalMovesFactors.length
+    totalMovesFactors = totalMovesFactors.slice(1,len-1)
+    const reversed = totalMovesFactors.slice().reverse()
+    console.log(`calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`);
+    console.log(`calculateViableFactors() => totalMovesFactors reversed ${reversed}`);
+    len = totalMovesFactors.length
+    let viableGameBoards = []
+    for(let i = 0; i < len; i++) {
+      let gridPair = {
+        row: totalMovesFactors[i],
+        column: reversed[i]
+      }
+      viableGameBoards.push(gridPair)
+    }
+    console.log(`viableGameBoards `, viableGameBoards)
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
@@ -136,22 +152,9 @@
 
       if (typeof configuredRows !== "string") {
         console.log(`configuredRows !== string: ${typeof configuredRows}`);
-        // viableRows = factors(
-        //   Math.round(movesPerTurn * numPlayers * roundsPerGame)
-        // );
-        // viableColumns = factors(
-        //   Math.round(
-        //     (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
-        //   )
-        // );
       } else {
         if (typeof configuredColumns !== "string") {
           console.log(`configuredRows !== string && confyiguredColumns !== string`);
-          // viableRows = factors(
-          //   Math.round(
-          //     (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
-          //   )
-          // );
         }
         
       }
@@ -159,21 +162,12 @@
         console.log(
           `configuredColumns !== string: ${typeof configuredColumns}`
         );
-        // viableColumns = factors(
-        //   Math.round(movesPerTurn * numPlayers * roundsPerGame)
-        // );
       } else {
         if (typeof configuredRows !== "string") {
-          // viableColumns = factors(
-          //   Math.round(
-          //     (movesPerTurn * numPlayers * roundsPerGame) / configuredRows
-          //   )
-          // );
         }
         console.log(
           `configuredColumns === string: ${typeof configuredColumns}`
         );
-        // viableColumns = factors(movesPerTurn * numPlayers * roundsPerGame);
       }
       console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`);
     } else {
