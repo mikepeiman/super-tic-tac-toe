@@ -20,6 +20,10 @@
   let viableMovesFlag = true;
   let viableRoundsFlag = true;
   let toggleConfigurationFlag = false;
+  let initializeUndeterminedRows = true;
+  let configuredRows = "?";
+  let initializeUndeterminedColumns = true;
+  let configuredColumns = "?";
   let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame;
   $: {
     computedGameMoves =
@@ -101,8 +105,8 @@
     initializeSettingsFromLS();
     viableGameFlag = true;
     setAllInputWidths();
-    storeSettings.set(settings);
     calculateViableFactors();
+    storeSettings.set(settings);
   });
 
   function initializeSettingsFromLS() {
@@ -151,17 +155,44 @@
     let roundsPerGame = settings.roundsPerGame;
     // roundsPerGame = await computedRoundsPerGame;
     if (toggleConfigurationFlag) {
-      rows = settings.rows = 1;
-      columns = settings.columns = 1;
-      roundsPerGame;
-      viableRows = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+      if (initializeUndeterminedRows) {
+        rows = settings.rows = "?";
+        initializeUndeterminedRows = false;
+      }
+      if (initializeUndeterminedColumns) {
+        columns = settings.columns = "?";
+        initializeUndeterminedColumns = false;
+      }
+      console.log(
+        `rows ${rows} and columns ${columns}, typeof rows ${typeof rows} typeof columns ${typeof columns}`
       );
-      
-      viableColumns = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
-      );
-      console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`)
+
+      if (typeof rows !== "string") {
+        console.log(`rows !== string: ${typeof rows}`);
+        viableRows = factors(
+          Math.round(movesPerTurn * numPlayers * roundsPerGame)
+        );
+        viableColumns = factors(
+          Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+        );
+      } else {
+        console.log(`rows === string: ${typeof rows}`);
+        viableRows = factors(movesPerTurn * numPlayers * roundsPerGame);
+      }
+      if (typeof columns !== "string") {
+        console.log(`columns !== string: ${typeof columns}`);
+        viableColumns = factors(
+          Math.round(movesPerTurn * numPlayers * roundsPerGame)
+        );
+        viableRows = factors(
+          Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+        );
+      } else {
+        console.log(`columns === string: ${typeof columns}`);
+        viableColumns = factors(movesPerTurn * numPlayers * roundsPerGame);
+      }
+
+      console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`);
     } else {
       if (typeof computedRoundsPerGame !== "string") {
         roundsPerGame = await computedRoundsPerGame;
@@ -170,73 +201,28 @@
           computedMovesPerPlayer / settings.movesPerTurn
         );
       }
-      // settings.roundsPerGame = roundsPerGame
-      // storeSettings.set(settings)
     }
-    // storeSettings.set(settings);
-    // if (viableGameFlag) {
-    //   viableMoves = factors(Math.round((rows * columns) / numPlayers));
-    //   viableRows = factors(
-    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
-    //   );
-    //   viableRows = [...viableRows, viableRows[viableRows.length - 1] * 2];
-    //   viableColumns = factors(
-    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
-    //   );
-    //   viableColumns = [
-    //     ...viableColumns,
-    //     viableColumns[viableColumns.length - 1] * 2
-    //   ];
-    // } else {
-    //   if (viableMovesFlag) {
-    //     viableRows = "!";
-    //     viableColumns = "!";
-    //   } else if (viableRoundsFlag) {
-    //     viableMoves = "!";
-    //   } else {
-    //     viableMoves = "!";
-    //     viableRows = "!";
-    //     viableColumns = "!";
-    //   }
-    // }
+    storeSettings.set(settings);
   }
 
   function computeViableMoves(el) {
     console.log(`computeViableMoves(el) `, el);
-    // let thisAttr = el.getAttribute("name");
-    // console.log(`computeViableMoves(el) this attr ${thisAttr}`);
-    // let computedWidget = document.querySelector("#computed-widget");
-    // let menu = document.querySelector(".settings-menu");
-
-    // let rows = settings.rows;
-    // let columns = settings.columns;
-    // let numPlayers = settings.numberOfPlayers;
-    // let movesPerPlayer = (rows * columns) / numPlayers;
-    // let movesPerTurn = settings.movesPerTurn;
 
     calculateViableFactors();
-    // let elRows = document.querySelector("#rows");
-    // let elColumns = document.querySelector("#columns");
-    // let elMovesPerTurn = document.querySelector("#movesPerTurn");
-    // let alertBg = `rgba(255,15,25,0.2)`;
-    // if (viableGameFlag === false) {
-    //   elRows.style = `background: ${alertBg};`;
-    //   elColumns.style = `background: ${alertBg};`;
-    //   elMovesPerTurn.style = `background: ${alertBg};`;
-    // } else {
-    //   elRows.style = `background: none;`;
-    //   elColumns.style = `background: none;`;
-    //   elMovesPerTurn.style = `background: none;`;
-    // }
   }
 
   function setFactorValue(e) {
     console.log(`setFactorValue() => e `, e);
     console.log(`setFactorValue() => e.target.innerText `, e.target.innerText);
-    console.log(`setFactorValue() => e.target.id `, e.target.id);
+    console.log(
+      `setFactorValue() => e.target.textContent `,
+      e.target.textContent
+    );
+
     // let id = e.target.offsetParent.id;
 
     let id = e.target.parentElement.parentElement.children[0].children[0].id;
+    console.log(`setFactorValue() => e.target.id `, id);
     let el = document.getElementById(id);
     // let input = el.children[1];
     let val = parseInt(e.target.innerText);
@@ -244,7 +230,13 @@
     el.value = val;
     console.log(`settings updated? #1 ${settings.rows}`);
     settings[id] = val;
-    storeSettings.set(settings);
+    if (id === "rows") {
+      configuredRows = val;
+    }
+    if (id === "columns") {
+      configuredColumns = val;
+    }
+    // storeSettings.set(settings);
     console.log(`settings updated? #2 ${settings.rows}`);
     calculateViableFactors();
     triggerGameBoardUpdate;
@@ -256,6 +248,7 @@
       e.detail
     );
     toggleConfigurationFlag = e.detail;
+    calculateViableFactors();
   }
 </script>
 
@@ -701,7 +694,7 @@
                   type="number"
                   class="settings-input"
                   placeholder="?"
-                  bind:value={settings.rows} />
+                  bind:value={configuredRows} />
               </label>
             </div>
             <span class="computed-span">
@@ -721,7 +714,7 @@
                   type="number"
                   class="settings-input"
                   placeholder="?"
-                  bind:value={settings.columns} />
+                  bind:value={configuredColumns} />
               </label>
             </div>
             <span class="computed-span">
