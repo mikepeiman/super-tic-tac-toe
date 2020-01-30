@@ -724,11 +724,13 @@
                   <span
                     class="factor-item-sub"
                     on:click={e => setFactorValue(e)}>
+                    <img src="tictactoe-horizontal.png" alt="">
                     {factor.row}
                   </span>
                   <span
                     class="factor-item-sub"
                     on:click={e => setFactorValue(e)}>
+                    <img src="tictactoe-vertical.png" alt="">
                     {factor.column}
                   </span>
                 </span>
