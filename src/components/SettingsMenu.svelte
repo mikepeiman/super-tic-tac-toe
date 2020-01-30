@@ -20,7 +20,7 @@
   let viableMovesFlag = true;
   let viableRoundsFlag = true;
   let toggleConfigurationFlag = false;
-  let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame
+  let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame;
   $: {
     computedGameMoves =
       settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
@@ -39,16 +39,16 @@
       }
     }
     {
-    if (!Number.isInteger(computedRoundsPerGame)) {
-      computedRoundsPerGame = "Not viable!";
-      viableGameFlag = false;
-      viableRoundsFlag = false;
-    } else {
-      computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
-      viableGameFlag = true;
-      viableRoundsFlag = true;
+      if (!Number.isInteger(computedRoundsPerGame)) {
+        computedRoundsPerGame = "Not viable!";
+        viableGameFlag = false;
+        viableRoundsFlag = false;
+      } else {
+        computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
+        viableGameFlag = true;
+        viableRoundsFlag = true;
+      }
     }
-  }
   }
   // $: computedGameMoves =
   //   settings.movesPerTurn * settings.numberOfPlayers * settings.roundsPerGame;
@@ -91,7 +91,6 @@
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
   let settings = JSON.parse(JSON.stringify(initialSettings));
-
 
   onMount(async () => {
     console.log(`SettingsMenu onMount(), settings`, settings);
@@ -151,18 +150,20 @@
     let movesPerTurn = settings.movesPerTurn;
     let roundsPerGame = settings.roundsPerGame;
     // roundsPerGame = await computedRoundsPerGame;
-    if(toggleConfigurationFlag) {
-      roundsPerGame
+    if (toggleConfigurationFlag) {
+      roundsPerGame;
     } else {
-          if (typeof computedRoundsPerGame !== "string") {
-      roundsPerGame = await computedRoundsPerGame;
-    } else {
-      roundsPerGame = Math.ceil(computedMovesPerPlayer / settings.movesPerTurn);
-    }
+      if (typeof computedRoundsPerGame !== "string") {
+        roundsPerGame = await computedRoundsPerGame;
+      } else {
+        roundsPerGame = Math.ceil(
+          computedMovesPerPlayer / settings.movesPerTurn
+        );
+      }
       // settings.roundsPerGame = roundsPerGame
       // storeSettings.set(settings)
     }
-    storeSettings.set(settings)
+    storeSettings.set(settings);
     if (viableGameFlag) {
       viableMoves = factors(Math.round((rows * columns) / numPlayers));
       viableRows = factors(
@@ -202,8 +203,6 @@
     let numPlayers = settings.numberOfPlayers;
     let movesPerPlayer = (rows * columns) / numPlayers;
     let movesPerTurn = settings.movesPerTurn;
-
-
 
     calculateViableFactors();
     let elRows = document.querySelector("#rows");
@@ -518,11 +517,6 @@
   @media screen and (min-width: 1500px) {
   }
 
-  .settings-text {
-    margin: 0;
-    color: var(--theme-fg);
-  }
-
   .viable-grid {
     background: green;
   }
@@ -594,10 +588,20 @@
   }
 
   .settings-input {
-    width: auto;
+    width: 4ch;
     border-bottom: 1px solid #32c8ff;
     text-align: center;
     font-size: 2rem;
+  }
+
+  .settings-content {
+    margin: 0;
+    color: var(--theme-fg);
+    display: block;
+  }
+
+  .settings-text {
+
   }
 </style>
 
@@ -622,10 +626,11 @@
       class="settings-wrapper settings-menu"
       id="moves-and-rounds-wrapper"
       style={`--player-color: ${currentPlayer.colorMain}`}>
-      <p class="settings-text">
+      <div class="settings-content">
         This game shall have
         <input
           name="players"
+          id="numberOfPlayers"
           type="number"
           class="settings-input"
           placeholder={settings.numberOfPlayers}
@@ -639,6 +644,7 @@
         players, each receiving
         <input
           name="movesPerTurn"
+          id="movesPerTurn"
           type="number"
           class="settings-input"
           placeholder={settings.movesPerTurn}
@@ -651,6 +657,7 @@
         moves per turn. They will engage in battle for
         <input
           name="roundsPerGame"
+          id="roundsPerGame"
           type="number"
           class="settings-input"
           placeholder={settings.roundsPerGame}
@@ -661,12 +668,39 @@
           on:keyup={e => computeViableMoves(e.target)}
           on:click={highlight} />
         rounds before a victor is determined. This constitutes {computedGameMoves}
-        total moves. Please select your prefered gameboard configuration below:
+        total moves. It will take
+        <input
+          name="cellsToScore"
+          type="number"
+          class="settings-input"
+          id="cellsToScore"
+          placeholder={settings.cellsToScore}
+          bind:value={settings.cellsToScore}
+          on:focus={e => computeViableMoves(e.target)}
+          on:keyup={e => computeViableMoves(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        moves in a row to score, and a complete line will receive a bonus of
+        <input
+          name="bonusForCompleteLine"
+          type="number"
+          class="settings-input"
+          id="bonusForCompleteLine"
+          placeholder={settings.bonusForCompleteLine}
+          bind:value={settings.bonusForCompleteLine}
+          on:focus={e => computeViableMoves(e.target)}
+          on:keyup={e => computeViableMoves(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        .
+      </div>
+      <p class="settings-content">
+        Select your prefered gameboard configuration below:
       </p>
       <div class="configuration-row">
         <div class="settings-wrapper viable-game" id="computed-widget">
           <p class="settings-text">Rows:</p>
-          <label for="columns" id="columns">
+          <label for="rows" id="rows">
             <!-- <div class="label-content">columns</div> -->
             <input
               name="rows"
@@ -711,45 +745,6 @@
           </span>
         </div>
       </div>
-      <label for="movesPerTurn" id="movesPerTurn">
-        <div class="label-content">moves per turn</div>
-        <input
-          name="movesPerTurn"
-          type="number"
-          class="settings-input"
-          placeholder={settings.movesPerTurn}
-          bind:value={settings.movesPerTurn}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
-          on:input={triggerGameBoardUpdate}
-          on:click={highlight} />
-      </label>
-      <label for="cellsToScore" id="cellsToScore">
-        <div class="label-content">in a row to score</div>
-        <input
-          name="cellsToScore"
-          type="number"
-          class="settings-input"
-          placeholder={settings.cellsToScore}
-          bind:value={settings.cellsToScore}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
-          on:input={triggerGameBoardUpdate}
-          on:click={highlight} />
-      </label>
-      <label for="bonusForCompleteLine" id="bonusForCompleteLine">
-        <div class="label-content">bonus for complete line</div>
-        <input
-          name="bonusForCompleteLine"
-          type="number"
-          class="settings-input"
-          placeholder={settings.bonusForCompleteLine}
-          bind:value={settings.bonusForCompleteLine}
-          on:focus={e => computeViableMoves(e.target)}
-          on:keyup={e => computeViableMoves(e.target)}
-          on:input={triggerGameBoardUpdate}
-          on:click={highlight} />
-      </label>
       <label for="sizeFactor" id="sizeFactor">
         <div class="label-content">Board size (%)</div>
         <input

@@ -1,7 +1,5 @@
 <script>
   import SettingsMenu from "./SettingsMenu.svelte";
-
-  export let message;
 </script>
 
 <style>
@@ -12,5 +10,4 @@
   }
 </style>
 
-<h2 class="modal-title">{message}</h2>
 <SettingsMenu />
