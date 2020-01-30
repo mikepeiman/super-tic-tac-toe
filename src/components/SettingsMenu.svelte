@@ -52,7 +52,8 @@
     Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
   // end factors snippet
 
-  let totalMoves, totalMovesFactors
+  let totalMoves, totalMovesFactors;
+  let viableGameBoards = [];
   $: totalMoves =
     settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
   $: totalMovesFactors = factors(totalMoves);
@@ -115,23 +116,33 @@
   }
 
   async function calculateViableFactors() {
-    // console.log(`calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`);
+    console.log(
+      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`
+    );
     // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
-    let len = totalMovesFactors.length
-    totalMovesFactors = totalMovesFactors.slice(1,len-1)
-    const reversed = totalMovesFactors.slice().reverse()
-    console.log(`calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`);
-    console.log(`calculateViableFactors() => totalMovesFactors reversed ${reversed}`);
-    len = totalMovesFactors.length
-    let viableGameBoards = []
-    for(let i = 0; i < len; i++) {
+    let len = totalMovesFactors.length;
+    totalMovesFactors = totalMovesFactors.slice(1, len - 1);
+    const reversed = totalMovesFactors.slice().reverse();
+    len = totalMovesFactors.length;
+    console.log(
+      `calculateViableFactors() => totalMovesFactors len ${len} ${totalMovesFactors}`
+    );
+    console.log(
+      `calculateViableFactors() => totalMovesFactors reversed ${reversed}`
+    );
+    viableGameBoards = [];
+    for (let i = 0; i < len; i++) {
       let gridPair = {
         row: totalMovesFactors[i],
         column: reversed[i]
-      }
-      viableGameBoards.push(gridPair)
+      };
+      console.log(
+        `generating viableGameBoards, grid row ${gridPair.row} col ${gridPair.column} `
+      );
+      viableGameBoards = [...viableGameBoards, gridPair];
     }
-    console.log(`viableGameBoards `, viableGameBoards)
+
+    console.log(`viableGameBoards `, viableGameBoards);
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
@@ -140,11 +151,11 @@
     if (toggleConfigurationFlag) {
       if (rowsUndetermined) {
         rows = settings.rows = "?";
-        viableRows = totalMovesFactors
+        viableRows = totalMovesFactors;
       }
       if (columnsUndetermined) {
         columns = settings.columns = "?";
-        viableColumns = totalMovesFactors
+        viableColumns = totalMovesFactors;
       }
       console.log(
         `rows ${rows} and columns ${columns}, typeof rows ${typeof rows} typeof columns ${typeof columns}`
@@ -154,9 +165,10 @@
         console.log(`configuredRows !== string: ${typeof configuredRows}`);
       } else {
         if (typeof configuredColumns !== "string") {
-          console.log(`configuredRows !== string && confyiguredColumns !== string`);
+          console.log(
+            `configuredRows !== string && confyiguredColumns !== string`
+          );
         }
-        
       }
       if (typeof configuredColumns !== "string") {
         console.log(
@@ -222,7 +234,8 @@
       columnsUndetermined = false;
       viableRows = factors(
         Math.round(
-          (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns)
+          (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
+        )
       );
     }
     // storeSettings.set(settings);
@@ -524,7 +537,7 @@
         color: #efefefef;
         background: var(--theme-bg);
         outline: 2px dashed var(--input-blue);
-        width: 3ch;
+        width: auto;
         display: flex;
         justify-content: center;
         transition: all 0.25s;
@@ -533,6 +546,11 @@
           transition: all 0.25s;
           cursor: pointer;
         }
+      }
+      &.factor-item-sub {
+        padding: 0.25rem;
+        margin: 0.25rem;
+        background: rgba(0, 0, 0, 0.75);
       }
       &.highlighted {
         background: var(--player-color);
@@ -561,7 +579,7 @@
 
   .configuration-row {
     display: flex;
-    background: rgba(255, 255, 255, 0.1);
+    // background: rgba(255, 255, 255, 0.1);
     padding: 1rem;
   }
 
@@ -690,17 +708,6 @@
                   placeholder="?"
                   bind:value={configuredRows} />
               </label>
-            </div>
-            <span class="computed-span">
-              {#each viableRows as factor}
-                <span class="factor-item" on:click={e => setFactorValue(e)}>
-                  {factor}
-                </span>
-              {/each}
-            </span>
-          </div>
-          <div class="settings-wrapper viable-game" id="computed-widget">
-            <div class="settings-text">
               <label for="columns" id="columns">
                 <div class="label-content">Columns:</div>
                 <input
@@ -712,9 +719,18 @@
               </label>
             </div>
             <span class="computed-span">
-              {#each viableColumns as factor}
-                <span class="factor-item" on:click={e => setFactorValue(e)}>
-                  {factor}
+              {#each viableGameBoards as factor}
+                <span class="factor-item">
+                  <span
+                    class="factor-item-sub"
+                    on:click={e => setFactorValue(e)}>
+                    {factor.row}
+                  </span>
+                  <span
+                    class="factor-item-sub"
+                    on:click={e => setFactorValue(e)}>
+                    {factor.column}
+                  </span>
                 </span>
               {/each}
             </span>
