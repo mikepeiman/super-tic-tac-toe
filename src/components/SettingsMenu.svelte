@@ -27,27 +27,27 @@
     computedMovesPerPlayer =
       (settings.rows * settings.columns) / settings.numberOfPlayers;
     {
-      if (!Number.isInteger(computedMovesPerPlayer)) {
-        computedMovesPerPlayer = "Not viable!";
-        viableGameFlag = false;
-        viableMovesFlag = false;
-      } else {
-        computedMovesPerPlayer =
-          (settings.rows * settings.columns) / settings.numberOfPlayers;
-        viableGameFlag = true;
-        viableMovesFlag = true;
-      }
+      // if (!Number.isInteger(computedMovesPerPlayer)) {
+      //   computedMovesPerPlayer = "Not viable!";
+      //   viableGameFlag = false;
+      //   viableMovesFlag = false;
+      // } else {
+      //   computedMovesPerPlayer =
+      //     (settings.rows * settings.columns) / settings.numberOfPlayers;
+      //   viableGameFlag = true;
+      //   viableMovesFlag = true;
+      // }
     }
     {
-      if (!Number.isInteger(computedRoundsPerGame)) {
-        computedRoundsPerGame = "Not viable!";
-        viableGameFlag = false;
-        viableRoundsFlag = false;
-      } else {
-        computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
-        viableGameFlag = true;
-        viableRoundsFlag = true;
-      }
+      // if (!Number.isInteger(computedRoundsPerGame)) {
+      //   computedRoundsPerGame = "Not viable!";
+      //   viableGameFlag = false;
+      //   viableRoundsFlag = false;
+      // } else {
+      //   computedRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
+      //   viableGameFlag = true;
+      //   viableRoundsFlag = true;
+      // }
     }
   }
   // $: computedGameMoves =
@@ -73,7 +73,6 @@
     Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
   // end factors snippet
 
-  let computeThis = 0;
   $: viableMoves = [];
   $: viableRows = [];
   $: viableColumns = [];
@@ -152,7 +151,17 @@
     let roundsPerGame = settings.roundsPerGame;
     // roundsPerGame = await computedRoundsPerGame;
     if (toggleConfigurationFlag) {
+      rows = settings.rows = 1;
+      columns = settings.columns = 1;
       roundsPerGame;
+      viableRows = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+      );
+      
+      viableColumns = factors(
+        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+      );
+      console.log(`viableRows ${viableRows}, viableColumns ${viableColumns}`)
     } else {
       if (typeof computedRoundsPerGame !== "string") {
         roundsPerGame = await computedRoundsPerGame;
@@ -164,79 +173,61 @@
       // settings.roundsPerGame = roundsPerGame
       // storeSettings.set(settings)
     }
-    storeSettings.set(settings);
-    if (viableGameFlag) {
-      viableMoves = factors(Math.round((rows * columns) / numPlayers));
-      viableRows = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
-      );
-      viableRows = [...viableRows, viableRows[viableRows.length - 1] * 2];
-      viableColumns = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
-      );
-      viableColumns = [
-        ...viableColumns,
-        viableColumns[viableColumns.length - 1] * 2
-      ];
-    } else {
-      if (viableMovesFlag) {
-        viableRows = "Not viable. Change columns, rows, or moves";
-        viableColumns = "Not viable. Change columns, rows, or moves";
-      } else if (viableRoundsFlag) {
-        viableMoves = "Not viable. Change columns, rows, or moves";
-      } else {
-        viableMoves = "Not viable. Change columns, rows, or moves";
-        viableRows = "Not viable. Change columns, rows, or moves";
-        viableColumns = "Not viable. Change columns, rows, or moves";
-      }
-    }
+    // storeSettings.set(settings);
+    // if (viableGameFlag) {
+    //   viableMoves = factors(Math.round((rows * columns) / numPlayers));
+    //   viableRows = factors(
+    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / columns)
+    //   );
+    //   viableRows = [...viableRows, viableRows[viableRows.length - 1] * 2];
+    //   viableColumns = factors(
+    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / rows)
+    //   );
+    //   viableColumns = [
+    //     ...viableColumns,
+    //     viableColumns[viableColumns.length - 1] * 2
+    //   ];
+    // } else {
+    //   if (viableMovesFlag) {
+    //     viableRows = "!";
+    //     viableColumns = "!";
+    //   } else if (viableRoundsFlag) {
+    //     viableMoves = "!";
+    //   } else {
+    //     viableMoves = "!";
+    //     viableRows = "!";
+    //     viableColumns = "!";
+    //   }
+    // }
   }
 
   function computeViableMoves(el) {
     console.log(`computeViableMoves(el) `, el);
-    let thisAttr = el.getAttribute("name");
-    console.log(`computeViableMoves(el) this attr ${thisAttr}`);
-    let computedWidget = document.querySelector("#computed-widget");
-    let menu = document.querySelector(".settings-menu");
+    // let thisAttr = el.getAttribute("name");
+    // console.log(`computeViableMoves(el) this attr ${thisAttr}`);
+    // let computedWidget = document.querySelector("#computed-widget");
+    // let menu = document.querySelector(".settings-menu");
 
-    let rows = settings.rows;
-    let columns = settings.columns;
-    let numPlayers = settings.numberOfPlayers;
-    let movesPerPlayer = (rows * columns) / numPlayers;
-    let movesPerTurn = settings.movesPerTurn;
+    // let rows = settings.rows;
+    // let columns = settings.columns;
+    // let numPlayers = settings.numberOfPlayers;
+    // let movesPerPlayer = (rows * columns) / numPlayers;
+    // let movesPerTurn = settings.movesPerTurn;
 
     calculateViableFactors();
-    let elRows = document.querySelector("#rows");
-    let elColumns = document.querySelector("#columns");
-    let elMovesPerTurn = document.querySelector("#movesPerTurn");
-    let alertBg = `rgba(255,15,25,0.2)`;
-    if (viableGameFlag === false) {
-      elRows.style = `background: ${alertBg};`;
-      elColumns.style = `background: ${alertBg};`;
-      elMovesPerTurn.style = `background: ${alertBg};`;
-    } else {
-      elRows.style = `background: none;`;
-      elColumns.style = `background: none;`;
-      elMovesPerTurn.style = `background: none;`;
-    }
-
-    if (thisAttr === "players") {
-      console.log(`this el is number of players ${el.value}`);
-    } else if (thisAttr === "rows") {
-      console.log(`this el is number of rows ${el.value}`);
-      computeThis = columns * movesPerTurn;
-      // compute viable value for this, based on given columns and moves per turn
-    } else if (thisAttr === "columns") {
-      console.log(`this el is number of columns ${el.value}`);
-      computeThis = rows * movesPerTurn;
-      // compute viable value for this, based on given row and moves per turn
-    } else if (thisAttr === "movesPerTurn") {
-      console.log(`this el is number of movesPerTurn ${el.value}`);
-      computeThis = columns * rows;
-      // compute viable value for this, based on given columns and rows
-    } else {
-      // settingsMenu.appendChild(computedWidget);
-    }
+    // let elRows = document.querySelector("#rows");
+    // let elColumns = document.querySelector("#columns");
+    // let elMovesPerTurn = document.querySelector("#movesPerTurn");
+    // let alertBg = `rgba(255,15,25,0.2)`;
+    // if (viableGameFlag === false) {
+    //   elRows.style = `background: ${alertBg};`;
+    //   elColumns.style = `background: ${alertBg};`;
+    //   elMovesPerTurn.style = `background: ${alertBg};`;
+    // } else {
+    //   elRows.style = `background: none;`;
+    //   elColumns.style = `background: none;`;
+    //   elMovesPerTurn.style = `background: none;`;
+    // }
   }
 
   function setFactorValue(e) {
@@ -592,6 +583,7 @@
     border-bottom: 1px solid #32c8ff;
     text-align: center;
     font-size: 2rem;
+    padding: 0;
   }
 
   .settings-content {
@@ -708,7 +700,8 @@
                   name="rows"
                   type="number"
                   class="settings-input"
-                  placeholder="?" />
+                  placeholder="?"
+                  bind:value={settings.rows} />
               </label>
             </div>
             <span class="computed-span">
@@ -727,7 +720,8 @@
                   name="columns"
                   type="number"
                   class="settings-input"
-                  placeholder="?" />
+                  placeholder="?"
+                  bind:value={settings.columns} />
               </label>
             </div>
             <span class="computed-span">
