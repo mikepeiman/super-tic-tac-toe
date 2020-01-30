@@ -124,6 +124,7 @@
   }
 
   async function calculateViableFactors() {
+    console.log(`calculateViableFactors()`)
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
@@ -206,37 +207,24 @@
     } else {
       // settingsMenu.appendChild(computedWidget);
     }
+  }
 
-    // console.log(`Factors of ${computeThis} `, factors(computeThis));
-    // console.log(
-    //   `Factors of ${computedMovesPerPlayer} `,
-    //   factors(computedMovesPerPlayer)
-    // );
-    // console.log(
-    //   `Factors of ${viableMoves} `,
-    //   factors(viableMoves)
-    // );
-    // console.log(
-    //   `Factors of ${viableRows} `,
-    //   factors(viableRows)
-    // );
-    // console.log(
-    //   `Factors of ${viableColumns} `,
-    //   factors(viableColumns)
-    // );
-    // console.log(
-    //   `rows ${rows} columns ${columns} players ${numPlayers}, movesPerPlayer ${movesPerPlayer}`
-    // );
-
-    // for each number up to movesPerPlayer, iterate and calculate for modulo integer
-    // present options as:
-    //      "For {x} rows X {x} columns, viable moves per turn are: "
-    //      "For {x} columns and {x} moves per turn, viable rows are: "
-    //      "For {x} rows and {x} moves per turns, viable columns are: "
-    // do not present for players; that is a primary selection.
-    // UI: highlight values that are not whole numbers in settings, automatically insert viable options as formatted above
-    // Perhaps show this section via js only when that particular input is active - likely a good solution
-    // ***note: work on loading indicator next, get some pretty style, feel better each time it reloads (x1000s)
+  function setFactorValue(e) {
+    console.log(`setFactorValue() => e `, e)
+    console.log(`setFactorValue() => e.target.innerText `, e.target.innerText)
+    console.log(`setFactorValue() => e.target.offsetParent.id `, e.target.offsetParent.id)
+    let id = e.target.offsetParent.id
+    let el = document.getElementById(id)
+    let input = el.children[1]
+    let val = parseInt(e.target.innerText)
+    console.log(`setFactorValue() => el, input `, el, input)
+    input.value = val
+    console.log(`settings updated? #1 ${settings.rows}`)
+    settings[id] = val
+    storeSettings.set(settings)
+    console.log(`settings updated? #2 ${settings.rows}`)
+    calculateViableFactors();
+    triggerGameBoardUpdate
   }
 </script>
 
@@ -326,7 +314,7 @@
         border-bottom: 1px solid darken($input-blue, 30%);
         font-size: 1em;
         position: relative;
-        text-align: end;
+        // text-align: end;
 
         padding: 0;
         &:focus {
@@ -503,7 +491,7 @@
     & span {
       &.computed-span {
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -512,6 +500,22 @@
       }
       &.computed-value {
         color: rgba(0, 155, 255, 1);
+      }
+      &.factor-item {
+        padding: 0.25rem;
+        margin: 0.25rem;
+        color: #efefefef;
+        background: var(--theme-bg);
+        outline: 3px solid var(--input-blue);
+        width: 3ch;
+        display: flex;
+        justify-content: center;
+        transition: all 0.25s;
+        &:hover {
+          background: var(--player-color-dark);
+          transition: all 0.25s;
+          cursor: pointer;
+        }
       }
       // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
     }
@@ -570,7 +574,9 @@
         style="width: 2.5ch;" />
       <div class="settings-wrapper viable-game" id="computed-widget">
         <span class="computed-span">
-          <span class="computed-value">{viableRows}</span>
+          {#each viableRows as factor}
+            <span class="factor-item" on:click={e => setFactorValue(e)}>{factor}</span>
+          {/each}
         </span>
       </div>
     </label>
@@ -588,7 +594,9 @@
         style="width: 2.5ch;" />
       <div class="settings-wrapper viable-game" id="computed-widget">
         <span class="computed-span">
-          <span class="computed-value">{viableColumns}</span>
+          {#each viableColumns as factor}
+            <span class="factor-item">{factor}</span>
+          {/each}
         </span>
       </div>
     </label>
@@ -606,7 +614,9 @@
         style="width: 2.5ch;" />
       <div class="settings-wrapper viable-game" id="computed-widget">
         <span class="computed-span">
-          <span class="computed-value">{viableMoves}</span>
+          {#each viableMoves as factor}
+            <span class="factor-item">{factor}</span>
+          {/each}
         </span>
       </div>
     </label>
@@ -654,6 +664,8 @@
       <!-- <i class="percent-symbol">%</i> -->
     </label>
   </div>
+
+  <!--   
   <div class="settings-wrapper viable-game" id="computed-widget">
     {#if viableGameFlag}
       <span class="computed-span">
@@ -697,7 +709,7 @@
         </span>
       {/if}
     {/if}
-  </div>
+  </div> -->
 
   <!--  -->
 {:else}

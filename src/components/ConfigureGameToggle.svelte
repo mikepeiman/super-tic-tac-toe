@@ -60,6 +60,7 @@
     width: 60px;
     height: 26px;
     bottom: 0;
+    content: "Slider Content";
     cursor: pointer;
     // left: 0;
     position: absolute;
