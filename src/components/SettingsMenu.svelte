@@ -17,16 +17,20 @@
 
   let currentPlayer;
   let viableGameFlag = true;
+  let viableMovesFlag = true;
+  let viableRoundsFlag = true;
   $: computedMovesPerPlayer =
     (settings.rows * settings.columns) / settings.numberOfPlayers;
   $: {
     if (!Number.isInteger(computedMovesPerPlayer)) {
       computedMovesPerPlayer = "Not viable!";
       viableGameFlag = false;
+      viableMovesFlag = false;
     } else {
       computedMovesPerPlayer =
         (settings.rows * settings.columns) / settings.numberOfPlayers;
       viableGameFlag = true;
+      viableMovesFlag = true;
     }
   }
   $: viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
@@ -34,9 +38,11 @@
     if (!Number.isInteger(viableRoundsPerGame)) {
       viableRoundsPerGame = "Not viable!";
       viableGameFlag = false;
+      viableRoundsFlag = false;
     } else {
       viableRoundsPerGame = computedMovesPerPlayer / settings.movesPerTurn;
       viableGameFlag = true;
+      viableRoundsFlag = true;
     }
   }
   // below factors snippet from https://stackoverflow.com/a/43802308/7875457
@@ -116,6 +122,7 @@
     e.target.select();
     console.log(`highlight func`, e.target);
   }
+
   async function calculateViableFactors() {
     let rows = settings.rows;
     let columns = settings.columns;
@@ -142,9 +149,16 @@
         viableColumns[viableColumns.length - 1] * 2
       ];
     } else {
-      viableMoves = "Not viable. Change columns, rows, or moves";
-      viableRows = "Not viable. Change columns, rows, or moves";
-      viableColumns = "Not viable. Change columns, rows, or moves";
+      if (viableMovesFlag) {
+        viableRows = "Not viable. Change columns, rows, or moves";
+        viableColumns = "Not viable. Change columns, rows, or moves";
+      } else if (viableRoundsFlag) {
+        viableMoves = "Not viable. Change columns, rows, or moves";
+      } else {
+        viableMoves = "Not viable. Change columns, rows, or moves";
+        viableRows = "Not viable. Change columns, rows, or moves";
+        viableColumns = "Not viable. Change columns, rows, or moves";
+      }
     }
   }
 
@@ -502,11 +516,27 @@
       // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
     }
   }
+
+  .configuration-toggle-wrapper {
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    color: #efefefef;
+    & .configuration-item {
+      margin: 1rem;
+    }
+  }
 </style>
 
 {#if initialized}
   <div class="configuration-toggle-wrapper">
-    <ConfigureGameToggle />
+    <div class="configuration-item">
+      <ConfigureGameToggle />
+    </div>
+  </div>
+  <div class="configuration-toggle-wrapper">
+    <h1 class="configuration-item">Configure By Rows And Columns</h1>
+    <h1 class="configuration-item">Configure By Moves And Rounds</h1>
   </div>
   <div
     class="settings-wrapper settings-menu"
@@ -647,13 +677,25 @@
         <span class="computed-value">{viableRoundsPerGame}</span>
       </span>
     {:else}
-      <span class="computed-span">
-        <h2>Invalid settings - uneven number of turns or rounds!</h2>
-        <p>
-          Change number of rows, columns, or moves per turn until valid
-          configuration is found.
-        </p>
-      </span>
+      {#if !viableMovesFlag}
+        <span class="computed-span">
+
+          <h2>Invalid settings - uneven number of turns!</h2>
+          <p>
+            Change number of rows, columns, or moves per turn until valid
+            configuration is found.
+          </p>
+        </span>
+      {/if}
+      {#if !viableRoundsFlag}
+        <span class="computed-span">
+          <h2>Invalid settings - uneven number of rounds!</h2>
+          <p>
+            Change number of rows, columns, or moves per turn until valid
+            configuration is found.
+          </p>
+        </span>
+      {/if}
     {/if}
   </div>
 

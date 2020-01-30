@@ -108,16 +108,4 @@
     id="night-mode-toggle"
     on:click={toggleTheme} />
   <div class="slider round" />
-  <div class="icon sun">
-    <Fa
-      icon={faSun}
-      color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-  </div>
-  <div class="icon moon hidden">
-    <Fa
-      icon={faMoon}
-      color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
-  </div>
 </label>
