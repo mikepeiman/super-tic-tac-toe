@@ -609,14 +609,51 @@
           on:focus={e => computeViableMoves(e.target)}
           on:keyup={e => computeViableMoves(e.target)}
           on:click={highlight} />
-        players, each receiving {settings.movesPerTurn} moves per turn. They
-        will engage in battle for {settings.roundsPerGame} rounds before a
-        victor is determined. This constitutes {computedGameMoves} total moves.
-        Please select your prefered gameboard configuration below:
+        players, each receiving
+        <input
+          name="movesPerTurn"
+          type="number"
+          class="settings-input"
+          placeholder={settings.movesPerTurn}
+          bind:value={settings.movesPerTurn}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          max="8"
+          on:focus={e => computeViableMoves(e.target)}
+          on:keyup={e => computeViableMoves(e.target)}
+          on:click={highlight} />
+        moves per turn. They will engage in battle for
+        <input
+          name="roundsPerGame"
+          type="number"
+          class="settings-input"
+          placeholder={settings.roundsPerGame}
+          bind:value={settings.roundsPerGame}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          max="8"
+          on:focus={e => computeViableMoves(e.target)}
+          on:keyup={e => computeViableMoves(e.target)}
+          on:click={highlight} />
+        rounds before a victor is determined. This constitutes {computedGameMoves}
+        total moves. Please select your prefered gameboard configuration below:
       </p>
       <div class="configuration-row">
         <div class="settings-wrapper viable-game" id="computed-widget">
           <p class="settings-text">Rows:</p>
+          <label for="columns" id="columns">
+            <!-- <div class="label-content">columns</div> -->
+            <input
+              name="rows"
+              type="number"
+              class="settings-input"
+              placeholder={settings.rows}
+              bind:value={settings.rows}
+              on:focus={e => computeViableMoves(e.target)}
+              on:keyup={e => computeViableMoves(e.target)}
+              on:input={triggerGameBoardUpdate}
+              on:click={highlight} />
+          </label>
           <span class="computed-span">
             {#each viableRows as factor}
               <span class="factor-item" on:click={e => setFactorValue(e)}>
