@@ -204,22 +204,32 @@
       `setFactorValue() => e.target.textContent `,
       e.target.textContent
     );
+    if (toggleConfigurationFlag) {
+      // if we're working with computed rows and columns
+      let rowVal = parseInt(e.target.innerText);
+      let columnVal = parseInt(e.target.nextElementSibling.innerText);
+      console.log(`Clicked rowVal ${rowVal} columnVal ${columnVal}`);
+      settings["rows"] = rowVal
+      settings["columns"] = columnVal
+    }
+
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
     let movesPerTurn = settings.movesPerTurn;
     let roundsPerGame = settings.roundsPerGame;
-    // let id = e.target.offsetParent.id;
-    e.target.classList.add("highlighted");
-    let id = e.target.parentElement.parentElement.children[0].children[0].id;
-    console.log(`setFactorValue() => e.target.id `, id);
-    let el = document.getElementById(id);
-    // let input = el.children[1];
-    let val = parseInt(e.target.innerText);
-    console.log(`setFactorValue() => el, input id ${id}`, el);
-    el.value = val;
-    console.log(`settings updated? #1 ${settings.rows}`);
-    settings[id] = val;
+    let id = e.target.offsetParent.id;
+    // e.target.classList.add("highlighted");
+    // let id = e.target.parentElement.parentElement.children[0].children[0].id;
+    // console.log(`setFactorValue() => e.target.id `, id);
+    // let el = document.getElementById(id);
+    // // let input = el.children[1];
+    // let val = parseInt(e.target.innerText);
+    // console.log(`setFactorValue() => el, input id ${id}`, el);
+    // el.value = val;
+    // console.log(`settings updated? #1 ${settings.rows}`);
+    // settings[id] = val;
+    
     if (id === "rows") {
       console.log(`This is ROW`);
       configuredRows = val;
@@ -517,6 +527,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 
     & span {
       &.computed-span {
@@ -541,16 +552,24 @@
         display: flex;
         justify-content: center;
         transition: all 0.25s;
+        flex-direction: column;
         &:hover {
           background: var(--player-color-dark);
           transition: all 0.25s;
           cursor: pointer;
+        }
+        &img {
+          width: 2.5rem;
+          height: 2.5rem;
         }
       }
       &.factor-item-sub {
         padding: 0.25rem;
         margin: 0.25rem;
         background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       &.highlighted {
         background: var(--player-color);
@@ -560,6 +579,12 @@
     }
   }
 
+  span.computed-span-row-columns {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 8ch auto;
+    grid-template-areas: "labels factors";
+  }
   .configuration-toggle-wrapper {
     margin: 0 auto;
     width: fit-content;
@@ -576,7 +601,10 @@
       transition: all 0.25s;
     }
   }
-
+  .viablegameboards-wrapper {
+    grid-area: factors;
+    display: flex;
+  }
   .configuration-row {
     display: flex;
     // background: rgba(255, 255, 255, 0.1);
@@ -598,10 +626,16 @@
   }
 
   .settings-text {
+    grid-area: labels;
     & label {
       flex-direction: row;
       margin-top: 1rem;
     }
+  }
+
+  span.direction-icon {
+    width: 2rem;
+    height: 2rem;
   }
 </style>
 
@@ -698,43 +732,55 @@
         <p>Select your prefered gameboard configuration below:</p>
         <div class="configuration-row">
           <div class="settings-wrapper viable-game" id="computed-widget">
-            <div class="settings-text">
-              <label for="rows" id="rows">
-                <div class="label-content">Rows:</div>
-                <input
-                  name="rows"
-                  type="number"
-                  class="settings-input"
-                  placeholder="?"
-                  bind:value={configuredRows} />
-              </label>
-              <label for="columns" id="columns">
-                <div class="label-content">Columns:</div>
-                <input
-                  name="columns"
-                  type="number"
-                  class="settings-input"
-                  placeholder="?"
-                  bind:value={configuredColumns} />
-              </label>
-            </div>
-            <span class="computed-span">
-              {#each viableGameBoards as factor}
-                <span class="factor-item">
-                  <span
-                    class="factor-item-sub"
-                    on:click={e => setFactorValue(e)}>
-                    <img src="tictactoe-horizontal.png" alt="">
-                    {factor.row}
+
+            <span class="computed-span-row-columns">
+              <div class="settings-text">
+                <label for="rows" id="rows">
+                  <div class="label-content">Rows:</div>
+                  <input
+                    name="rows"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredRows} />
+                </label>
+                <label for="columns" id="columns">
+                  <div class="label-content">Columns:</div>
+                  <input
+                    name="columns"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredColumns} />
+                </label>
+              </div>
+              <!-- <span class="factor-item">
+                <img
+                  class="direction-icon"
+                  src="tictactoe-horizontal.png"
+                  alt="" />
+                <img
+                  class="direction-icon"
+                  src="tictactoe-vertical.png"
+                  alt="" />
+              </span> -->
+
+              <div class="viablegameboards-wrapper">
+                {#each viableGameBoards as factor}
+                  <span class="factor-item">
+                    <span
+                      class="factor-item-sub"
+                      on:click={e => setFactorValue(e)}>
+                      {factor.row}
+                    </span>
+                    <span
+                      class="factor-item-sub"
+                      on:click={e => setFactorValue(e)}>
+                      {factor.column}
+                    </span>
                   </span>
-                  <span
-                    class="factor-item-sub"
-                    on:click={e => setFactorValue(e)}>
-                    <img src="tictactoe-vertical.png" alt="">
-                    {factor.column}
-                  </span>
-                </span>
-              {/each}
+                {/each}
+              </div>
             </span>
           </div>
         </div>
