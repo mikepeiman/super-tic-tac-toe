@@ -281,6 +281,17 @@
     console.log(`setConfigurationMode() clicked `, e.target);
     let id = e.target.id;
     console.log(`setConfigurationMode() clicked id ${id}`);
+    let modalWindow = document.querySelector(".window");
+    modalWindow.classList.add("expand");
+    let settingsWrapper = document.getElementById("settings-modal-wrapper");
+    let settingsChildrenLen = settingsWrapper.children.length;
+    for (let i = 0; i < settingsChildrenLen; i++) {
+      console.log(
+        `looping through settings wrapper children elements ${i} `,
+        settingsWrapper.children[i]
+      );
+    }
+    console.log(`modal window el `, modalWindow);
     // let movesAndRoundsEl = document.getElementById("moves-and-rounds-wrapper");
     // let rowsAndColumnsEl = document.getElementById("rows-and-columns-wrapper");
     if (id === "movesAndRounds") {
@@ -339,23 +350,23 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    transition: all .50s;
+    transition: all 0.5s;
 
     &.settings-menu {
-      transition: all .50s;
+      transition: all 0.5s;
       display: block;
       position: relative;
 
       &#moves-and-rounds-wrapper {
         // display: none;
-        transition: all .50s;
+        transition: all 0.5s;
         opacity: 0;
       }
       &#moves-and-rounds-wrapper.show {
         display: block;
         opacity: 1;
         left: 0;
-        transition: all .50s;
+        transition: all 0.5s;
       }
       // &#moves-and-rounds-wrapper.transition-in {
       //   display: block;
@@ -365,14 +376,14 @@
       // }
       &#rows-and-columns-wrapper {
         // display: none;
-        transition: all .50s;
+        transition: all 0.5s;
         opacity: 0;
       }
       &#rows-and-columns-wrapper.show {
         display: block;
         left: 0;
         opacity: 1;
-        transition: all .50s;
+        transition: all 0.5s;
       }
       // &#rows-and-columns-wrapper.transition-in {
       //   display: block;
@@ -675,6 +686,7 @@
     grid-area: buttons;
     margin: 0 auto;
     width: fit-content;
+    height: fit-content;
     display: flex;
     color: #efefefef;
     transition: all 0.25s;
@@ -771,7 +783,7 @@
     <!-- {#if movesAndRounds} -->
     <!--         class:open={movesAndRounds} -->
     <div
-      transition:fade={{ duration: 250 }}
+      transition:fly={{ y: -500, duration: 750, delay: 500 }}
       class:show={movesAndRounds}
       class="settings-wrapper settings-menu"
       id="moves-and-rounds-wrapper"
@@ -906,9 +918,11 @@
 
     </div>
     <!-- {:else if rowsAndColumns} -->
+    <!-- transition:fly={{ y: -500, duration: 750 }} -->
+    <!-- transition:fade={{ duration: 250 }} -->
     <!--         class:open={rowsAndColumns} -->
     <div
-      transition:fade={{ duration: 250 }}
+      transition:fly={{ y: -500, duration: 750 }}
       class:show={rowsAndColumns}
       class="settings-wrapper settings-menu"
       id="rows-and-columns-wrapper"

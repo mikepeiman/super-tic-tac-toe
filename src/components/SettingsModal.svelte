@@ -1,7 +1,7 @@
 <script>
   import { onMount, getContext } from "svelte";
   import GameSettingsModalContent from "./GameSettingsModalContent.svelte";
-  import { storeViewportSize } from "./../stores.js";
+  import { storeViewportSize, storeToggleConfiguration } from "./../stores.js";
   import Fa from "sveltejs-fontawesome";
   import { faSlidersH } from "@fortawesome/pro-duotone-svg-icons";
   import { storeButtonStyles } from "../stores.js";
@@ -17,7 +17,8 @@
       maxWidth: "90vw",
       maxHeight: "90vh",
       margin: "5vh 5vw",
-      background: "rgba(0,0,0,0.7)"
+      background: "rgba(0,0,0,0.7)",
+      transition: "all .5s"
     },
     close: {
       width: "3rem",
@@ -26,9 +27,8 @@
     content: {
       borderRadius: "5px",
       display: "grid",
-    gridTemplateRows: "3rem 6rem 1fr",
-    gridTemplateAreas:
-        `"title"
+      gridTemplateRows: "3rem 6rem 1fr",
+      gridTemplateAreas: `"title"
         "buttons"
         "content"`
     }
@@ -90,7 +90,7 @@
   const showModal = () => {
     open(GameSettingsModalContent, { message: "Game Settings:" }, styling);
     console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
-    storeToggleConfiguration.set(false)
+    // storeToggleConfiguration.set(false);
   };
 </script>
 
@@ -106,6 +106,14 @@
       left: 0.5rem;
       width: 2rem;
     }
+  }
+  :global(.window-wrap .window) {
+    min-height: 35vh;
+    transition: all .5s;
+  }
+  :global(.window-wrap .window.expand) {
+    min-height: 90vh;
+    transition: all .5s;
   }
 </style>
 
