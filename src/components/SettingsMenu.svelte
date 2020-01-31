@@ -57,6 +57,7 @@
   $: totalMoves =
     settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
   $: totalMovesFactors = factors(totalMoves);
+  // $: configuredColumns && totalMovesFactors;
   $: viableMoves = [];
   $: viableRows = totalMovesFactors;
   $: viableColumns = totalMovesFactors;
@@ -116,6 +117,7 @@
   }
 
   async function calculateViableFactors() {
+    totalMovesFactors = await factors(totalMoves)
     console.log(
       `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`
     );
@@ -199,18 +201,23 @@
 
   function setFactorValue(e) {
     console.log(`setFactorValue() => e `, e);
-    console.log(`setFactorValue() => e.target.innerText `, e.target.innerText);
+    console.log(`setFactorValue() => e.target `, e.target);
     console.log(
       `setFactorValue() => e.target.textContent `,
       e.target.textContent
+    );
+    console.log(
+      `settings updated? #1 rows ${settings.rows} columns ${settings.columns}`
     );
     if (toggleConfigurationFlag) {
       // if we're working with computed rows and columns
       let rowVal = parseInt(e.target.innerText);
       let columnVal = parseInt(e.target.nextElementSibling.innerText);
       console.log(`Clicked rowVal ${rowVal} columnVal ${columnVal}`);
-      settings["rows"] = rowVal
-      settings["columns"] = columnVal
+      settings["rows"] = rowVal;
+      configuredRows = rowVal;
+      settings["columns"] = columnVal;
+      configuredColumns = columnVal;
     }
 
     let rows = settings.rows;
@@ -227,29 +234,31 @@
     // let val = parseInt(e.target.innerText);
     // console.log(`setFactorValue() => el, input id ${id}`, el);
     // el.value = val;
-    // console.log(`settings updated? #1 ${settings.rows}`);
+
     // settings[id] = val;
-    
-    if (id === "rows") {
-      console.log(`This is ROW`);
-      configuredRows = val;
-      rowsUndetermined = false;
-      viableColumns = factors(
-        Math.round((movesPerTurn * numPlayers * roundsPerGame) / configuredRows)
-      );
-    }
-    if (id === "columns") {
-      console.log(`This is COLUMN`);
-      configuredColumns = val;
-      columnsUndetermined = false;
-      viableRows = factors(
-        Math.round(
-          (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
-        )
-      );
-    }
+
+    // if (id === "rows") {
+    //   console.log(`This is ROW`);
+    //   configuredRows = val;
+    //   rowsUndetermined = false;
+    //   viableColumns = factors(
+    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / configuredRows)
+    //   );
+    // }
+    // if (id === "columns") {
+    //   console.log(`This is COLUMN`);
+    //   configuredColumns = val;
+    //   columnsUndetermined = false;
+    //   viableRows = factors(
+    //     Math.round(
+    //       (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
+    //     )
+    //   );
+    // }
     // storeSettings.set(settings);
-    console.log(`settings updated? #2 ${settings.rows}`);
+    console.log(
+      `settings updated? #2 rows ${settings.rows} columns ${settings.columns}`
+    );
     calculateViableFactors();
     triggerGameBoardUpdate;
   }
@@ -767,17 +776,9 @@
 
               <div class="viablegameboards-wrapper">
                 {#each viableGameBoards as factor}
-                  <span class="factor-item">
-                    <span
-                      class="factor-item-sub"
-                      on:click={e => setFactorValue(e)}>
-                      {factor.row}
-                    </span>
-                    <span
-                      class="factor-item-sub"
-                      on:click={e => setFactorValue(e)}>
-                      {factor.column}
-                    </span>
+                  <span class="factor-item" on:click={e => setFactorValue(e)}>
+                    <span class="factor-item-sub">{factor.row}</span>
+                    <span class="factor-item-sub">{factor.column}</span>
                   </span>
                 {/each}
               </div>
