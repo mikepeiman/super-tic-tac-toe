@@ -221,10 +221,12 @@
       configuredColumns = columnVal;
       if (el.classList.contains("factor-item-sub")) {
         console.log(`We clicked a CHILD factor-item-sub`);
-        el.parentElement.classList.add("highlighted");
+        // el.parentElement.classList.toggle("highlighted");
+        // el.parentElement.style = `background: var(--player-color);`
       } else {
         console.log(`We clicked a PARENT factor-item`);
-        el.classList.add("highlighted");
+        // el.classList.toggle("highlighted");
+        // el.style = `background: var(--player-color);`
       }
     }
 
@@ -472,10 +474,10 @@
   }
   @media screen and (min-width: 900px) {
     .settings-wrapper {
-      padding: 0.5rem 0.5rem 0.5rem 0;
+      // padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
-      margin-right: 1rem;
-      font-size: 2rem;
+      // margin-right: 1rem;
+      font-size: 1.5rem;
       // border-radius: 0 0 5px 5px;
       display: flex;
       flex-direction: row;
@@ -484,14 +486,8 @@
       height: auto;
       flex-wrap: wrap;
       & label {
-        // display: grid;
-
-        // grid-template-columns: 1fr 4fr 4fr;
-        // grid-template-areas: "settings-input settings-label computed";
-        // display: -webkit-box;
         font-size: 100%;
         display: flex;
-        // flex-flow: row-reverse;
         align-items: baseline;
         justify-content: flex-end;
         position: relative;
@@ -632,10 +628,10 @@
   }
 
   .settings-input {
-    width: 4ch;
+    width: 3rem;
     border-bottom: 1px solid #32c8ff;
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     padding: 0;
   }
 
@@ -643,6 +639,11 @@
     margin: 0;
     color: var(--theme-fg);
     display: block;
+    & p {
+      margin: .75rem;
+      font-size: 1.5rem;
+      text-align: center;
+    }
   }
 
   .settings-text {
@@ -774,20 +775,10 @@
                     bind:value={configuredColumns} />
                 </label>
               </div>
-              <!-- <span class="factor-item">
-                <img
-                  class="direction-icon"
-                  src="tictactoe-horizontal.png"
-                  alt="" />
-                <img
-                  class="direction-icon"
-                  src="tictactoe-vertical.png"
-                  alt="" />
-              </span> -->
 
               <div class="viablegameboards-wrapper">
                 {#each viableGameBoards as factor}
-                  <span class="factor-item" on:click={e => setFactorValue(e)}>
+                  <span class:highlighted={configuredRows == factor.row} class="factor-item" on:click={e => setFactorValue(e)} >
                     <span class="factor-item-sub">{factor.row}</span>
                     <span class="factor-item-sub">{factor.column}</span>
                   </span>
