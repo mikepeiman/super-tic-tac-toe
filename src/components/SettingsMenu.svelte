@@ -25,9 +25,9 @@
   let rowsUndetermined = false;
   let columnsUndetermined = false;
   let configuredRows = "?";
-  let configuredRows = "?";
+  let configuredColumns = "?";
   let configuredMovesPerTurn = "?";
-  let configuredroundsPerGame = "?";
+  let configuredRoundsPerGame = "?";
   let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame;
   $: {
     computedGameMoves =
@@ -56,15 +56,17 @@
     Array.from(Array(number + 1), (_, i) => i).filter(i => number % i === 0);
   // end factors snippet
 
-  let totalMoves, totalMovesFactors;
+  let totalMoves, totalMovesFactors, playerMoves, playerMovesFactors;
   let viableGameBoards = [];
+  let viableMovesAndRounds = [];
+  $: playerMoves =
+    (settings.rows * settings.columns) / settings.numberOfPlayers;
   $: totalMoves =
     settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
   $: totalMovesFactors = factors(totalMoves);
-  // $: configuredColumns && totalMovesFactors;
-  $: viableMoves = Number.isInteger(
-    (settings.rows * settings.columns) / settings.numberOfPlayers
-  );
+
+  $: viableMoves = Number.isInteger(playerMoves);
+  $: playerMovesFactors = viableMoves ? factors(playerMoves) : factors(2);
   $: viableRows = totalMovesFactors;
   $: viableColumns = totalMovesFactors;
 
@@ -128,21 +130,21 @@
       `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}, viableMoves? ${viableMoves}`
     );
     // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
-    let len = totalMovesFactors.length;
-    totalMovesFactors = totalMovesFactors.slice(1, len - 1);
-    const reversed = totalMovesFactors.slice().reverse();
-    len = totalMovesFactors.length;
+    let lenTotalMoves = totalMovesFactors.length;
+    totalMovesFactors = totalMovesFactors.slice(1, lenTotalMoves - 1);
+    let totalMovesFactorsReversed = totalMovesFactors.slice().reverse();
+    lenTotalMoves = totalMovesFactors.length;
     console.log(
-      `calculateViableFactors() => totalMovesFactors len ${len} ${totalMovesFactors}`
+      `calculateViableFactors() => totalMovesFactors lenTotalMoves ${lenTotalMoves} ${totalMovesFactors}`
     );
     console.log(
-      `calculateViableFactors() => totalMovesFactors reversed ${reversed}`
+      `calculateViableFactors() => totalMovesFactors totalMovesFactorsReversed ${totalMovesFactorsReversed}`
     );
     viableGameBoards = [];
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < lenTotalMoves; i++) {
       let gridPair = {
         row: totalMovesFactors[i],
-        column: reversed[i]
+        column: totalMovesFactorsReversed[i]
       };
       console.log(
         `generating viableGameBoards, grid row ${gridPair.row} col ${gridPair.column} `
@@ -150,7 +152,22 @@
       viableGameBoards = [...viableGameBoards, gridPair];
     }
 
+    let lenPlayerMoves = playerMovesFactors.length;
+    let playerMovesFactorsReversed = playerMovesFactors.slice().reverse();
+    viableMovesAndRounds = [];
+    for (let i = 0; i < lenPlayerMoves; i++) {
+      let movesRoundsPair = {
+        moves: playerMovesFactors[i],
+        rounds: playerMovesFactorsReversed[i]
+      };
+      console.log(
+        `generating viableMovesAndRounds, moves ${movesRoundsPair.moves} rounds ${movesRoundsPair.rounds} `
+      );
+      viableMovesAndRounds = [...viableMovesAndRounds, movesRoundsPair];
+    }
+
     console.log(`viableGameBoards `, viableGameBoards);
+    console.log(`viableMovesAndRounds `, viableMovesAndRounds);
     let rows = settings.rows;
     let columns = settings.columns;
     let numPlayers = settings.numberOfPlayers;
@@ -846,7 +863,21 @@
         id="moves-and-rounds-wrapper"
         style={`--player-color: ${currentPlayer.colorMain}`}>
         <div class="settings-content">
-          This game shall be
+                  This game shall have
+          <input
+            name="players"
+            id="numberOfPlayers"
+            type="number"
+            class="settings-input"
+            placeholder={settings.numberOfPlayers}
+            bind:value={settings.numberOfPlayers}
+            on:input={triggerGameBoardUpdate}
+            min="1"
+            max="8"
+            on:focus={e => calculateViableFactors(e.target)}
+            on:keyup={e => calculateViableFactors(e.target)}
+            on:click={highlight} />
+          players. The gameboard shall be
           <input
             name="rows"
             id="rows"
@@ -914,7 +945,7 @@
                       type="number"
                       class="settings-input"
                       placeholder="?"
-                      bind:value={configuredmovesPerTurn} />
+                      bind:value={configuredMovesPerTurn} />
                   </label>
                   <label for="roundsPerGame" id="roundsPerGame">
                     <div class="label-content">roundsPerGame:</div>
@@ -923,18 +954,18 @@
                       type="number"
                       class="settings-input"
                       placeholder="?"
-                      bind:value={configuredroundsPerGame} />
+                      bind:value={configuredRoundsPerGame} />
                   </label>
                 </div>
 
                 <div class="viablegameboards-wrapper">
-                  {#each viableGameBoards as factor}
+                  {#each viableMovesAndRounds as factor}
                     <span
-                      class:highlighted={configuredRows == factor.row}
+                      class:highlighted={configuredMovesPerTurn == factor.moves}
                       class="factor-item"
                       on:click={e => setFactorValue(e)}>
-                      <span class="factor-item-sub">{factor.row}</span>
-                      <span class="factor-item-sub">{factor.column}</span>
+                      <span class="factor-item-sub">{factor.moves}</span>
+                      <span class="factor-item-sub">{factor.rounds}</span>
                     </span>
                   {/each}
                 </div>
