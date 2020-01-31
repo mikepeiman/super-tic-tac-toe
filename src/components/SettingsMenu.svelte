@@ -23,9 +23,11 @@
   let rowsAndColumns = true;
   let movesAndRounds = false;
   let rowsUndetermined = false;
-  let configuredRows = "?";
   let columnsUndetermined = false;
-  let configuredColumns = "?";
+  let configuredRows = "?";
+  let configuredRows = "?";
+  let configuredMovesPerTurn = "?";
+  let configuredroundsPerGame = "?";
   let computedGameMoves, computedMovesPerPlayer, computedRoundsPerGame;
   $: {
     computedGameMoves =
@@ -60,7 +62,9 @@
     settings.numberOfPlayers * settings.movesPerTurn * settings.roundsPerGame;
   $: totalMovesFactors = factors(totalMoves);
   // $: configuredColumns && totalMovesFactors;
-  $: viableMoves = [];
+  $: viableMoves = Number.isInteger(
+    (settings.rows * settings.columns) / settings.numberOfPlayers
+  );
   $: viableRows = totalMovesFactors;
   $: viableColumns = totalMovesFactors;
 
@@ -121,7 +125,7 @@
   async function calculateViableFactors() {
     totalMovesFactors = await factors(totalMoves);
     console.log(
-      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`
+      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}, viableMoves? ${viableMoves}`
     );
     // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
     let len = totalMovesFactors.length;
@@ -231,7 +235,6 @@
         // el.style = `background: var(--player-color);`
       }
     } else if (rowsAndColumns) {
-
     }
 
     let rows = settings.rows;
@@ -278,18 +281,18 @@
   }
 
   function setConfigurationMode(e) {
-    toggleConfigurationFlag = true
+    toggleConfigurationFlag = true;
     console.log(`setConfigurationMode() clicked `, e.target);
     let id = e.target.id;
     console.log(`setConfigurationMode() clicked id ${id}`);
     if (id === "movesAndRounds") {
-      rowsAndColumns = false
-      movesAndRounds = true
+      rowsAndColumns = false;
+      movesAndRounds = true;
     } else if (id === "rowsAndColumns") {
-      rowsAndColumns = true
-      movesAndRounds = false
+      rowsAndColumns = true;
+      movesAndRounds = false;
     }
-    calculateViableFactors() 
+    calculateViableFactors();
   }
 </script>
 
@@ -838,135 +841,124 @@
       </div>
     {:else if rowsAndColumns}
       <div
-        class:hidden={rowsAndColumns}
+        class:hidden={toggleConfigurationFlag}
         class="settings-wrapper settings-menu"
-        id="rows-and-columns-wrapper"
+        id="moves-and-rounds-wrapper"
         style={`--player-color: ${currentPlayer.colorMain}`}>
-        <label for="players" id="players">
-          <div class="label-content">players</div>
-          <input
-            name="players"
-            type="number"
-            class="settings-input"
-            placeholder={settings.numberOfPlayers}
-            bind:value={settings.numberOfPlayers}
-            on:input={triggerGameBoardUpdate}
-            min="1"
-            max="8"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-        </label>
-        <label for="rows" id="rows">
-          <div class="label-content">rows</div>
+        <div class="settings-content">
+          This game shall be
           <input
             name="rows"
+            id="rows"
             type="number"
             class="settings-input"
             placeholder={settings.rows}
             bind:value={settings.rows}
+            on:input={triggerGameBoardUpdate}
+            min="2"
             on:focus={e => calculateViableFactors(e.target)}
             on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-          <div class="settings-wrapper viable-game" id="computed-widget">
-            <span class="computed-span">
-              {#each viableRows as factor}
-                <span class="factor-item" on:click={e => setFactorValue(e)}>
-                  {factor}
-                </span>
-              {/each}
-            </span>
-          </div>
-        </label>
-        <label for="columns" id="columns">
-          <div class="label-content">columns</div>
+          rows tall by
           <input
             name="columns"
+            id="columns"
             type="number"
             class="settings-input"
             placeholder={settings.columns}
             bind:value={settings.columns}
+            on:input={triggerGameBoardUpdate}
+            min="2"
             on:focus={e => calculateViableFactors(e.target)}
             on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-          <div class="settings-wrapper viable-game" id="computed-widget">
-            <span class="computed-span">
-              {#each viableColumns as factor}
-                <span class="factor-item" on:click={e => setFactorValue(e)}>
-                  {factor}
-                </span>
-              {/each}
-            </span>
-          </div>
-        </label>
-        <label for="movesPerTurn" id="movesPerTurn">
-          <div class="label-content">moves per turn</div>
-          <input
-            name="movesPerTurn"
-            type="number"
-            class="settings-input"
-            placeholder={settings.movesPerTurn}
-            bind:value={settings.movesPerTurn}
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          <div class="settings-wrapper viable-game" id="computed-widget">
-            <span class="computed-span">
-
-              {#each viableMoves as factor}
-                <span class="factor-item" on:click={e => setFactorValue(e)}>
-                  {factor}
-                </span>
-              {/each}
-            </span>
-          </div>
-        </label>
-        <label for="cellsToScore" id="cellsToScore">
-          <div class="label-content">in a row to score</div>
+          columns wide. This yields {settings.rows * settings.columns} total
+          squares, which breaks down to {((settings.rows * settings.columns) / settings.numberOfPlayers).toFixed(2)}
+          moves per player. It will take
           <input
             name="cellsToScore"
             type="number"
             class="settings-input"
+            id="cellsToScore"
             placeholder={settings.cellsToScore}
             bind:value={settings.cellsToScore}
             on:focus={e => calculateViableFactors(e.target)}
             on:keyup={e => calculateViableFactors(e.target)}
             on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-        </label>
-        <label for="bonusForCompleteLine" id="bonusForCompleteLine">
-          <div class="label-content">bonus for complete line</div>
+          moves in a row to score, and a complete line will receive a bonus of
           <input
             name="bonusForCompleteLine"
             type="number"
             class="settings-input"
+            id="bonusForCompleteLine"
             placeholder={settings.bonusForCompleteLine}
             bind:value={settings.bonusForCompleteLine}
             on:focus={e => calculateViableFactors(e.target)}
             on:keyup={e => calculateViableFactors(e.target)}
             on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-        </label>
-        <label for="sizeFactor" id="sizeFactor">
-          <div class="label-content">Board size (%)</div>
-          <input
-            name="sizeFactor"
-            type="number"
-            class="settings-input"
-            placeholder={settings.sizeFactor}
-            bind:value={settings.sizeFactor}
-            max="100"
-            step="5"
-            min="10"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          <!-- <i class="percent-symbol">%</i> -->
-        </label>
+          .
+        </div>
+        <div class="settings-content">
+          <p>Select a moves per turn and rounds configuration below:</p>
+          <div class="configuration-row">
+            <div class="settings-wrapper viable-game" id="computed-widget">
+
+              <span class="computed-moves-rounds">
+                <div class="settings-text">
+                  <label for="movesPerTurn" id="movesPerTurn">
+                    <div class="label-content">movesPerTurn:</div>
+                    <input
+                      name="movesPerTurn"
+                      type="number"
+                      class="settings-input"
+                      placeholder="?"
+                      bind:value={configuredmovesPerTurn} />
+                  </label>
+                  <label for="roundsPerGame" id="roundsPerGame">
+                    <div class="label-content">roundsPerGame:</div>
+                    <input
+                      name="roundsPerGame"
+                      type="number"
+                      class="settings-input"
+                      placeholder="?"
+                      bind:value={configuredroundsPerGame} />
+                  </label>
+                </div>
+
+                <div class="viablegameboards-wrapper">
+                  {#each viableGameBoards as factor}
+                    <span
+                      class:highlighted={configuredRows == factor.row}
+                      class="factor-item"
+                      on:click={e => setFactorValue(e)}>
+                      <span class="factor-item-sub">{factor.row}</span>
+                      <span class="factor-item-sub">{factor.column}</span>
+                    </span>
+                  {/each}
+                </div>
+              </span>
+            </div>
+          </div>
+          <label for="sizeFactor" id="sizeFactor">
+            <div class="label-content">Board size (%)</div>
+            <input
+              name="sizeFactor"
+              type="number"
+              class="settings-input"
+              placeholder={settings.sizeFactor}
+              bind:value={settings.sizeFactor}
+              max="100"
+              step="5"
+              min="10"
+              on:focus={e => calculateViableFactors(e.target)}
+              on:keyup={e => calculateViableFactors(e.target)}
+              on:input={triggerGameBoardUpdate}
+              on:click={highlight} />
+            <!-- <i class="percent-symbol">%</i> -->
+          </label>
+        </div>
       </div>
     {/if}
   {:else}{/if}
