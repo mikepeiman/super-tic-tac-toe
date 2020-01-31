@@ -318,17 +318,21 @@
     border-bottom: 3px solid var(--player-color);
   }
   .settings-wrapper {
-    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    // padding: 0.5rem;
     // background: var(--theme-bg);
     // border-top: 3px solid var(--player-color);
-    margin: 0;
-    height: auto;
-    display: grid;
-    grid-template-areas:
-      "players rows toScore size"
-      "moves columns bonus .";
-    justify-content: space-between;
-    align-content: center;
+    // margin: 0;
+    // height: auto;
+    // display: grid;
+    // grid-template-areas:
+    //   "players rows toScore size"
+    //   "moves columns bonus .";
+    // justify-content: space-between;
+    // align-content: center;
     transition: all 0.25s;
     &.dark {
       // background: var(--theme-bg);
@@ -408,10 +412,9 @@
     position: relative;
   }
   .percent-symbol {
-    position: absolute;
-    color: $input-blue;
-    margin-right: 1ch;
-    left: 3ch;
+    color: #32c8ff;
+    margin: 0;
+    margin-left: -1ch;
     font-family: "Muli";
   }
 
@@ -484,6 +487,10 @@
       align-items: flex-start;
       height: auto;
       flex-wrap: wrap;
+      & .configuration-item {
+        padding: 1rem;
+        font-size: 2rem;
+      }
       & label {
         font-size: 100%;
         display: flex;
@@ -515,6 +522,10 @@
             background: $input-blue;
           }
         }
+      }
+      & .settings-input {
+        width: 3rem;
+        font-size: 1.5rem;
       }
     }
   }
@@ -579,7 +590,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-            outline: 1px dashed var(--input-blue);
+        outline: 1px dashed var(--input-blue);
       }
       &.highlighted {
         background: var(--player-color);
@@ -589,16 +600,28 @@
     }
   }
 
-  #computed-widget .computed-rows-columns {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 8ch auto;
-    grid-template-areas: "labels factors";
-    & .viablegameboards-wrapper {
-      & .highlighted {
-        background: var(--player-color);
-        transition: all 0.25s;
+  #computed-widget {
+    & .computed-rows-columns {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      // display: grid;
+      // grid-template-columns: 8ch auto;
+      // grid-template-areas: "labels factors";
+      & .viablegameboards-wrapper {
+        & .highlighted {
+          background: var(--player-color);
+          transition: all 0.25s;
+        }
       }
+    }
+    & .computed-moves-rounds {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
   }
   .configuration-toggle-wrapper {
@@ -611,18 +634,19 @@
     & .configuration-item {
       margin: 1rem;
       padding: 1rem;
+      font-size: 1.25rem;
       border-radius: 5px;
-      background: var(--player-color-dark);
+      background: darken(#32c8ff, 30%);
       transition: all 0.25s;
       &:hover {
-        background: var(--player-color);
+        background: darkorange;
         transition: all 0.25s;
       }
     }
-    & .toggled {
-      background: var(--player-color-dark);
-      transition: all 0.25s;
-    }
+    // & .toggled {
+    //   background: darken(darkorange, 30%);
+    //   transition: all 0.25s;
+    // }
   }
   .viablegameboards-wrapper {
     grid-area: factors;
@@ -635,10 +659,11 @@
   }
 
   .settings-input {
-    width: 3rem;
+    width: 2rem;
+    font-size: 1rem;
     border-bottom: 1px solid #32c8ff;
     text-align: center;
-    font-size: 1.5rem;
+
     padding: 0;
   }
 
@@ -646,10 +671,12 @@
     margin: 0;
     color: var(--theme-fg);
     display: block;
+    width: 100%;
     & p {
       margin: 0.75rem;
       font-size: 1.5rem;
       text-align: center;
+      color: darkorange;
     }
   }
 
@@ -683,7 +710,7 @@
       Configure By Rows And Columns
     </h1>
     <h1
-      class:toggled={!rowsAndColumns}
+      class:toggled={movesAndRounds}
       id="movesAndRounds"
       class="configuration-item"
       on:click={setConfigurationMode}>
@@ -763,7 +790,23 @@
             on:keyup={e => calculateViableFactors(e.target)}
             on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-          .
+          . Your game board will occupy
+          <input
+            id="sizeFactor"
+            name="sizeFactor"
+            type="number"
+            class="settings-input"
+            placeholder={settings.sizeFactor}
+            bind:value={settings.sizeFactor}
+            max="100"
+            step="5"
+            min="10"
+            on:focus={e => calculateViableFactors(e.target)}
+            on:keyup={e => calculateViableFactors(e.target)}
+            on:input={triggerGameBoardUpdate}
+            on:click={highlight} />
+          <i class="percent-symbol">%</i>
+          of the viewport.
         </div>
         <div class="settings-content">
           <p>Select your prefered gameboard configuration below:</p>
@@ -806,23 +849,7 @@
               </span>
             </div>
           </div>
-          <label for="sizeFactor" id="sizeFactor">
-            <div class="label-content">Board size (%)</div>
-            <input
-              name="sizeFactor"
-              type="number"
-              class="settings-input"
-              placeholder={settings.sizeFactor}
-              bind:value={settings.sizeFactor}
-              max="100"
-              step="5"
-              min="10"
-              on:focus={e => calculateViableFactors(e.target)}
-              on:keyup={e => calculateViableFactors(e.target)}
-              on:input={triggerGameBoardUpdate}
-              on:click={highlight} />
-            <!-- <i class="percent-symbol">%</i> -->
-          </label>
+
         </div>
 
       </div>
@@ -899,10 +926,26 @@
             on:keyup={e => calculateViableFactors(e.target)}
             on:input={triggerGameBoardUpdate}
             on:click={highlight} />
-          .
+          . Your game board will occupy
+          <input
+            id="sizeFactor"
+            name="sizeFactor"
+            type="number"
+            class="settings-input"
+            placeholder={settings.sizeFactor}
+            bind:value={settings.sizeFactor}
+            max="100"
+            step="5"
+            min="10"
+            on:focus={e => calculateViableFactors(e.target)}
+            on:keyup={e => calculateViableFactors(e.target)}
+            on:input={triggerGameBoardUpdate}
+            on:click={highlight} />
+          <i class="percent-symbol">%</i>
+          of the viewport.
         </div>
         <div class="settings-content">
-          <p>Select a moves per turn and rounds configuration below:</p>
+          <p>Select a moves and rounds configuration below:</p>
           <div class="configuration-row">
             <div class="settings-wrapper viable-game" id="computed-widget">
 
@@ -942,23 +985,7 @@
               </span>
             </div>
           </div>
-          <label for="sizeFactor" id="sizeFactor">
-            <div class="label-content">Board size (%)</div>
-            <input
-              name="sizeFactor"
-              type="number"
-              class="settings-input"
-              placeholder={settings.sizeFactor}
-              bind:value={settings.sizeFactor}
-              max="100"
-              step="5"
-              min="10"
-              on:focus={e => calculateViableFactors(e.target)}
-              on:keyup={e => calculateViableFactors(e.target)}
-              on:input={triggerGameBoardUpdate}
-              on:click={highlight} />
-            <!-- <i class="percent-symbol">%</i> -->
-          </label>
+
         </div>
       </div>
     {/if}

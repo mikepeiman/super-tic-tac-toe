@@ -17,7 +17,7 @@
       maxWidth: "90vw",
       maxHeight: "90vh",
       margin: "5vh 5vw",
-      background: "#1a1a1aaa"
+      background: "rgba(0,0,0,0.7)"
     },
     close: {
       width: "3rem",
@@ -39,7 +39,12 @@
       styling = {
         window: {
           background: "none",
-          padding: "2.5rem"
+          padding: "2.5rem",
+          width: "100%",
+          maxWidth: "90vw",
+          maxHeight: "90vh",
+          margin: "5vh 5vw",
+          background: "rgba(0,0,0,0.7)"
         },
         close: {
           width: "3rem",
@@ -56,7 +61,12 @@
       styling = {
         window: {
           background: "none",
-          padding: "0"
+          padding: "0",
+          width: "100%",
+          maxWidth: "90vw",
+          maxHeight: "90vh",
+          margin: "5vh 5vw",
+          background: "rgba(0,0,0,0.7)"
         },
         close: {
           width: "3rem",
