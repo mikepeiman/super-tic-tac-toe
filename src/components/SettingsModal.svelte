@@ -108,13 +108,13 @@
     }
   }
   :global(.window-wrap .window) {
-    min-height: 35vh;
-    transition: all .5s;
-  }
-  :global(.window-wrap .window.expand) {
     min-height: 90vh;
     transition: all .5s;
   }
+  // :global(.window-wrap .window.expand) {
+  //   min-height: 90vh;
+  //   transition: all .5s;
+  // }
 </style>
 
 <button class="control-button" id="settings-menu-button" on:click={showModal}>

@@ -780,10 +780,10 @@
     </h1>
   </div>
   {#if toggleConfigurationFlag}
-    <!-- {#if movesAndRounds} -->
+    {#if movesAndRounds}
     <!--         class:open={movesAndRounds} -->
     <div
-      transition:fly={{ y: -500, duration: 750, delay: 500 }}
+      transition:fly={{ y: -500, duration: 750 }}
       class:show={movesAndRounds}
       class="settings-wrapper settings-menu"
       id="moves-and-rounds-wrapper"
@@ -917,7 +917,7 @@
       </div>
 
     </div>
-    <!-- {:else if rowsAndColumns} -->
+    {:else if rowsAndColumns}
     <!-- transition:fly={{ y: -500, duration: 750 }} -->
     <!-- transition:fade={{ duration: 250 }} -->
     <!--         class:open={rowsAndColumns} -->
@@ -1056,7 +1056,7 @@
 
       </div>
     </div>
-    <!-- {/if} -->
+    {/if}
   {/if}
 {:else}
   <div class="settings-menu-heading">
