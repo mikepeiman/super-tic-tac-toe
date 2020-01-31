@@ -117,7 +117,7 @@
   }
 
   async function calculateViableFactors() {
-    totalMovesFactors = await factors(totalMoves)
+    totalMovesFactors = await factors(totalMoves);
     console.log(
       `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}`
     );
@@ -201,6 +201,7 @@
 
   function setFactorValue(e) {
     console.log(`setFactorValue() => e `, e);
+    let el = e.target;
     console.log(`setFactorValue() => e.target `, e.target);
     console.log(
       `setFactorValue() => e.target.textContent `,
@@ -218,6 +219,13 @@
       configuredRows = rowVal;
       settings["columns"] = columnVal;
       configuredColumns = columnVal;
+      if (el.classList.contains("factor-item-sub")) {
+        console.log(`We clicked a CHILD factor-item-sub`);
+        el.parentElement.classList.add("highlighted");
+      } else {
+        console.log(`We clicked a PARENT factor-item`);
+        el.classList.add("highlighted");
+      }
     }
 
     let rows = settings.rows;
@@ -310,7 +318,7 @@
   }
   .settings-wrapper {
     padding: 0.5rem;
-    background: var(--theme-bg);
+    // background: var(--theme-bg);
     // border-top: 3px solid var(--player-color);
     margin: 0;
     height: auto;
@@ -322,12 +330,12 @@
     align-content: center;
     transition: all 0.25s;
     &.dark {
-      background: var(--theme-bg);
+      // background: var(--theme-bg);
       color: var(--theme-fg);
       transition: all 0.25s;
     }
     &.light {
-      background: var(--theme-bg);
+      // background: var(--theme-bg);
       color: var(--theme-fg);
       transition: all 0.25s;
     }
@@ -567,11 +575,8 @@
           transition: all 0.25s;
           cursor: pointer;
         }
-        &img {
-          width: 2.5rem;
-          height: 2.5rem;
-        }
       }
+
       &.factor-item-sub {
         padding: 0.25rem;
         margin: 0.25rem;
@@ -588,11 +593,17 @@
     }
   }
 
-  span.computed-span-row-columns {
+  #computed-widget .computed-rows-columns {
     width: 100%;
     display: grid;
     grid-template-columns: 8ch auto;
     grid-template-areas: "labels factors";
+    & .viablegameboards-wrapper {
+      & .highlighted {
+        background: var(--player-color);
+        transition: all 0.25s;
+      }
+    }
   }
   .configuration-toggle-wrapper {
     margin: 0 auto;
@@ -600,7 +611,7 @@
     display: flex;
     color: #efefefef;
     transition: all 0.25s;
-    background: var(--theme-bg);
+    // background: #1a1a1aaa;
     & .configuration-item {
       margin: 1rem;
       background: rgba(0, 0, 0, 0);
@@ -742,7 +753,7 @@
         <div class="configuration-row">
           <div class="settings-wrapper viable-game" id="computed-widget">
 
-            <span class="computed-span-row-columns">
+            <span class="computed-rows-columns">
               <div class="settings-text">
                 <label for="rows" id="rows">
                   <div class="label-content">Rows:</div>

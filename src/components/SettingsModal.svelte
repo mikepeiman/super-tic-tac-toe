@@ -17,14 +17,14 @@
       maxWidth: "90vw",
       maxHeight: "90vh",
       margin: "5vh 5vw",
-      background: "var(--theme-bg)"
+      background: "#1a1a1aaa"
     },
     close: {
       width: "3rem",
       height: "3rem"
     },
     content: {
-      borderRadius: "5px",
+      borderRadius: "5px"
     }
   };
   let vWidth;
