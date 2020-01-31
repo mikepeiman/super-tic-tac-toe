@@ -12,7 +12,8 @@
     storeGameInProgress,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeToggleConfiguration
   } from "../stores.js";
 
   let currentPlayer;
@@ -77,6 +78,14 @@
     );
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
+    });
+    storeToggleConfiguration.subscribe(val => {
+      console.log(`storeToggleConfiguration val ${val}`);
+      toggleConfigurationFlag = val;
+      if (!toggleConfigurationFlag) {
+        movesAndRounds = false;
+        rowsAndColumns = false;
+      }
     });
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
@@ -643,10 +652,11 @@
         transition: all 0.25s;
       }
     }
-    // & .toggled {
-    //   background: darken(darkorange, 30%);
-    //   transition: all 0.25s;
-    // }
+    & .toggled {
+      background: darkorange;
+
+      transition: all 0.25s;
+    }
   }
   .viablegameboards-wrapper {
     grid-area: factors;

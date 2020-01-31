@@ -84,6 +84,7 @@
   const showModal = () => {
     open(GameSettingsModalContent, { message: "Game Settings:" }, styling);
     console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
+    storeToggleConfiguration.set(false)
   };
 </script>
 
