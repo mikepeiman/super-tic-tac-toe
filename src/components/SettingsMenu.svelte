@@ -212,7 +212,7 @@
     console.log(
       `settings updated? #1 rows ${settings.rows} columns ${settings.columns}`
     );
-    if (rowsAndColumns) {
+    if (movesAndRounds) {
       // if we're working with computed rows and columns
       let rowVal = parseInt(e.target.innerText);
       let columnVal = parseInt(e.target.nextElementSibling.innerText);
@@ -230,6 +230,8 @@
         // el.classList.toggle("highlighted");
         // el.style = `background: var(--player-color);`
       }
+    } else if (rowsAndColumns) {
+
     }
 
     let rows = settings.rows;
@@ -287,6 +289,7 @@
       rowsAndColumns = true
       movesAndRounds = false
     }
+    calculateViableFactors() 
   }
 </script>
 
