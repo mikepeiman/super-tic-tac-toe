@@ -142,11 +142,25 @@
     e.target.select();
     console.log(`highlight func`, e.target);
   }
-
-  async function calculateViableFactors() {
+  function recursiveNextInteger(val, el, dir) {
+    val = parseInt(val)
+    console.log(`recursiveNextInteger() entering with val ${val}, el ${el}`)
+    if ((el = "rows")) {
+      computedMovesPerPlayer =
+        (val * settings.columns) / settings.numberOfPlayers;
+        settings.rows = val
+    } else {
+      computedMovesPerPlayer = (settings.rows * val) / settings.numberOfPlayers;
+      settings.columns = val
+    }
+    while (!Number.isInteger(computedMovesPerPlayer)) {
+      recursiveNextInteger(val+1, el);
+    }
+  }
+  async function calculateViableFactors(e) {
     totalMovesFactors = await factors(totalMoves);
     console.log(
-      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}, viableMoves? ${viableMoves}`
+      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}, viableMoves? ${viableMoves} e `, e
     );
 
     // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
@@ -170,6 +184,7 @@
         active.classList.add("invalid");
         active.style = `background: rgba(155,0,0,0.25);
     color: rgba(255,55,125,1);`;
+        recursiveNextInteger(active.value, active.id);
       }
     } else {
       active.style = "";
@@ -276,7 +291,7 @@
     console.log(
       `settings updated? #2 rows ${settings.rows} columns ${settings.columns}`
     );
-    calculateViableFactors();
+    calculateViableFactors(e);
     updateSettings;
   }
 
