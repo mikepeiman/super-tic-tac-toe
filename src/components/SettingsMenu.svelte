@@ -242,16 +242,14 @@
       configuredRows = rowVal;
       settings["columns"] = columnVal;
       configuredColumns = columnVal;
-      if (el.classList.contains("factor-item-sub")) {
-        console.log(`We clicked a CHILD factor-item-sub`);
-        // el.parentElement.classList.toggle("highlighted");
-        // el.parentElement.style = `background: var(--player-color);`
-      } else {
-        console.log(`We clicked a PARENT factor-item`);
-        // el.classList.toggle("highlighted");
-        // el.style = `background: var(--player-color);`
-      }
     } else if (rowsAndColumns) {
+      let movesVal = parseInt(e.target.innerText);
+      let roundsVal = parseInt(e.target.nextElementSibling.innerText);
+      console.log(`Clicked movesVal ${movesVal} roundsVal ${roundsVal}`);
+      settings["movesPerTurn"] = movesVal;
+      configuredMovesPerTurn = movesVal;
+      settings["roundsPerGame"] = roundsVal;
+      configuredRoundsPerGame = roundsVal;
     }
 
     let rows = settings.rows;
@@ -260,36 +258,7 @@
     let movesPerTurn = settings.movesPerTurn;
     let roundsPerGame = settings.roundsPerGame;
     let id = e.target.offsetParent.id;
-    // e.target.classList.add("highlighted");
-    // let id = e.target.parentElement.parentElement.children[0].children[0].id;
-    // console.log(`setFactorValue() => e.target.id `, id);
-    // let el = document.getElementById(id);
-    // // let input = el.children[1];
-    // let val = parseInt(e.target.innerText);
-    // console.log(`setFactorValue() => el, input id ${id}`, el);
-    // el.value = val;
 
-    // settings[id] = val;
-
-    // if (id === "rows") {
-    //   console.log(`This is ROW`);
-    //   configuredRows = val;
-    //   rowsUndetermined = false;
-    //   viableColumns = factors(
-    //     Math.round((movesPerTurn * numPlayers * roundsPerGame) / configuredRows)
-    //   );
-    // }
-    // if (id === "columns") {
-    //   console.log(`This is COLUMN`);
-    //   configuredColumns = val;
-    //   columnsUndetermined = false;
-    //   viableRows = factors(
-    //     Math.round(
-    //       (movesPerTurn * numPlayers * roundsPerGame) / configuredColumns
-    //     )
-    //   );
-    // }
-    // storeSettings.set(settings);
     console.log(
       `settings updated? #2 rows ${settings.rows} columns ${settings.columns}`
     );
@@ -586,11 +555,11 @@
         color: rgba(0, 155, 255, 1);
       }
       &.factor-item {
-        padding: 0.25rem;
+        // padding: 0.25rem;
         margin: 0.25rem;
         color: #efefefef;
         background: var(--theme-bg);
-        outline: 2px dashed var(--input-blue);
+        // outline: 2px dashed var(--input-blue);
         width: auto;
         display: flex;
         justify-content: center;
@@ -604,12 +573,13 @@
       }
 
       &.factor-item-sub {
-        padding: 0.25rem;
-        margin: 0.25rem;
+        padding: 0.5rem;
+        margin: 0;
         background: rgba(0, 0, 0, 0.75);
         display: flex;
         justify-content: center;
         align-items: center;
+            outline: 1px dashed var(--input-blue);
       }
       &.highlighted {
         background: var(--player-color);
@@ -863,7 +833,7 @@
         id="moves-and-rounds-wrapper"
         style={`--player-color: ${currentPlayer.colorMain}`}>
         <div class="settings-content">
-                  This game shall have
+          This game shall have
           <input
             name="players"
             id="numberOfPlayers"
