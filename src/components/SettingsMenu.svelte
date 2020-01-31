@@ -307,6 +307,18 @@
     }
     calculateViableFactors();
   }
+
+  function flyFade(node, { y, duration, delay}) {
+    return {
+      delay,
+      duration,
+      css: t => {
+        // const eased
+        return `transform: translateY(${y}); opacity: ${t};`
+      }
+    }
+
+  }
 </script>
 
 <style lang="scss">
@@ -782,8 +794,10 @@
   {#if toggleConfigurationFlag}
     {#if movesAndRounds}
     <!--         class:open={movesAndRounds} -->
+    <!-- transition:fly={{ y: -500, duration: 750 }} -->
+    <!-- transition:flyFade={{ y: -500, duration: 750, delay: 750 }} -->
     <div
-      transition:fly={{ y: -500, duration: 750 }}
+      transition:fly={{ x: 500, duration: 750, opacity: 0 }}
       class:show={movesAndRounds}
       class="settings-wrapper settings-menu"
       id="moves-and-rounds-wrapper"
@@ -922,7 +936,7 @@
     <!-- transition:fade={{ duration: 250 }} -->
     <!--         class:open={rowsAndColumns} -->
     <div
-      transition:fly={{ y: -500, duration: 750 }}
+      transition:fly={{ x: -500, duration: 750 }}
       class:show={rowsAndColumns}
       class="settings-wrapper settings-menu"
       id="rows-and-columns-wrapper"
