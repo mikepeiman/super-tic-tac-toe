@@ -6,6 +6,7 @@
 
 <style>
   .modal-title {
+    grid-area: title;
     font-size: 2rem;
     text-align: center;
     color: #32c8ff;

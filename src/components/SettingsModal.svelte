@@ -24,7 +24,13 @@
       height: "3rem"
     },
     content: {
-      borderRadius: "5px"
+      borderRadius: "5px",
+      display: "grid",
+    gridTemplateRows: "3rem 6rem 1fr",
+    gridTemplateAreas:
+        `"title"
+        "buttons"
+        "content"`
     }
   };
   let vWidth;

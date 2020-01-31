@@ -1,5 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
+  import { fade, fly } from "svelte/transition";
   // import ConfigureGameToggle from "./ConfigureGameToggle.svelte";
   const dispatch = createEventDispatcher();
 
@@ -280,12 +281,18 @@
     console.log(`setConfigurationMode() clicked `, e.target);
     let id = e.target.id;
     console.log(`setConfigurationMode() clicked id ${id}`);
+    // let movesAndRoundsEl = document.getElementById("moves-and-rounds-wrapper");
+    // let rowsAndColumnsEl = document.getElementById("rows-and-columns-wrapper");
     if (id === "movesAndRounds") {
       rowsAndColumns = false;
       movesAndRounds = true;
+      // movesAndRoundsEl.classList.add("transition-in");
+      // rowsAndColumnsEl.classList.remove("transition-in");
     } else if (id === "rowsAndColumns") {
       rowsAndColumns = true;
       movesAndRounds = false;
+      // rowsAndColumnsEl.classList.add("transition-in");
+      // movesAndRoundsEl.classList.remove("transition-in");
     }
     calculateViableFactors();
   }
@@ -327,22 +334,53 @@
     border-bottom: 3px solid var(--player-color);
   }
   .settings-wrapper {
+    grid-area: content;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    // padding: 0.5rem;
-    // background: var(--theme-bg);
-    // border-top: 3px solid var(--player-color);
-    // margin: 0;
-    // height: auto;
-    // display: grid;
-    // grid-template-areas:
-    //   "players rows toScore size"
-    //   "moves columns bonus .";
-    // justify-content: space-between;
-    // align-content: center;
-    transition: all 0.25s;
+    transition: all .50s;
+
+    &.settings-menu {
+      transition: all .50s;
+      display: block;
+      position: relative;
+
+      &#moves-and-rounds-wrapper {
+        // display: none;
+        transition: all .50s;
+        opacity: 0;
+      }
+      &#moves-and-rounds-wrapper.show {
+        display: block;
+        opacity: 1;
+        left: 0;
+        transition: all .50s;
+      }
+      // &#moves-and-rounds-wrapper.transition-in {
+      //   display: block;
+      //   opacity: 1;
+      //   left: 0;
+      //   transition: all .50s;
+      // }
+      &#rows-and-columns-wrapper {
+        // display: none;
+        transition: all .50s;
+        opacity: 0;
+      }
+      &#rows-and-columns-wrapper.show {
+        display: block;
+        left: 0;
+        opacity: 1;
+        transition: all .50s;
+      }
+      // &#rows-and-columns-wrapper.transition-in {
+      //   display: block;
+      //   left: 0;
+      //   opacity: 1;
+      //   transition: all .50s;
+      // }
+    }
     &.dark {
       // background: var(--theme-bg);
       color: var(--theme-fg);
@@ -634,6 +672,7 @@
     }
   }
   .configuration-toggle-wrapper {
+    grid-area: buttons;
     margin: 0 auto;
     width: fit-content;
     display: flex;
@@ -705,7 +744,8 @@
 </style>
 
 {#if initialized}
-
+  <!-- {@debug rowsAndColumns}
+{@debug movesAndRounds} -->
   <!-- <div class="configuration-toggle-wrapper">
      <div class="configuration-item">
       <ConfigureGameToggle on:toggleConfiguration={toggleConfiguration} /> 
@@ -728,278 +768,282 @@
     </h1>
   </div>
   {#if toggleConfigurationFlag}
-    {#if movesAndRounds}
-      <div
-        class:hidden={toggleConfigurationFlag}
-        class="settings-wrapper settings-menu"
-        id="moves-and-rounds-wrapper"
-        style={`--player-color: ${currentPlayer.colorMain}`}>
-        <div class="settings-content">
-          This game shall have
-          <input
-            name="players"
-            id="numberOfPlayers"
-            type="number"
-            class="settings-input"
-            placeholder={settings.numberOfPlayers}
-            bind:value={settings.numberOfPlayers}
-            on:input={triggerGameBoardUpdate}
-            min="1"
-            max="8"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          players, each receiving
-          <input
-            name="movesPerTurn"
-            id="movesPerTurn"
-            type="number"
-            class="settings-input"
-            placeholder={settings.movesPerTurn}
-            bind:value={settings.movesPerTurn}
-            on:input={triggerGameBoardUpdate}
-            min="1"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          moves per turn. They will engage in battle for
-          <input
-            name="roundsPerGame"
-            id="roundsPerGame"
-            type="number"
-            class="settings-input"
-            placeholder={settings.roundsPerGame}
-            bind:value={settings.roundsPerGame}
-            on:input={triggerGameBoardUpdate}
-            min="1"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          rounds before a victor is determined. This constitutes {computedGameMoves}
-          total moves. It will take
-          <input
-            name="cellsToScore"
-            type="number"
-            class="settings-input"
-            id="cellsToScore"
-            placeholder={settings.cellsToScore}
-            bind:value={settings.cellsToScore}
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          moves in a row to score, and a complete line will receive a bonus of
-          <input
-            name="bonusForCompleteLine"
-            type="number"
-            class="settings-input"
-            id="bonusForCompleteLine"
-            placeholder={settings.bonusForCompleteLine}
-            bind:value={settings.bonusForCompleteLine}
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          . Your game board will occupy
-          <input
-            id="sizeFactor"
-            name="sizeFactor"
-            type="number"
-            class="settings-input"
-            placeholder={settings.sizeFactor}
-            bind:value={settings.sizeFactor}
-            max="100"
-            step="5"
-            min="10"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          <i class="percent-symbol">%</i>
-          of the viewport.
-        </div>
-        <div class="settings-content">
-          <p>Select your prefered gameboard configuration below:</p>
-          <div class="configuration-row">
-            <div class="settings-wrapper viable-game" id="computed-widget">
+    <!-- {#if movesAndRounds} -->
+    <!--         class:open={movesAndRounds} -->
+    <div
+      transition:fade={{ duration: 250 }}
+      class:show={movesAndRounds}
+      class="settings-wrapper settings-menu"
+      id="moves-and-rounds-wrapper"
+      style={`--player-color: ${currentPlayer.colorMain}`}>
+      <div class="settings-content">
+        This game shall have
+        <input
+          name="players"
+          id="numberOfPlayers"
+          type="number"
+          class="settings-input"
+          placeholder={settings.numberOfPlayers}
+          bind:value={settings.numberOfPlayers}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          max="8"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        players, each receiving
+        <input
+          name="movesPerTurn"
+          id="movesPerTurn"
+          type="number"
+          class="settings-input"
+          placeholder={settings.movesPerTurn}
+          bind:value={settings.movesPerTurn}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        moves per turn. They will engage in battle for
+        <input
+          name="roundsPerGame"
+          id="roundsPerGame"
+          type="number"
+          class="settings-input"
+          placeholder={settings.roundsPerGame}
+          bind:value={settings.roundsPerGame}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        rounds before a victor is determined. This constitutes {computedGameMoves}
+        total moves. It will take
+        <input
+          name="cellsToScore"
+          type="number"
+          class="settings-input"
+          id="cellsToScore"
+          placeholder={settings.cellsToScore}
+          bind:value={settings.cellsToScore}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        moves in a row to score, and a complete line will receive a bonus of
+        <input
+          name="bonusForCompleteLine"
+          type="number"
+          class="settings-input"
+          id="bonusForCompleteLine"
+          placeholder={settings.bonusForCompleteLine}
+          bind:value={settings.bonusForCompleteLine}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        . Your game board will occupy
+        <input
+          id="sizeFactor"
+          name="sizeFactor"
+          type="number"
+          class="settings-input"
+          placeholder={settings.sizeFactor}
+          bind:value={settings.sizeFactor}
+          max="100"
+          step="5"
+          min="10"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        <i class="percent-symbol">%</i>
+        of the viewport.
+      </div>
+      <div class="settings-content">
+        <p>Select your prefered gameboard configuration below:</p>
+        <div class="configuration-row">
+          <div class="settings-wrapper viable-game" id="computed-widget">
 
-              <span class="computed-rows-columns">
-                <div class="settings-text">
-                  <label for="rows" id="rows">
-                    <div class="label-content">Rows:</div>
-                    <input
-                      name="rows"
-                      type="number"
-                      class="settings-input"
-                      placeholder="?"
-                      bind:value={configuredRows} />
-                  </label>
-                  <label for="columns" id="columns">
-                    <div class="label-content">Columns:</div>
-                    <input
-                      name="columns"
-                      type="number"
-                      class="settings-input"
-                      placeholder="?"
-                      bind:value={configuredColumns} />
-                  </label>
-                </div>
+            <span class="computed-rows-columns">
+              <div class="settings-text">
+                <label for="rows" id="rows">
+                  <div class="label-content">Rows:</div>
+                  <input
+                    name="rows"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredRows} />
+                </label>
+                <label for="columns" id="columns">
+                  <div class="label-content">Columns:</div>
+                  <input
+                    name="columns"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredColumns} />
+                </label>
+              </div>
 
-                <div class="viablegameboards-wrapper">
-                  {#each viableGameBoards as factor}
-                    <span
-                      class:highlighted={configuredRows == factor.row}
-                      class="factor-item"
-                      on:click={e => setFactorValue(e)}>
-                      <span class="factor-item-sub">{factor.row}</span>
-                      <span class="factor-item-sub">{factor.column}</span>
-                    </span>
-                  {/each}
-                </div>
-              </span>
-            </div>
+              <div class="viablegameboards-wrapper">
+                {#each viableGameBoards as factor}
+                  <span
+                    class:highlighted={configuredRows == factor.row}
+                    class="factor-item"
+                    on:click={e => setFactorValue(e)}>
+                    <span class="factor-item-sub">{factor.row}</span>
+                    <span class="factor-item-sub">{factor.column}</span>
+                  </span>
+                {/each}
+              </div>
+            </span>
           </div>
-
         </div>
 
       </div>
-    {:else if rowsAndColumns}
-      <div
-        class:hidden={toggleConfigurationFlag}
-        class="settings-wrapper settings-menu"
-        id="moves-and-rounds-wrapper"
-        style={`--player-color: ${currentPlayer.colorMain}`}>
-        <div class="settings-content">
-          This game shall have
-          <input
-            name="players"
-            id="numberOfPlayers"
-            type="number"
-            class="settings-input"
-            placeholder={settings.numberOfPlayers}
-            bind:value={settings.numberOfPlayers}
-            on:input={triggerGameBoardUpdate}
-            min="1"
-            max="8"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          players. The gameboard shall be
-          <input
-            name="rows"
-            id="rows"
-            type="number"
-            class="settings-input"
-            placeholder={settings.rows}
-            bind:value={settings.rows}
-            on:input={triggerGameBoardUpdate}
-            min="2"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          rows tall by
-          <input
-            name="columns"
-            id="columns"
-            type="number"
-            class="settings-input"
-            placeholder={settings.columns}
-            bind:value={settings.columns}
-            on:input={triggerGameBoardUpdate}
-            min="2"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:click={highlight} />
-          columns wide. This yields {settings.rows * settings.columns} total
-          squares, which breaks down to {((settings.rows * settings.columns) / settings.numberOfPlayers).toFixed(2)}
-          moves per player. It will take
-          <input
-            name="cellsToScore"
-            type="number"
-            class="settings-input"
-            id="cellsToScore"
-            placeholder={settings.cellsToScore}
-            bind:value={settings.cellsToScore}
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          moves in a row to score, and a complete line will receive a bonus of
-          <input
-            name="bonusForCompleteLine"
-            type="number"
-            class="settings-input"
-            id="bonusForCompleteLine"
-            placeholder={settings.bonusForCompleteLine}
-            bind:value={settings.bonusForCompleteLine}
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          . Your game board will occupy
-          <input
-            id="sizeFactor"
-            name="sizeFactor"
-            type="number"
-            class="settings-input"
-            placeholder={settings.sizeFactor}
-            bind:value={settings.sizeFactor}
-            max="100"
-            step="5"
-            min="10"
-            on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:input={triggerGameBoardUpdate}
-            on:click={highlight} />
-          <i class="percent-symbol">%</i>
-          of the viewport.
-        </div>
-        <div class="settings-content">
-          <p>Select a moves and rounds configuration below:</p>
-          <div class="configuration-row">
-            <div class="settings-wrapper viable-game" id="computed-widget">
 
-              <span class="computed-moves-rounds">
-                <div class="settings-text">
-                  <label for="movesPerTurn" id="movesPerTurn">
-                    <div class="label-content">movesPerTurn:</div>
-                    <input
-                      name="movesPerTurn"
-                      type="number"
-                      class="settings-input"
-                      placeholder="?"
-                      bind:value={configuredMovesPerTurn} />
-                  </label>
-                  <label for="roundsPerGame" id="roundsPerGame">
-                    <div class="label-content">roundsPerGame:</div>
-                    <input
-                      name="roundsPerGame"
-                      type="number"
-                      class="settings-input"
-                      placeholder="?"
-                      bind:value={configuredRoundsPerGame} />
-                  </label>
-                </div>
-
-                <div class="viablegameboards-wrapper">
-                  {#each viableMovesAndRounds as factor}
-                    <span
-                      class:highlighted={configuredMovesPerTurn == factor.moves}
-                      class="factor-item"
-                      on:click={e => setFactorValue(e)}>
-                      <span class="factor-item-sub">{factor.moves}</span>
-                      <span class="factor-item-sub">{factor.rounds}</span>
-                    </span>
-                  {/each}
-                </div>
-              </span>
-            </div>
-          </div>
-
-        </div>
+    </div>
+    <!-- {:else if rowsAndColumns} -->
+    <!--         class:open={rowsAndColumns} -->
+    <div
+      transition:fade={{ duration: 250 }}
+      class:show={rowsAndColumns}
+      class="settings-wrapper settings-menu"
+      id="rows-and-columns-wrapper"
+      style={`--player-color: ${currentPlayer.colorMain}`}>
+      <div class="settings-content">
+        This game shall have
+        <input
+          name="players"
+          id="numberOfPlayers"
+          type="number"
+          class="settings-input"
+          placeholder={settings.numberOfPlayers}
+          bind:value={settings.numberOfPlayers}
+          on:input={triggerGameBoardUpdate}
+          min="1"
+          max="8"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        players. The gameboard shall be
+        <input
+          name="rows"
+          id="rows"
+          type="number"
+          class="settings-input"
+          placeholder={settings.rows}
+          bind:value={settings.rows}
+          on:input={triggerGameBoardUpdate}
+          min="2"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        rows tall by
+        <input
+          name="columns"
+          id="columns"
+          type="number"
+          class="settings-input"
+          placeholder={settings.columns}
+          bind:value={settings.columns}
+          on:input={triggerGameBoardUpdate}
+          min="2"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:click={highlight} />
+        columns wide. This yields {settings.rows * settings.columns} total
+        squares, which breaks down to {((settings.rows * settings.columns) / settings.numberOfPlayers).toFixed(2)}
+        moves per player. It will take
+        <input
+          name="cellsToScore"
+          type="number"
+          class="settings-input"
+          id="cellsToScore"
+          placeholder={settings.cellsToScore}
+          bind:value={settings.cellsToScore}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        moves in a row to score, and a complete line will receive a bonus of
+        <input
+          name="bonusForCompleteLine"
+          type="number"
+          class="settings-input"
+          id="bonusForCompleteLine"
+          placeholder={settings.bonusForCompleteLine}
+          bind:value={settings.bonusForCompleteLine}
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        . Your game board will occupy
+        <input
+          id="sizeFactor"
+          name="sizeFactor"
+          type="number"
+          class="settings-input"
+          placeholder={settings.sizeFactor}
+          bind:value={settings.sizeFactor}
+          max="100"
+          step="5"
+          min="10"
+          on:focus={e => calculateViableFactors(e.target)}
+          on:keyup={e => calculateViableFactors(e.target)}
+          on:input={triggerGameBoardUpdate}
+          on:click={highlight} />
+        <i class="percent-symbol">%</i>
+        of the viewport.
       </div>
-    {/if}
-  {:else}{/if}
+      <div class="settings-content">
+        <p>Select a moves and rounds configuration below:</p>
+        <div class="configuration-row">
+          <div class="settings-wrapper viable-game" id="computed-widget">
+
+            <span class="computed-moves-rounds">
+              <div class="settings-text">
+                <label for="movesPerTurn" id="movesPerTurn">
+                  <div class="label-content">movesPerTurn:</div>
+                  <input
+                    name="movesPerTurn"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredMovesPerTurn} />
+                </label>
+                <label for="roundsPerGame" id="roundsPerGame">
+                  <div class="label-content">roundsPerGame:</div>
+                  <input
+                    name="roundsPerGame"
+                    type="number"
+                    class="settings-input"
+                    placeholder="?"
+                    bind:value={configuredRoundsPerGame} />
+                </label>
+              </div>
+
+              <div class="viablegameboards-wrapper">
+                {#each viableMovesAndRounds as factor}
+                  <span
+                    class:highlighted={configuredMovesPerTurn == factor.moves}
+                    class="factor-item"
+                    on:click={e => setFactorValue(e)}>
+                    <span class="factor-item-sub">{factor.moves}</span>
+                    <span class="factor-item-sub">{factor.rounds}</span>
+                  </span>
+                {/each}
+              </div>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- {/if} -->
+  {/if}
 {:else}
   <div class="settings-menu-heading">
     <h2 class="loading">Loading Settings...</h2>
