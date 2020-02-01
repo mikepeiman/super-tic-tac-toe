@@ -439,17 +439,17 @@
     z-index: -2;
     & .add-or-remove-players {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 5.75rem;
       margin-left: 0.5rem;
     }
     & .add-or-remove-player-button {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin: 0 0.5rem;
-      font-size: 1.25rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      margin: 0.5rem;
+      font-size: 1rem;
       background: var(--player-color-dark);
       color: var(--player-color);
       // border: 2px solid var(--player-color-dark);
@@ -754,6 +754,33 @@
   @media screen and (min-width: 600px) {
   }
   @media screen and (min-width: 900px) {
+  .scoreboard-container-inner {
+    width: max-content;
+    max-width: 100%;
+    position: relative;
+    z-index: -2;
+    & .add-or-remove-players {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 5.75rem;
+      margin-left: 0.5rem;
+    }
+    & .add-or-remove-player-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      margin: 0 0.5rem;
+      font-size: 1.25rem;
+      background: var(--player-color-dark);
+      color: var(--player-color);
+      // border: 2px solid var(--player-color-dark);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   }
   @media screen and (min-width: 1200px) {
   }

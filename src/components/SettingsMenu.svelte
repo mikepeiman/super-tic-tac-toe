@@ -457,7 +457,7 @@
     width: 100%;
     & .settings-content {
       margin: 1rem;
-      color: var(--theme-fg);
+      color: #efefefef;
       display: block;
       width: 70%;
     }
