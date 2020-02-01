@@ -1179,7 +1179,7 @@
             on:blur={e => removeAddedStyles(e)}
             on:click={highlight} />
           columns wide. This yields {settings.rows * settings.columns} total
-          squares, which breaks down to {(settings.rows * settings.columns) / settings.numberOfPlayers)}
+          squares, which breaks down to {(settings.rows * settings.columns) / settings.numberOfPlayers}
           moves per player. It will take
           <input
             name="cellsToScore"
