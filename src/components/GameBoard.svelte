@@ -645,7 +645,9 @@
     cell.dataset.ticked = true;
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
-    cell.style = `--player-color: ${currentPlayer.colorMain}`;
+    let customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 3)}px`;
+    let playerColor = `--player-color: ${currentPlayer.colorMain}`
+    cell.style = `${playerColor};${customMarkerSize};`;
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
