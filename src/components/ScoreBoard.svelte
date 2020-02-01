@@ -99,8 +99,59 @@
     console.log(`emoji event ${event}`, event, player);
   }
 
-  function editPlayerDetails(player) {
-    console.log(`editPlayerDetails() clicked ${player.name}`);
+  async function editPlayerDetails(e, player) {
+    let cname = "player-details-icon";
+    console.log(`editPlayerDetails() clicked ${player.name}, e `, e);
+    let editPlayerIcon = await findParentElementWithClassName(e.target, cname);
+    if (!editPlayerIcon.classList.contains(cname)) {
+      editPlayerIcon = editPlayerIcon.parentElement;
+    }
+    console.log(`returned editPlayerIcon: `, editPlayerIcon);
+    cname = "player-name";
+    let playerNameInputElement = await findSiblingElementWithClassName(
+      editPlayerIcon,
+      cname
+    );
+    console.log(`returned playerNameInputElement: `, playerNameInputElement);
+    if (!playerNameInputElement.classList.contains(cname)) {
+      playerNameInputElement =
+        playerNameInputElement.previousElementSibling.previousElementSibling
+          .previousElementSibling;
+      console.log(
+        `#2 !if returned playerNameInputElement: `,
+        playerNameInputElement
+      );
+    }
+    playerNameInputElement.select();
+  }
+
+  function findParentElementWithClassName(e, cname) {
+    console.log(
+      `findParentElementWithClassName() => opening, cname ${cname} `,
+      e
+    );
+    if (e.classList.contains(cname)) {
+      console.log(`findParentElementWithClassName() => SUCCESS, found `, e);
+    } else {
+      e = e.parentElement;
+      findParentElementWithClassName(e, cname);
+    }
+    return e;
+  }
+
+  function findSiblingElementWithClassName(e, cname) {
+    console.log(
+      `findSiblingElementWithClassName() => opening, cname ${cname} `,
+      e
+    );
+    let el = e;
+    if (!el.classList.contains(cname)) {
+      el = el.previousElementSibling;
+      findSiblingElementWithClassName(el, cname);
+    } else {
+      console.log(`findSiblingElementWithClassName() => SUCCESS, found `, el);
+    }
+    return el;
   }
   function toggleDeactivatePlacardsSoEmojiCanPick(e) {
     // console.log(`toggleDeactivatePlacardsSoEmojiCanPick() event: `, e);
@@ -499,15 +550,15 @@
     font-size: 1.25rem;
     left: 0;
     top: 0px;
-    // width: 100%;
-    // width: -moz-available; /* WebKit-based browsers will ignore this. */
-    // width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    // width: fill-available;
-    // height: 100%;
-    // height: -moz-available; /* WebKit-based browsers will ignore this. */
-    // height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-    // height: fill-available;
     font-size: 1rem;
+    &:hover {
+      outline: 2px solid var(--player-color-light);
+      outline-offset: -2px;
+    }
+    &:active {
+      outline: 2px solid var(--player-color-light);
+      outline-offset: -2px;
+    }
     & svg {
       visibility: hidden;
     }
@@ -770,9 +821,10 @@
             on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}
             on:emoji={e => updateStoredPlayers(player, e)} />
           <div class="total-score-number">{player.totalScore}</div>
+          <!-- keep in mind that below uses DOM traversal to highlight player-name input, will break if markup changes -->
           <button
             class="player-details-icon"
-            on:click={() => editPlayerDetails(player)}>
+            on:click={e => editPlayerDetails(e, player)}>
             <Fa
               icon={faEdit}
               color={`var(--theme-bg)`}
