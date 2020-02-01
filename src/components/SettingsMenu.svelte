@@ -651,7 +651,7 @@
       // padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
       // margin-right: 1rem;
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       // border-radius: 0 0 5px 5px;
       display: flex;
       flex-direction: row;
@@ -661,7 +661,7 @@
       flex-wrap: wrap;
       & .configuration-item {
         padding: 1rem;
-        font-size: 2rem;
+        font-size: 1.25rem;
       }
       & label {
         font-size: 100%;
@@ -681,7 +681,7 @@
           outline: none;
           // border-bottom: none;
           border-bottom: 1px solid darken($input-blue, 30%);
-          font-size: 100%;
+          font-size: 1.25rem;
           position: relative;
 
           padding: 0;
@@ -696,8 +696,8 @@
         }
       }
       & .settings-input {
-        width: 3rem;
-        font-size: 1.5rem;
+        width: 2.5rem;
+        font-size: 1.25rem;
       }
     }
   }
@@ -879,7 +879,6 @@
     font-size: 1rem;
     border-bottom: 1px solid #32c8ff;
     text-align: center;
-
     padding: 0;
   }
 
@@ -1180,7 +1179,7 @@
             on:blur={e => removeAddedStyles(e)}
             on:click={highlight} />
           columns wide. This yields {settings.rows * settings.columns} total
-          squares, which breaks down to {((settings.rows * settings.columns) / settings.numberOfPlayers).toFixed(2)}
+          squares, which breaks down to {(settings.rows * settings.columns) / settings.numberOfPlayers)}
           moves per player. It will take
           <input
             name="cellsToScore"
