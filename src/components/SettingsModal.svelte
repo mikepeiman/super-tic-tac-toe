@@ -18,7 +18,8 @@
       maxHeight: "90vh",
       margin: "5vh 5vw",
       background: "rgba(0,0,0,0.7)",
-      transition: "all .5s"
+      transition: "all .5s",
+      overflow: "hidden"
     },
     close: {
       width: "3rem",

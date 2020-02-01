@@ -163,13 +163,10 @@
           el.value = parseInt(val - 1);
         } else {
           break;
-          return 0;
         }
       }
-
       recursiveNextInteger(el, dir);
     }
-    return `Broke from while loop <<<<<<<<<<<<<<<<<<<<<<<<<<<<<`
   }
   async function calculateViableFactors(e) {
     totalMovesFactors = await factors(totalMoves);
@@ -197,6 +194,7 @@
         //     activeInput.style = `background: rgba(155,0,0,0.25);
         // color: rgba(255,55,125,1);`;
         recursiveNextInteger(activeInput, e);
+        calculateViableFactors(e)
       }
     } else {
       activeInput.style = "";
