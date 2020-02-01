@@ -142,26 +142,38 @@
     e.target.select();
     console.log(`highlight func`, e.target);
   }
-  function recursiveNextInteger(val, el, dir) {
-    val = parseInt(val)
-    console.log(`recursiveNextInteger() entering with val ${val}, el ${el}`)
-    if ((el = "rows")) {
+  function recursiveNextInteger(el, dir) {
+    let val = parseInt(el.value);
+    console.log(
+      `recursiveNextInteger() entering with val ${val}, el ${el} dir ${dir}`
+    );
+    if ((el.id === "rows")) {
       computedMovesPerPlayer =
         (val * settings.columns) / settings.numberOfPlayers;
-        settings.rows = val
+      settings.rows = val;
     } else {
       computedMovesPerPlayer = (settings.rows * val) / settings.numberOfPlayers;
-      settings.columns = val
+      settings.columns = val;
     }
     while (!Number.isInteger(computedMovesPerPlayer)) {
-      recursiveNextInteger(val+1, el);
+      if (dir.code === "ArrowUp") {
+        el.value = parseInt(val + 1);
+      } else {
+        if (val > 1) {
+          el.value = parseInt(val - 1);
+        } else {
+          break;
+          return 0;
+        }
+      }
+
+      recursiveNextInteger(el, dir);
     }
+    return `Broke from while loop <<<<<<<<<<<<<<<<<<<<<<<<<<<<<`
   }
   async function calculateViableFactors(e) {
     totalMovesFactors = await factors(totalMoves);
-    console.log(
-      `calculateViableFactors() => totalMovesFactors ${totalMovesFactors}, viableMoves? ${viableMoves} e `, e
-    );
+    console.log(`\n\ncalculateViableFactors() => e `, e, `\n\n`);
 
     // console.log(`calculateViableFactors() => totalMovesFactors.reverse() ${totalMovesFactors.reverse()}`);
     let lenTotalMoves = totalMovesFactors.length;
@@ -178,16 +190,16 @@
     console.log(
       `SettingsMenu => onMount(), computedMovesPerPlayer calculated from grid / #players ${computedMovesPerPlayer}`
     );
-    let active = document.activeElement;
+    let activeInput = document.activeElement;
     if (!Number.isInteger(computedMovesPerPlayer)) {
-      if (active.id === "rows" || active.id === "columns") {
-        active.classList.add("invalid");
-        active.style = `background: rgba(155,0,0,0.25);
-    color: rgba(255,55,125,1);`;
-        recursiveNextInteger(active.value, active.id);
+      if (activeInput.id === "rows" || activeInput.id === "columns") {
+        //     activeInput.classList.add("invalid");
+        //     activeInput.style = `background: rgba(155,0,0,0.25);
+        // color: rgba(255,55,125,1);`;
+        recursiveNextInteger(activeInput, e);
       }
     } else {
-      active.style = "";
+      activeInput.style = "";
     }
     viableGameBoards = [];
     for (let i = 0; i < lenTotalMoves; i++) {
@@ -998,8 +1010,8 @@
             on:input={updateSettings}
             min="2"
             on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:blur={e => removeAddedStyles(e.target)}
+            on:keyup={e => calculateViableFactors(e)}
+            on:blur={e => removeAddedStyles(e)}
             on:click={highlight} />
           rows tall by
           <input
@@ -1012,8 +1024,8 @@
             on:input={updateSettings}
             min="2"
             on:focus={e => calculateViableFactors(e.target)}
-            on:keyup={e => calculateViableFactors(e.target)}
-            on:blur={e => removeAddedStyles(e.target)}
+            on:keyup={e => calculateViableFactors(e)}
+            on:blur={e => removeAddedStyles(e)}
             on:click={highlight} />
           columns wide. This yields {settings.rows * settings.columns} total
           squares, which breaks down to {((settings.rows * settings.columns) / settings.numberOfPlayers).toFixed(2)}
