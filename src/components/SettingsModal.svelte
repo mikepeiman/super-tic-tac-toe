@@ -101,18 +101,26 @@
   :global(.window button.close) {
     width: 3rem;
     height: 3rem;
-    background: darkorange;
+    background: darken(#32c8ff, 30%);
     &:before {
       left: 0.5rem;
       width: 2rem;
+      background: var(--theme-bg);
     }
     &:after {
       left: 0.5rem;
       width: 2rem;
+      background: var(--theme-bg);
     }
     &:hover {
-      background: var(--theme-fg);
+      background: darkorange;
       color: var(--theme-bg);
+      &:before {
+        background: var(--theme-bg);
+      }
+      &:after {
+        background: var(--theme-bg);
+      }
     }
   }
   :global(.window-wrap) {
