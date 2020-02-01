@@ -305,10 +305,59 @@
     updateSettings;
   }
 
-  function setConfigurationMode(e) {
+  async function getNextParentWithID(e) {
+    let id = e.id;
+    console.log(`getNextParentWithID(e, id) id ${id}`, e);
+    if (Boolean(id)) {
+      console.log(`getNextParentWithID found id ${id}`, e);
+      return e;
+    } else {
+      e = e.parentElement;
+      console.log(`getNextParentWithID(e, id) about to recurse with`, e);
+      getNextParentWithID(e);
+    }
+    return e;
+  }
+
+  function getConfigurationPretextId(e) {
+    let id = e.id;
+    console.log(`getConfigurationPretextId(e, id) id ${id}`, e);
+    if (e.classList.contains("configuration-pretext-wrapper")) {
+      console.log(
+        `Found (e.classList.contains("configuration-pretext-wrapper")) getConfigurationPretextId() with e `,
+        e
+      );
+    } else {
+      e = e.parentElement;
+      console.log(`getConfigurationPretextId(e, id) about to recurse with`, e);
+      getConfigurationPretextId(e);
+    }
+    console.log(
+      `About to exit and return from getConfigurationPretextId() with e `,
+      e
+    );
+    return e;
+  }
+
+  async function setConfigurationMode(e) {
     toggleConfigurationFlag = true;
-    console.log(`setConfigurationMode() clicked `, e.target);
-    let id = e.target.id;
+    console.log(
+      `setConfigurationMode() clicked, e.target.id :${
+        e.target.id
+      }, typeof ${typeof e.target.id}, Boolean ${Boolean(e.target.id)}, e `,
+      e
+    );
+    // let elWithId = await getNextParentWithID(e.target);
+    let elWithId = getConfigurationPretextId(e.target);
+    let id = elWithId.id;
+    console.log(
+      `setConfigurationMode() found id ${id} elWithId ${elWithId}`,
+      elWithId
+    );
+    if (!elWithId.classList.contains("configuration-pretext-wrapper")) {
+      id = elWithId.parentElement.id;
+    }
+
     console.log(`setConfigurationMode() clicked id ${id}`);
     console.log(
       `SettingsMenu => setConfigurationMode(), computedMovesPerPlayer calculated from grid / #players ${computedMovesPerPlayer}`
@@ -327,11 +376,17 @@
     // let movesAndRoundsEl = document.getElementById("moves-and-rounds-wrapper");
     // let rowsAndColumnsEl = document.getElementById("rows-and-columns-wrapper");
     if (id === "movesAndRounds") {
+      console.log(
+        `setConfigurationMode() clicked id ${id}, must've been movesAndRounds`
+      );
       rowsAndColumns = false;
       movesAndRounds = true;
       // movesAndRoundsEl.classList.add("transition-in");
       // rowsAndColumnsEl.classList.remove("transition-in");
     } else if (id === "rowsAndColumns") {
+      console.log(
+        `setConfigurationMode() clicked id ${id}, must've been rowsAndColumns`
+      );
       rowsAndColumns = true;
       movesAndRounds = false;
       // rowsAndColumnsEl.classList.add("transition-in");
@@ -402,9 +457,9 @@
     width: 100%;
     & .settings-content {
       margin: 1rem;
-    color: var(--theme-fg);
-    display: block;
-    width: 70%;
+      color: var(--theme-fg);
+      display: block;
+      width: 70%;
     }
 
     &.settings-menu {
@@ -758,15 +813,28 @@
       border-radius: 5px;
       background: darken(#32c8ff, 30%);
       transition: all 0.25s;
-      &:hover {
-        background: darkorange;
-        transition: all 0.25s;
-      }
     }
     & .toggled {
       background: darkorange;
 
       transition: all 0.25s;
+    }
+    & .configuration-pretext-wrapper {
+      height: auto;
+      border-radius: 5px;
+      transition: all 0.25s;
+      &:hover {
+        background: rgba(255, 205, 205, 0.1);
+        & h1 {
+          background: darkorange;
+          transition: all 0.25s;
+          transition: all 0.25s;
+        }
+        & .configuration-text {
+          transition: all 0.25s;
+          // background: rgba(255, 205, 205, 0.1);
+        }
+      }
     }
   }
   .configuration-toggle-text {
@@ -856,12 +924,11 @@
     </div> 
   </div> -->
   <div class="configuration-toggle-wrapper">
-    <div class="configuration-pretext-wrapper">
-      <h1
-        class:toggled={rowsAndColumns}
-        id="rowsAndColumns"
-        class="configuration-item"
-        on:click={setConfigurationMode}>
+    <div
+      class="configuration-pretext-wrapper"
+      on:click={setConfigurationMode}
+      id="rowsAndColumns">
+      <h1 class:toggled={rowsAndColumns} class="configuration-item">
         Configure By Rows And Columns
       </h1>
       {#if !toggleConfigurationFlag}
@@ -879,12 +946,11 @@
         </div>
       {/if}
     </div>
-    <div class="configuration-pretext-wrapper">
-      <h1
-        class:toggled={movesAndRounds}
-        id="movesAndRounds"
-        class="configuration-item"
-        on:click={setConfigurationMode}>
+    <div
+      class="configuration-pretext-wrapper"
+      on:click={setConfigurationMode}
+      id="movesAndRounds">
+      <h1 class:toggled={movesAndRounds} class="configuration-item">
         Configure By Moves And Rounds
       </h1>
       {#if !toggleConfigurationFlag}
