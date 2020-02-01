@@ -19,7 +19,7 @@
       margin: "5vh 5vw",
       background: "rgba(0,0,0,0.7)",
       transition: "all .5s",
-      overflow: "hidden"
+      overflow: "hidden",
     },
     close: {
       width: "3rem",
@@ -31,7 +31,8 @@
       gridTemplateRows: "3rem 6rem 1fr",
       gridTemplateAreas: `"title"
         "buttons"
-        "content"`
+        "content"`,
+        width: "100%"
     }
   };
   let vWidth;

@@ -680,11 +680,11 @@
         width: auto;
         display: flex;
         justify-content: center;
-        transition: all 0.25s;
+        transition: all 0.1s;
         flex-direction: column;
         &:hover {
-          background: var(--player-color-dark);
-          transition: all 0.25s;
+          background: var(--input-blue);
+          transition: all 0.1s;
           cursor: pointer;
         }
       }
@@ -699,7 +699,7 @@
         outline: 1px dashed var(--input-blue);
       }
       &.highlighted {
-        background: var(--player-color);
+        background: var(--input-blue);
         transition: all 0.25s;
       }
       // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
@@ -755,6 +755,17 @@
       background: darkorange;
 
       transition: all 0.25s;
+    }
+  }
+  .configuration-toggle-text {
+    grid-area: content;
+    color: var(--theme-fg);
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    margin: 0 auto;
+    & p {
+      margin: 1rem;
     }
   }
   .viablegameboards-wrapper {
@@ -831,6 +842,17 @@
       on:click={setConfigurationMode}>
       Configure By Moves And Rounds
     </h1>
+  </div>
+    <div class="configuration-toggle-text">
+    <p class="configuration-text">
+    Player determines the gameboard size in rows by columns (as well as number of players), and is presented with viable options for
+    moves per turns, and rounds (a turn for each player) per game.</p>
+    <p class="configuration-text">The rows and columns values may skip up or down as you're adjusting them;
+    this is because some configurations produce unequal numbers of turns or rounds, and so are considered
+    invalid.</p>
+    <p class="configuration-text">
+    Player determines the number of players, moves per turn and total rounds per game, and is presented with viable options for
+    gameboard size in rows by columns, for that number of total moves.</p>
   </div>
   {#if toggleConfigurationFlag}
     {#if movesAndRounds}
