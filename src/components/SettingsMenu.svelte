@@ -147,7 +147,7 @@
     console.log(
       `recursiveNextInteger() entering with val ${val}, el ${el} dir ${dir}`
     );
-    if ((el.id === "rows")) {
+    if (el.id === "rows") {
       computedMovesPerPlayer =
         (val * settings.columns) / settings.numberOfPlayers;
       settings.rows = val;
@@ -194,7 +194,7 @@
         //     activeInput.style = `background: rgba(155,0,0,0.25);
         // color: rgba(255,55,125,1);`;
         recursiveNextInteger(activeInput, e);
-        calculateViableFactors(e)
+        calculateViableFactors(e);
       }
     } else {
       activeInput.style = "";
@@ -399,6 +399,13 @@
     justify-content: center;
     align-items: center;
     transition: all 0.5s;
+    width: 100%;
+    & .settings-content {
+      margin: 1rem;
+    color: var(--theme-fg);
+    display: block;
+    width: 70%;
+    }
 
     &.settings-menu {
       transition: all 0.5s;
@@ -409,11 +416,13 @@
         // display: none;
         transition: all 0.5s;
         opacity: 0;
+        overflow: hidden;
       }
       &#moves-and-rounds-wrapper.show {
-        display: block;
+        display: flex;
+        justify-content: center;
+        width: 100%;
         opacity: 1;
-        left: 0;
         transition: all 0.5s;
       }
       // &#moves-and-rounds-wrapper.transition-in {
@@ -426,10 +435,12 @@
         // display: none;
         transition: all 0.5s;
         opacity: 0;
+        overflow: hidden;
       }
       &#rows-and-columns-wrapper.show {
-        display: block;
-        left: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
         opacity: 1;
         transition: all 0.5s;
       }
@@ -733,9 +744,10 @@
   .configuration-toggle-wrapper {
     grid-area: buttons;
     margin: 0 auto;
-    width: fit-content;
+    width: 70%;
     height: fit-content;
     display: flex;
+    justify-content: center;
     color: #efefefef;
     transition: all 0.25s;
     // background: #1a1a1aaa;
@@ -764,13 +776,29 @@
     width: 60%;
     justify-content: center;
     margin: 0 auto;
-    & p {
+    & .configuration-text {
       margin: 1rem;
+    }
+    &:first-child {
+      text-align: end;
+    }
+    &:nth-child(2) {
+      text-align: start;
     }
   }
   .viablegameboards-wrapper {
     grid-area: factors;
     display: flex;
+  }
+
+  .configuration-text {
+    margin: 1rem;
+    &.align-right {
+      text-align: end;
+    }
+    &.align-left {
+      text-align: start;
+    }
   }
   .configuration-row {
     display: flex;
@@ -828,32 +856,70 @@
     </div> 
   </div> -->
   <div class="configuration-toggle-wrapper">
-    <h1
-      class:toggled={rowsAndColumns}
-      id="rowsAndColumns"
-      class="configuration-item"
-      on:click={setConfigurationMode}>
-      Configure By Rows And Columns
-    </h1>
-    <h1
-      class:toggled={movesAndRounds}
-      id="movesAndRounds"
-      class="configuration-item"
-      on:click={setConfigurationMode}>
-      Configure By Moves And Rounds
-    </h1>
+    <div class="configuration-pretext-wrapper">
+      <h1
+        class:toggled={rowsAndColumns}
+        id="rowsAndColumns"
+        class="configuration-item"
+        on:click={setConfigurationMode}>
+        Configure By Rows And Columns
+      </h1>
+      {#if !toggleConfigurationFlag}
+        <div class="configuration-text align-right">
+          <p>
+            Player determines the gameboard size in rows by columns (as well as
+            number of players), and is presented with viable options for moves
+            per turns, and rounds (a turn for each player) per game.
+          </p>
+          <p>
+            The rows and columns values may skip up or down as you're adjusting
+            them; this is because some configurations produce unequal numbers of
+            turns or rounds, and so are considered invalid.
+          </p>
+        </div>
+      {/if}
+    </div>
+    <div class="configuration-pretext-wrapper">
+      <h1
+        class:toggled={movesAndRounds}
+        id="movesAndRounds"
+        class="configuration-item"
+        on:click={setConfigurationMode}>
+        Configure By Moves And Rounds
+      </h1>
+      {#if !toggleConfigurationFlag}
+        <div class="configuration-text align-left">
+          <p>
+            Player determines the number of players, moves per turn and total
+            rounds per game, and is presented with viable options for gameboard
+            size in rows by columns, for that number of total moves.
+          </p>
+        </div>
+      {/if}
+    </div>
   </div>
-    <div class="configuration-toggle-text">
-    <p class="configuration-text">
-    Player determines the gameboard size in rows by columns (as well as number of players), and is presented with viable options for
-    moves per turns, and rounds (a turn for each player) per game.</p>
-    <p class="configuration-text">The rows and columns values may skip up or down as you're adjusting them;
-    this is because some configurations produce unequal numbers of turns or rounds, and so are considered
-    invalid.</p>
-    <p class="configuration-text">
-    Player determines the number of players, moves per turn and total rounds per game, and is presented with viable options for
-    gameboard size in rows by columns, for that number of total moves.</p>
-  </div>
+  <!-- <div class="configuration-toggle-text">
+    <div class="configuration-text align-right">
+      <p>
+        Player determines the gameboard size in rows by columns (as well as
+        number of players), and is presented with viable options for moves per
+        turns, and rounds (a turn for each player) per game.
+      </p>
+      <p>
+        The rows and columns values may skip up or down as you're adjusting
+        them; this is because some configurations produce unequal numbers of
+        turns or rounds, and so are considered invalid.
+      </p>
+    </div>
+
+    <div class="configuration-text align-left">
+      <p>
+        Player determines the number of players, moves per turn and total rounds
+        per game, and is presented with viable options for gameboard size in
+        rows by columns, for that number of total moves.
+      </p>
+    </div>
+  </div> -->
   {#if toggleConfigurationFlag}
     {#if movesAndRounds}
       <!--         class:open={movesAndRounds} -->

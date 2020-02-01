@@ -8,18 +8,18 @@
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   const { open } = getContext("simple-modal");
-
+  // margin: "5vh 5vw",
   let styling = {
     window: {
       background: "none",
       padding: "2rem",
       width: "100%",
-      maxWidth: "90vw",
-      maxHeight: "90vh",
-      margin: "5vh 5vw",
+      maxWidth: "100vw",
+      maxHeight: "100vh",
+      margin: 0,
       background: "rgba(0,0,0,0.7)",
       transition: "all .5s",
-      overflow: "hidden",
+      overflow: "hidden"
     },
     close: {
       width: "3rem",
@@ -28,11 +28,12 @@
     content: {
       borderRadius: "5px",
       display: "grid",
-      gridTemplateRows: "3rem 6rem 1fr",
+      gridTemplateRows: "3rem auto 1fr",
       gridTemplateAreas: `"title"
         "buttons"
         "content"`,
-        width: "100%"
+      width: "100%",
+      overflow: "hidden"
     }
   };
   let vWidth;
@@ -100,6 +101,7 @@
   :global(.window button.close) {
     width: 3rem;
     height: 3rem;
+    background: darkorange;
     &:before {
       left: 0.5rem;
       width: 2rem;
@@ -108,10 +110,20 @@
       left: 0.5rem;
       width: 2rem;
     }
+    &:hover {
+      background: var(--theme-fg);
+      color: var(--theme-bg);
+    }
   }
-  :global(.window-wrap .window) {
-    min-height: 90vh;
-    transition: all .5s;
+  :global(.window-wrap) {
+    margin: 0 !important;
+    width: 100vw;
+    height: 100vh;
+    & .window {
+      min-height: 100vh;
+      min-width: 100vw;
+      transition: all 0.5s;
+    }
   }
   // :global(.window-wrap .window.expand) {
   //   min-height: 90vh;
