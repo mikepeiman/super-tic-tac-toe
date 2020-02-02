@@ -14,12 +14,16 @@
 
   const light = "#efefefef";
   const dark = "#1a1a1a";
-  let elements, viewport, movesRemaining, movesRemainingEl;
+  let elements,
+    viewport,
+    movesRemaining,
+    movesRemainingEl,
+    movesPlayed,
+    movesPlayedEl;
 
   storeMovesRemaining.subscribe(val => {
     movesRemaining = val;
     console.log(`nightmodetoggle storeMovesRemaining ${movesRemaining}`);
-
     if (typeof window !== "undefined") {
       movesRemainingEl = document.getElementById("movesRemaining");
       let od = new Odometer({
@@ -27,13 +31,6 @@
         value: movesRemaining,
         duration: 10 * 1000
       });
-      // window.odometerOptions = {
-      //   duration: 50 // Change how long the javascript expects the CSS animation to take
-      //   // animation: "count" // Count is a simpler animation method which just increments the value,
-      //   // use it when you're looking for something more subtle.
-      // };
-
-      // movesRemainingEl.innerHTML = movesRemaining;
       if (typeof od !== "undefined") {
         console.log(
           `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
@@ -42,6 +39,26 @@
       }
     }
   });
+
+  storeMoveNumber.subscribe(val => {
+    movesPlayed = val;
+    console.log(`nightmodetoggle storeMoveNumber ${movesPlayed}`);
+    if (typeof window !== "undefined") {
+      movesPlayedEl = document.getElementById("movesPlayed");
+      let od = new Odometer({
+        el: movesPlayedEl,
+        value: movesPlayed,
+        duration: 10 * 1000
+      });
+      if (typeof od !== "undefined") {
+        console.log(
+          `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+        );
+        od.update(movesPlayed);
+      }
+    }
+  });
+
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-dark", dark);
@@ -268,16 +285,18 @@
     border-radius: 50%;
   }
 
-
-.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner, .odometer.odometer-theme-minimal.odometer-animating-up .odometer-ribbon-inner,
-.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-minimal.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-  -webkit-transition-duration: .25s !important;
-  -moz-transition-duration: .25s !important;
-  -ms-transition-duration: .25s !important;
-  -o-transition-duration: .25s !important;
-  transition-duration: .25s !important
-}
-
+  .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
+  .odometer.odometer-theme-minimal.odometer-animating-up .odometer-ribbon-inner,
+  .odometer.odometer-auto-theme.odometer-animating-down.odometer-animating
+    .odometer-ribbon-inner,
+  .odometer.odometer-theme-minimal.odometer-animating-down.odometer-animating
+    .odometer-ribbon-inner {
+    -webkit-transition-duration: 0.25s !important;
+    -moz-transition-duration: 0.25s !important;
+    -ms-transition-duration: 0.25s !important;
+    -o-transition-duration: 0.25s !important;
+    transition-duration: 0.25s !important;
+  }
 </style>
 
 <label class="theme-switch" for="night-mode-toggle">

@@ -1032,7 +1032,7 @@
               {movesRemaining}
             </span>
             <p class="dynamic-wrapper">moves remaining in turn</p>
-            <span class="dynamic-value odometer" id="moveNumber">
+            <span class="dynamic-value odometer" id="movesPlayed">
               {moveNumber ? moveNumber : 0}
             </span>
             <p class="dynamic-wrapper">
