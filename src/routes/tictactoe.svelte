@@ -1006,9 +1006,9 @@
           id="moves-wrapper"
           style={`--moves-wrapper-width: ${gameboardWidth}px`}>
           <div class="player-status-detail" id="turn-moves">
-            <span class="dynamic-value">{movesRemaining}</span>
+            <span class="odometer">{movesRemaining}</span>
             <p class="dynamic-wrapper">moves remaining in turn</p>
-            <span class="dynamic-value">{moveNumber ? moveNumber : 0}</span>
+            <span class="dynamic-value odometer">{moveNumber ? moveNumber : 0}</span>
             <p class="dynamic-wrapper">
               {#if settings.rows}
                 of {settings.rows * settings.columns} total moves played
