@@ -791,6 +791,7 @@
 <!-- {@debug players} -->
 <!-- {@debug grid} -->
 <!-- {@debug settings} -->
+{#if players}
 {#await players then players}
 
   <div class="scoreboard-container-inner">
@@ -894,3 +895,6 @@
     {/each}
   </div>
 {/await}
+{:else}
+<h1>ScoreBoard awaiting loading players....</h1>
+{/if}

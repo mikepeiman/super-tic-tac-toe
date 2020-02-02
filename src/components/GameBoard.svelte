@@ -921,4 +921,6 @@
       </div>
     {/each}
   </div>
+  {:else}
+  <h1>GameBoard awaiting generating grid....</h1>
 {/if}

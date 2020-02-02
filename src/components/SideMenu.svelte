@@ -206,7 +206,7 @@
 <!-- {@debug players} -->
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <h2 class="player-indicator-heading">Loading players data...</h2>
+    <h2 class="player-indicator-heading">SideMenu loading players data...</h2>
   {:else}
     <!-- <div class="buttons-wrapper" id="buttons-wrapper"> -->
     <div class="modal-wrapper options-control-wrapper">

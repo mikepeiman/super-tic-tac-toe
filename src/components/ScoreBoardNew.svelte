@@ -597,7 +597,7 @@
   @media screen and (min-width: 1500px) {
   }
 </style>
-
+{#if players}
 {#await players then players}
   <div class="scoreboard-container-inner">
     {#each players as player}
@@ -658,3 +658,6 @@
     {/each}
   </div>
 {/await}
+{:else}
+<h1>ScoreBoard awaiting loading players....</h1>
+{/if}

@@ -1279,7 +1279,7 @@
   {/if}
 {:else}
   <div class="settings-menu-heading">
-    <h2 class="loading">Loading Settings...</h2>
+    <h2 class="loading">SettingsMenu loading Settings...</h2>
     <div class="lds-ripple">
       <div />
       <div />

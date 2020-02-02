@@ -62,16 +62,19 @@
     }
   });
   storeState.subscribe(value => {
-    console.log(`storeState subscribed value, movesRemaining from state ${value.movesRemaining}`, value)
+    console.log(
+      `storeState subscribed value, movesRemaining from state ${value.movesRemaining}`,
+      value
+    );
     state = value;
     if (typeof window !== "undefined") {
       movesRemaining = state.movesRemaining;
-      storeMovesRemaining.set(movesRemaining)
+      storeMovesRemaining.set(movesRemaining);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
-      storeMoveNumber.set(moveNumber)
+      storeMoveNumber.set(moveNumber);
     }
   });
   storeSettings.subscribe(value => {
@@ -1000,9 +1003,7 @@
 <!-- <div class="title-container">
   <h1>SUPER Tic Tac Toe!</h1>
 </div> -->
-
 {#await players then players}
-
   <div
     class="page-container"
     style={`--player-color: ${currentPlayer.colorMain}`}>
@@ -1046,7 +1047,7 @@
       </div>
     {:else}
       <div class="player-status-detail" id="player-name">
-        <h2>Loading...</h2>
+        <h2>StatusBar loading current player...</h2>
       </div>
     {/if}
     <div class="gameboard-container">
