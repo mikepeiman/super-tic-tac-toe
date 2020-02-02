@@ -32,6 +32,17 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+
+  let players,
+    settings,
+    currentPlayer,
+    gameboardWidth,
+    moveNumber,
+    movesRemaining,
+    state,
+    initialized;
+
+  initialized = false;
   let smallScreenHeight = false;
   let smallScreenWidth = false;
   let landscape, portrait;
@@ -42,16 +53,6 @@
 
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
-
-  let players,
-    settings,
-    currentPlayer,
-    gameboardWidth,
-    moveNumber,
-    movesRemaining,
-    state,
-    countUp,
-    od;
 
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
@@ -122,20 +123,6 @@
     console.log(
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
-    // countUp = new CountUp("movesRemaining", movesRemaining);
-    // countUp.start();
-
-    // let movesRemainingEl = await document.getElementById("movesRemaining");
-    // console.log(
-    //   `let movesRemainingEl = document.getElementById('movesRemaining') `,
-    //   movesRemainingEl
-    // );
-    // let od = new Odometer({
-    //   el: movesRemainingEl,
-    //   value: movesRemaining
-    // });
-    // od.innerHTML = movesRemaining
-
     if (viewportSize.width < smallScreenMaxWidth) {
       smallScreenWidth = true;
     } else {
@@ -162,6 +149,26 @@
         moveNumber = lsMoveNumber;
       }
     });
+    let statusbar = document.getElementById("statusbar");
+    let gameboard = document.getElementById("gameboard");
+    let menu = document.getElementById("menu");
+    let scoreboard = document.getElementById("scoreboard");
+      await setTimeout(() => {
+        statusbar.classList.add("loaded");
+      }, 150);
+      await setTimeout(() => {
+        scoreboard.classList.add("loaded");
+      }, 300);
+      await setTimeout(() => {
+        menu.classList.add("loaded");
+      }, 450);
+      await setTimeout(() => {
+        gameboard.classList.add("loaded");
+      }, 600);
+
+     setTimeout(async () => {
+      initialized = true;
+    }, 750);
   });
 
   function resetGame() {
@@ -281,15 +288,35 @@
     // grid-template-areas: "statusbar" "scoreboard" "menu" "gameboard";
     &#statusbar {
       grid-area: statusbar;
+      transition: all 0.1s;
+      &.loaded {
+        background: green;
+        transition: all 0.1s;
+      }
     }
     &#scoreboard {
       grid-area: scoreboard;
+      transition: all 0.1s;
+      &.loaded {
+        background: green;
+        transition: all 0.1s;
+      }
     }
     &#menu {
       grid-area: gamemenu;
+      transition: all 0.1s;
+      &.loaded {
+        background: green;
+        transition: all 0.1s;
+      }
     }
     &#gameboard {
       grid-area: gameboard;
+      transition: all 0.1s;
+      &.loaded {
+        background: green;
+        transition: all 0.1s;
+      }
     }
   }
 
@@ -1054,7 +1081,7 @@
 </style>
 
 <GameInit />
-{#if players}
+{#if initialized}
   {#await players then players}
     <div
       class="page-container"
