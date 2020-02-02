@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import LoadingSpinner from './LoadingSpinner.svelte';
   export let loadingMsg, thisId
 
       console.todo = function(msg) {
@@ -20,4 +21,5 @@ h2 {
 
       <div class="loading-message" id={thisId}>
         <h2>{loadingMsg}</h2>
+        <LoadingSpinner />
       </div>

@@ -229,6 +229,7 @@
     max-width: 100vw;
     grid-template-rows: minmax(8vh, 4rem) auto;
     transition: all 0.45s;
+    position: relative;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -238,6 +239,57 @@
       background: var(--theme-bg);
       color: var(--theme-fg);
       transition: all.25s;
+    }
+  }
+
+  .loading-page-container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 100vw;
+    max-width: 100vw;
+    position: relative;
+    & .loading-container-inner {
+      // width: 40vw;
+      // height: 40vh;
+      background: rgba(200, 200, 255, 0.15);
+      padding: 3rem 6rem 3rem 3rem;
+      border-radius: 1rem;
+      position: relative;
+      // display: grid;
+      // grid-template-columns: auto;
+      // grid-template-rows: auto;
+      // grid-template-areas:
+      //   "statusbar"
+      //   "gamemenu"
+      //   "scoreboard"
+      //   "gameboard";
+      // justify-content: center;
+      // justify-items: center;
+      // align-content: center;
+    }
+  }
+  .loading-message {
+    grid-area: gameboard;
+    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    // grid-template-areas: "statusbar" "scoreboard" "menu" "gameboard";
+    &#statusbar {
+      grid-area: statusbar;
+    }
+    &#scoreboard {
+      grid-area: scoreboard;
+    }
+    &#menu {
+      grid-area: gamemenu;
+    }
+    &#gameboard {
+      grid-area: gameboard;
     }
   }
 
@@ -1002,67 +1054,81 @@
 </style>
 
 <GameInit />
-{#await players}
-  <div class="title-container">
-    <h1>SUPER Tic Tac Toe!</h1>
-  </div>
-  {@debug players}
-{:then players}
-  <div
-    class="page-container"
-    style={`--player-color: ${currentPlayer.colorMain}`}>
+{#if players}
+  {#await players then players}
+    <div
+      class="page-container"
+      style={`--player-color: ${currentPlayer.colorMain}`}>
 
-    <div class="scoreboard-container">
-      <ScoreBoard players />
-    </div>
+      <div class="scoreboard-container">
+        <ScoreBoard players />
+      </div>
 
-    {#if currentPlayer}
-      <div class="statusbar-slim-wrapper">
-        <div class="player-status-detail" id="player-name">
-          <h2
-            class="player-name"
-            style={`--player-color: ${currentPlayer.colorMain}`}>
-            {currentPlayer.name}
-          </h2>
-          <span>{currentPlayer.mark}</span>
-        </div>
-        <div
-          id="moves-wrapper"
-          style={`--moves-wrapper-width: ${gameboardWidth}px`}>
-          <div class="player-status-detail" id="turn-moves">
-            <span class="dynamic-value odometer" id="movesRemaining">
-              {movesRemaining}
-            </span>
-            <p class="dynamic-wrapper">moves remaining in turn</p>
-            <span class="dynamic-value odometer" id="movesPlayed">
-              {moveNumber ? moveNumber : 0}
-            </span>
-            <p class="dynamic-wrapper">
-              {#if settings.rows}
-                of {settings.rows * settings.columns} total moves played
-              {/if}
-            </p>
+      {#if currentPlayer}
+        <div class="statusbar-slim-wrapper">
+          <div class="player-status-detail" id="player-name">
+            <h2
+              class="player-name"
+              style={`--player-color: ${currentPlayer.colorMain}`}>
+              {currentPlayer.name}
+            </h2>
+            <span>{currentPlayer.mark}</span>
           </div>
+          <div
+            id="moves-wrapper"
+            style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+            <div class="player-status-detail" id="turn-moves">
+              <span class="dynamic-value odometer" id="movesRemaining">
+                {movesRemaining}
+              </span>
+              <p class="dynamic-wrapper">moves remaining in turn</p>
+              <span class="dynamic-value odometer" id="movesPlayed">
+                {moveNumber ? moveNumber : 0}
+              </span>
+              <p class="dynamic-wrapper">
+                {#if settings.rows}
+                  of {settings.rows * settings.columns} total moves played
+                {/if}
+              </p>
+            </div>
+          </div>
+
         </div>
+      {:else}
+        <Loading
+          loadingMsg="StatusBar loading via COMPONENT..."
+          thisId="statusbar" />
+      {/if}
 
+      <div class="gameboard-container">
+        <GameBoard on:moveNotification={moveNotification} />
       </div>
-    {:else}
-      <Loading loadingMsg="StatusBar loading via COMPONENT..." thisId="statusbar" />
-    {/if}
 
-    <div class="gameboard-container">
-      <GameBoard on:moveNotification={moveNotification} />
+      {#if smallScreenWidth}
+        <div class="topmenu-container">
+          <TopMenu />
+        </div>
+      {:else if !smallScreenWidth || landscape}
+        <div class="sidemenu-container">
+          <SideMenu />
+        </div>
+      {/if}
     </div>
 
-    {#if smallScreenWidth}
-      <div class="topmenu-container">
-        <TopMenu />
-      </div>
-    {:else if !smallScreenWidth || landscape}
-      <div class="sidemenu-container">
-        <SideMenu />
-      </div>
-    {/if}
+  {/await}
+{:else}
+  <div class="loading-page-container">
+    <div class="loading-container-inner">
+      <Loading
+        loadingMsg="ScoreBoard loading via COMPONENT..."
+        thisId="scoreboard" />
+      <Loading
+        loadingMsg="GameBoard loading via COMPONENT..."
+        thisId="gameboard" />
+      <Loading loadingMsg="Menu loading via COMPONENT..." thisId="menu" />
+      <Loading
+        loadingMsg="Statusbar loading via COMPONENT..."
+        thisId="statusbar" />
+    </div>
   </div>
-
-{/await}
+{/if}
