@@ -202,7 +202,7 @@
     min-width: 100vw;
     max-width: 100vw;
     grid-template-rows: minmax(8vh, 4rem) auto;
-    transition: all 0.25s;
+    transition: all .45s;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -249,10 +249,10 @@
         top: 0.6rem;
         right: 3rem;
         opacity: 1;
-        transition: all 0.25s;
+        transition: all .45s;
         &.hidden {
           opacity: 0;
-          transition: all 0.25s;
+          transition: all .45s;
         }
       }
 
@@ -331,8 +331,18 @@
     box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
     position: relative;
     height: 3rem;
-    & #player-name {
+    &.dark {
       background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all.25s;
+    }
+    &.light {
+      background: var(--theme-bg);
+      color: var(--theme-fg);
+      transition: all.25s;
+    }
+    & #player-name {
+      color: var(--theme-bg);
       left: 0;
       height: 3rem;
       // box-shadow: 0 0 4px var(--player-color);
@@ -342,16 +352,15 @@
       top: 0;
       margin: 0;
       padding: 0;
-      // background: var(--player-color);
       // border-radius: 0 2rem 2rem 0;
       position: absolute;
       left: 0;
       min-height: 100%;
       max-height: 2.5rem;
       width: 19vw;
-      background: none;
-      outline: 2px solid var(--player-color);
-      outline-offset: -4px;
+      background: var(--player-color);
+      // outline: 2px solid var(--player-color);
+      // outline-offset: -4px;
       // &::after {
       // CSS rounded triangle
       // content: "";
@@ -410,7 +419,7 @@
         & .dynamic-value {
           margin: 0;
           padding: 0;
-          background: var(--theme-bg);
+          // background: var(--theme-bg);
           height: 3rem;
           width: 3rem;
           border-radius: 0;
@@ -674,10 +683,10 @@
           top: 0.6rem;
           right: 3rem;
           opacity: 1;
-          transition: all 0.25s;
+          transition: all .45s;
           &.hidden {
             opacity: 0;
-            transition: all 0.25s;
+            transition: all .45s;
           }
         }
 
@@ -867,8 +876,8 @@
         left: 0;
         /* top: 0; */
         margin: 0 0 0.5rem 0.5rem;
-        -webkit-transition: all 0.25s;
-        transition: all 0.25s;
+        -webkit-transition: all .45s;
+        transition: all .45s;
         min-width: -webkit-max-content;
         min-width: -moz-max-content;
         min-width: max-content;
@@ -877,7 +886,7 @@
         /* -webkit-transform: scale(var(--scale-width)); */
         /* transform: scale(var(--scale-width)); */
         transform: scale(1);
-        transition: all 0.25s;
+        transition: all .45s;
         z-index: -1;
 
         & .total-score {

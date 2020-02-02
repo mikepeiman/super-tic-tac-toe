@@ -451,7 +451,7 @@
       margin: 0.5rem;
       font-size: 1rem;
       background: var(--player-color-dark);
-      color: var(--player-color);
+      color: var(--theme-light);
       // border: 2px solid var(--player-color-dark);
       border-radius: 5px;
       display: flex;
@@ -489,54 +489,54 @@
     left: 0;
     // top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
-    transition: all 0.25s;
+    transition: all .45s;
     // outline: 5px solid var(--theme-bg)
     min-width: max-content;
     transform-origin: top left;
     // transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
-    transition: all 0.25s;
+    transition: all .45s;
     z-index: -1;
 
     & .player-name {
-      transition: all 0.25s;
+      transition: all .45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
     }
     & input.player-mark {
-      transition: all 0.25s;
+      transition: all .45s;
       width: 3.5ch;
       display: none;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
     }
     & .total-score-number {
-      transition: all 0.25s;
+      transition: all .45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all 0.25s;
+        transition: all .45s;
       }
     }
   }
@@ -647,7 +647,7 @@
     // outline: 5px solid var(--theme-fg);
     box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
     position: relative;
-    transition: all 0.25s;
+    transition: all .45s;
     min-width: max-content;
     // transform: scale(1.025);
     // transform: scale(calc(var(--scale-width) * 1.05));
@@ -739,7 +739,7 @@
   //   .scoreboard-player {
   //     background: var(--player-color);
   //     margin: 0 1rem 1rem 1rem;
-  //     transition: all 0.25s;
+  //     transition: all .45s;
   //     border: 5px solid #1a1a1a;
   //     // min-width: calc(100% - 10px - 1rem);
   //     transform: scale(1);
@@ -748,7 +748,7 @@
   //     transform: scale(1.025);
   //     border: 5px solid #eeeeee;
   //     position: relative;
-  //     transition: all 0.25s;
+  //     transition: all .45s;
   //   }
   // }
   @media screen and (min-width: 600px) {
@@ -773,7 +773,7 @@
       margin: 0 0.5rem;
       font-size: 1.25rem;
       background: var(--player-color-dark);
-      color: var(--player-color);
+      color: var(--theme-light);
       // border: 2px solid var(--player-color-dark);
       border-radius: 5px;
       display: flex;
@@ -801,8 +801,8 @@
         on:click={addPlayer}>
         <Fa
           icon={faPlus}
-          color={`var(--theme-fg)`}
-          secondaryColor={`var(--theme-fg)`}
+          color={`var(--theme-light)`}
+          secondaryColor={`var(--theme-light)`}
           secondaryOpacity={_secondaryOpacity} />
       </div>
       <div
@@ -811,8 +811,8 @@
         on:click={removePlayer}>
         <Fa
           icon={faMinus}
-          color={`var(--theme-fg)`}
-          secondaryColor={`var(--theme-fg)`}
+          color={`var(--theme-light)`}
+          secondaryColor={`var(--theme-light)`}
           secondaryOpacity={_secondaryOpacity} />
       </div>
     </div>

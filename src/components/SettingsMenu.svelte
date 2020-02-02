@@ -441,7 +441,7 @@
     & .loading {
       color: hsla(280, 100%, 50%, 1);
       // animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-      transition: all 0.25s;
+      transition: all .45s;
     }
   }
   .modal-title {
@@ -509,12 +509,12 @@
     &.dark {
       // background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
     &.light {
       // background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
 
     & label {
@@ -775,7 +775,7 @@
       }
       &.highlighted {
         background: var(--input-blue);
-        transition: all 0.25s;
+        transition: all .45s;
       }
       // border-bottom: 2px solid rgba(#{var(--player-color-light)}, 0.75);
     }
@@ -794,7 +794,7 @@
       & .viablegameboards-wrapper {
         & .highlighted {
           background: var(--player-color);
-          transition: all 0.25s;
+          transition: all .45s;
         }
       }
     }
@@ -813,7 +813,7 @@
     display: flex;
     justify-content: center;
     color: #efefefef;
-    transition: all 0.25s;
+    transition: all .45s;
     // background: #1a1a1aaa;
     & .configuration-item {
       margin: 1rem;
@@ -821,26 +821,26 @@
       font-size: 1.25rem;
       border-radius: 5px;
       background: darken(#32c8ff, 30%);
-      transition: all 0.25s;
+      transition: all .45s;
     }
     & .toggled {
       background: darkorange;
 
-      transition: all 0.25s;
+      transition: all .45s;
     }
     & .configuration-pretext-wrapper {
       height: auto;
       border-radius: 5px;
-      transition: all 0.25s;
+      transition: all .45s;
       &:hover {
         background: rgba(255, 205, 205, 0.1);
         & h1 {
           background: darkorange;
-          transition: all 0.25s;
-          transition: all 0.25s;
+          transition: all .45s;
+          transition: all .45s;
         }
         & .configuration-text {
-          transition: all 0.25s;
+          transition: all .45s;
           // background: rgba(255, 205, 205, 0.1);
         }
       }

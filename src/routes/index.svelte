@@ -62,7 +62,7 @@
       box-shadow: 0 0 30px 40px rgba(50, 200, 255, 0.5);
       border: 3px solid white;
       color: white;
-      transition: all 0.25s;
+      transition: all .45s;
     }
   }
 
@@ -71,7 +71,7 @@
     margin: 1rem 0 5rem 0;
     &:hover {
       box-shadow: 0 0 4px 5px rgba(50, 200, 255, 0.5);
-      transition: all 0.25s;
+      transition: all .45s;
     }
   }
 
@@ -79,7 +79,7 @@
     position: absolute;
     top: 40%;
     left: calc(50% - (2rem + 5.5ch));
-    transition: all 0.25s;
+    transition: all .45s;
     z-index: 10;
   }
   img {

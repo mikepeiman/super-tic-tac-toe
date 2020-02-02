@@ -897,7 +897,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition: all 0.25s;
+    transition: all .45s;
     // box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
   }
 </style>

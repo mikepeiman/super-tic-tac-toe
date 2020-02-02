@@ -100,7 +100,7 @@
     & .loading {
       color: hsla(280, 100%, 50%, 1);
       // animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-      transition: all 0.25s;
+      transition: all .45s;
     }
   }
 
@@ -117,16 +117,16 @@
       "moves columns bonus .";
     justify-content: space-between;
     align-content: center;
-    transition: all 0.25s;
+    transition: all .45s;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
     &.light {
       background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
 
     & label {

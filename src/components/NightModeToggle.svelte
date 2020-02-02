@@ -7,12 +7,14 @@
   import { faMoon } from "@fortawesome/pro-solid-svg-icons";
   // import { storeViewportSize } from "./../stores.js";
 
-  const light = "#edededed";
+  const light = "#efefefef";
   const dark = "#1a1a1a";
   let elements, viewport;
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
+    document.documentElement.style.setProperty("--theme-dark", dark);
     document.documentElement.style.setProperty("--theme-fg", light);
+    document.documentElement.style.setProperty("--theme-light", light);
     document.documentElement.style.setProperty(
       "--input-blue",
       "rgba(50, 200, 255, 1)"
@@ -48,52 +50,18 @@
   }
 
   const toggleTheme = e => {
-    // const page = document.querySelector(".page-container");
-    // const placards = document.querySelectorAll(".scoreboard-player");
     const currentTheme = localStorage.getItem("theme");
     const toggleSwitch = document.querySelector("#night-mode-toggle");
 
     if (e.target.checked) {
-      console.log(
-        `toggleTheme() => CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
-        e.target
-      );
-      console.log(
-        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
-          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
-        toggleSwitch
-      );
       toggleSwitch.checked = true;
       e.target.dispatchEvent(new Event('change'))
-      console.log(
-        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
-      );
-      console.log(
-        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
-          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
-      );
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       localStorage.setItem("theme", "dark");
     } else {
-      console.log(
-        `toggleTheme() => NOT CHECKED => e.target ${e.target}, checked? ${e.target.checked} `,
-        e.target
-      );
-      console.log(
-        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
-          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `,
-        toggleSwitch
-      );
       e.target.checked = false;
       e.target.dispatchEvent(new Event('change'))
-      console.log(
-        `toggleTheme() => ASSIGNED => e.target ${e.target}, checked? ${e.target.checked} `
-      );
-      console.log(
-        `toggleTheme() => is target same as toggleSwitch? ${e.target ==
-          toggleSwitch}, toggleSwitch checked? ${toggleSwitch.checked} `
-      );
       document.documentElement.style.setProperty("--theme-bg", light);
       document.documentElement.style.setProperty("--theme-fg", dark);
       localStorage.setItem("theme", "light");
@@ -103,24 +71,18 @@
 
   function toggleStyles(theme) {
     const toggleSwitch = document.querySelector("#night-mode-toggle");
-    // toggleSwitch.click()
-    // console.log(
-    //   `toggleStyles() ====---------------======{   ${theme}   }========>>>>>>>>>>>>>>>>>>>>>> ${theme}`
-    // );
     const page = document.querySelector(".page-container");
     const placards = document.querySelectorAll(".scoreboard-player");
     const playerNames = document.querySelectorAll(".player-name");
     const playerMarks = document.querySelectorAll(".player-mark");
     const playerScores = document.querySelectorAll(".total-score-number");
     const settings = document.querySelector(".settings-wrapper");
+    const statusbar = document.querySelector(".statusbar-slim-wrapper");
     const icons = document.querySelectorAll(".icon");
-    // console.log(
-    //   `toggleStyles() ====---------------====={   icons   }===>>>>>>>>>>>>>>>>>>>>>> ${icons}`
-    // );
     if (settings) {
-      elements = [page, settings];
+      elements = [page, statusbar, settings];
     } else {
-      elements = [page];
+      elements = [page, statusbar];
     }
     playerNames.forEach(name => {
       elements.push(name);
@@ -133,13 +95,7 @@
     });
 
     icons.forEach((icon, i) => {
-      // console.log(
-      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      // );
       icon.classList.toggle("hidden");
-      // console.log(
-      //   `toggleStyles() ====---------------====={   icon ${i} classlist   }===>>>>>>>>>>>>>>>>>>>>>> ${icon.classList}`
-      // );
     });
 
     elements.forEach(el => {
