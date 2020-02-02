@@ -626,6 +626,7 @@
     //   settings,
     //   cell
     // );
+    dispatch("moveNotification", cell)
     console.log(
       "tickThis(cell) players, currentPlayer",
       players,

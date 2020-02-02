@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  // import Odometer from "odometer.min.js";
+  // import { CountUp } from "countup.js";
   import GameBoard from "./../components/GameBoard.svelte";
   // import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
@@ -46,7 +48,9 @@
     gameboardWidth,
     moveNumber,
     movesRemaining,
-    state;
+    state,
+    countUp,
+    od;
 
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
@@ -79,7 +83,11 @@
           .length;
       }
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
+      if (typeof od !== "undefined") {
+        od.update(movesRemaining);
+      }
       state.movesRemaining = movesRemaining;
+
       storeMovesRemaining.set(movesRemaining);
     }
   });
@@ -111,6 +119,15 @@
     console.log(
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
+    // countUp = new CountUp("movesRemaining", movesRemaining);
+    // countUp.start();
+
+    let movesRemainingEl = document.getElementById("movesRemaining");
+    let od = new Odometer({
+      el: movesRemainingEl,
+      value: 0
+    });
+
     if (viewportSize.width < smallScreenMaxWidth) {
       smallScreenWidth = true;
     } else {
@@ -145,6 +162,7 @@
 
   function moveNotification(cell) {
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
+    // countUp.update(movesRemaining);
   }
 
   // function setViewportSize() {
@@ -202,7 +220,7 @@
     min-width: 100vw;
     max-width: 100vw;
     grid-template-rows: minmax(8vh, 4rem) auto;
-    transition: all .45s;
+    transition: all 0.45s;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -249,10 +267,10 @@
         top: 0.6rem;
         right: 3rem;
         opacity: 1;
-        transition: all .45s;
+        transition: all 0.45s;
         &.hidden {
           opacity: 0;
-          transition: all .45s;
+          transition: all 0.45s;
         }
       }
 
@@ -683,10 +701,10 @@
           top: 0.6rem;
           right: 3rem;
           opacity: 1;
-          transition: all .45s;
+          transition: all 0.45s;
           &.hidden {
             opacity: 0;
-            transition: all .45s;
+            transition: all 0.45s;
           }
         }
 
@@ -876,8 +894,8 @@
         left: 0;
         /* top: 0; */
         margin: 0 0 0.5rem 0.5rem;
-        -webkit-transition: all .45s;
-        transition: all .45s;
+        -webkit-transition: all 0.45s;
+        transition: all 0.45s;
         min-width: -webkit-max-content;
         min-width: -moz-max-content;
         min-width: max-content;
@@ -886,7 +904,7 @@
         /* -webkit-transform: scale(var(--scale-width)); */
         /* transform: scale(var(--scale-width)); */
         transform: scale(1);
-        transition: all .45s;
+        transition: all 0.45s;
         z-index: -1;
 
         & .total-score {
@@ -1006,9 +1024,13 @@
           id="moves-wrapper"
           style={`--moves-wrapper-width: ${gameboardWidth}px`}>
           <div class="player-status-detail" id="turn-moves">
-            <span class="odometer">{movesRemaining}</span>
+            <span class="dynamic-value odometer" id="movesRemaining">
+              {movesRemaining}
+            </span>
             <p class="dynamic-wrapper">moves remaining in turn</p>
-            <span class="dynamic-value odometer">{moveNumber ? moveNumber : 0}</span>
+            <span class="dynamic-value odometer" id="moveNumber">
+              {moveNumber ? moveNumber : 0}
+            </span>
             <p class="dynamic-wrapper">
               {#if settings.rows}
                 of {settings.rows * settings.columns} total moves played
@@ -1024,7 +1046,7 @@
       </div>
     {/if}
     <div class="gameboard-container">
-      <GameBoard />
+      <GameBoard on:moveNotification={moveNotification} />
     </div>
 
     {#if smallScreenWidth}
