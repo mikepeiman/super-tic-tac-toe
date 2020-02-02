@@ -450,7 +450,7 @@
   .settings-wrapper {
     grid-area: content;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     transition: all 0.5s;
@@ -459,7 +459,7 @@
       margin: 1rem;
       color: #efefefef;
       display: block;
-      width: 70%;
+      width: 100%;
     }
 
     &.settings-menu {
@@ -647,6 +647,11 @@
   @media screen and (min-width: 600px) {
   }
   @media screen and (min-width: 900px) {
+    & .configuration-toggle-wrapper {
+      grid-area: buttons;
+      margin: 0 auto;
+      width: 100%;
+    }
     .settings-wrapper {
       // padding: 0.5rem 0.5rem 0.5rem 0;
       margin: 0;
@@ -659,6 +664,10 @@
       align-items: flex-start;
       height: auto;
       flex-wrap: wrap;
+      & .settings-content {
+        width: 70%;
+      }
+
       & .configuration-item {
         padding: 1rem;
         font-size: 1.25rem;
@@ -799,7 +808,7 @@
   .configuration-toggle-wrapper {
     grid-area: buttons;
     margin: 0 auto;
-    width: 70%;
+    width: 100%;
     height: fit-content;
     display: flex;
     justify-content: center;
@@ -1088,7 +1097,7 @@
               <span class="computed-rows-columns">
                 <div class="settings-text">
                   <label for="rows" id="rows">
-                    <div class="label-content">Rows:</div>
+                    <div class="label-content">Rows: </div>
                     <input
                       name="rows"
                       type="number"
@@ -1097,7 +1106,7 @@
                       bind:value={configuredRows} />
                   </label>
                   <label for="columns" id="columns">
-                    <div class="label-content">Columns:</div>
+                    <div class="label-content">Columns: </div>
                     <input
                       name="columns"
                       type="number"
@@ -1230,7 +1239,7 @@
               <span class="computed-moves-rounds">
                 <div class="settings-text">
                   <label for="movesPerTurn" id="movesPerTurn">
-                    <div class="label-content">movesPerTurn:</div>
+                    <div class="label-content">Moves per turn: </div>
                     <input
                       name="movesPerTurn"
                       type="number"
@@ -1239,7 +1248,7 @@
                       bind:value={configuredMovesPerTurn} />
                   </label>
                   <label for="roundsPerGame" id="roundsPerGame">
-                    <div class="label-content">roundsPerGame:</div>
+                    <div class="label-content">Rounds per game: </div>
                     <input
                       name="roundsPerGame"
                       type="number"

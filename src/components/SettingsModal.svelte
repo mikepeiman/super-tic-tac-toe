@@ -12,14 +12,16 @@
   let styling = {
     window: {
       background: "none",
-      padding: "2rem",
+      padding: "0 1rem 0 0",
       width: "100%",
       maxWidth: "100vw",
       maxHeight: "100vh",
       margin: 0,
       background: "rgba(0,0,0,0.7)",
       transition: "all .5s",
-      overflow: "hidden"
+      overflow: "hidden",
+      display: "flex",
+      justifyContent: "center"
     },
     close: {
       width: "3rem",
@@ -32,7 +34,7 @@
       gridTemplateAreas: `"title"
         "buttons"
         "content"`,
-      width: "100%",
+      width: "70%",
       overflow: "hidden"
     }
   };
@@ -46,45 +48,9 @@
 
     if (vWidth < 900) {
       styling = {
-        window: {
-          background: "none",
-          padding: "2.5rem",
-          width: "100%",
-          maxWidth: "90vw",
-          maxHeight: "90vh",
-          margin: "5vh 5vw",
-          background: "rgba(0,0,0,0.7)"
-        },
-        close: {
-          width: "3rem",
-          height: "3rem"
-        },
+
         content: {
-          padding: "2rem",
-          borderRadius: "5px",
-          background: "#1a1a1a"
-        }
-      };
-    }
-    if (vWidth < 600) {
-      styling = {
-        window: {
-          background: "none",
-          padding: "0",
-          width: "100%",
-          maxWidth: "90vw",
-          maxHeight: "90vh",
-          margin: "5vh 5vw",
-          background: "rgba(0,0,0,0.7)"
-        },
-        close: {
-          width: "3rem",
-          height: "3rem"
-        },
-        content: {
-          padding: "2rem",
-          borderRadius: "5px",
-          background: "#1a1a1a"
+          width: "100%"
         }
       };
     }
