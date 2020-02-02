@@ -3,6 +3,7 @@
   // import Odometer from "odometer.min.js";
   // import { CountUp } from "countup.js";
   import GameBoard from "./../components/GameBoard.svelte";
+  import Loading from "./../components/Loading.svelte";
   // import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
@@ -1000,21 +1001,21 @@
   }
 </style>
 
-<!-- <div class="title-container">
-  <h1>SUPER Tic Tac Toe!</h1>
-</div> -->
-{#await players then players}
+<GameInit />
+{#await players}
+  <div class="title-container">
+    <h1>SUPER Tic Tac Toe!</h1>
+  </div>
+  {@debug players}
+{:then players}
   <div
     class="page-container"
     style={`--player-color: ${currentPlayer.colorMain}`}>
-    <GameInit />
 
     <div class="scoreboard-container">
       <ScoreBoard players />
     </div>
-    <div class="scoreboardnew-container">
-      <!-- <ScoreBoardNew /> -->
-    </div>
+
     {#if currentPlayer}
       <div class="statusbar-slim-wrapper">
         <div class="player-status-detail" id="player-name">
@@ -1046,10 +1047,9 @@
 
       </div>
     {:else}
-      <div class="player-status-detail" id="player-name">
-        <h2>StatusBar loading current player...</h2>
-      </div>
+      <Loading loadingMsg="StatusBar loading via COMPONENT..." thisId="statusbar" />
     {/if}
+
     <div class="gameboard-container">
       <GameBoard on:moveNotification={moveNotification} />
     </div>

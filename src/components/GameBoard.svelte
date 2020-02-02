@@ -1,5 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
+    import Loading from "./../components/Loading.svelte";
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -922,5 +923,5 @@
     {/each}
   </div>
   {:else}
-  <h1>GameBoard awaiting generating grid....</h1>
+  <Loading loadingMsg="GameBoard awaiting generate grid..." thisId="gameboard" />
 {/if}

@@ -1,6 +1,7 @@
 <script>
   import MenuModal from "./GameMenuModal.svelte";
   import SettingsModal from "./SettingsModal.svelte";
+    import Loading from "./../components/Loading.svelte";
   import NightModeToggle from "./NightModeToggle.svelte";
   import Modal from "svelte-simple-modal";
   import { getContext } from "svelte";
@@ -203,10 +204,11 @@
   }
 </style>
 
-<!-- {@debug players} -->
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-    <h2 class="player-indicator-heading">SideMenu loading players data...</h2>
+      <Loading
+    loadingMsg="SideMenu loading via COMPONENT..."
+    thisId="menu" />
   {:else}
     <!-- <div class="buttons-wrapper" id="buttons-wrapper"> -->
     <div class="modal-wrapper options-control-wrapper">
