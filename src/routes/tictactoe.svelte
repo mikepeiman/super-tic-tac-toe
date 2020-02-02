@@ -62,13 +62,16 @@
     }
   });
   storeState.subscribe(value => {
+    console.log(`storeState subscribed value, movesRemaining from state ${value.movesRemaining}`, value)
     state = value;
     if (typeof window !== "undefined") {
       movesRemaining = state.movesRemaining;
+      storeMovesRemaining.set(movesRemaining)
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
+      storeMoveNumber.set(moveNumber)
     }
   });
   storeSettings.subscribe(value => {
@@ -83,11 +86,7 @@
           .length;
       }
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
-      if (typeof od !== "undefined") {
-        od.update(movesRemaining);
-      }
       state.movesRemaining = movesRemaining;
-
       storeMovesRemaining.set(movesRemaining);
     }
   });
@@ -115,18 +114,23 @@
     }
   });
 
-  onMount(() => {
+  onMount(async () => {
     console.log(
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
     // countUp = new CountUp("movesRemaining", movesRemaining);
     // countUp.start();
 
-    let movesRemainingEl = document.getElementById("movesRemaining");
-    let od = new Odometer({
-      el: movesRemainingEl,
-      value: 0
-    });
+    // let movesRemainingEl = await document.getElementById("movesRemaining");
+    // console.log(
+    //   `let movesRemainingEl = document.getElementById('movesRemaining') `,
+    //   movesRemainingEl
+    // );
+    // let od = new Odometer({
+    //   el: movesRemainingEl,
+    //   value: movesRemaining
+    // });
+    // od.innerHTML = movesRemaining
 
     if (viewportSize.width < smallScreenMaxWidth) {
       smallScreenWidth = true;

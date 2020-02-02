@@ -8,6 +8,8 @@
     storeCellSize,
     storeGameboardWidth,
     storeState,
+    storeMoveNumber,
+    storeMovesRemaining,
     storePlayers,
     storeCurrentPlayer,
     storeDirectionArrays,
@@ -21,6 +23,7 @@
   let settings = {};
   $: state = {};
   $: moveNumber = 0;
+  $: movesRemaining = 0;
   $: players = [];
   $: lines = {
     leftToRight: [],
@@ -132,18 +135,11 @@
       // cellSize = value;
     });
 
-    // console.log(
-    //   `GameBoard component mounted, gameboard el W:${gameboardContainerWidth} H:${gameboardContainerHeight}`
-    // );
-    // console.log(
-    //   `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
-    // );
-    // console.log(`GameBoard component mounted, and final size: ${cellSize}`);
-
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
     gameHistoryTurns = $storeGameHistoryTurns;
     state = $storeState;
+    // ({ moveNumber, movesRemaining } = state);
     let delayMS = 1000 / (settings.rows * settings.columns);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("preservePlayerDetails");
@@ -601,7 +597,8 @@
     } else {
       if (state.movesRemaining <= 1) {
         moveNumber++;
-        localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+        storeMoveNumber.set(moveNumber)
+        // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
         setTurnHistory(cell);
         setGameHistoryTurns();
         tickThis(cell);
@@ -614,8 +611,9 @@
       state.movesRemaining--;
     }
     // console.log(`GameBoard => playMove, state `, state);
-    localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+    // localStorage.setItem("state", JSON.stringify(state));
+    // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+    storeMoveNumber.set(moveNumber)
     storeState.set(state);
     // console.log(`GameBoard => playMove, state `, state);
   }
@@ -626,12 +624,12 @@
     //   settings,
     //   cell
     // );
-    dispatch("moveNotification", cell)
-    console.log(
-      "tickThis(cell) players, currentPlayer",
-      players,
-      currentPlayer
-    );
+    dispatch("moveNotification", cell);
+    // console.log(
+    //   "tickThis(cell) players, currentPlayer",
+    //   players,
+    //   currentPlayer
+    // );
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -647,7 +645,7 @@
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
     let customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 3)}px`;
-    let playerColor = `--player-color: ${currentPlayer.colorMain}`
+    let playerColor = `--player-color: ${currentPlayer.colorMain}`;
     cell.style = `${playerColor};${customMarkerSize};`;
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
@@ -898,7 +896,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition: all .45s;
+    transition: all 0.45s;
     // box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
   }
 </style>

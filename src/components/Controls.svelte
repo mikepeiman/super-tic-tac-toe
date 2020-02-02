@@ -49,15 +49,15 @@
     currentPlayer = lsCurrentPlayer;
     storeState.subscribe(value => {
       state = value;
-      // movesRemaining = state.movesRemaining;
-      movesRemaining = $storeMovesRemaining;
+      movesRemaining = state.movesRemaining;
+      // movesRemaining = $storeMovesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
     });
     players = $storePlayers;
-    state = $storeState;
+    // state = $storeState;
     settings = $storeSettings;
     if (localStorage.getItem("gameInProgress")) {
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));

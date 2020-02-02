@@ -5,11 +5,38 @@
   // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
   import { faSun } from "@fortawesome/pro-solid-svg-icons";
   import { faMoon } from "@fortawesome/pro-solid-svg-icons";
+  import {
+    storeState,
+    storeMoveNumber,
+    storeMovesRemaining
+  } from "../stores.js";
   // import { storeViewportSize } from "./../stores.js";
 
   const light = "#efefefef";
   const dark = "#1a1a1a";
-  let elements, viewport;
+  let elements, viewport, movesRemaining, movesRemainingEl;
+
+  storeMovesRemaining.subscribe(val => {
+    movesRemaining = val
+    console.log(
+      `nightmodetoggle storeMovesRemaining ${movesRemaining}`
+    );
+    if (typeof window !== "undefined") {
+      window.odometerOptions = {
+        duration: 50, // Change how long the javascript expects the CSS animation to take
+        animation: "count" // Count is a simpler animation method which just increments the value,
+        // use it when you're looking for something more subtle.
+      };
+      movesRemainingEl = document.getElementById("movesRemaining");
+      movesRemainingEl.innerHTML = movesRemaining;
+      if (typeof od !== "undefined") {
+        console.log(
+          `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+        );
+        od.update(movesRemaining);
+      }
+    }
+  });
   onMount(() => {
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-dark", dark);
@@ -39,13 +66,23 @@
         document.documentElement.style.setProperty("--theme-fg", dark);
       }
     }
+
+    movesRemainingEl = document.getElementById("movesRemaining");
+    console.log(
+      `let movesRemainingEl = document.getElementById('movesRemaining') `,
+      movesRemainingEl
+    );
+    let od = new Odometer({
+      el: movesRemainingEl,
+      value: movesRemaining
+    });
   });
 
   function removeUnusedCheckbox() {
     let width = window.innerWidth;
-    let redundantToggle
-    if(width >= 1080) {
-      redundantToggle = document.getElementsByClassName('.topmenu-wrapper')
+    let redundantToggle;
+    if (width >= 1080) {
+      redundantToggle = document.getElementsByClassName(".topmenu-wrapper");
     }
   }
 
@@ -55,13 +92,13 @@
 
     if (e.target.checked) {
       toggleSwitch.checked = true;
-      e.target.dispatchEvent(new Event('change'))
+      e.target.dispatchEvent(new Event("change"));
       document.documentElement.style.setProperty("--theme-bg", dark);
       document.documentElement.style.setProperty("--theme-fg", light);
       localStorage.setItem("theme", "dark");
     } else {
       e.target.checked = false;
-      e.target.dispatchEvent(new Event('change'))
+      e.target.dispatchEvent(new Event("change"));
       document.documentElement.style.setProperty("--theme-bg", light);
       document.documentElement.style.setProperty("--theme-fg", dark);
       localStorage.setItem("theme", "light");
@@ -225,7 +262,6 @@
   .slider.round:before {
     border-radius: 50%;
   }
-
 </style>
 
 <label class="theme-switch" for="night-mode-toggle">
