@@ -285,7 +285,7 @@
     border-radius: 50%;
   }
 
-  .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
+  .statusbar-slim-wrapper .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
   .odometer.odometer-theme-minimal.odometer-animating-up .odometer-ribbon-inner,
   .odometer.odometer-auto-theme.odometer-animating-down.odometer-animating
     .odometer-ribbon-inner,
@@ -296,6 +296,19 @@
     -ms-transition-duration: 0.25s !important;
     -o-transition-duration: 0.25s !important;
     transition-duration: 0.25s !important;
+  }
+
+    .scoreboard-container-inner .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
+  .odometer.odometer-theme-minimal.odometer-animating-up .odometer-ribbon-inner,
+  .odometer.odometer-auto-theme.odometer-animating-down.odometer-animating
+    .odometer-ribbon-inner,
+  .odometer.odometer-theme-minimal.odometer-animating-down.odometer-animating
+    .odometer-ribbon-inner {
+    -webkit-transition-duration: 0.75s !important;
+    -moz-transition-duration: 0.75s !important;
+    -ms-transition-duration: 0.75s !important;
+    -o-transition-duration: 0.75s !important;
+    transition-duration: 0.75s !important;
   }
 </style>
 

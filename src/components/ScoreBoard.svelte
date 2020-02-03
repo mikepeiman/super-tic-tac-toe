@@ -43,9 +43,9 @@
   let totalMovesInGame = 0;
   let settings = {};
   let gameUnderway = false;
-  let numberOfPlayers;
+  let numberOfPlayers, scores;
   ({ numberOfPlayers } = settings);
-
+  $: scores && odometerScores();
   storeSettings.subscribe(value => {
     console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
     settings = value;
@@ -58,32 +58,15 @@
     if (value === null) {
       currentPlayer = players[0];
     }
+    
   });
   storePlayers.subscribe(value => {
     players = value;
+    ({ scores } = players[players.length-1]);
     // console.log(
     //   `ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`
     // );
     if (typeof window !== "undefined") {
-      if (players.length) {
-        for (let i = 0; i < players.length; i++) {
-          let totalScoreEl = document.getElementById(`total-score-${i}`);
-          console.log(`totalScoreEl for odometer: ${typeof totalScoreEl} ${Boolean(totalScoreEl)}`, totalScoreEl)
-          if (totalScoreEl) {
-            let od = new Odometer({
-              el: totalScoreEl,
-              value: players[i].totalScore,
-              duration: 10 * 1000
-            });
-            if (typeof od !== "undefined") {
-              console.log(
-                `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
-              );
-              od.update(players[i].totalScore);
-            }
-          }
-        }
-      }
     }
   });
   storeViewportSize.subscribe(val => {
@@ -116,7 +99,61 @@
     // console.log(`afterUpdate() count: ${updateCount}`);
     addStyles(`addStyles() from afterUpdate`);
     addHighlightIfGameInProgress();
+    // odometerScores();
   });
+
+  function odometerScores() {
+    if (players.length) {
+      for (let i = 0; i < players.length; i++) {
+        let totalScoreEl = document.getElementById(`total-score-${i}`);
+        // console.log(
+        //   `totalScoreEl for odometer: ${typeof totalScoreEl} ${Boolean(
+        //     totalScoreEl
+        //   )}`,
+        //   totalScoreEl
+        // );
+        if (totalScoreEl) {
+          let od = new Odometer({
+            el: totalScoreEl,
+            value: players[i].totalScore,
+            duration: 10 * 1000
+          });
+          if (typeof od !== "undefined") {
+            // console.log(
+            //   `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+            // );
+            od.update(players[i].totalScore);
+          }
+        }
+
+        for (let d = 0; d < 4; d++) {
+          let dirScoreEl = document.getElementById(`direction-score-${i}-${d}`);
+          console.log(
+            `dirScoreEl for odometer: ${typeof dirScoreEl} ${Boolean(
+              dirScoreEl
+            )}`,
+            dirScoreEl
+          );
+          if (dirScoreEl) {
+            let od = new Odometer({
+              el: dirScoreEl,
+              value: players[i].dirScoresByIndex[d],
+              duration: 10 * 1000
+            });
+            if (typeof od !== "undefined") {
+              console.log(
+                `players[${i}].dirScoresByIndex[${d}] for odometer: ${players[i].dirScoresByIndex[d]}`
+              );
+              od.update(players[i].dirScoresByIndex[d]);
+            }
+          }
+        }
+
+        // player.dirScoresByIndex[i]
+      }
+    }
+  }
+
   function onEmoji(event, player) {
     // let emoji = event.detail;
     console.log(`emoji event ${event}`, event, player);
@@ -887,7 +924,7 @@
             </button>
           </h3>
           <div class="scoreboard-totals">
-            {#each player.scores as direction, i}
+            {#each player.scores as direction, d}
               <div class="scoreboard-direction">
                 <div class="direction-score-section">
                   <img
@@ -896,8 +933,10 @@
                     width="20"
                     height="20"
                     alt="Icon for direction {direction.name}" />
-                  <div class="direction-score odometer" id="direction-score">
-                    {player.dirScoresByIndex[i]}
+                  <div
+                    class="direction-score odometer"
+                    id="direction-score-{i}-{d}">
+                    {player.dirScoresByIndex[d]}
                   </div>
                 </div>
               </div>
