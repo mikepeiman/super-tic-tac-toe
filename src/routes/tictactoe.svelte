@@ -708,19 +708,7 @@
     }
   }
   .locked {
-    opacity: 0.75;
     border: 1px solid rgba(0, 0, 0, 0.5);
-    &::before {
-      background: #000;
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      opacity: 1;
-    }
   }
 
   .title-container {

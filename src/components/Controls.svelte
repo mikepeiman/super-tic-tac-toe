@@ -195,38 +195,38 @@
   }
 
   #new-game-button {
-    background: hsla(95, 100%, 50%, 0.5);
+    background: hsla(95, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(95, 100%, 55%, 0.75);
+      background: hsla(95, 100%, 20%, 1);
     }
   }
   #save-game-button {
-    background: hsla(160, 100%, 50%, 0.5);
+    background: hsla(160, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(160, 100%, 55%, 0.75);
+      background: hsla(160, 100%, 20%, 1);
     }
   }
   #load-game-button {
-    background: hsla(220, 100%, 60%, 0.5);
+    background: hsla(220, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(220, 100%, 65%, 0.75);
+      background: hsla(220, 100%, 35%, 1);
     }
   }
   #reset-players-button {
-    background: hsla(280, 100%, 50%, 0.5);
+    background: hsla(280, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(280, 100%, 55%, 0.75);
+      background: hsla(280, 100%, 20%, 1);
     }
   }
   #reset-all-button {
-    background: hsla(0, 100%, 50%, 0.5);
+    background: hsla(0, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(0, 100%, 55%, 0.75);
+      background: hsla(0, 100%, 25%, 1);
     }
   }
 </style>
