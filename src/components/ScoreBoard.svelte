@@ -64,7 +64,7 @@
   storePlayersScored.subscribe(val => {
     console.log(`playersScored() receiving an update, running odometerScores() `)
     odometerScores()
-    
+    storePlayersScored.set(false)
   })
   storePlayers.subscribe(value => {
     players = value;

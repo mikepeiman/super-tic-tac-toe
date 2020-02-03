@@ -108,7 +108,10 @@
     });
     players = players;
     storePlayers.set(players);
-    storePlayersScored.set(true)
+    // setTimeout(() => {
+      storePlayersScored.set(true)
+    // }, 10);
+    
     // localStorage.setItem(`players`, JSON.stringify(players));
     dispatch("playersScored", players);
   }
