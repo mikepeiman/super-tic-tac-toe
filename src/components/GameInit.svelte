@@ -151,7 +151,7 @@
 
   function initializePlayers() {
     console.log(`initializePlayers()`);
-    let hueOffset = 0;
+    let hueOffset = 180;
     let hueInterval = 360 / settings.numberOfPlayers;
     // unicode emojis selected from https://unicode.org/Public/emoji/13.0/emoji-test.txt
     let emojiShortlist = ['\u{1F525}','\u{1F984}','\u{2694}\u{FE0F}','\u{1F405}','\u{1F308}','\u{2744}\u{FE0F}','\u{1F3D4}\u{FE0F}','\u{1F381}']

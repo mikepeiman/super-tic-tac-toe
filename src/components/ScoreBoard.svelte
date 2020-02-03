@@ -837,7 +837,7 @@
         height: 2.5rem;
         margin: 0 0.5rem;
         font-size: 1.25rem;
-        background: var(--player-color-dark);
+        background: var(--player-color);
         color: var(--theme-light);
         // border: 2px solid var(--player-color-dark);
         border-radius: 5px;

@@ -17,14 +17,14 @@
   let currentPlayer;
   let initialized = false;
   let initialSettings = {
-    numberOfPlayers: 3,
-    movesPerTurn: 4,
+    numberOfPlayers: 2,
+    movesPerTurn: 7,
     roundsPerGame: 8,
     cellsToScore: 3,
     bonusForCompleteLine: 12,
     rows: 8,
-    columns: 12,
-    sizeFactor: 75,
+    columns: 14,
+    sizeFactor: 100,
     gutter: 0
   };
   // I stumbled on absolute basics: I'd forgotten that a simple = assignment creates a reference, not a copy of the object. Fixed.
