@@ -58,14 +58,15 @@
     if (value === null) {
       currentPlayer = players[0];
     }
-    
   });
 
   storePlayersScored.subscribe(val => {
-    console.log(`playersScored() receiving an update, running odometerScores() `)
-    odometerScores()
-    storePlayersScored.set(false)
-  })
+    console.log(
+      `playersScored() receiving an update, running odometerScores() `
+    );
+    odometerScores();
+    storePlayersScored.set(false);
+  });
   storePlayers.subscribe(value => {
     players = value;
     // console.log(
@@ -79,7 +80,6 @@
     appViewport = val;
   });
 
-
   onMount(() => {
     getViewportSize();
     window.addEventListener(
@@ -92,9 +92,8 @@
     );
     players = $storePlayers;
     state = $storeState;
-    odometerScores() 
+    odometerScores();
   });
-
 
   afterUpdate(() => {
     updateCount++;
@@ -103,7 +102,6 @@
     addHighlightIfGameInProgress();
     // odometerScores();
   });
-  
 
   function odometerScores() {
     if (players.length) {
@@ -468,7 +466,7 @@
       }
     } else {
       alert(
-        "There appears to be a game in progress, reset game in order to change number of players"
+        "There appears to be a game in progress, reset game ('MENU' button => 'Reset Game' button) in order to change number of players"
       );
     }
   }
@@ -488,7 +486,7 @@
       }
     } else {
       alert(
-        "There appears to be a game in progress, reset game in order to change number of players"
+        "There appears to be a game in progress, reset game ('MENU' button => 'Reset Game' button) in order to change number of players"
       );
     }
   }
