@@ -1,5 +1,7 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
+  import Loading from "./../components/Loading.svelte";
+  import { send, receive } from "./../crossfade.js";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
 
@@ -916,5 +918,7 @@
     </div>
   {/await}
 {:else}
-  <h1>ScoreBoard awaiting loading players....</h1>
+  <Loading
+    loadingMsg="ScoreBoard loading via COMPONENT..."
+    thisId="scoreboard" />
 {/if}

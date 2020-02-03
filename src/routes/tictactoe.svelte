@@ -3,6 +3,7 @@
   // import Odometer from "odometer.min.js";
   // import { CountUp } from "countup.js";
   import GameBoard from "./../components/GameBoard.svelte";
+  import Loading from "./../components/Loading.svelte";
   // import ScoreBoardNew from "./../components/ScoreBoardNew.svelte";
   import ScoreBoard from "./../components/ScoreBoard.svelte";
   import CountPoints from "./../components/CountPoints.svelte";
@@ -31,6 +32,17 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
+
+  let players,
+    settings,
+    currentPlayer,
+    gameboardWidth,
+    moveNumber,
+    movesRemaining,
+    state,
+    initialized;
+
+  initialized = false;
   let smallScreenHeight = false;
   let smallScreenWidth = false;
   let landscape, portrait;
@@ -41,16 +53,6 @@
 
   import Fa from "sveltejs-fontawesome";
   import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
-
-  let players,
-    settings,
-    currentPlayer,
-    gameboardWidth,
-    moveNumber,
-    movesRemaining,
-    state,
-    countUp,
-    od;
 
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;
@@ -121,20 +123,6 @@
     console.log(
       `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
     );
-    // countUp = new CountUp("movesRemaining", movesRemaining);
-    // countUp.start();
-
-    // let movesRemainingEl = await document.getElementById("movesRemaining");
-    // console.log(
-    //   `let movesRemainingEl = document.getElementById('movesRemaining') `,
-    //   movesRemainingEl
-    // );
-    // let od = new Odometer({
-    //   el: movesRemainingEl,
-    //   value: movesRemaining
-    // });
-    // od.innerHTML = movesRemaining
-
     if (viewportSize.width < smallScreenMaxWidth) {
       smallScreenWidth = true;
     } else {
@@ -161,6 +149,26 @@
         moveNumber = lsMoveNumber;
       }
     });
+    let statusbar = document.getElementById("statusbar");
+    let gameboard = document.getElementById("gameboard");
+    let menu = document.getElementById("menu");
+    let scoreboard = document.getElementById("scoreboard");
+    await setTimeout(() => {
+      statusbar.classList.add("loaded");
+    }, 150);
+    await setTimeout(() => {
+      scoreboard.classList.add("loaded");
+    }, 300);
+    await setTimeout(() => {
+      menu.classList.add("loaded");
+    }, 450);
+    await setTimeout(() => {
+      gameboard.classList.add("loaded");
+    }, 600);
+
+    setTimeout(async () => {
+      initialized = true;
+    }, 750);
   });
 
   function resetGame() {
@@ -228,6 +236,7 @@
     max-width: 100vw;
     grid-template-rows: minmax(8vh, 4rem) auto;
     transition: all 0.45s;
+    position: relative;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
@@ -237,6 +246,84 @@
       background: var(--theme-bg);
       color: var(--theme-fg);
       transition: all.25s;
+    }
+  }
+
+  .loading-page-container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 100vw;
+    max-width: 100vw;
+    position: relative;
+    & .loading-container-inner {
+      // width: 40vw;
+      // height: 40vh;
+      background: rgba(200, 200, 255, 0.15);
+      padding: 3rem 6rem 3rem 3rem;
+      border-radius: 1rem;
+      position: relative;
+      // display: grid;
+      // grid-template-columns: auto;
+      // grid-template-rows: auto;
+      // grid-template-areas:
+      //   "statusbar"
+      //   "gamemenu"
+      //   "scoreboard"
+      //   "gameboard";
+      // justify-content: center;
+      // justify-items: center;
+      // align-content: center;
+    }
+  }
+  .loading-message {
+    grid-area: gameboard;
+    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    color: rgba(255,255,255,0.25);
+    transition: all 0.25s;
+    // grid-template-areas: "statusbar" "scoreboard" "menu" "gameboard";
+    &.loaded {
+      // background: green;
+      color: #efefefef;
+      transition: all 0.25s;
+      position: relative;
+      // margin-right:2rem;
+      &:after {
+        content: "\2714";
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0,255,55,1);
+        min-height: 2rem;
+        min-width: 2rem;
+        border-radius: 1rem;
+        background: rgba(0,255,55,.1);
+        top: 0;
+        right: -2rem;
+      }
+    }
+    &#statusbar {
+      grid-area: statusbar;
+      transition: all 0.1s;
+    }
+    &#scoreboard {
+      grid-area: scoreboard;
+      transition: all 0.1s;
+    }
+    &#menu {
+      grid-area: gamemenu;
+      transition: all 0.1s;
+    }
+    &#gameboard {
+      grid-area: gameboard;
+      transition: all 0.1s;
     }
   }
 
@@ -1000,69 +1087,82 @@
   }
 </style>
 
-<!-- <div class="title-container">
-  <h1>SUPER Tic Tac Toe!</h1>
-</div> -->
-{#await players then players}
-  <div
-    class="page-container"
-    style={`--player-color: ${currentPlayer.colorMain}`}>
-    <GameInit />
+<GameInit />
+{#if initialized}
+  {#await players then players}
+    <div
+      class="page-container"
+      style={`--player-color: ${currentPlayer.colorMain}`}>
 
-    <div class="scoreboard-container">
-      <ScoreBoard players />
-    </div>
-    <div class="scoreboardnew-container">
-      <!-- <ScoreBoardNew /> -->
-    </div>
-    {#if currentPlayer}
-      <div class="statusbar-slim-wrapper">
-        <div class="player-status-detail" id="player-name">
-          <h2
-            class="player-name"
-            style={`--player-color: ${currentPlayer.colorMain}`}>
-            {currentPlayer.name}
-          </h2>
-          <span>{currentPlayer.mark}</span>
-        </div>
-        <div
-          id="moves-wrapper"
-          style={`--moves-wrapper-width: ${gameboardWidth}px`}>
-          <div class="player-status-detail" id="turn-moves">
-            <span class="dynamic-value odometer" id="movesRemaining">
-              {movesRemaining}
-            </span>
-            <p class="dynamic-wrapper">moves remaining in turn</p>
-            <span class="dynamic-value odometer" id="movesPlayed">
-              {moveNumber ? moveNumber : 0}
-            </span>
-            <p class="dynamic-wrapper">
-              {#if settings.rows}
-                of {settings.rows * settings.columns} total moves played
-              {/if}
-            </p>
+      <div class="scoreboard-container">
+        <ScoreBoard players />
+      </div>
+
+      {#if currentPlayer}
+        <div class="statusbar-slim-wrapper">
+          <div class="player-status-detail" id="player-name">
+            <h2
+              class="player-name"
+              style={`--player-color: ${currentPlayer.colorMain}`}>
+              {currentPlayer.name}
+            </h2>
+            <span>{currentPlayer.mark}</span>
           </div>
-        </div>
+          <div
+            id="moves-wrapper"
+            style={`--moves-wrapper-width: ${gameboardWidth}px`}>
+            <div class="player-status-detail" id="turn-moves">
+              <span class="dynamic-value odometer" id="movesRemaining">
+                {movesRemaining}
+              </span>
+              <p class="dynamic-wrapper">moves remaining in turn</p>
+              <span class="dynamic-value odometer" id="movesPlayed">
+                {moveNumber ? moveNumber : 0}
+              </span>
+              <p class="dynamic-wrapper">
+                {#if settings.rows}
+                  of {settings.rows * settings.columns} total moves played
+                {/if}
+              </p>
+            </div>
+          </div>
 
+        </div>
+      {:else}
+        <Loading
+          loadingMsg="StatusBar loading..."
+          thisId="statusbar" />
+      {/if}
+
+      <div class="gameboard-container">
+        <GameBoard on:moveNotification={moveNotification} />
       </div>
-    {:else}
-      <div class="player-status-detail" id="player-name">
-        <h2>StatusBar loading current player...</h2>
-      </div>
-    {/if}
-    <div class="gameboard-container">
-      <GameBoard on:moveNotification={moveNotification} />
+
+      {#if smallScreenWidth}
+        <div class="topmenu-container">
+          <TopMenu />
+        </div>
+      {:else if !smallScreenWidth || landscape}
+        <div class="sidemenu-container">
+          <SideMenu />
+        </div>
+      {/if}
     </div>
 
-    {#if smallScreenWidth}
-      <div class="topmenu-container">
-        <TopMenu />
-      </div>
-    {:else if !smallScreenWidth || landscape}
-      <div class="sidemenu-container">
-        <SideMenu />
-      </div>
-    {/if}
+  {/await}
+{:else}
+  <div class="loading-page-container">
+    <div class="loading-container-inner">
+      <Loading
+        loadingMsg="ScoreBoard loading..."
+        thisId="scoreboard" />
+      <Loading
+        loadingMsg="GameBoard loading..."
+        thisId="gameboard" />
+      <Loading loadingMsg="Menu loading..." thisId="menu" />
+      <Loading
+        loadingMsg="Statusbar loading..."
+        thisId="statusbar" />
+    </div>
   </div>
-
-{/await}
+{/if}
