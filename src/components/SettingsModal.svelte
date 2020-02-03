@@ -21,7 +21,9 @@
       transition: "all .5s",
       overflow: "hidden",
       display: "flex",
-      justifyContent: "center"
+      justifyContent: "center",
+      flexDirection: "column",
+      alignItems: "center"
     },
     close: {
       width: "3rem",
@@ -29,15 +31,27 @@
     },
     content: {
       borderRadius: "5px",
+      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "70%",
       display: "grid",
       gridTemplateRows: "3rem auto 1fr",
       gridTemplateAreas: `"title"
         "buttons"
-        "content"`,
-      width: "70%",
-      overflow: "hidden"
+        "content"`
     }
   };
+
+  // content {}
+  // display: "grid",
+  // gridTemplateRows: "3rem auto 1fr",
+  // gridTemplateAreas: `"title"
+  //   "buttons"
+  //   "content"`,
+  //
+
   let vWidth;
 
   onMount(() => {
@@ -48,7 +62,6 @@
 
     if (vWidth < 900) {
       styling = {
-
         content: {
           width: "100%"
         }
