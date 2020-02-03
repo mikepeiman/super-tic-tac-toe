@@ -65,18 +65,23 @@
     //   `ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`
     // );
     if (typeof window !== "undefined") {
-      for (let i = 0; i < players.length; i++) {
-        totalScoreEl = document.getElementById(`total-score-${i}`);
-        let od = new Odometer({
-          el: totalScoreEl,
-          value: players[i].totalScore,
-          duration: 10 * 1000
-        });
-        if (typeof od !== "undefined") {
-          console.log(
-            `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
-          );
-          od.update(players[i].totalScore);
+      if (players.length) {
+        for (let i = 0; i < players.length; i++) {
+          let totalScoreEl = document.getElementById(`total-score-${i}`);
+          console.log(`totalScoreEl for odometer: ${typeof totalScoreEl} ${Boolean(totalScoreEl)}`, totalScoreEl)
+          if (totalScoreEl) {
+            let od = new Odometer({
+              el: totalScoreEl,
+              value: players[i].totalScore,
+              duration: 10 * 1000
+            });
+            if (typeof od !== "undefined") {
+              console.log(
+                `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+              );
+              od.update(players[i].totalScore);
+            }
+          }
         }
       }
     }
