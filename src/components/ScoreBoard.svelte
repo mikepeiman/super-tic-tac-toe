@@ -771,7 +771,7 @@
     // margin: 0.25rem;
     border-radius: 2px;
     max-width: 5ch;
-    min-width: 3ch;
+    min-width: 4ch;
     display: flex;
     justify-content: center;
     align-items: center;

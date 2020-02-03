@@ -147,6 +147,7 @@
     });
     players = players;
     storePlayers.set(players);
+    storePlayersScored.set(true)
     storePlayersScored.set(false)
   }
 
