@@ -70,7 +70,7 @@
   });
 
   function resetGame() {
-    console.log(`reset game`)
+    console.log(`reset game`);
     localStorage.removeItem("gameboard");
     localStorage.removeItem("gameHistoryFlat");
     localStorage.removeItem("gameHistoryTurns");
@@ -118,11 +118,17 @@
     dispatch("resetGame", true);
   }
 
+  function resetAll() {
+    localStorage.clear();
+    location.reload();
+    dispatch("resetGame", true);
+  }
+
   function saveGame() {
-    alert(`Save game function not yet implemented`)
+    alert(`Save game function not yet implemented`);
   }
   function loadGame() {
-    alert(`Load game function not yet implemented`)
+    alert(`Load game function not yet implemented`);
   }
 </script>
 
@@ -140,6 +146,9 @@
         font-size: 1.25rem;
         padding: 1rem 4rem;
         margin: 1rem;
+      }
+      & .sub-subgroup {
+        flex-direction: column;
       }
     }
   }
@@ -186,27 +195,34 @@
   }
 
   #new-game-button {
-    background: hsla(50, 100%, 50%, 0.5);
+    background: hsla(95, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(50, 100%, 55%, 0.75);
+      background: hsla(95, 100%, 55%, 0.75);
     }
   }
   #save-game-button {
-    background: hsla(100, 100%, 50%, 0.5);
+    background: hsla(160, 100%, 50%, 0.5);
 
     &:hover {
-      background: hsla(100, 100%, 55%, 0.75);
+      background: hsla(160, 100%, 55%, 0.75);
     }
   }
   #load-game-button {
-    background: hsla(200, 100%, 50%, 0.5);
+    background: hsla(220, 100%, 60%, 0.5);
 
     &:hover {
-      background: hsla(200, 100%, 55%, 0.75);
+      background: hsla(220, 100%, 65%, 0.75);
     }
   }
   #reset-players-button {
+    background: hsla(280, 100%, 50%, 0.5);
+
+    &:hover {
+      background: hsla(280, 100%, 55%, 0.75);
+    }
+  }
+  #reset-all-button {
     background: hsla(0, 100%, 50%, 0.5);
 
     &:hover {
@@ -229,11 +245,16 @@
     <button class="control-button" id="new-game-button" on:click={resetGame}>
       New Game
     </button>
-    <button
-      class="control-button"
-      id="reset-players-button"
-      on:click={resetPlayers}>
-      Reset players
-    </button>
+    <div class="sub-subgroup">
+      <button
+        class="control-button"
+        id="reset-players-button"
+        on:click={resetPlayers}>
+        Reset players
+      </button>
+      <button class="control-button" id="reset-all-button" on:click={resetAll}>
+        RESET ALL
+      </button>
+    </div>
   </div>
 </div>
