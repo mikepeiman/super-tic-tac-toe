@@ -14,9 +14,7 @@
 </script>
 
 <style lang="scss">
-h2 {
-  color: white;
-}
+
 </style>
 
       <div class="loading-message" id={thisId}>

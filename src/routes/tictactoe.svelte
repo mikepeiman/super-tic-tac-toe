@@ -153,20 +153,20 @@
     let gameboard = document.getElementById("gameboard");
     let menu = document.getElementById("menu");
     let scoreboard = document.getElementById("scoreboard");
-      await setTimeout(() => {
-        statusbar.classList.add("loaded");
-      }, 150);
-      await setTimeout(() => {
-        scoreboard.classList.add("loaded");
-      }, 300);
-      await setTimeout(() => {
-        menu.classList.add("loaded");
-      }, 450);
-      await setTimeout(() => {
-        gameboard.classList.add("loaded");
-      }, 600);
+    await setTimeout(() => {
+      statusbar.classList.add("loaded");
+    }, 150);
+    await setTimeout(() => {
+      scoreboard.classList.add("loaded");
+    }, 300);
+    await setTimeout(() => {
+      menu.classList.add("loaded");
+    }, 450);
+    await setTimeout(() => {
+      gameboard.classList.add("loaded");
+    }, 600);
 
-     setTimeout(async () => {
+    setTimeout(async () => {
       initialized = true;
     }, 750);
   });
@@ -285,38 +285,45 @@
     position: relative;
     top: 0;
     left: 0;
+    color: rgba(255,255,255,0.25);
+    transition: all 0.25s;
     // grid-template-areas: "statusbar" "scoreboard" "menu" "gameboard";
+    &.loaded {
+      // background: green;
+      color: #efefefef;
+      transition: all 0.25s;
+      position: relative;
+      // margin-right:2rem;
+      &:after {
+        content: "\2714";
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0,255,55,1);
+        min-height: 2rem;
+        min-width: 2rem;
+        border-radius: 1rem;
+        background: rgba(0,255,55,.1);
+        top: 0;
+        right: -2rem;
+      }
+    }
     &#statusbar {
       grid-area: statusbar;
       transition: all 0.1s;
-      &.loaded {
-        background: green;
-        transition: all 0.1s;
-      }
     }
     &#scoreboard {
       grid-area: scoreboard;
       transition: all 0.1s;
-      &.loaded {
-        background: green;
-        transition: all 0.1s;
-      }
     }
     &#menu {
       grid-area: gamemenu;
       transition: all 0.1s;
-      &.loaded {
-        background: green;
-        transition: all 0.1s;
-      }
     }
     &#gameboard {
       grid-area: gameboard;
       transition: all 0.1s;
-      &.loaded {
-        background: green;
-        transition: all 0.1s;
-      }
     }
   }
 
@@ -1123,7 +1130,7 @@
         </div>
       {:else}
         <Loading
-          loadingMsg="StatusBar loading via COMPONENT..."
+          loadingMsg="StatusBar loading..."
           thisId="statusbar" />
       {/if}
 
@@ -1147,14 +1154,14 @@
   <div class="loading-page-container">
     <div class="loading-container-inner">
       <Loading
-        loadingMsg="ScoreBoard loading via COMPONENT..."
+        loadingMsg="ScoreBoard loading..."
         thisId="scoreboard" />
       <Loading
-        loadingMsg="GameBoard loading via COMPONENT..."
+        loadingMsg="GameBoard loading..."
         thisId="gameboard" />
-      <Loading loadingMsg="Menu loading via COMPONENT..." thisId="menu" />
+      <Loading loadingMsg="Menu loading..." thisId="menu" />
       <Loading
-        loadingMsg="Statusbar loading via COMPONENT..."
+        loadingMsg="Statusbar loading..."
         thisId="statusbar" />
     </div>
   </div>
