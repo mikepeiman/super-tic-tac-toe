@@ -62,7 +62,17 @@
     diagonalDownLeft: [],
     diagonalDownRight: []
   };
-
+  // unicode emojis selected from https://unicode.org/Public/emoji/13.0/emoji-test.txt
+  let emojiShortlist = [
+    "\u{1F525}",
+    "\u{1F984}",
+    "\u{2694}\u{FE0F}",
+    "\u{1F405}",
+    "\u{1F308}",
+    "\u{2744}\u{FE0F}",
+    "\u{1F3D4}\u{FE0F}",
+    "\u{1F381}"
+  ];
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   $: {
@@ -153,8 +163,6 @@
     console.log(`initializePlayers()`);
     let hueOffset = 180;
     let hueInterval = 360 / settings.numberOfPlayers;
-    // unicode emojis selected from https://unicode.org/Public/emoji/13.0/emoji-test.txt
-    let emojiShortlist = ['\u{1F525}','\u{1F984}','\u{2694}\u{FE0F}','\u{1F405}','\u{1F308}','\u{2744}\u{FE0F}','\u{1F3D4}\u{FE0F}','\u{1F381}']
     players = [];
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       players = [
@@ -282,11 +290,12 @@
     // console.log(
     //   `newHue after scoping to 360 degrees: ${newHue} ${typeof newHue}`
     // );
+
     return {
       id: lastIndex,
       name: `Player ${newIndex}`,
       totalScore: 0,
-      mark: "x",
+      mark: emojiShortlist[lastIndex],
       colorMain: `hsla(${newHue}, 50%, 50%, 1)`,
       colorLight: `hsla(${newHue}, 75%, 65%, 1)`,
       colorDark: `hsla(${newHue}, 75%, 35%, 1)`,
