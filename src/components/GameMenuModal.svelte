@@ -11,16 +11,30 @@
   let styling = {
     window: {
       background: "none",
-      padding: "5rem"
+      padding: "0 1rem 0 0",
+      width: "100%",
+      maxWidth: "100vw",
+      maxHeight: "100vh",
+      margin: 0,
+      background: "rgba(0,0,0,0.7)",
+      transition: "all .5s",
+      overflow: "hidden",
+      display: "flex",
+      justifyContent: "center",
+      flexDirection: "column",
+      alignItems: "center"
     },
     close: {
       width: "3rem",
       height: "3rem"
     },
     content: {
-      padding: "2rem",
       borderRadius: "5px",
-      background: "#1a1a1a"
+      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "70%",
     }
   };
   let vWidth;

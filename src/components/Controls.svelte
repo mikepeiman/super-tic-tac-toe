@@ -180,8 +180,8 @@
   }
 
   .control-button {
-    background: rgba(0, 25, 75, 0.25);
-    color: #1a1a1a;
+    background: var(--theme-dark);
+    color: var(--theme-light);
     width: 100%;
     margin: 1rem;
     padding: 2rem 0.5rem;
