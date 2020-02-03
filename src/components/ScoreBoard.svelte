@@ -62,6 +62,22 @@
     // console.log(
     //   `ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`
     // );
+    if (typeof window !== "undefined") {
+      for (let i = 0; i < players.length; i++) {
+        totalScoreEl = document.getElementById(`total-score-${i}`);
+        let od = new Odometer({
+          el: totalScoreEl,
+          value: players[i].totalScore,
+          duration: 10 * 1000
+        });
+        if (typeof od !== "undefined") {
+          console.log(
+            `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+          );
+          od.update(players[i].totalScore);
+        }
+      }
+    }
   });
   storeViewportSize.subscribe(val => {
     console.log(`ScoreBoard subscribed to app viewport size: `, val);
@@ -489,54 +505,54 @@
     left: 0;
     // top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
-    transition: all .45s;
+    transition: all 0.45s;
     // outline: 5px solid var(--theme-bg)
     min-width: max-content;
     transform-origin: top left;
     // transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
-    transition: all .45s;
+    transition: all 0.45s;
     z-index: -1;
 
     & .player-name {
-      transition: all .45s;
+      transition: all 0.45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
     & input.player-mark {
-      transition: all .45s;
+      transition: all 0.45s;
       width: 3.5ch;
       display: none;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
     & .total-score-number {
-      transition: all .45s;
+      transition: all 0.45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
   }
@@ -647,7 +663,7 @@
     // outline: 5px solid var(--theme-fg);
     box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
     position: relative;
-    transition: all .45s;
+    transition: all 0.45s;
     min-width: max-content;
     // transform: scale(1.025);
     // transform: scale(calc(var(--scale-width) * 1.05));
@@ -754,33 +770,33 @@
   @media screen and (min-width: 600px) {
   }
   @media screen and (min-width: 900px) {
-  .scoreboard-container-inner {
-    width: max-content;
-    max-width: 100%;
-    position: relative;
-    z-index: -2;
-    & .add-or-remove-players {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      height: 5.75rem;
-      margin-left: 0.5rem;
+    .scoreboard-container-inner {
+      width: max-content;
+      max-width: 100%;
+      position: relative;
+      z-index: -2;
+      & .add-or-remove-players {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 5.75rem;
+        margin-left: 0.5rem;
+      }
+      & .add-or-remove-player-button {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 0 0.5rem;
+        font-size: 1.25rem;
+        background: var(--player-color-dark);
+        color: var(--theme-light);
+        // border: 2px solid var(--player-color-dark);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
-    & .add-or-remove-player-button {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin: 0 0.5rem;
-      font-size: 1.25rem;
-      background: var(--player-color-dark);
-      color: var(--theme-light);
-      // border: 2px solid var(--player-color-dark);
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
   }
   @media screen and (min-width: 1200px) {
   }
@@ -792,91 +808,95 @@
 <!-- {@debug grid} -->
 <!-- {@debug settings} -->
 {#if players}
-{#await players then players}
+  {#await players then players}
 
-  <div class="scoreboard-container-inner">
-    <div class="add-or-remove-players">
-      <div
-        class="add-or-remove-player-button"
-        id="add-player"
-        on:click={addPlayer}>
-        <Fa
-          icon={faPlus}
-          color={`var(--theme-light)`}
-          secondaryColor={`var(--theme-light)`}
-          secondaryOpacity={_secondaryOpacity} />
-      </div>
-      <div
-        class="add-or-remove-player-button"
-        id="remove-player"
-        on:click={removePlayer}>
-        <Fa
-          icon={faMinus}
-          color={`var(--theme-light)`}
-          secondaryColor={`var(--theme-light)`}
-          secondaryOpacity={_secondaryOpacity} />
-      </div>
-    </div>
-    {#each players as player}
-      <div
-        class="scoreboard-player"
-        style={`--viewport-width: ${appViewport.width}`}
-        class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3 class="total-score">
-          <input
-            class="player-name"
-            type="text"
-            bind:value={player.name}
-            placeholder={player.name}
-            on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} />
-          <input
-            class="player-mark"
-            type="text"
-            bind:value={player.mark}
-            placeholder={player.mark}
-            maxlength="1"
-            on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} />
-          <EmojiSelector
-            class="player-mark"
-            type="text"
-            bind:value={player.mark}
-            placeholder={player.mark}
-            data-player-mark={player.mark}
-            maxlength="1"
-            style={`--this-player-color-main: ${player.colorMain}`}
-            on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}
-            on:emoji={e => updateStoredPlayers(player, e)} />
-          <div class="total-score-number">{player.totalScore}</div>
-          <!-- keep in mind that below uses DOM traversal to highlight player-name input, will break if markup changes -->
-          <button
-            class="player-details-icon"
-            on:click={e => editPlayerDetails(e, player)}>
-            <Fa
-              icon={faEdit}
-              color={`var(--theme-bg)`}
-              secondaryColor={player.colorDark}
-              secondaryOpacity={_secondaryOpacity} />
-            <!-- <div class="button-text"></div> -->
-          </button>
-        </h3>
-        <div class="scoreboard-totals">
-          {#each player.scores as direction, i}
-            <div class="scoreboard-direction">
-              <div class="direction-score-section">
-                <img
-                  class="direction-icon"
-                  src={direction.iconSrc}
-                  width="20"
-                  height="20"
-                  alt="Icon for direction {direction.name}" />
-                <div class="direction-score">{player.dirScoresByIndex[i]}</div>
-              </div>
-            </div>
-          {/each}
+    <div class="scoreboard-container-inner">
+      <div class="add-or-remove-players">
+        <div
+          class="add-or-remove-player-button"
+          id="add-player"
+          on:click={addPlayer}>
+          <Fa
+            icon={faPlus}
+            color={`var(--theme-light)`}
+            secondaryColor={`var(--theme-light)`}
+            secondaryOpacity={_secondaryOpacity} />
         </div>
-        <!-- <div class="scoreboard-totals">
+        <div
+          class="add-or-remove-player-button"
+          id="remove-player"
+          on:click={removePlayer}>
+          <Fa
+            icon={faMinus}
+            color={`var(--theme-light)`}
+            secondaryColor={`var(--theme-light)`}
+            secondaryOpacity={_secondaryOpacity} />
+        </div>
+      </div>
+      {#each players as player, i}
+        <div
+          class="scoreboard-player"
+          style={`--viewport-width: ${appViewport.width}`}
+          class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
+          <h3 class="total-score">
+            <input
+              class="player-name"
+              type="text"
+              bind:value={player.name}
+              placeholder={player.name}
+              on:click={highlight}
+              on:blur={() => updateStoredPlayers(player)} />
+            <input
+              class="player-mark"
+              type="text"
+              bind:value={player.mark}
+              placeholder={player.mark}
+              maxlength="1"
+              on:click={highlight}
+              on:blur={() => updateStoredPlayers(player)} />
+            <EmojiSelector
+              class="player-mark"
+              type="text"
+              bind:value={player.mark}
+              placeholder={player.mark}
+              data-player-mark={player.mark}
+              maxlength="1"
+              style={`--this-player-color-main: ${player.colorMain}`}
+              on:click={e => toggleDeactivatePlacardsSoEmojiCanPick(e)}
+              on:emoji={e => updateStoredPlayers(player, e)} />
+            <div class="total-score-number odometer" id="total-score-{i}">
+              {player.totalScore}
+            </div>
+            <!-- keep in mind that below uses DOM traversal to highlight player-name input, will break if markup changes -->
+            <button
+              class="player-details-icon"
+              on:click={e => editPlayerDetails(e, player)}>
+              <Fa
+                icon={faEdit}
+                color={`var(--theme-bg)`}
+                secondaryColor={player.colorDark}
+                secondaryOpacity={_secondaryOpacity} />
+              <!-- <div class="button-text"></div> -->
+            </button>
+          </h3>
+          <div class="scoreboard-totals">
+            {#each player.scores as direction, i}
+              <div class="scoreboard-direction">
+                <div class="direction-score-section">
+                  <img
+                    class="direction-icon"
+                    src={direction.iconSrc}
+                    width="20"
+                    height="20"
+                    alt="Icon for direction {direction.name}" />
+                  <div class="direction-score odometer" id="direction-score">
+                    {player.dirScoresByIndex[i]}
+                  </div>
+                </div>
+              </div>
+            {/each}
+          </div>
+          <!-- <div class="scoreboard-totals">
           {#each player.scores as direction, i}
             <div class="scoreboard-direction">
               <div class="direction-score-section">
@@ -891,10 +911,10 @@
             </div>
           {/each}
         </div> -->
-      </div>
-    {/each}
-  </div>
-{/await}
+        </div>
+      {/each}
+    </div>
+  {/await}
 {:else}
-<h1>ScoreBoard awaiting loading players....</h1>
+  <h1>ScoreBoard awaiting loading players....</h1>
 {/if}
