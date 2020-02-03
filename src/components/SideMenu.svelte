@@ -20,6 +20,7 @@
     storeGameboardWidth,
     storeState,
     storePlayers,
+    storePlayersScored,
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
@@ -146,6 +147,7 @@
     });
     players = players;
     storePlayers.set(players);
+    storePlayersScored.set(false)
   }
 
   function setSingleInputWidth(input) {

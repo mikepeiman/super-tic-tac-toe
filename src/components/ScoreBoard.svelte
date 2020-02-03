@@ -21,6 +21,7 @@
     storeViewportSize,
     storeState,
     storePlayers,
+    storePlayersScored,
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
@@ -43,9 +44,8 @@
   let totalMovesInGame = 0;
   let settings = {};
   let gameUnderway = false;
-  let numberOfPlayers, scores;
+  let numberOfPlayers;
   ({ numberOfPlayers } = settings);
-  $: scores && odometerScores();
   storeSettings.subscribe(value => {
     console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
     settings = value;
@@ -60,9 +60,14 @@
     }
     
   });
+
+  storePlayersScored.subscribe(val => {
+    console.log(`playersScored() receiving an update, running odometerScores() `)
+    odometerScores()
+    
+  })
   storePlayers.subscribe(value => {
     players = value;
-    ({ scores } = players[players.length-1]);
     // console.log(
     //   `ScoreBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`
     // );
@@ -73,6 +78,8 @@
     console.log(`ScoreBoard subscribed to app viewport size: `, val);
     appViewport = val;
   });
+
+
   onMount(() => {
     getViewportSize();
     window.addEventListener(
@@ -85,15 +92,10 @@
     );
     players = $storePlayers;
     state = $storeState;
-    // console.log(
-    //   `ScoreBoard subscribed to app viewport size: `,
-    //   appViewport.width
-    // );
-    // console.log(
-    //   `ScoreBoard subscribed to app viewport size: `,
-    //   appViewport.height
-    // );
+    odometerScores() 
   });
+
+
   afterUpdate(() => {
     updateCount++;
     // console.log(`afterUpdate() count: ${updateCount}`);
@@ -101,6 +103,7 @@
     addHighlightIfGameInProgress();
     // odometerScores();
   });
+  
 
   function odometerScores() {
     if (players.length) {
@@ -731,6 +734,8 @@
   .direction-score {
     justify-self: flex-end;
     margin-right: 0.5rem;
+    font-family: inherit;
+    font-weight: 300;
   }
   :global(.total-score) {
     position: relative;

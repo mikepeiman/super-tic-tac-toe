@@ -5,6 +5,7 @@
     storeSettings,
     storeState,
     storePlayers,
+    storePlayersScored,
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
@@ -107,8 +108,9 @@
     });
     players = players;
     storePlayers.set(players);
+    storePlayersScored.set(true)
     // localStorage.setItem(`players`, JSON.stringify(players));
-    // dispatch("playersScored", players);
+    dispatch("playersScored", players);
   }
 
   function score(settings, direction, player, idx) {
