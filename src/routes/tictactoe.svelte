@@ -220,7 +220,7 @@
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
-    background: #1a1a1a;
+    // background: #1a1a1a;
   }
 
   .page-container {

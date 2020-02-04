@@ -22,7 +22,7 @@ font-size: 100%;
 	main {
 		position: relative;
 		width: 100%;
-		background-color: #1a1a1a;
+		/* background-color: #1a1a1a; */
 		/* padding: 2em; */
 		margin: 0 auto;
 		box-sizing: border-box;
