@@ -110,6 +110,7 @@
       min-height: 100vh;
       min-width: 100vw;
       transition: all 0.5s;
+      background: rgba(0,0,0,0.7);
     }
   }
   // :global(.window-wrap .window.expand) {
