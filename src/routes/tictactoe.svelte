@@ -220,7 +220,7 @@
   $input-blue: rgba(50, 200, 255, 1);
 
   #layout-main {
-    // background: #1a1a1a;
+    // background: var(--theme-dark);
   }
 
   .page-container {
@@ -259,10 +259,12 @@
     min-width: 100vw;
     max-width: 100vw;
     position: relative;
+    background: #1a1a1a;
     & .loading-container-inner {
       // width: 40vw;
       // height: 40vh;
       background: rgba(200, 200, 255, 0.15);
+      // background: var(--theme-dark);
       padding: 3rem 6rem 3rem 3rem;
       border-radius: 1rem;
       position: relative;
