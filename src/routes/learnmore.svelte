@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import { send, receive } from "./../crossfade.js";
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -23,14 +23,30 @@
     overflow-x: hidden;
   }
   :global(.homepage-wrapper) {
-    position: relative;
     & h1.page-title {
+      top: 0;
+      opacity: 1;
       z-index: 10;
       color: white;
       background: none;
       margin: 7.5vh 0 2vh 0;
       border-bottom: 6px solid $input-blue;
     }
+  }
+  .crossfade-wrapper {
+    position: absolute;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    top: 0;
+    left: 0;
+    padding: 1rem 0;
+  }
+  .crossfade-item {
+    position: absolute;
+    // transition: all 0.25s;
   }
 
   h1,
@@ -66,7 +82,7 @@
     margin: 2rem;
   }
 
-  .tictactoe-button {
+  .button {
     padding: 1rem 2rem;
     background: #1a1a1a;
     border-radius: 5px;
@@ -82,7 +98,7 @@
       color: white;
       transition: all 0.45s;
     }
-    // &#learnmore {
+    // &#learn-more {
     //   color: rgba(75, 155, 75, 1);
     //   border: 3px solid rgba(75, 155, 75, 1);
     //   box-shadow: 0 0 5px 10px rgba(75, 155, 75, 0.25);
@@ -101,6 +117,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: #1a1a1a;
   }
   #final-button {
     box-shadow: 0 0 3px 4px rgba(50, 200, 255, 0.25);
@@ -111,59 +128,26 @@
     }
   }
 
-  #playnow,
-  #learnmore {
+
+  #play-now,
+  #learn-more {
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.45s;
     z-index: 10;
   }
-  #playnow {
-    top: 40%;
+  #home {
+    left: 2rem;
   }
-  #learnmore {
+  #page-title {
+  }
+  #play-now {
+    right: 2rem;
+  }
+
+  #learn-more {
     top: 60%;
-  }
-  img {
-    max-height: 80vh;
-    width: 100%;
-    position: relative;
-  }
-
-  figure {
-    position: absolute;
-    display: flex;
-    margin: 0;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 80vh;
-    max-height: 80vh;
-    z-index: 1;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      width: 100%;
-      height: 80vh;
-      background: rgba(0, 0, 0, 0.7);
-      outline: 10px solid #3366ff;
-      // background-image: radial-gradient(rgba(0,0,0, 0.5), rgba(0,0,0,0));
-    }
-
-    & figcaption {
-      margin: -2.25rem 0 2rem 0;
-      padding: 0;
-      z-index: 9;
-      color: #555;
-      visibility: hidden;
-    }
   }
 
   p {
@@ -186,8 +170,7 @@
   }
 
   .game-info {
-    margin: 2rem 0 0 0;
-    position: relative;
+    margin: 10rem 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -216,50 +199,44 @@
   }
 
   @media (max-width: 600px) {
-    h1 {
-      font-size: 3.2em;
-    }
-    h1 {
-      font-size: 2.8em;
-    }
-    img {
-      width: 100vw;
-      height: auto;
-      position: relative;
-    }
-    figcaption {
-      margin: -2.25rem 0 2rem 0;
-      padding: 0;
-      z-index: 9;
-      font-size: 1rem;
-      color: #555;
-    }
   }
 
   @media (min-width: 960px) {
-    h1 {
-      font-size: 4em;
-    }
-    h2 {
-      font-size: 3.2em;
-    }
-    img {
-      width: auto;
-      position: relative;
-      top: 0;
-    }
-    .text-content {
-      max-width: 60vw;
-    }
   }
 </style>
 
 <div class="learn-more-wrapper">
 
-  <h1 class="page-title">SUPER Tic Tac Toe!</h1>
-  <a rel="prefetch" class="tictactoe-button" id="playnow" href="tictactoe/">
-    PLAY NOW!
-  </a>
+  <div class="crossfade-wrapper">
+    <h1
+      out:send={{ key: 'title' }}
+      in:receive={{ key: 'title' }}
+      class="crossfade-item page-title"
+      id="page-title">
+
+      <slot name="app-title" />
+      Super Tic-Tac-Toe
+    </h1>
+    <a
+      out:send={{ key: 'play-now' }}
+      in:receive={{ key: 'play-now' }}
+      rel="prefetch"
+      class="crossfade-item button"
+      id="play-now"
+      href="tictactoe/">
+      <slot name="play-now" />
+      PLAY NOW!
+    </a>
+    <a
+      out:send={{ key: 'learn-more' }}
+      in:receive={{ key: 'learn-more' }}
+      rel="prefetch"
+      class="crossfade-item button"
+      id="home"
+      href="/">
+      &#x21A4; Go back
+    </a>
+  </div>
   <div class="game-info">
     <div class="text-content">
       <h2>HOW TO WIN:</h2>
@@ -375,9 +352,7 @@
 
     <div class="text-content">
       <h2>Go on, play already...!</h2>
-      <a segment class="tictactoe-button" id="final-button" href="tictactoe/">
-        PLAY NOW!
-      </a>
+      <a class="button" id="final-button" href="tictactoe/">PLAY NOW!</a>
     </div>
   </div>
 

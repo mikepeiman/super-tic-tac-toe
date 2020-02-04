@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import { send, receive } from "./../crossfade.js";
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -23,21 +23,36 @@
     overflow-x: hidden;
   }
   :global(.homepage-wrapper) {
-    position: relative;
     height: 100vh;
     & h1.page-title {
       z-index: 10;
       color: white;
       background: none;
       margin: 7.5vh 0 2vh 0;
-      position: relative;
       top: 0;
       border-bottom: 6px solid $input-blue;
+      align-self: flex-start;
+      overflow: none;
     }
   }
 
+  .crossfade-wrapper {
+    position: absolute;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+  }
+  .crossfade-item {
+    position: absolute;
+    // transition: all 0.25s;
+  }
   .landing-page-wrapper {
-    display: relative;
+    display: flex;
+    justify-content: center;
   }
 
   h1,
@@ -73,10 +88,13 @@
     margin: 2rem;
   }
 
-  .tictactoe-button {
+  .button {
     padding: 1rem 2rem;
     background: #1a1a1a;
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 10rem;
     text-decoration: none;
     color: $input-blue;
@@ -89,7 +107,7 @@
       color: white;
       transition: all 0.45s;
     }
-    // &#learnmore {
+    // &#learn-more {
     //   color: rgba(75, 155, 75, 1);
     //   border: 3px solid rgba(75, 155, 75, 1);
     //   box-shadow: 0 0 5px 10px rgba(75, 155, 75, 0.25);
@@ -112,17 +130,22 @@
     }
   }
 
-  #playnow,
-  #learnmore {
+  #play-now,
+  #learn-more {
     position: absolute;
     transition: all 0.45s;
     z-index: 10;
   }
-  #playnow {
+  #play-now {
     top: 40%;
   }
-  #learnmore {
+  #learn-more {
     top: 60%;
+  }
+  #page-title {
+    top: 0;
+    opacity: 1;
+    z-index: 11;
   }
   img {
     max-height: 80vh;
@@ -140,7 +163,7 @@
     left: 0;
     min-width: 100vw;
     min-height: 100vh;
-    z-index: 1;
+    // z-index: 1;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -247,7 +270,7 @@
       position: relative;
       top: 2rem;
       max-width: 100vw;
-      max-height: 100vh;
+      max-height: 95vh;
     }
     .text-content {
       max-width: 60vw;
@@ -257,20 +280,42 @@
 
 <div class="landing-page-wrapper">
 
-  <h1 class="page-title">
-    <slot name="app-title" />
-  </h1>
+  <div class="crossfade-wrapper">
+    <h1
+      out:send={{ key: 'title' }}
+      in:receive={{ key: 'title' }}
+      class="crossfade-item page-title"
+      id="page-title">
+      <slot name="app-title" />
+    </h1>
+    <a
+      out:send={{ key: 'play-now' }}
+      in:receive={{ key: 'play-now' }}
+      rel="prefetch"
+      class="crossfade-item button"
+      id="play-now"
+      href="tictactoe/">
+      <slot name="play-now" />
+    </a>
+
+    <a
+      out:send={{ key: 'learn-more' }}
+      in:receive={{ key: 'learn-more' }}
+      rel="prefetch"
+      class="crossfade-item button"
+      id="learn-more"
+      href="learnmore/">
+      LEARN MORE
+    </a>
+    
   <figure>
     <img
       id="tictactoe-game"
       alt="A completed game of Super Tic Tac Toe"
       src="game-dark-2pl.png" />
     <figcaption>An example of a completed game</figcaption>
-    <a rel="prefetch" class="tictactoe-button" id="playnow" href="tictactoe/">
-      <slot name="play-now" />
-    </a>
-    <a rel="prefetch" class="tictactoe-button" id="learnmore" href="learnmore/">
-      LEARN MORE
-    </a>
+
   </figure>
+  </div>
+
 </div>

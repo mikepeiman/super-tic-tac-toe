@@ -20,6 +20,21 @@ a {
 	color: inherit;
 }
 
+.crossfade-wrapper {
+  position: absolute;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+}
+.crossfade-item {
+  position: absolute;
+  transition: all 0.25s;
+}
+
 code {
 	font-family: menlo, inconsolata, monospace;
 	font-size: calc(1em - 2px);
