@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { send, receive } from "./../crossfade.js";
-  import { fade } from 'svelte/transition'
+  import { fade } from "svelte/transition";
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -43,7 +43,8 @@
     align-items: flex-start;
     top: 0;
     left: 0;
-    padding: 1rem 0;
+    padding: 0;
+    margin: 0;
   }
   .crossfade-item {
     position: absolute;
@@ -83,11 +84,58 @@
     margin: 2rem;
   }
 
+  img {
+    width: 85%;
+    position: relative;
+    top: 1rem;
+    z-index: -1;
+  }
+  $imageW: 25vw;
+  $imageH: 25vh;
+
+  figure {
+    position: relative;
+    display: flex;
+    margin: 0;
+    top: 0;
+    left: 0;
+    min-width: $imageW;
+    min-height: $imageH;
+    width: $imageW;
+    height: $imageH;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    z-index: 0;
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      min-width: $imageW;
+      min-height: $imageH;
+      width: $imageW;
+      height: $imageH;
+      background: rgba(0, 0, 0, 0.7);
+      outline: 2px solid #32c8ff;
+      outline-offset: -10px;
+    }
+    
+    & figcaption {
+      margin: -2.25rem 0 2rem 0;
+      padding: 0;
+      z-index: 9;
+      color: #555;
+      visibility: hidden;
+    }
+  }
+
   .button {
     padding: 1rem 2rem;
     background: #1a1a1a;
     border-radius: 5px;
-    width: 10rem;
+    width: auto;
     text-decoration: none;
     color: $input-blue;
     border: 3px solid $input-blue;
@@ -99,18 +147,6 @@
       color: white;
       transition: all 0.45s;
     }
-    // &#learn-more {
-    //   color: rgba(75, 155, 75, 1);
-    //   border: 3px solid rgba(75, 155, 75, 1);
-    //   box-shadow: 0 0 5px 10px rgba(75, 155, 75, 0.25);
-    //   transition: all 0.45s;
-    //   &:hover {
-    //     color: rgba(75, 155, 75, 1);
-    //     border: 3px solid white;
-    //     box-shadow: 0 0 10px 20px rgba(75, 155, 75, 0.5);
-    //     transition: all 0.45s;
-    //   }
-    // }
   }
 
   .learn-more-wrapper {
@@ -129,7 +165,6 @@
     }
   }
 
-
   #play-now,
   #learn-more {
     display: flex;
@@ -140,11 +175,16 @@
   }
   #home {
     left: 2rem;
+    top: 2rem;
   }
   #page-title {
+    top: 2rem;
+    z-index: 9;
+    border-bottom: 3px solid rgba(50, 200, 255, 1);
   }
   #play-now {
     right: 2rem;
+    top: 2rem;
   }
 
   #learn-more {
@@ -171,7 +211,7 @@
   }
 
   .game-info {
-    margin: 10rem 0 0 0;
+    margin: 40vh 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -237,6 +277,14 @@
       href="/">
       &#x21A4; Go back
     </a>
+    <figure out:send={{ key: 'figure' }} in:receive={{ key: 'figure' }}>
+      <img
+        id="tictactoe-game"
+        alt="A completed game of Super Tic Tac Toe"
+        src="game-dark-2pl.png" />
+      <figcaption>An example of a completed game</figcaption>
+
+    </figure>
   </div>
   <div class="game-info">
     <div class="text-content">
@@ -248,7 +296,10 @@
 
     <hr />
 
-    <div class="text-content" in:fade="{{duration: 200}}" out:fade="{{delay: 200, duration: 200}}">
+    <div
+      class="text-content"
+      in:fade={{ duration: 200 }}
+      out:fade={{ delay: 200, duration: 200 }}>
 
       <h2>HOW TO PLAY:</h2>
       <ol>
@@ -267,7 +318,10 @@
 
     <hr />
 
-    <div class="text-content"  in:fade="{{duration: 200}}" out:fade="{{duration: 200}}">
+    <div
+      class="text-content"
+      in:fade={{ duration: 200 }}
+      out:fade={{ duration: 200 }}>
       <h2>FEATURES:</h2>
       <ul>
         <li>Play with (theoretically) any number of players</li>
