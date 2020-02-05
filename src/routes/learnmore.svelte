@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { send, receive } from "./../crossfade.js";
+  import { fade } from 'svelte/transition'
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -247,7 +248,7 @@
 
     <hr />
 
-    <div class="text-content">
+    <div class="text-content" in:fade="{{duration: 200}}" out:fade="{{delay: 200, duration: 200}}">
 
       <h2>HOW TO PLAY:</h2>
       <ol>
@@ -266,7 +267,7 @@
 
     <hr />
 
-    <div class="text-content">
+    <div class="text-content"  in:fade="{{duration: 200}}" out:fade="{{duration: 200}}">
       <h2>FEATURES:</h2>
       <ul>
         <li>Play with (theoretically) any number of players</li>

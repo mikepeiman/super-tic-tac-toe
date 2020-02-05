@@ -1,5 +1,6 @@
 <script>
   import LandingPage from "./../components/LandingPage.svelte";
+  // import { fade } from 'svelte/transitions'
   // const emojis = require("emojis-list");
   // console.log(emojis);
 </script>

@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { send, receive } from "./../crossfade.js";
+  import { fade } from 'svelte/transition'
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -308,7 +309,7 @@
       LEARN MORE
     </a>
     
-  <figure>
+  <figure in:fade="{{duration: 200}}" out:fade="{{delay: 200, duration: 200}}">
     <img
       id="tictactoe-game"
       alt="A completed game of Super Tic Tac Toe"
