@@ -35,7 +35,7 @@
     min-height: 100vh;
     background: #1a1a1a;
   }
-  .test-wrapper {
+  .content-wrapper {
     position: absolute;
     display: flex;
     background: #1a1a1a;
@@ -76,7 +76,7 @@
 
 <div class="wrapper-wrapper">
 
-  <div class="test-wrapper">
+  <div class="content-wrapper">
     <h1
       out:send={{ key: 'h1' }}
       in:receive={{ key: 'h1' }}

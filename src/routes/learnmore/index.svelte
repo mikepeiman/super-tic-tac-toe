@@ -1,7 +1,15 @@
 <script>
   import { onMount } from "svelte";
+  import HowToWin from "./how-to-win.svelte";
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
+  import Fa from "sveltejs-fontawesome";
+  import { faMedal } from "@fortawesome/pro-solid-svg-icons";
+  import { faLightbulbOn } from "@fortawesome/pro-solid-svg-icons";
+  import { faUsersCrown } from "@fortawesome/pro-solid-svg-icons";
+  import { faSwords } from "@fortawesome/pro-solid-svg-icons";
+  import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
+  import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -85,6 +93,7 @@
   }
 
   img {
+    grid-area: content-image;
     width: 85%;
     position: relative;
     top: 1rem;
@@ -95,6 +104,7 @@
 
   figure {
     position: relative;
+    opacity: 0;
     display: flex;
     margin: 0;
     top: 0;
@@ -121,7 +131,7 @@
       outline: 2px solid #32c8ff;
       outline-offset: -10px;
     }
-    
+
     & figcaption {
       margin: -2.25rem 0 2rem 0;
       padding: 0;
@@ -130,7 +140,15 @@
       visibility: hidden;
     }
   }
-
+  .side-menu-wrapper {
+    position: absolute;
+    left: 1rem;
+    top: 25vh;
+    width: 10rem;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
   .button {
     padding: 1rem 2rem;
     background: #1a1a1a;
@@ -139,13 +157,18 @@
     text-decoration: none;
     color: $input-blue;
     border: 3px solid $input-blue;
-    z-index: 99;
-    box-shadow: 0 0 5px 10px rgba(50, 200, 255, 0.25);
+    z-index: 9;
+    transition: all 0.25s;
     &:hover {
-      box-shadow: 0 0 10px 20px rgba(50, 200, 255, 0.5);
+      box-shadow: 0 0 1px 2px rgba(50, 200, 255, 0.5);
       border: 3px solid white;
       color: white;
-      transition: all 0.45s;
+      transition: all 0.25s;
+    }
+    &.side-menu {
+      position: static;
+      width: 100%;
+      margin: 0.5rem 1rem;
     }
   }
 
@@ -200,6 +223,7 @@
     grid-template-columns: 40vw 40vw;
   }
   .text-content {
+    grid-area: text;
     max-width: 80vw;
     color: #abc;
     display: flex;
@@ -211,11 +235,17 @@
   }
 
   .game-info {
-    margin: 40vh 0 0 0;
+    margin: 26vh 0 0 15vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    // display: grid;
+    // grid-template-columns: repeat(5, 1fr);
+    // grid-template-areas:
+    //   "text text text content-image content-image"
+    //   "content-image content-image text text text";
   }
 
   span {
@@ -236,6 +266,25 @@
     }
     &.underline {
       border-bottom: 1px solidrgba(0, 0, 0, 0.75);
+    }
+  }
+  :global(.side-menu-wrapper) a {
+    & .icon {
+      display: flex;
+      display: grid;
+      grid-template-areas: "content-icon content-text";
+      grid-template-columns: 3rem 1fr;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 1rem;
+      & svg {
+        grid-area: content-icon;
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+      & div {
+        grid-area: content-text;
+      }
     }
   }
 
@@ -285,16 +334,92 @@
       <figcaption>An example of a completed game</figcaption>
 
     </figure>
-  </div>
-  <div class="game-info">
-    <div class="text-content">
-      <h2>HOW TO WIN:</h2>
-      <h3>
-        <span class="nice">Score the most points! Easy, right?</span>
-      </h3>
+
+    <div class="side-menu-wrapper">
+      <a
+        name="how-to-win"
+        out:send={{ key: 'how-to-win' }}
+        in:receive={{ key: 'how-to-win' }}
+        class="button side-menu"
+        id="how-to-win-button"
+        href="learnmore/how-to-win">
+        <div class="icon users-crown">
+          <Fa
+            icon={faUsersCrown}
+            color="white"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <div>How To Win</div>
+        </div>
+      </a>
+      <a
+        name="how-to-play"
+        out:send={{ key: 'how-to-play' }}
+        in:receive={{ key: 'how-to-play' }}
+        class="button side-menu"
+        id="how-to-play-button"
+        href="learnmore/how-to-play/">
+        <div class="icon swords">
+          <Fa
+            icon={faSwords}
+            color="white"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <div>How To Play</div>
+        </div>
+      </a>
+      <a
+        name="features"
+        out:send={{ key: 'ui-and-features' }}
+        in:receive={{ key: 'ui-and-features' }}
+        class="button side-menu"
+        id="ui-and-features-button"
+        href="learnmore/ui-and-features/">
+        <div class="icon lightbulb-on">
+          <Fa
+            icon={faLightbulbOn}
+            color="white"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <div>UI & Features</div>
+        </div>
+      </a>
+      <a
+        name="issues"
+        out:send={{ key: 'issues-and-gotchas' }}
+        in:receive={{ key: 'issues-and-gotchas' }}
+        class="button side-menu"
+        id="issues-and-gotchas-button"
+        href="learnmore/issues-and-gotchas/">
+        <div class="icon exclamation-triangle">
+          <Fa
+            icon={faExclamationTriangle}
+            color="white"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <div>Issues</div>
+        </div>
+      </a>
+      <a
+        name="development"
+        out:send={{ key: 'development-thoughts' }}
+        in:receive={{ key: 'development-thoughts' }}
+        class="button side-menu"
+        id="development-thoughts-button"
+        href="learnmore/development-thoughts/">
+        <div class="icon construction">
+          <Fa
+            icon={faConstruction}
+            color="white"
+            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
+            1)" />
+          <div>Development</div>
+        </div>
+      </a>
     </div>
 
-    <hr />
+  </div>
+  <div class="game-info">
 
     <div
       class="text-content"
