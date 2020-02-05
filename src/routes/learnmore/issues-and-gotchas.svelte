@@ -412,13 +412,37 @@
       in:fade={{ duration: 200 }}
       out:fade={{ delay: 200, duration: 200 }}>
 
-      <h1 out:send={{ key: 'h1' }} in:receive={{ key: 'h1' }} class="heading">
-        How To Win
-      </h1>
-
-      <h3>
-        <span class="nice">Score the most points! Easy, right?</span>
-      </h3>
+      <h2>GOTCHA'S / ISSUES</h2>
+      <p>Actually, it all works surprisingly well.</p>
+      <p>
+        <span class="note">
+          If you run into issues, reload, and if it breaks, clear localStorage
+          and reload.
+        </span>
+      </p>
+      <ul>
+        <li>
+          You can change number of players on-the-fly, but that obviously messes
+          with the scoring. Likewise with rows and columns. These functions are
+          surprisingly resilient though, and you can actually maintain some
+          semblence of continuity depending on your adjustments.
+          <p>
+            <span class="note">
+              TL;DR: Be careful not to change players, rows, columns on the fly!
+            </span>
+          </p>
+        </li>
+        <li>
+          <span class="cool">
+            Cool feature! ~ You
+            <span class="bold">CAN</span>
+            change the number-of-moves-in-a-row-to-score, and the line bonus on
+            the fly and recalculate scoring!
+          </span>
+          We've discovered that there definitely are different winning
+          strategies based on different settings.
+        </li>
+      </ul>
     </div>
   </div>
 

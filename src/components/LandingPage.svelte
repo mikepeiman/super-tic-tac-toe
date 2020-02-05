@@ -148,7 +148,7 @@
     opacity: 1;
     z-index: 11;
   }
-  
+
   img {
     max-height: 80vh;
     width: 100%;
@@ -209,12 +209,6 @@
     align-items: center;
     // border-radius: 10px;
     // background: black;
-  }
-
-  .game-info {
-    margin: 2rem 0 0 0;
-    position: relative;
-    top: 70vh;
   }
 
   span {

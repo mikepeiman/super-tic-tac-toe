@@ -22,6 +22,7 @@ a {
 
 .crossfade-wrapper {
   position: absolute;
+  background: #1a1a1a;
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
@@ -33,6 +34,24 @@ a {
 .crossfade-item {
   position: absolute;
   transition: all 0.25s;
+}
+
+.game-info {
+  position: absolute;
+  margin: 0 9vw 0 6vw;
+  top: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 75vh;
+  /* height: 100vh; */
+  align-items: center;
+
+  // display: grid;
+  // grid-template-columns: repeat(5, 1fr);
+  // grid-template-areas:
+  //   "text text text content-image content-image"
+  //   "content-image content-image text text text";
 }
 
 code {

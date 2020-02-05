@@ -1,6 +1,5 @@
 <script>
   import { onMount } from "svelte";
-
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -406,20 +405,26 @@
 
   </div>
   <div class="game-info">
-
     <div
       class="text-content"
       in:fade={{ duration: 200 }}
       out:fade={{ delay: 200, duration: 200 }}>
 
-      <h1 out:send={{ key: 'h1' }} in:receive={{ key: 'h1' }} class="heading">
-        How To Win
-      </h1>
-
-      <h3>
-        <span class="nice">Score the most points! Easy, right?</span>
-      </h3>
+      <div class="text-content">
+        <h2>DEVELOPMENT (tentative roadmap):</h2>
+        <ul>
+          <li>Incremental point bonuses and other scoring variations</li>
+          <li>A range of gameplay features, too numerous to list here....</li>
+          <li>Save and load games via local file system</li>
+          <li>User authentication/login, save games and profile to DB</li>
+          <li>Make solid mobile layout (currently designed for desktop)</li>
+          <li>
+            MULTI-DEVICE PLAY! Yes, making this a real multiplayer game, where
+            you can set a lobby name and have friends join from their devices.
+          </li>
+          <li>Publish in the app stores.</li>
+        </ul>
+      </div>
     </div>
   </div>
-
 </div>

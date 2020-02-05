@@ -412,14 +412,21 @@
       in:fade={{ duration: 200 }}
       out:fade={{ delay: 200, duration: 200 }}>
 
-      <h1 out:send={{ key: 'h1' }} in:receive={{ key: 'h1' }} class="heading">
-        How To Win
-      </h1>
-
-      <h3>
-        <span class="nice">Score the most points! Easy, right?</span>
-      </h3>
+      <h2>HOW TO PLAY:</h2>
+      <ol>
+        <li>Set your game settings (# of players, cells to score, etc)</li>
+        <li>Set your player names and chosen marks (single ASCII character)</li>
+        <li>
+          Play! You'll get visual indications for turns remaining and turn
+          changeovers
+        </li>
+        <li>
+          See your current score anytime with the "Tally Scores" button, or wait
+          until the game is done to see who is the champion!
+        </li>
+      </ol>
     </div>
+
   </div>
 
 </div>

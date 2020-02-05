@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import HowToWin from "./how-to-win.svelte";
+
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -234,20 +234,6 @@
     // background: black;
   }
 
-  .game-info {
-    margin: 26vh 0 0 15vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    // display: grid;
-    // grid-template-columns: repeat(5, 1fr);
-    // grid-template-areas:
-    //   "text text text content-image content-image"
-    //   "content-image content-image text text text";
-  }
-
   span {
     background: rgba(119, 94, 94, 0.25);
     font-weight: 300;
@@ -421,119 +407,5 @@
   </div>
   <div class="game-info">
 
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 200 }}>
-
-      <h2>HOW TO PLAY:</h2>
-      <ol>
-        <li>Set your game settings (# of players, cells to score, etc)</li>
-        <li>Set your player names and chosen marks (single ASCII character)</li>
-        <li>
-          Play! You'll get visual indications for turns remaining and turn
-          changeovers
-        </li>
-        <li>
-          See your current score anytime with the "Tally Scores" button, or wait
-          until the game is done to see who is the champion!
-        </li>
-      </ol>
-    </div>
-
-    <hr />
-
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ duration: 200 }}>
-      <h2>FEATURES:</h2>
-      <ul>
-        <li>Play with (theoretically) any number of players</li>
-        <li>Set how many moves in a row to score</li>
-        <li>
-          Set a line bonus for scoring a complete line in any direction
-          <ul>
-            <li>
-              <span class="note">
-                NOTE: the full bonus only applies to the longer side if the
-                board is asymmetrical.
-              </span>
-              Shorter side and diagonals receive (bonus / (long / short))
-              points. For example, a line bonus of 15 on a 10x15 board means the
-              longer line bonus = 15 while the shorter line bonus = 10.
-            </li>
-          </ul>
-        </li>
-        <li>Player names and move-marks selected by players</li>
-        <li>
-          Score the game at any point, as often as you like - you can even
-          change the moves-in-row or line bonus settings and see what the scores
-          would be!
-        </li>
-      </ul>
-    </div>
-
-    <hr />
-
-    <div class="text-content">
-      <h2>GOTCHA'S / ISSUES</h2>
-      <p>Actually, it all works surprisingly well.</p>
-      <p>
-        <span class="note">
-          If you run into issues, reload, and if it breaks, clear localStorage
-          and reload.
-        </span>
-      </p>
-      <ul>
-        <li>
-          You can change number of players on-the-fly, but that obviously messes
-          with the scoring. Likewise with rows and columns. These functions are
-          surprisingly resilient though, and you can actually maintain some
-          semblence of continuity depending on your adjustments.
-          <p>
-            <span class="note">
-              TL;DR: Be careful not to change players, rows, columns on the fly!
-            </span>
-          </p>
-        </li>
-        <li>
-          <span class="cool">
-            Cool feature! ~ You
-            <span class="bold">CAN</span>
-            change the number-of-moves-in-a-row-to-score, and the line bonus on
-            the fly and recalculate scoring!
-          </span>
-          We've discovered that there definitely are different winning
-          strategies based on different settings.
-        </li>
-      </ul>
-    </div>
-
-    <hr />
-
-    <div class="text-content">
-      <h2>DEVELOPMENT (tentative roadmap):</h2>
-      <ul>
-        <li>Incremental point bonuses and other scoring variations</li>
-        <li>A range of gameplay features, too numerous to list here....</li>
-        <li>Save and load games via local file system</li>
-        <li>User authentication/login, save games and profile to DB</li>
-        <li>Make solid mobile layout (currently designed for desktop)</li>
-        <li>
-          MULTI-DEVICE PLAY! Yes, making this a real multiplayer game, where you
-          can set a lobby name and have friends join from their devices.
-        </li>
-        <li>Publish in the app stores.</li>
-      </ul>
-    </div>
-
-    <hr />
-
-    <div class="text-content">
-      <h2>Go on, play already...!</h2>
-      <a class="button" id="final-button" href="tictactoe/">PLAY NOW!</a>
-    </div>
-  </div>
-
+</div>
 </div>
