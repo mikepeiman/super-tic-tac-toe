@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { send, receive } from "./../crossfade.js";
+  import { send, receive } from "./../../crossfade.js";
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -81,7 +81,7 @@
       in:receive={{ key: 'test1' }}
       class="button button2"
       id="test2-button"
-      href="test2/">
+      href="learnmore/test2/">
       Test 2 &#x1F4A7;
     </a>
     <a

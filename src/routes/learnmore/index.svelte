@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { send, receive } from "./../crossfade.js";
+  import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   let log1 = (console.todo = function(msg) {
     console.log(
