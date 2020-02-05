@@ -12,8 +12,8 @@
     );
   });
   onMount(async () => {
-    console.log(`test2 onMount`);
-    log1(`test2 onMount`);
+    console.log(`component-two onMount`);
+    log1(`component-two onMount`);
   });
 </script>
 
@@ -67,19 +67,20 @@
     out:send={{ key: 'h1' }}
     in:receive={{ key: 'h1' }}
     class="button heading">
-    You are on page TWO
+    Currently on component TWO
   </h1>
   <a
-    out:send={{ key: 'test1' }}
-    in:receive={{ key: 'test1' }}
+    out:send={{ key: 'component-one' }}
+    in:receive={{ key: 'component-one' }}
     class="button button1"
-    id="test1-button"
-    href="learnmore/test1/">
-    Test 1 &#x1F525;
+    id="component-one-button"
+    href="learnmore/component-one/">
+   Component One &#x1F525;
+   <div class="icon"></div>
   </a>
   <a
-    out:send={{ key: 'test1' }}
-    in:receive={{ key: 'test1' }}
+    out:send={{ key: 'component-two' }}
+    in:receive={{ key: 'component-two' }}
     class="button home"
     id="button-home"
     href="/">
