@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import Typewriter from "typewriter-effect/dist/core";
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -22,6 +22,18 @@
   onMount(async () => {
     console.log(`LandingPage onMount`);
     log1(`LandingPage onMount`);
+    let tw = new Typewriter("#typewriter", {
+      autoStart: true,
+      strings: ['Beginning typewriter', 'test'],
+      loop: true
+    });
+    tw()
+    // tw.typeString('Instructions')
+    //   .pauseFor(2500)
+    //   .deleteAll()
+    //   .typeString('(go ahead, click a button for more info...)')
+    //   .pauseFor(1000)
+    //   .deleteAll();
   });
 </script>
 
@@ -167,8 +179,9 @@
     }
     &.side-menu {
       position: static;
-      width: 100%;
-      margin: 0.5rem 1rem;
+      width: 15vw;
+      margin: 0.75rem 1rem 0 0;
+      padding: 0.75rem 1rem;
     }
   }
 
@@ -178,6 +191,21 @@
     align-items: center;
     flex-direction: column;
     background: #1a1a1a;
+    min-width: 100vw;
+    min-height: 100vh;
+    & .main-content {
+      position: absolute;
+      top: 25vh;
+      justify-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    & #typewriter {
+      font-size: 2rem;
+      padding: 0;
+      margin: 0;
+    }
   }
   #final-button {
     box-shadow: 0 0 3px 4px rgba(50, 200, 255, 0.25);
@@ -321,6 +349,10 @@
 
     </figure>
 
+    <div class="main-content">
+      <p id="typewriter" />
+    </div>
+
     <div class="side-menu-wrapper">
       <a
         name="how-to-win"
@@ -405,7 +437,5 @@
     </div>
 
   </div>
-  <div class="game-info">
-
-</div>
+  <div class="game-info" />
 </div>
