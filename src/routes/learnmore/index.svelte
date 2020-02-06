@@ -24,10 +24,10 @@
     log1(`LandingPage onMount`);
     let tw = new Typewriter("#typewriter", {
       autoStart: true,
-      strings: ['Beginning typewriter', 'test'],
+      strings: ["Beginning typewriter", "test"],
       loop: true
     });
-    tw()
+    // tw().changeDeleteSpeed(15).changeDelay(25)
     // tw.typeString('Instructions')
     //   .pauseFor(2500)
     //   .deleteAll()
@@ -37,7 +37,7 @@
   });
 </script>
 
-<style lang="scss">
+<style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
 
   :global(#sapper) {
@@ -69,39 +69,6 @@
   .crossfade-item {
     position: absolute;
     // transition: all 0.25s;
-  }
-
-  h1,
-  h2,
-  h3,
-  figure,
-  p {
-    text-align: center;
-    margin: 0 auto;
-    color: #efefefef;
-  }
-  li {
-    color: #efefefef;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-  h2 {
-    font-size: 2.1em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  hr {
-    border: 0;
-    border-bottom: 3px solid rgba(50, 200, 255, 1);
-    background: rgba(0, 0, 0, 0.5);
-    margin: 2rem;
   }
 
   img {
@@ -161,29 +128,6 @@
     justify-content: space-around;
     flex-direction: column;
   }
-  .button {
-    padding: 1rem 2rem;
-    background: #1a1a1a;
-    border-radius: 5px;
-    width: auto;
-    text-decoration: none;
-    color: $input-blue;
-    border: 3px solid $input-blue;
-    z-index: 9;
-    transition: all 0.25s;
-    &:hover {
-      box-shadow: 0 0 1px 2px rgba(50, 200, 255, 0.5);
-      border: 3px solid white;
-      color: white;
-      transition: all 0.25s;
-    }
-    &.side-menu {
-      position: static;
-      width: 15vw;
-      margin: 0.75rem 1rem 0 0;
-      padding: 0.75rem 1rem;
-    }
-  }
 
   .learn-more-wrapper {
     display: flex;
@@ -205,6 +149,62 @@
       font-size: 2rem;
       padding: 0;
       margin: 0;
+    }
+
+    & .button {
+      padding: 1rem 2rem;
+      background: #1a1a1a;
+      border-radius: 5px;
+      width: auto;
+      text-decoration: none;
+      color: $input-blue;
+      border: 3px solid $input-blue;
+      z-index: 9;
+      transition: all 0.25s;
+      &:hover {
+        box-shadow: 0 0 1px 2px rgba(50, 200, 255, 0.5);
+        border: 3px solid white;
+        color: white;
+        transition: all 0.25s;
+      }
+      &.side-menu {
+        position: static;
+        width: 15vw;
+        margin: 0.75rem 1rem 0 0;
+        padding: 0.75rem 1rem;
+      }
+    }
+    & h1,
+    h2,
+    h3,
+    figure,
+    & p {
+      text-align: center;
+      margin: 0 auto;
+      color: #efefefef;
+    }
+    & li {
+      color: #efefefef;
+    }
+
+    & h1 {
+      font-size: 2.8em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+    }
+    & h2 {
+      font-size: 2.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+    }
+
+    & hr {
+      border: 0;
+      border-bottom: 3px solid rgba(50, 200, 255, 1);
+      background: rgba(0, 0, 0, 0.5);
+      margin: 2rem;
     }
   }
   #final-button {
@@ -242,10 +242,6 @@
     top: 60%;
   }
 
-  p {
-    margin: 1em auto;
-  }
-
   .two-columns {
     display: grid;
     grid-template-columns: 40vw 40vw;
@@ -262,27 +258,27 @@
     // background: black;
   }
 
-  span {
-    background: rgba(119, 94, 94, 0.25);
-    font-weight: 300;
-    padding: 0 1ch;
-    &.nice {
-      color: rgba(140, 255, 140, 0.75);
-    }
-    &.note {
-      color: rgba(255, 140, 140, 0.75);
-    }
-    &.cool {
-      color: rgba(140, 140, 255, 0.75);
-    }
-    &.bold {
-      font-weight: 700;
-    }
-    &.underline {
-      border-bottom: 1px solidrgba(0, 0, 0, 0.75);
-    }
-  }
-  :global(.side-menu-wrapper) a {
+  // span {
+  //   background: rgba(119, 94, 94, 0.25);
+  //   font-weight: 300;
+  //   padding: 0 1ch;
+  //   &.nice {
+  //     color: rgba(140, 255, 140, 0.75);
+  //   }
+  //   &.note {
+  //     color: rgba(255, 140, 140, 0.75);
+  //   }
+  //   &.cool {
+  //     color: rgba(140, 140, 255, 0.75);
+  //   }
+  //   &.bold {
+  //     font-weight: 700;
+  //   }
+  //   &.underline {
+  //     border-bottom: 1px solidrgba(0, 0, 0, 0.75);
+  //   }
+  // }
+  .side-menu-wrapper a {
     & .icon {
       display: flex;
       display: grid;
