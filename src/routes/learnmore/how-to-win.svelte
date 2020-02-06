@@ -407,11 +407,7 @@
   </div>
   <div class="game-info">
 
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 200 }}>
-
+    <div    class="text-content">
       <h1 out:send={{ key: 'h1' }} in:receive={{ key: 'h1' }} class="heading">
         How To Win
       </h1>

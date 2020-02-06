@@ -167,8 +167,9 @@
     }
     &.side-menu {
       position: static;
-      width: 100%;
-      margin: 0.5rem 1rem;
+      width: 20vw;
+      margin: 0.5rem 1rem 0 0;
+      padding: 0.5rem;
     }
   }
 
@@ -407,10 +408,7 @@
   </div>
   <div class="game-info">
 
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 200 }}>
+    <div class="text-content">
 
       <h2>FEATURES:</h2>
       <ul>
@@ -440,4 +438,4 @@
     </div>
   </div>
 
-  </div>
+</div>

@@ -407,10 +407,7 @@
   </div>
   <div class="game-info">
 
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 200 }}>
+    <div class="text-content">
 
       <h2>HOW TO PLAY:</h2>
       <ol>
