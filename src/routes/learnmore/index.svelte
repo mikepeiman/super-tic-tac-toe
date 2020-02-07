@@ -115,6 +115,14 @@ let msg4 = ''
       padding: 0;
       margin: 0;
     }
+    & .game-info {
+      position: absolute;
+      left: 25vw;
+      right: 25vw;
+      top: 25vh;
+      overflow: hidden;
+      margin-right: 5vw;
+    }
     & .side-menu-wrapper {
       position: absolute;
       left: 1rem;
@@ -329,12 +337,14 @@ let msg4 = ''
     }
     & #play-now {
       top: 40%;
-      // right: 2rem;
-      // top: 2rem;
+      right: auto;
+      left: auto;
     }
 
     & #learn-more {
       top: 60%;
+      right: auto;
+      left: auto;
     }
   }
 
@@ -377,11 +387,11 @@ let msg4 = ''
       &#x21A4; Go back
     </a>
     <figure out:send={{ key: 'figure' }} in:receive={{ key: 'figure' }}>
-      <img
+      <!-- <img
         id="tictactoe-game"
         alt="A completed game of Super Tic Tac Toe"
-        src="game-dark-2pl.png" />
-      <figcaption>An example of a completed game</figcaption>
+        src="game-dark-2pl.png" /> -->
+      <!-- <figcaption>An example of a completed game</figcaption> -->
 
     </figure>
 

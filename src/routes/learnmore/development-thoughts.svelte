@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import Typewriter from "typewriter-effect/dist/core";
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -23,7 +24,6 @@
     log1(`LandingPage onMount`);
   });
 </script>
-
 
 <div class="learn-more-wrapper">
 
@@ -122,7 +122,7 @@
           <div>Issues</div>
         </div>
       </a>
-      <a
+      <!-- <a
         name="development"
         out:send={{ key: 'development-thoughts' }}
         in:receive={{ key: 'development-thoughts' }}
@@ -137,30 +137,38 @@
             1)" />
           <div>Development</div>
         </div>
-      </a>
+      </a> -->
     </div>
 
   </div>
   <div class="game-info">
-    <div
-      class="text-content"
-      in:fade={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 200 }}>
+    <div class="text-content">
 
-      <div class="text-content">
-        <h2>DEVELOPMENT (tentative roadmap):</h2>
-        <ul>
-          <li>Incremental point bonuses and other scoring variations</li>
-          <li>A range of gameplay features, too numerous to list here....</li>
-          <li>Save and load games via local file system</li>
-          <li>User authentication/login, save games and profile to DB</li>
-          <li>Make solid mobile layout (currently designed for desktop)</li>
-          <li>
-            MULTI-DEVICE PLAY! Yes, making this a real multiplayer game, where
-            you can set a lobby name and have friends join from their devices.
-          </li>
-          <li>Publish in the app stores.</li>
-        </ul>
+      <div
+        class="text-content"
+        out:send={{ key: 'main-content' }}
+        in:receive={{ key: 'main-content' }}>
+        <h2
+          class="heading"
+          out:send={{ key: 'development-thoughts' }}
+          in:receive={{ key: 'development-thoughts' }}>
+          DEVELOPMENT (tentative roadmap):
+        </h2>
+        <div class="text-content">
+
+          <ul>
+            <li>Incremental point bonuses and other scoring variations</li>
+            <li>A range of gameplay features, too numerous to list here....</li>
+            <li>Save and load games via local file system</li>
+            <li>User authentication/login, save games and profile to DB</li>
+            <li>Make solid mobile layout (currently designed for desktop)</li>
+            <li>
+              MULTI-DEVICE PLAY! Yes, making this a real multiplayer game, where
+              you can set a lobby name and have friends join from their devices.
+            </li>
+            <li>Publish in the app stores.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

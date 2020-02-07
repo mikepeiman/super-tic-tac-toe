@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import Typewriter from "typewriter-effect/dist/core";
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -24,7 +24,6 @@
     log1(`LandingPage onMount`);
   });
 </script>
-
 
 <div class="learn-more-wrapper">
 
@@ -58,9 +57,8 @@
       &#x21A4; Go back
     </a>
 
-
     <div class="side-menu-wrapper">
-      <a
+      <!-- <a
         name="how-to-win"
         out:send={{ key: 'how-to-win' }}
         in:receive={{ key: 'how-to-win' }}
@@ -75,7 +73,7 @@
             1)" />
           <div>How To Win</div>
         </div>
-      </a>
+      </a> -->
       <a
         name="how-to-play"
         out:send={{ key: 'how-to-play' }}
@@ -145,14 +143,21 @@
   </div>
   <div class="game-info">
 
-    <div    class="text-content">
-      <h1 out:send={{ key: 'h1' }} in:receive={{ key: 'h1' }} class="heading">
+    <div class="text-content">
+      <h1
+        out:send={{ key: 'how-to-win' }}
+        in:receive={{ key: 'how-to-win' }}
+        class="heading">
         How To Win
       </h1>
-
-      <h3>
-        <span class="nice">Score the most points! Easy, right?</span>
-      </h3>
+      <div
+        class="text-content"
+        out:send={{ key: 'main-content' }}
+        in:receive={{ key: 'main-content' }}>
+        <h3>
+          <span class="nice">Score the most points! Easy, right?</span>
+        </h3>
+      </div>
     </div>
   </div>
 

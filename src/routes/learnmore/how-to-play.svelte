@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import Typewriter from "typewriter-effect/dist/core";
   import { send, receive } from "./../../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
@@ -25,7 +25,9 @@
   });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>
 
 <div class="learn-more-wrapper">
 
@@ -59,7 +61,6 @@
       &#x21A4; Go back
     </a>
 
-
     <div class="side-menu-wrapper">
       <a
         name="how-to-win"
@@ -77,7 +78,7 @@
           <div>How To Win</div>
         </div>
       </a>
-      <a
+      <!-- <a
         name="how-to-play"
         out:send={{ key: 'how-to-play' }}
         in:receive={{ key: 'how-to-play' }}
@@ -92,7 +93,7 @@
             1)" />
           <div>How To Play</div>
         </div>
-      </a>
+      </a> -->
       <a
         name="features"
         out:send={{ key: 'ui-and-features' }}
@@ -148,19 +149,31 @@
 
     <div class="text-content">
 
-      <h2>HOW TO PLAY:</h2>
-      <ol>
-        <li>Set your game settings (# of players, cells to score, etc)</li>
-        <li>Set your player names and chosen marks (single ASCII character)</li>
-        <li>
-          Play! You'll get visual indications for turns remaining and turn
-          changeovers
-        </li>
-        <li>
-          See your current score anytime with the "Tally Scores" button, or wait
-          until the game is done to see who is the champion!
-        </li>
-      </ol>
+      <h2
+        class="heading"
+        out:send={{ key: 'how-to-play' }}
+        in:receive={{ key: 'how-to-play' }}>
+        HOW TO PLAY:
+      </h2>
+      <div
+        class="text-content"
+        out:send={{ key: 'main-content' }}
+        in:receive={{ key: 'main-content' }}>
+        <ol>
+          <li>Set your game settings (# of players, cells to score, etc)</li>
+          <li>
+            Set your player names and chosen marks (single ASCII character)
+          </li>
+          <li>
+            Play! You'll get visual indications for turns remaining and turn
+            changeovers
+          </li>
+          <li>
+            See your current score anytime with the "Tally Scores" button, or
+            wait until the game is done to see who is the champion!
+          </li>
+        </ol>
+      </div>
     </div>
 
   </div>
