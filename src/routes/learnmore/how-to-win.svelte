@@ -58,11 +58,9 @@
     </a>
 
     <div class="side-menu-wrapper">
-      <!-- <a
+      <a
         name="how-to-win"
-        out:send={{ key: 'how-to-win' }}
-        in:receive={{ key: 'how-to-win' }}
-        class="button side-menu"
+        class="button side-menu active"
         id="how-to-win-button"
         href="learnmore/how-to-win">
         <div class="icon users-crown">
@@ -73,7 +71,7 @@
             1)" />
           <div>How To Win</div>
         </div>
-      </a> -->
+      </a>
       <a
         name="how-to-play"
         out:send={{ key: 'how-to-play' }}

@@ -90,11 +90,11 @@
           <div>How To Play</div>
         </div>
       </a>
-      <!-- <a
+      <a
         name="features"
         out:send={{ key: 'ui-and-features' }}
         in:receive={{ key: 'ui-and-features' }}
-        class="button side-menu"
+        class="button side-menu active"
         id="ui-and-features-button"
         href="learnmore/ui-and-features/">
         <div class="icon lightbulb-on">
@@ -105,7 +105,7 @@
             1)" />
           <div>UI & Features</div>
         </div>
-      </a> -->
+      </a>
       <a
         name="issues"
         out:send={{ key: 'issues-and-gotchas' }}

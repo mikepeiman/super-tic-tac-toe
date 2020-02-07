@@ -20,10 +20,7 @@
 <style lang="scss">
   $input-blue: rgba(50, 200, 255, 1);
 
-  :global(#sapper) {
-    overflow-x: hidden;
-  }
-  :global(.homepage-wrapper) {
+  .homepage-wrapper {
     height: 100vh;
     & h1.page-title {
       z-index: 10;
@@ -46,6 +43,7 @@
     align-items: center;
     top: 0;
     left: 0;
+    background: #1a1a1a;
   }
   .crossfade-item {
     position: absolute;

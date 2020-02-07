@@ -106,11 +106,11 @@
           <div>UI & Features</div>
         </div>
       </a>
-      <!-- <a
+      <a
         name="issues"
         out:send={{ key: 'issues-and-gotchas' }}
         in:receive={{ key: 'issues-and-gotchas' }}
-        class="button side-menu"
+        class="button side-menu active"
         id="issues-and-gotchas-button"
         href="learnmore/issues-and-gotchas/">
         <div class="icon exclamation-triangle">
@@ -121,7 +121,7 @@
             1)" />
           <div>Issues</div>
         </div>
-      </a> -->
+      </a>
       <a
         name="development"
         out:send={{ key: 'development-thoughts' }}

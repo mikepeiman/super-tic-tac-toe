@@ -122,11 +122,11 @@
           <div>Issues</div>
         </div>
       </a>
-      <!-- <a
+      <a
         name="development"
         out:send={{ key: 'development-thoughts' }}
         in:receive={{ key: 'development-thoughts' }}
-        class="button side-menu"
+        class="button side-menu active"
         id="development-thoughts-button"
         href="learnmore/development-thoughts/">
         <div class="icon construction">
@@ -137,7 +137,7 @@
             1)" />
           <div>Development</div>
         </div>
-      </a> -->
+      </a>
     </div>
 
   </div>

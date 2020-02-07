@@ -68,7 +68,7 @@
     overflow-x: hidden;
   }
   .homepage-wrapper {
-    & h1.page-title {
+    & h1#page-title {
       top: 0;
       opacity: 1;
       z-index: 10;

@@ -78,11 +78,10 @@
           <div>How To Win</div>
         </div>
       </a>
-      <!-- <a
+      <a
         name="how-to-play"
-        out:send={{ key: 'how-to-play' }}
-        in:receive={{ key: 'how-to-play' }}
-        class="button side-menu"
+
+        class="button side-menu active"
         id="how-to-play-button"
         href="learnmore/how-to-play/">
         <div class="icon swords">
@@ -93,7 +92,7 @@
             1)" />
           <div>How To Play</div>
         </div>
-      </a> -->
+      </a>
       <a
         name="features"
         out:send={{ key: 'ui-and-features' }}
