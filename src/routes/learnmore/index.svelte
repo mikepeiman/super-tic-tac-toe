@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Typewriter from "typewriter-effect/dist/core";
   import { send, receive } from "./../../crossfade.js";
+  import getRandomInteger from "./../../utils/get-random-integer.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
   import { faMedal } from "@fortawesome/pro-solid-svg-icons";
@@ -25,27 +26,25 @@
     log1(`LandingPage onMount`);
     let typewriter = new Typewriter("#typewriter", {
       autoStart: true,
-      loop: true
+      loop: true,
+      devMode: true,
+      deleteSpeed: 25
     });
-    let msg1 = "Here be thy instructions -";
-    let msg2 = "Ignore them at your peril!";
-    let msg3 = "...   Score the most points to win!";
-    let msg4 = "";
+    let msg1 = "Here be thy instructions:";
+    let msg2 = ".  .  . .";
+    let msg3 = "Click a button for more info.";
 
     typewriter
-      .changeDeleteSpeed(25)
-      .changeDelay(50)
       .pauseFor(1000)
       .typeString(msg1)
       .pauseFor(2000)
       .deleteAll()
+      .changeDelay(450)
       .typeString(msg2)
-      .pauseFor(2000)
+      .pauseFor(450)
       .deleteAll()
+      .changeDelay('natural')
       .typeString(msg3)
-      .pauseFor(2000)
-      .deleteAll()
-      .typeString("Click a button to the left to learn more.")
       .pauseFor(2000)
       .start();
     // tw().changeDeleteSpeed(15).changeDelay(25)
@@ -399,7 +398,7 @@
 
     </figure>
 
-    <div class="main-content">
+    <div in:fade="{{duration: 200}}" out:fade="{{duration: 200 }}" class="main-content">
       <p id="typewriter" />
     </div>
 
