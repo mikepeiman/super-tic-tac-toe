@@ -20,20 +20,21 @@
     );
   });
   onMount(async () => {
+    let body = document.getElementsByTagName("body");
     console.log(`LandingPage onMount`);
     log1(`LandingPage onMount`);
     let typewriter = new Typewriter("#typewriter", {
       autoStart: true,
       loop: true
     });
-let msg1 = 'Here be thy instructions -'
-let msg2 = 'Ignore them at your peril!'
-let msg3 = '...   Score the most points to win!'
-let msg4 = ''
+    let msg1 = "Here be thy instructions -";
+    let msg2 = "Ignore them at your peril!";
+    let msg3 = "...   Score the most points to win!";
+    let msg4 = "";
 
     typewriter
-    .changeDeleteSpeed(25)
-    .changeDelay(50)
+      .changeDeleteSpeed(25)
+      .changeDelay(50)
       .pauseFor(1000)
       .typeString(msg1)
       .pauseFor(2000)
@@ -59,11 +60,14 @@ let msg4 = ''
 
 <style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
+  body {
+    overflow: hidden;
+  }
 
-  :global(#sapper) {
+  #sapper {
     overflow-x: hidden;
   }
-  :global(.homepage-wrapper) {
+  .homepage-wrapper {
     & h1.page-title {
       top: 0;
       opacity: 1;

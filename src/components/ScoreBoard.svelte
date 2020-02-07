@@ -498,6 +498,7 @@
     max-width: 100%;
     position: relative;
     z-index: -2;
+    overflow-x: auto;
     & .add-or-remove-players {
       display: flex;
       flex-direction: column;
@@ -822,6 +823,7 @@
       max-width: 100%;
       position: relative;
       z-index: -2;
+      overflow-x: auto;
       & .add-or-remove-players {
         display: flex;
         flex-direction: row;
