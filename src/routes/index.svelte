@@ -12,6 +12,23 @@
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    & #play-now {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.45s;
+    z-index: 10;
+    }
+    & #learn-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.45s;
+    z-index: 10;
+    }
+    & figure {
+      opacity: 1;
+    }
   }
 </style>
 

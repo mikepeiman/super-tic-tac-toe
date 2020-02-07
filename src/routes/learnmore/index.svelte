@@ -22,11 +22,31 @@
   onMount(async () => {
     console.log(`LandingPage onMount`);
     log1(`LandingPage onMount`);
-    let tw = new Typewriter("#typewriter", {
+    let typewriter = new Typewriter("#typewriter", {
       autoStart: true,
-      strings: ["Beginning typewriter", "test"],
       loop: true
     });
+let msg1 = 'Here be thy instructions -'
+let msg2 = 'Ignore them at your peril!'
+let msg3 = '...   Score the most points to win!'
+let msg4 = ''
+
+    typewriter
+    .changeDeleteSpeed(25)
+    .changeDelay(50)
+      .pauseFor(1000)
+      .typeString(msg1)
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString(msg2)
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString(msg3)
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString("Click a button to the left to learn more.")
+      .pauseFor(2000)
+      .start();
     // tw().changeDeleteSpeed(15).changeDelay(25)
     // tw.typeString('Instructions')
     //   .pauseFor(2500)
@@ -71,63 +91,8 @@
     // transition: all 0.25s;
   }
 
-  img {
-    grid-area: content-image;
-    width: 85%;
-    position: relative;
-    top: 1rem;
-    z-index: -1;
-  }
   $imageW: 25vw;
   $imageH: 25vh;
-
-  figure {
-    position: relative;
-    opacity: 0;
-    display: flex;
-    margin: 0;
-    top: 0;
-    left: 0;
-    min-width: $imageW;
-    min-height: $imageH;
-    width: $imageW;
-    height: $imageH;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    z-index: 0;
-    &::before {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      top: 0;
-      left: 0;
-      min-width: $imageW;
-      min-height: $imageH;
-      width: $imageW;
-      height: $imageH;
-      background: rgba(0, 0, 0, 0.7);
-      outline: 2px solid #32c8ff;
-      outline-offset: -10px;
-    }
-
-    & figcaption {
-      margin: -2.25rem 0 2rem 0;
-      padding: 0;
-      z-index: 9;
-      color: #555;
-      visibility: hidden;
-    }
-  }
-  .side-menu-wrapper {
-    position: absolute;
-    left: 1rem;
-    top: 25vh;
-    width: 10rem;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-  }
 
   .learn-more-wrapper {
     display: flex;
@@ -149,6 +114,22 @@
       font-size: 2rem;
       padding: 0;
       margin: 0;
+    }
+    & .side-menu-wrapper {
+      position: absolute;
+      left: 1rem;
+      top: 25vh;
+      width: 10rem;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+    }
+    & img {
+      grid-area: content-image;
+      width: 85%;
+      position: relative;
+      top: 1rem;
+      z-index: 0;
     }
 
     & .button {
@@ -205,6 +186,45 @@
       border-bottom: 3px solid rgba(50, 200, 255, 1);
       background: rgba(0, 0, 0, 0.5);
       margin: 2rem;
+    }
+
+    & figure {
+      position: relative;
+      opacity: 0;
+      display: flex;
+      margin: 0;
+      top: 0;
+      left: 0;
+      min-width: $imageW;
+      min-height: $imageH;
+      width: $imageW;
+      height: $imageH;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+      z-index: 0;
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        min-width: $imageW;
+        min-height: $imageH;
+        width: $imageW;
+        height: $imageH;
+        background: rgba(0, 0, 0, 0.7);
+        outline: 2px solid #32c8ff;
+        outline-offset: -10px;
+      }
+
+      & figcaption {
+        margin: -2.25rem 0 2rem 0;
+        padding: 0;
+        z-index: 9;
+        color: #555;
+        visibility: hidden;
+      }
     }
   }
   #final-button {
@@ -295,6 +315,26 @@
       & div {
         grid-area: content-text;
       }
+    }
+  }
+  .landing-page-wrapper {
+    & #home {
+      left: 2rem;
+      top: 2rem;
+    }
+    & #page-title {
+      top: 2rem;
+      z-index: 9;
+      border-bottom: 3px solid rgba(50, 200, 255, 1);
+    }
+    & #play-now {
+      top: 40%;
+      // right: 2rem;
+      // top: 2rem;
+    }
+
+    & #learn-more {
+      top: 60%;
     }
   }
 
