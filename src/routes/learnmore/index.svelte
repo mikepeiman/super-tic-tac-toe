@@ -142,6 +142,26 @@
         margin: 0.75rem 1rem 0 0;
         padding: 0.75rem 1rem;
       }
+      & span {
+        background: rgba(119, 94, 94, 0.25);
+        font-weight: 300;
+        padding: 0 1ch;
+        &.nice {
+          color: rgba(140, 255, 140, 0.75);
+        }
+        &.note {
+          color: rgba(255, 140, 140, 0.75);
+        }
+        &.cool {
+          color: rgba(140, 140, 255, 0.75);
+        }
+        &.bold {
+          font-weight: 700;
+        }
+        &.underline {
+          border-bottom: 1px solidrgba(0, 0, 0, 0.75);
+        }
+      }
     }
     & h1,
     h2,
@@ -273,27 +293,6 @@
     align-items: center;
     // border-radius: 10px;
     // background: black;
-  }
-
-  span {
-    background: rgba(119, 94, 94, 0.25);
-    font-weight: 300;
-    padding: 0 1ch;
-    &.nice {
-      color: rgba(140, 255, 140, 0.75);
-    }
-    &.note {
-      color: rgba(255, 140, 140, 0.75);
-    }
-    &.cool {
-      color: rgba(140, 140, 255, 0.75);
-    }
-    &.bold {
-      font-weight: 700;
-    }
-    &.underline {
-      border-bottom: 1px solidrgba(0, 0, 0, 0.75);
-    }
   }
 
   .learnmore-sidemenu-wrapper a {
