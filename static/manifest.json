@@ -1,10 +1,10 @@
 {
-	"background_color": "#ffffff",
-	"theme_color": "#333333",
+	"background_color": "#efefef",
+	"theme_color": "#1a1a1a",
 	"name": "SuperTicTacToe",
 	"short_name": "TicTacToe",
   "display": "minimal-ui",
-  "orientation": "landscape",
+  "orientation": "any",
 	"start_url": "/",
 	"icons": [
 		{

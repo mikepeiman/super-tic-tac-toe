@@ -13,7 +13,8 @@
     storeGameInProgress,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeMovesRemaining
   } from "../stores.js";
 
   $: currentPlayer = {};
@@ -37,47 +38,30 @@
           .length;
       }
 
-      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
       movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
       state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
-      // console.log(`StatusBar => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
     });
 
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    // console.log(`StatusBar => onMount() currentPlayer LS`, ls);
     storeState.subscribe(value => {
       state = value;
-      // console.log(
-      //   `StatusBar => storeState subscribed - moveNumber of game after state: ${state.moveNumber}`,
-      //   value
-      // );
-      // console.log(
-      //   `StatusBar => storeState subscribed - movesRemaining in turn after state: ${state.movesRemaining}`,
-      //   value
-      // );
       movesRemaining = state.movesRemaining;
+      // movesRemaining = $storeMovesRemaining;
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       if (!moveNumber) {
         moveNumber = 0;
       }
-      // console.log(
-      //   `StatusBar => storeState subscribed - move after LS: ${moveNumber}`
-      // );
     });
     players = $storePlayers;
-    // console.log(`StatusBar => onMount(() #1 state`, state);
-    state = $storeState;
-    // console.log(`StatusBar => onMount(() #2 state`, state);
+    // state = $storeState;
     settings = $storeSettings;
     if (localStorage.getItem("gameInProgress")) {
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
     }
-    // currentPlayer = $storeCurrentPlayer;
-    // console.log(`//////////////     StatusBar => onMount() `, state, players);
     if (!currentPlayer) {
       console.log(`StatusBar => if (!(currentPlayer)), set to players[0]`);
       currentPlayer = players[0];
@@ -86,6 +70,7 @@
   });
 
   function resetGame() {
+    console.log(`reset game`);
     localStorage.removeItem("gameboard");
     localStorage.removeItem("gameHistoryFlat");
     localStorage.removeItem("gameHistoryTurns");
@@ -114,7 +99,8 @@
       player.totalScore = 0;
       player.dirScoresByIndex = [0, 0, 0, 0];
     });
-    localStorage.setItem("players", JSON.stringify(players));
+    // localStorage.setItem("players", JSON.stringify(players));
+
     storeCurrentPlayer.set(players[0]);
     location.reload();
     dispatch("resetGame", true);
@@ -127,17 +113,22 @@
     localStorage.removeItem("state");
     localStorage.removeItem("currentPlayer");
     localStorage.removeItem("directionArrays");
-    localStorage.removeItem("state");
     resetGame();
     location.reload();
     dispatch("resetGame", true);
   }
 
+  function resetAll() {
+    localStorage.clear();
+    location.reload();
+    dispatch("resetGame", true);
+  }
+
   function saveGame() {
-    // storeGameInProgress.set(true);
+    alert(`Save game function not yet implemented`);
   }
   function loadGame() {
-    // storeGameInProgress.set(false);
+    alert(`Load game function not yet implemented`);
   }
 </script>
 
@@ -149,16 +140,54 @@
     align-items: center;
     & .subgroup {
       display: flex;
+      justify-content: center;
       width: 100%;
+      & button.control-button {
+        font-size: 1.25rem;
+        padding: 1rem 4rem;
+        margin: 1rem;
+      }
+      & .sub-subgroup {
+        flex-direction: column;
+      }
+    }
+  }
+
+  :global(button.control-button) {
+    font-size: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    background: hsla(var(--player-color-hue), 75%, 50%, 0.5);
+    color: var(--theme-fg);
+    transition: all 0.1s;
+    & svg {
+      margin-right: 0.25rem;
+      align-self: center;
+      font-size: 1.25rem;
+    }
+    & .button-text {
+      position: relative;
+      top: 0;
+      font-size: 0.75rem;
+      width: auto;
+      align-self: center;
+    }
+    &:hover {
+      background: var(--player-color);
     }
   }
 
   .control-button {
-    background: rgba(0, 25, 75, 0.25);
-    color: #1a1a1a;
-        width: 100%;
+    background: var(--theme-dark);
+    color: var(--theme-light);
+    width: 100%;
     margin: 1rem;
-    padding: 2rem .5rem;
+    padding: 2rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
     &:hover {
       background: rgba(0, 0, 0, 0.5);
       color: white;
@@ -166,31 +195,38 @@
   }
 
   #new-game-button {
-    background: hsla(50, 100%, 50%, .5);
+    background: hsla(95, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(50, 100%, 55%, .75);
+      background: hsla(95, 100%, 20%, 1);
     }
   }
   #save-game-button {
-    background: hsla(100, 100%, 50%, .5);
+    background: hsla(160, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(100, 100%, 55%, .75);
+      background: hsla(160, 100%, 20%, 1);
     }
   }
   #load-game-button {
-    background: hsla(200, 100%, 50%, .5);
+    background: hsla(220, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(200, 100%, 55%, .75);
+      background: hsla(220, 100%, 35%, 1);
     }
   }
   #reset-players-button {
-    background: hsla(0, 100%, 50%, .5);
+    background: hsla(280, 50%, 35%, 1);
 
     &:hover {
-      background: hsla(0, 100%, 55%, .75);
+      background: hsla(280, 100%, 20%, 1);
+    }
+  }
+  #reset-all-button {
+    background: hsla(0, 50%, 35%, 1);
+
+    &:hover {
+      background: hsla(0, 100%, 25%, 1);
     }
   }
 </style>
@@ -209,11 +245,16 @@
     <button class="control-button" id="new-game-button" on:click={resetGame}>
       New Game
     </button>
-    <button
-      class="control-button"
-      id="reset-players-button"
-      on:click={resetPlayers}>
-      Reset players
-    </button>
+    <div class="sub-subgroup">
+      <button
+        class="control-button"
+        id="reset-players-button"
+        on:click={resetPlayers}>
+        Reset players
+      </button>
+      <button class="control-button" id="reset-all-button" on:click={resetAll}>
+        RESET ALL
+      </button>
+    </div>
   </div>
 </div>

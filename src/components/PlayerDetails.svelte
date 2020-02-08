@@ -31,43 +31,33 @@
   // let settings = Object.assign({}, initialSettings);
 
   onMount(() => {
-    console.log(`MainMenu onMount(), settings`, settings);
+    console.log(`SettingsMenu onMount(), settings`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
-      console.log(`MainMenu => currentPlayer from store: `, currentPlayer);
     });
     let lsCurrentPlayer = JSON.parse(localStorage.getItem("currentPlayer"));
     currentPlayer = lsCurrentPlayer;
-    console.log(`MainMenu => currentPlayer from ls: `, currentPlayer);
     initializeSettingsFromLS();
-    initialized = true;
     setAllInputWidths();
     storeSettings.set(settings);
-    storeSettings.subscribe(value => {
-      console.log(`MainMenu => storeSettings.subscribe value => `, value);
-    });
   });
 
   function initializeSettingsFromLS() {
     let gameInProgress = localStorage.getItem("gameInProgress");
     let ls = JSON.parse(localStorage.getItem("settings"));
     if (ls !== null) {
-      console.log(
-        `loadSettingsFromLS >>>>>>>>>>>> NOT NULL \n\n`,
-        ls,
-        `\nCurrent settings: \n`,
-        settings
-      );
       settings = ls;
       storeSettings.set(ls);
-      // setTimeout(() => {
-      //   initialized = true;
-      // }, 5000);
+      initialized = true;
     }
   }
 
   function setSingleInputWidth(input) {
-    input.style.width = `${input.value.toString().length + 0.5}ch`;
+    if (!input.classList.contains("player-mark")) {
+      input.style.width = `${input.value.toString().length + 0.5}ch`;
+    } else {
+      input.style.width = `3ch`;
+    }
   }
 
   function setAllInputWidths() {
@@ -80,10 +70,6 @@
 
   function triggerGameBoardUpdate(e) {
     dispatch("updateGameSettings", settings);
-    console.log(
-      `triggerGameBoardUpdate settings should write to LS, eg #players ${settings.numberOfPlayers}: `,
-      settings
-    );
     storeSettings.set(settings);
     setSingleInputWidth(e.target);
   }
@@ -101,34 +87,26 @@
 
   .loading-settings-message {
     padding: 1rem;
-    // background: #1a1a1a;
     color: #eeeeee;
   }
   .settings-menu-heading {
-    // color: #1a1a1a;
-    // background: darken($input-blue, 30%);
     color: white;
-    // border-bottom: 5px solid var(--player-color);
-
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    // margin-bottom: 0.5rem;
     & h2 {
-      // padding: 0.5rem;
       font-size: 125%;
     }
     & .loading {
       color: hsla(280, 100%, 50%, 1);
       // animation: loading-title 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-      transition: all 0.25s;
+      transition: all .45s;
     }
   }
 
   .settings-wrapper {
     padding: 0.5rem;
-    background: var(--theme-bg); //black;//#122032;
-    // border-bottom: 6px solid var(--player-color);
+    background: var(--theme-bg); 
     border-top: 3px solid var(--player-color);
     border-bottom: 3px solid var(--player-color);
     margin: 0;
@@ -139,16 +117,16 @@
       "moves columns bonus .";
     justify-content: space-between;
     align-content: center;
-    transition: all 0.25s;
+    transition: all .45s;
     &.dark {
       background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
     &.light {
       background: var(--theme-bg);
       color: var(--theme-fg);
-      transition: all 0.25s;
+      transition: all .45s;
     }
 
     & label {
@@ -279,19 +257,9 @@
   }
 
   @media screen and (min-width: 600px) {
-    body {
-      font-size: 80%;
-    }
-    .settings-wrapper {
-      & label {
-        font-size: 100%;
-      }
-    }
+
   }
   @media screen and (min-width: 900px) {
-    body {
-      font-size: 90%;
-    }
 
     .settings-wrapper {
       padding: 0.5rem 0.5rem 0.5rem 0;
@@ -343,22 +311,15 @@
   }
 
   @media screen and (min-width: 1200px) {
-    body {
-      font-size: 100%;
-    }
+
   }
 
   @media screen and (min-width: 1500px) {
-    body {
-      font-size: 110%;
-    }
+
   }
 </style>
 
 {#if initialized}
-  <!-- <div class="settings-menu-heading">
-    <h2>Game Settings</h2>
-  </div> -->
   <div
     class="settings-wrapper settings-menu"
     style={`--player-color: ${currentPlayer.colorMain}`}>

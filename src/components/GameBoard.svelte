@@ -1,5 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
+    import Loading from "./../components/Loading.svelte";
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -8,6 +9,8 @@
     storeCellSize,
     storeGameboardWidth,
     storeState,
+    storeMoveNumber,
+    storeMovesRemaining,
     storePlayers,
     storeCurrentPlayer,
     storeDirectionArrays,
@@ -17,11 +20,11 @@
     storeGameHistoryFlat
   } from "../stores.js";
 
-  let customMarkerSize;
-  let currentPlayerMark;
+  let customMarkerSize, currentPlayerMark, gameboardWidth;
   let settings = {};
   $: state = {};
   $: moveNumber = 0;
+  $: movesRemaining = 0;
   $: players = [];
   $: lines = {
     leftToRight: [],
@@ -80,7 +83,16 @@
 
   let rows, columns, size, numberOfPlayers, sizeFactor;
   ({ rows, columns, size, numberOfPlayers, sizeFactor } = settings);
-  $: rows, columns, size, numberOfPlayers, sizeFactor && resetGameBoard();
+  $: rows && resetGameBoard(`reactive resetGameBoard() from rows  ${rows}`);
+  $: columns &&
+    resetGameBoard(`reactive resetGameBoard() from columns ${columns}`);
+  $: size && resetGameBoard(`reactive resetGameBoard() from size ${size}`);
+  $: numberOfPlayers &&
+    resetGameBoard(
+      `reactive resetGameBoard() from numberOfPlayers ${numberOfPlayers}`
+    );
+  $: sizeFactor &&
+    resetGameBoard(`reactive resetGameBoard() from sizeFactor ${sizeFactor}`);
 
   onMount(async () => {
     storeSettings.subscribe(value => {
@@ -90,85 +102,79 @@
 
     storePlayers.subscribe(value => {
       players = value;
+      // console.log(`GameBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
     storeCurrentPlayer.subscribe(async value => {
       console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
-      await grid.length;
+      // await grid.length;
       resetGameBoard();
     });
     storeGameHistoryFlat.subscribe(value => {});
     storeGameHistoryTurns.subscribe(value => {
-      console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
+      // console.log(`GameBoard => storeGameHistoryTurns subscribed `, value);
       let ghls = localStorage.getItem("gameHistoryTurns");
       let parsedGhls = JSON.parse(ghls);
-      console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
+      // console.log(`GameBoard => LS GameHistoryTurns subscribed `, parsedGhls);
     });
-    await grid.length;
+    // await grid.length;
     setCellSize();
     window.addEventListener(
       "resize",
       async function() {
-        console.log("GameBoard resize!");
-        await setCellSize();
-        console.log("GameBoard resize awaited cellSize!");
+        // console.log("GameBoard resize!");
+        // await setCellSize();
+        setCellSize();
+        // console.log("GameBoard resize awaited cellSize!");
         resetGameBoard();
-        console.log("GameBoard resize reset gameboard!");
+        // console.log("GameBoard resize reset gameboard!");
       },
       true
     );
     storeCellSize.subscribe(value => {
-      console.log(`GameBoard => storeCellSize subscribed`, value);
+      // console.log(`GameBoard => storeCellSize subscribed`, value);
       // cellSize = value;
     });
-
-    console.log(
-      `GameBoard component mounted, gameboard el W:${gameboardContainerWidth} H:${gameboardContainerHeight}`
-    );
-    console.log(
-      `GameBoard component mounted, for rows ${settings.rows} columns ${settings.columns} W:${cellWidth} H:${cellHeight}`
-    );
-    console.log(`GameBoard component mounted, and final size: ${cellSize}`);
 
     players = $storePlayers;
     currentPlayer = $storeCurrentPlayer;
     gameHistoryTurns = $storeGameHistoryTurns;
     state = $storeState;
+    // ({ moveNumber, movesRemaining } = state);
     let delayMS = 1000 / (settings.rows * settings.columns);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("preservePlayerDetails");
 
     if (gameInProgress) {
-      console.log(
-        `GameBoard => if (gameInProgress) we should be redrawing the moves...`
-      );
+      // console.log(
+      //   `GameBoard => if (gameInProgress) we should be redrawing the moves...`
+      // );
       buildGameGrid(settings.rows, settings.columns, cellSize, settings.gutter);
       renderGameBoardReload(delayMS);
       moveNumber = JSON.parse(localStorage.getItem("moveNumber"));
       gameHistoryTurns = JSON.parse(localStorage.getItem("gameHistoryTurns"));
-      console.log(
-        `Checking bool existence of LS gameHistoryTurns: ${Boolean(
-          gameHistoryTurns
-        )}`
-      );
+      // console.log(
+      //   `Checking bool existence of LS gameHistoryTurns: ${Boolean(
+      //     gameHistoryTurns
+      //   )}`
+      // );
       if (!gameHistoryTurns) {
         gameHistoryTurns = [];
       }
       gameHistoryFlat = JSON.parse(localStorage.getItem("gameHistoryFlat"));
       if (gameHistoryFlat.length > 0) {
         storeGameInProgress.set(true);
-        localStorage.setItem("gameInProgress", true);
       } else {
         storeGameInProgress.set(false);
         localStorage.removeItem("gameInProgress");
       }
       if (currentPlayer === false) {
         let currentPlayerLS = JSON.parse(localStorage.getItem("currentPlayer"));
-        console.log(
-          `GameBoard if (currentPlayer === false) `,
-          currentPlayer,
-          currentPlayerLS
-        );
+        // console.log(
+        //   `GameBoard if (currentPlayer === false) `,
+        //   currentPlayer,
+        //   currentPlayerLS
+        // );
         storeCurrentPlayer.set(currentPlayerLS);
       }
     } else {
@@ -178,37 +184,51 @@
     }
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      storePlayers.set(players);
+      // storePlayers.set(players);
     }
   });
 
   async function setCellSize() {
-    console.log(`|--|---|--|--|--|--|    setCellSize() called`);
+    // console.log(`|--|---|--|--|--|--|    setCellSize() called`);
     let gameboardContainer = document.querySelector(".gameboard-container");
-    let gameboard = document.querySelector("#gameboard");
+
+    // await grid.length
     gameboardContainerWidth = gameboardContainer.offsetWidth;
-    let gameboardWidth = gameboard.offsetWidth;
     gameboardContainerHeight = gameboardContainer.offsetHeight;
     cellWidth = parseInt(
-      ((gameboardContainerWidth / settings.columns) * settings.sizeFactor) / 100
+      (((gameboardContainerWidth / settings.columns) * settings.sizeFactor) /
+        100) *
+        0.9
     );
     cellHeight = parseInt(
-      ((gameboardContainerHeight / settings.rows) * settings.sizeFactor) / 100
+      (((gameboardContainerHeight / settings.rows) * settings.sizeFactor) /
+        100) *
+        0.9
     );
-    console.log(
-      `W:${typeof cellWidth} > H:${typeof cellHeight} ${typeof cellSize}`
-    );
+    // console.log(
+    //   `gameboardContainerWidth:${gameboardContainerWidth} | gameboardContainerHeight:${gameboardContainerHeight} cellSize: ${cellSize}`
+    // );
+    // console.log(`W:${cellWidth} | H:${cellHeight} cellSize: ${cellSize}`);
+    if (gameboardContainerWidth > gameboardContainerHeight) {
+      // console.log(
+      //   `gameboardContainerWidth:${gameboardContainerWidth} >>>> gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      // );
+    } else {
+      // console.log(
+      //   `gameboardContainerWidth:${gameboardContainerWidth} <<<< gameboardContainerHeight:${gameboardContainerHeight} sizeFactor: ${sizeFactor}`
+      // );
+    }
+
     // cellSize = cellWidth > cellHeight ? cellHeight : cellWidth
     if (cellWidth >= cellHeight) {
-      console.log(`W:${cellWidth} > H:${cellHeight}`);
+      // console.log(`W:${cellWidth} > H:${cellHeight}`);
       cellSize = cellHeight;
     } else {
-      console.log(`W:${cellWidth} < H:${cellHeight}`);
+      // console.log(`W:${cellWidth} < H:${cellHeight}`);
       cellSize = cellWidth;
     }
     storeCellSize.set(cellSize);
     // let gameboardContainerWidth = settings.columns * cellSize
-    storeGameboardWidth.set(gameboardWidth);
   }
 
   function moveNotification(e) {
@@ -246,21 +266,21 @@
         len = gameHistoryTurns.length;
       }
     }
-    console.log(
-      `renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `,
-      turnHistory
-    );
-    console.log(
-      `renderGameBoardReload() => gameHistoryTurns and len: ${len}; `,
-      gameHistoryTurns
-    );
-    console.log(
-      `renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `
-    );
+    // console.log(
+    //   `renderGameBoardReload() => turnHistory and len: ${turnHistory.len}; `,
+    //   turnHistory
+    // );
+    // console.log(
+    //   `renderGameBoardReload() => gameHistoryTurns and len: ${len}; `,
+    //   gameHistoryTurns
+    // );
+    // console.log(
+    //   `renderGameBoardReload() => settings num players and players.length: ${settings.numberOfPlayers} players ${players.length} `
+    // );
     async function loopAndLockTurns(gameHistoryTurns, delayMS) {
       for (let i = 0; i < len; i++) {
         let turn = gameHistoryTurns[i];
-        for (let j = 0; j < settings.movesPerTurn; j++) {
+        for (let j = 0; j < turn.length; j++) {
           // console.log(
           //   `\n\nGameBoard => renderGameBoardReload called! We should see our turn....`,
           //   turn,
@@ -270,19 +290,19 @@
           // console.log(
           //   `\n\nGameBoard => renderGameBoardReload called! We should see our move....`,
           //   move,
-          //   `\n\n`
+          //   `\n\n`,
+          //   `move.player`,
+          //   move.player
           // );
           let p = move.player.id;
           let cell = document.getElementById(move.id);
           let customColor = `--player-color: ${players[p].colorMain}`;
-          customMarkerSize = `--cell-marker-size: ${Math.floor(
-            cellSize / 2
-          )}px`;
+          customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 2)}px`;
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
           cell.style.width = cellSize + "px";
           cell.style.height = cellSize + "px";
-          cell.setAttribute("data-marker", players[p].marker);
+          cell.setAttribute("data-mark", players[p].mark);
           cell.setAttribute("data-ticked", true);
           cell.classList.add("locked", "ticked");
           cell.classList.remove("unticked");
@@ -303,7 +323,7 @@
         cell.style.margin = settings.gutter + "px";
         cell.style.width = cellSize + "px";
         cell.style.height = cellSize + "px";
-        cell.setAttribute("data-marker", players[p].marker);
+        cell.setAttribute("data-mark", players[p].mark);
         cell.setAttribute("data-ticked", true);
         cell.classList.add("ticked");
         cell.classList.remove("unticked");
@@ -342,14 +362,15 @@
       }
     }
   }
+
   async function createDirectionArrays() {
     for (let i = 1; i <= 4; i++) {
       await makeLinesFrom(i);
     }
   }
 
-  function addDirectionArraysToPlayerObjects() {
-    // console.log(`\n\n addDirectionArraysToPlayerObjects `, players, settings.numberOfPlayers, `\n\n`)
+  function addDirectionArraysToPlayers() {
+    // console.log(`\n\n addDirectionArraysToPlayers `, players, settings.numberOfPlayers, `\n\n`)
     for (let i = 0; i < settings.numberOfPlayers; i++) {
       // next loop is to set the four direction array to each player object .scores property
       for (let x = 0; x <= 3; x++) {
@@ -359,7 +380,6 @@
         players[i].scores[x]["lines"] = lines[scoreDirections[x].name];
       }
     }
-    localStorage.setItem("players", JSON.stringify(players));
     storePlayers.set(players);
   }
 
@@ -433,9 +453,9 @@
     }
     lines = lines;
     storeDirectionArrays.set(lines);
-    localStorage.setItem("directionArrays", JSON.stringify(lines));
+    // localStorage.setItem("directionArrays", JSON.stringify(lines));
     await players;
-    addDirectionArraysToPlayerObjects();
+    addDirectionArraysToPlayers();
   }
 
   function makeLineFrom(start, pattern) {
@@ -499,9 +519,9 @@
   }
 
   async function buildGameGrid(rows, columns, size, gutter) {
-    console.log(
-      `buildGameGrid called with rows ${rows}, columns ${columns}, size ${size}, gutter ${gutter}`
-    );
+    // console.log(
+    //   `buildGameGrid called with rows ${rows}, columns ${columns}, size ${size}, gutter ${gutter}`
+    // );
     state.reset = false;
     grid = [];
     for (let r = 0; r < rows; r++) {
@@ -520,15 +540,14 @@
     }
     await players;
 
-    grid = grid;
+    // grid = grid;
     await createDirectionArrays();
-    await addDirectionArraysToPlayerObjects();
+    await addDirectionArraysToPlayers();
     return grid;
-    console.log(`grid array from inside buildGameGrid: `, grid);
   }
 
-  async function resetGameBoard() {
-    // console.log(`\n resetGameBoard() called with settings `, settings, `\n \n`);
+  async function resetGameBoard(message) {
+    // console.log(`\n resetGameBoard() called with message `, message, `\n \n`);
 
     // grid = []
     await buildGameGrid(
@@ -537,8 +556,11 @@
       cellSize,
       settings.gutter
     );
-    // console.log(`New resizeCells() function about to be called `);
-    await resizeCells();
+    // waitedGrid.then(() => {
+    //   resizeCells()
+    // })
+    // console.log(`resizeCells() function about to be called `);
+    resizeCells();
     // console.log(`gameInProgress? `, gameInProgress);
     if (gameInProgress) {
       await renderGameBoardReload(0);
@@ -576,7 +598,8 @@
     } else {
       if (state.movesRemaining <= 1) {
         moveNumber++;
-        localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+        storeMoveNumber.set(moveNumber)
+        // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
         setTurnHistory(cell);
         setGameHistoryTurns();
         tickThis(cell);
@@ -589,8 +612,9 @@
       state.movesRemaining--;
     }
     // console.log(`GameBoard => playMove, state `, state);
-    localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+    // localStorage.setItem("state", JSON.stringify(state));
+    // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
+    storeMoveNumber.set(moveNumber)
     storeState.set(state);
     // console.log(`GameBoard => playMove, state `, state);
   }
@@ -601,11 +625,12 @@
     //   settings,
     //   cell
     // );
-    console.log(
-      "tickThis(cell) players, currentPlayer",
-      players,
-      currentPlayer
-    );
+    dispatch("moveNotification", cell);
+    // console.log(
+    //   "tickThis(cell) players, currentPlayer",
+    //   players,
+    //   currentPlayer
+    // );
     let id = cell.id;
     let row = id[1];
     let column = id[3];
@@ -620,11 +645,13 @@
     cell.dataset.ticked = true;
     cell.setAttribute("player-id", currentPlayer.id);
     cell.setAttribute("player-name", currentPlayer.name);
-    cell.style = `--player-color: ${currentPlayer.colorMain}`;
+    let customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 3)}px`;
+    let playerColor = `--player-color: ${currentPlayer.colorMain}`;
+    cell.style = `${playerColor};${customMarkerSize};`;
     cell.style.margin = settings.gutter + "px";
     cell.style.width = cellSize + "px";
     cell.style.height = cellSize + "px";
-    cell.setAttribute("data-marker", currentPlayer.marker);
+    cell.setAttribute("data-mark", currentPlayer.mark);
     // console.log(
     //   `tickThis(cell) AFTER, cellSize ${cellSize} `,
     //   settings,
@@ -640,7 +667,7 @@
     let hue = rowFactor * row + 210;
     let alpha = ((parseInt(column) + 1) / 200 / colFactor).toFixed(2);
     let ggBg = `--gg-bg: hsla(${hue}, 50%, 50%, ${alpha});`;
-    currentPlayerMark = `--player-mark: '${currentPlayer.marker}'`;
+    currentPlayerMark = `--player-mark: '${currentPlayer.mark}'`;
     // console.log(
     //   `setCustomStyles: currentPlayerMark ${currentPlayerMark}, customMarkerSize ${customMarkerSize}`
     // );
@@ -791,7 +818,7 @@
       //   `thisMoveNum ${thisMoveNum} = moveNumber ${moveNumber} - settings.movesPerTurn ${settings.movesPerTurn} + index ${index} + 1;`
       // );
       move.setAttribute("locked", true);
-      move.setAttribute("data-marker", players[pid].marker);
+      move.setAttribute("data-mark", players[pid].mark);
       turn.move = thisMoveNum;
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
@@ -820,29 +847,29 @@
     storeGameHistoryTurns.set(gameHistoryTurns);
     localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
-    storePreservePlayerDetails.set(true);
+    // storePreservePlayerDetails.set(true);
     turnHistory = [];
   }
 
   function playerChange() {
-    storePreservePlayerDetails.set(true);
+    // storePreservePlayerDetails.set(true);
     turnHistory = [];
     let gameboard = document.getElementById("gameboard");
     gameboard.classList.add("player-change");
     setTimeout(() => {
       gameboard.classList.remove("player-change");
     }, 500);
-    let playerIndicator = document.querySelector(".player-indicator");
-    playerIndicator.classList.remove(`player-${currentPlayer.id}`);
+    let statusBar = document.querySelector(".statusbar-slim-wrapper");
+    statusBar.classList.remove(`player-${currentPlayer.id}`);
     let id = currentPlayer.id;
     if (id >= settings.numberOfPlayers - 1) {
       // console.log(`#######################$$$$$$$$$$$$$$$$$$$$$$$$  inside playerChange,     if (id >= settings.numberOfPlayers - 1) {
       // currentPlayer = players[0];`);
       currentPlayer = players[0];
-      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
+      statusBar.style = `--player-color: ${currentPlayer.colorMain}`;
     } else {
       currentPlayer = players[id + 1];
-      playerIndicator.style = `--player-color: ${currentPlayer.colorMain}`;
+      statusBar.style = `--player-color: ${currentPlayer.colorMain}`;
     }
 
     state.movesRemaining = settings.movesPerTurn;
@@ -853,13 +880,7 @@
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
-
-    // console.log(
-    //   `playerChanges, currentPlayer AFTER change:`,
-    //   currentPlayer.name
-    // );
-    // console.log(`playerIndicator`, playerIndicator);
-    playerIndicator.classList.add(`player-${currentPlayer.id}`);
+    statusBar.classList.add(`player-${currentPlayer.id}`);
   }
 </script>
 
@@ -876,11 +897,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    transition: all 0.25s;
+    transition: all 0.45s;
     // box-shadow: 0 0 24px 6px rgba(26, 26, 26, 1);
   }
 </style>
 
+<!-- {@debug grid} -->
 {#if grid.length}
   <div id="gameboard" class="gameboard-board">
     {#each grid as row}
@@ -900,4 +922,6 @@
       </div>
     {/each}
   </div>
+  {:else}
+  <Loading loadingMsg="GameBoard awaiting generate grid..." thisId="gameboard" />
 {/if}

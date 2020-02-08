@@ -25,12 +25,41 @@ let state = writable({
 });
 let directionArrays = writable(false);
 let currentPlayer = writable(false);
+let moveNumber = writable(false);
+let movesRemaining = writable(false);
 let gameInProgress = writable(false);
+let playersScored = writable(false);
 let preservePlayerDetails = writable(false);
+let toggleConfiguration = writable(false);
 let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
 let gameHistoryTurns = writable([]);
+let buttonStyles = writable({
+  _color: "var(--input-blue)",
+  _secondaryColor: "var(--input-blue)",
+  _secondaryOpacity: "1"
+});
+
+// color="var(--theme-bg)"
+// secondaryColor="hsla(calc(var(--player-color-hue) + 30), 100%, 70%, 1)"
+// secondaryOpacity="1"
+
+export const storePlayersScored = {
+  subscribe: playersScored.subscribe,
+  set: val => {
+    playersScored.set(val);
+    localStorage.setItem("playersScored", JSON.stringify(val));
+  }
+};
+
+export const storeToggleConfiguration = {
+  subscribe: toggleConfiguration.subscribe,
+  set: val => {
+    toggleConfiguration.set(val);
+    localStorage.setItem("toggleConfiguration", JSON.stringify(val));
+  }
+};
 
 export const storePlayers = {
   subscribe: players.subscribe,
@@ -79,6 +108,23 @@ export const storeState = {
     localStorage.setItem("state", JSON.stringify(val));
   }
 };
+
+export const storeMoveNumber = {
+  subscribe: moveNumber.subscribe,
+  set: val => {
+    moveNumber.set(val);
+    localStorage.setItem("moveNumber", JSON.stringify(val));
+  }
+};
+
+export const storeMovesRemaining = {
+  subscribe: movesRemaining.subscribe,
+  set: val => {
+    movesRemaining.set(val);
+    localStorage.setItem("movesRemaining", JSON.stringify(val));
+  }
+};
+
 export const storeDirectionArrays = {
   subscribe: directionArrays.subscribe,
   set: val => {
@@ -105,13 +151,13 @@ export const storePreservePlayerDetails = {
   set: val => {
     preservePlayerDetails.set(val);
     if (typeof window !== "undefined") {
-    if (!val) {
-      localStorage.removeItem("preservePlayerDetails");
-    } else {
-      localStorage.setItem("preservePlayerDetails", JSON.stringify(val));
+      if (!val) {
+        localStorage.removeItem("preservePlayerDetails");
+      } else {
+        localStorage.setItem("preservePlayerDetails", JSON.stringify(val));
+      }
     }
   }
-}
 };
 export const storeGameHistoryTurns = {
   subscribe: gameHistoryTurns.subscribe,
@@ -126,5 +172,13 @@ export const storeGameHistoryFlat = {
   set: val => {
     gameHistoryFlat.set(val);
     localStorage.setItem("gameHistoryFlat", JSON.stringify(val));
+  }
+};
+
+export const storeButtonStyles = {
+  subscribe: buttonStyles.subscribe,
+  set: val => {
+    buttonStyles.set(val);
+    localStorage.setItem("buttonStyles", JSON.stringify(val));
   }
 };
