@@ -32,7 +32,7 @@
 <style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
   body {
-    overflow: hidden;
+    // overflow: hidden;
   }
 
   #sapper {
@@ -295,7 +295,7 @@
       border-bottom: 1px solidrgba(0, 0, 0, 0.75);
     }
   }
-  
+
   .learnmore-sidemenu-wrapper a {
     & .icon {
       display: flex;
