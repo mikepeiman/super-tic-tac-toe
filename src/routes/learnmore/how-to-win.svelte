@@ -57,7 +57,7 @@
       &#x21A4; Go back
     </a>
 
-    <div class="side-menu-wrapper">
+    <div class="learnmore-sidemenu-wrapper">
       <a
         name="how-to-win"
         class="button side-menu active"

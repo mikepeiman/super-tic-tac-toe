@@ -1,8 +1,10 @@
 <script>
   import { onMount } from "svelte";
-  import Typewriter from "typewriter-effect/dist/core";
+  import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
+  import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
+  // import Typewriter from "typewriter-effect/dist/core";
+  // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../../crossfade.js";
-  import getRandomInteger from "./../../utils/get-random-integer.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
   import { faMedal } from "@fortawesome/pro-solid-svg-icons";
@@ -24,36 +26,6 @@
     let body = document.getElementsByTagName("body");
     console.log(`LandingPage onMount`);
     log1(`LandingPage onMount`);
-    let typewriter = new Typewriter("#typewriter", {
-      autoStart: true,
-      loop: true,
-      devMode: true,
-      deleteSpeed: 25
-    });
-    let msg1 = "Here be thy instructions:";
-    let msg2 = ".  .  . .";
-    let msg3 = "Click a button for more info.";
-
-    typewriter
-      .pauseFor(1000)
-      .typeString(msg1)
-      .pauseFor(2000)
-      .deleteAll()
-      .changeDelay(450)
-      .typeString(msg2)
-      .pauseFor(450)
-      .deleteAll()
-      .changeDelay('natural')
-      .typeString(msg3)
-      .pauseFor(2000)
-      .start();
-    // tw().changeDeleteSpeed(15).changeDelay(25)
-    // tw.typeString('Instructions')
-    //   .pauseFor(2500)
-    //   .deleteAll()
-    //   .typeString('(go ahead, click a button for more info...)')
-    //   .pauseFor(1000)
-    //   .deleteAll();
   });
 </script>
 
@@ -88,14 +60,19 @@
     left: 0;
     padding: 0;
     margin: 0;
+    & .learnmore-topmenu-wrapper,
+    .learnmore-sidemenu-wrapper {
+      z-index: 99;
+      display: flex;
+      justify-content: space-around;
+      -webkit-box-align: start;
+      align-items: flex-start;
+    }
   }
   .crossfade-item {
     position: absolute;
     // transition: all 0.25s;
   }
-
-  $imageW: 25vw;
-  $imageH: 25vh;
 
   .learn-more-wrapper {
     display: flex;
@@ -126,7 +103,7 @@
       overflow: hidden;
       margin-right: 5vw;
     }
-    & .side-menu-wrapper {
+    & .learnmore-sidemenu-wrapper {
       position: absolute;
       left: 1rem;
       top: 25vh;
@@ -198,13 +175,15 @@
       background: rgba(0, 0, 0, 0.5);
       margin: 2rem;
     }
+    $imageW: 100vw;
+    $imageH: 100vh;
 
     & figure {
-      position: relative;
-      opacity: 0;
+      position: absolute;
+      opacity: 1;
       display: flex;
       margin: 0;
-      top: 0;
+      top: 0vh;
       left: 0;
       min-width: $imageW;
       min-height: $imageH;
@@ -214,10 +193,17 @@
       align-items: center;
       flex-direction: column;
       z-index: 0;
+      &#bg-from-landing-page {
+        opacity: 0;
+        z-index: -1;
+      }
+      &#bg-light-fade-in {
+        z-index: 9;
+      }
       &::before {
         content: "";
         position: absolute;
-        z-index: 0;
+        z-index: 1;
         top: 0;
         left: 0;
         min-width: $imageW;
@@ -309,7 +295,7 @@
   //     border-bottom: 1px solidrgba(0, 0, 0, 0.75);
   //   }
   // }
-  .side-menu-wrapper a {
+  .learnmore-sidemenu-wrapper a {
     & .icon {
       display: flex;
       display: grid;
@@ -361,129 +347,40 @@
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">
-    <h1
-      out:send={{ key: 'title' }}
-      in:receive={{ key: 'title' }}
-      class="crossfade-item page-title"
-      id="page-title">
+    <LearnMoreTopMenu />
 
-      <slot name="app-title" />
-      Super Tic-Tac-Toe
-    </h1>
-    <a
-      out:send={{ key: 'play-now' }}
-      in:receive={{ key: 'play-now' }}
-      rel="prefetch"
-      class="crossfade-item button"
-      id="play-now"
-      href="tictactoe/">
-      <slot name="play-now" />
-      PLAY NOW!
-    </a>
-    <a
-      out:send={{ key: 'learn-more' }}
-      in:receive={{ key: 'learn-more' }}
-      rel="prefetch"
-      class="crossfade-item button"
-      id="home"
-      href="/">
-      &#x21A4; Go back
-    </a>
-    <figure out:send={{ key: 'figure' }} in:receive={{ key: 'figure' }}>
-      <!-- <img
+    <figure
+      id="bg-from-landing-page"
+      out:send={{ key: 'bg-from-landing-page' }}
+      in:receive={{ key: 'bg-from-landing-page' }}>
+      <img
         id="tictactoe-game"
-        alt="A completed game of Super Tic Tac Toe"
-        src="game-dark-2pl.png" /> -->
-      <!-- <figcaption>An example of a completed game</figcaption> -->
-
+        alt="A screenshot of a completed game of Super Tic Tac Toe"
+        src="game-dark-2pl.png" />
+      <!-- <figcaption>A screenshot of a completed game</figcaption> -->
+    </figure>
+    <figure
+      id="bg-light-fade-in"
+      out:send={{ key: 'bg-light-fade-in' }}
+      in:receive={{ key: 'bg-light-fade-in' }}>
+      <img
+        id="tictactoe-game"
+        alt="A screenshot of a completed game of Super Tic Tac Toe"
+        src="game-light-2pl.png" />
+      <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
 
-    <div in:fade="{{duration: 200}}" out:fade="{{duration: 200 }}" class="main-content">
+    <!-- <div in:fade="{{duration: 200}}" out:fade="{{duration: 200 }}" class="main-content">
       <p id="typewriter" />
+    </div> -->
+    <div
+      in:fade={{ duration: 200 }}
+      out:fade={{ duration: 200 }}
+      class="main-content">
+      <h1>INSTRUCTIONS</h1>
     </div>
 
-    <div class="side-menu-wrapper">
-      <a
-        name="how-to-win"
-        out:send={{ key: 'how-to-win' }}
-        in:receive={{ key: 'how-to-win' }}
-        class="button side-menu"
-        id="how-to-win-button"
-        href="learnmore/how-to-win">
-        <div class="icon users-crown">
-          <Fa
-            icon={faUsersCrown}
-            color="white"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <div>How To Win</div>
-        </div>
-      </a>
-      <a
-        name="how-to-play"
-        out:send={{ key: 'how-to-play' }}
-        in:receive={{ key: 'how-to-play' }}
-        class="button side-menu"
-        id="how-to-play-button"
-        href="learnmore/how-to-play/">
-        <div class="icon swords">
-          <Fa
-            icon={faSwords}
-            color="white"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <div>How To Play</div>
-        </div>
-      </a>
-      <a
-        name="features"
-        out:send={{ key: 'ui-and-features' }}
-        in:receive={{ key: 'ui-and-features' }}
-        class="button side-menu"
-        id="ui-and-features-button"
-        href="learnmore/ui-and-features/">
-        <div class="icon lightbulb-on">
-          <Fa
-            icon={faLightbulbOn}
-            color="white"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <div>UI & Features</div>
-        </div>
-      </a>
-      <a
-        name="issues"
-        out:send={{ key: 'issues-and-gotchas' }}
-        in:receive={{ key: 'issues-and-gotchas' }}
-        class="button side-menu"
-        id="issues-and-gotchas-button"
-        href="learnmore/issues-and-gotchas/">
-        <div class="icon exclamation-triangle">
-          <Fa
-            icon={faExclamationTriangle}
-            color="white"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <div>Issues</div>
-        </div>
-      </a>
-      <a
-        name="development"
-        out:send={{ key: 'development-thoughts' }}
-        in:receive={{ key: 'development-thoughts' }}
-        class="button side-menu"
-        id="development-thoughts-button"
-        href="learnmore/development-thoughts/">
-        <div class="icon construction">
-          <Fa
-            icon={faConstruction}
-            color="white"
-            secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
-          <div>Development</div>
-        </div>
-      </a>
-    </div>
+    <LearnMoreSideMenu />
 
   </div>
   <div class="game-info" />

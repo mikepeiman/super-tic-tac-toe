@@ -1,7 +1,8 @@
 <script>
   import { onMount } from "svelte";
-  import Typewriter from "typewriter-effect/dist/core";
-  import { send, receive } from "./../../crossfade.js";
+  // import Typewriter from "typewriter-effect/dist/core";
+  // import getRandomInteger from "./../../utils/get-random-integer.js";
+  import { send, receive } from "./../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
   import { faMedal } from "@fortawesome/pro-solid-svg-icons";
@@ -20,44 +21,12 @@
     );
   });
   onMount(async () => {
+    let body = document.getElementsByTagName("body");
     console.log(`LandingPage onMount`);
-    log1(`LandingPage onMount`);
+    log1(`LandingPage onMount`);  
   });
 </script>
-
-<div class="learn-more-wrapper">
-
-  <div class="crossfade-wrapper">
-    <h1
-      out:send={{ key: 'title' }}
-      in:receive={{ key: 'title' }}
-      class="crossfade-item page-title"
-      id="page-title">
-
-      <slot name="app-title" />
-      Super Tic-Tac-Toe
-    </h1>
-    <a
-      out:send={{ key: 'play-now' }}
-      in:receive={{ key: 'play-now' }}
-      rel="prefetch"
-      class="crossfade-item button"
-      id="play-now"
-      href="tictactoe/">
-      <slot name="play-now" />
-      PLAY NOW!
-    </a>
-    <a
-      out:send={{ key: 'learn-more' }}
-      in:receive={{ key: 'learn-more' }}
-      rel="prefetch"
-      class="crossfade-item button"
-      id="home"
-      href="/">
-      &#x21A4; Go back
-    </a>
-
-    <div class="learnmore-sidemenu-wrapper">
+<div class="learnmore-sidemenu-wrapper">
       <a
         name="how-to-win"
         out:send={{ key: 'how-to-win' }}
@@ -94,7 +63,7 @@
         name="features"
         out:send={{ key: 'ui-and-features' }}
         in:receive={{ key: 'ui-and-features' }}
-        class="button side-menu active"
+        class="button side-menu"
         id="ui-and-features-button"
         href="learnmore/ui-and-features/">
         <div class="icon lightbulb-on">
@@ -138,49 +107,4 @@
           <div>Development</div>
         </div>
       </a>
-    </div>
-
-  </div>
-  <div class="game-info">
-
-    <div class="text-content">
-
-      <h2
-        out:send={{ key: 'ui-and-features' }}
-        in:receive={{ key: 'ui-and-features' }}
-        class="heading">
-        FEATURES:
-      </h2>
-      <div
-        class="text-content"
-        out:send={{ key: 'main-content' }}
-        in:receive={{ key: 'main-content' }}>
-        <ul>
-          <li>Play with (theoretically) any number of players</li>
-          <li>Set how many moves in a row to score</li>
-          <li>
-            Set a line bonus for scoring a complete line in any direction
-            <ul>
-              <li>
-                <span class="note">
-                  NOTE: the full bonus only applies to the longer side if the
-                  board is asymmetrical.
-                </span>
-                Shorter side and diagonals receive (bonus / (long / short))
-                points. For example, a line bonus of 15 on a 10x15 board means
-                the longer line bonus = 15 while the shorter line bonus = 10.
-              </li>
-            </ul>
-          </li>
-          <li>Player names and move-marks selected by players</li>
-          <li>
-            Score the game at any point, as often as you like - you can even
-            change the moves-in-row or line bonus settings and see what the
-            scores would be!
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-</div>
+    </div>  

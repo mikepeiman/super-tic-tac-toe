@@ -20,9 +20,9 @@
 <style lang="scss">
   $input-blue: rgba(50, 200, 255, 1);
 
-  .homepage-wrapper {
+  :global(.homepage-wrapper) {
     height: 100vh;
-    & h1.page-title {
+    & h1#page-title {
       z-index: 10;
       color: white;
       background: none;
@@ -80,12 +80,6 @@
     margin: 0 0 0.5em 0;
   }
 
-  hr {
-    border: 0;
-    border-bottom: 3px solid rgba(50, 200, 255, 1);
-    background: rgba(0, 0, 0, 0.5);
-    margin: 2rem;
-  }
 
   .button {
     padding: 1rem 2rem;
@@ -106,34 +100,13 @@
       color: white;
       transition: all 0.45s;
     }
-    // &#learn-more {
-    //   color: rgba(75, 155, 75, 1);
-    //   border: 3px solid rgba(75, 155, 75, 1);
-    //   box-shadow: 0 0 5px 10px rgba(75, 155, 75, 0.25);
-    //   transition: all 0.45s;
-    //   &:hover {
-    //     color: rgba(75, 155, 75, 1);
-    //     border: 3px solid white;
-    //     box-shadow: 0 0 10px 20px rgba(75, 155, 75, 0.5);
-    //     transition: all 0.45s;
-    //   }
-    // }
   }
 
-  #final-button {
-    box-shadow: 0 0 3px 4px rgba(50, 200, 255, 0.25);
-    margin: 1rem 0 5rem 0;
-    &:hover {
-      box-shadow: 0 0 4px 5px rgba(50, 200, 255, 0.5);
-      transition: all 0.45s;
-    }
-  }
 
   #play-now,
   #learn-more {
     position: absolute;
     transition: all 0.45s;
-    z-index: 10;
   }
   #play-now {
     top: 40%;
@@ -141,11 +114,7 @@
   #learn-more {
     top: 60%;
   }
-  #page-title {
-    top: 0;
-    opacity: 1;
-    z-index: 11;
-  }
+
 
   img {
     max-height: 80vh;
@@ -187,46 +156,6 @@
       z-index: 9;
       color: #555;
       visibility: hidden;
-    }
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  .two-columns {
-    display: grid;
-    grid-template-columns: 40vw 40vw;
-  }
-  .text-content {
-    max-width: 80vw;
-    color: #abc;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    // border-radius: 10px;
-    // background: black;
-  }
-
-  span {
-    background: rgba(119, 94, 94, 0.25);
-    font-weight: 300;
-    padding: 0 1ch;
-    &.nice {
-      color: rgba(140, 255, 140, 0.75);
-    }
-    &.note {
-      color: rgba(255, 140, 140, 0.75);
-    }
-    &.cool {
-      color: rgba(140, 140, 255, 0.75);
-    }
-    &.bold {
-      font-weight: 700;
-    }
-    &.underline {
-      border-bottom: 1px solidrgba(0, 0, 0, 0.75);
     }
   }
 
@@ -304,7 +233,7 @@
 
     <!--  in:fade="{{duration: 200}}" out:fade="{{delay: 200, duration: 200}}" -->
 
-    <figure out:send={{ key: 'figure' }} in:receive={{ key: 'figure' }}>
+    <figure id="bg-from-landing-page" out:send={{ key: 'bg-from-landing-page' }} in:receive={{ key: 'bg-from-landing-page' }}>
       <img
         id="tictactoe-game"
         alt="A completed game of Super Tic Tac Toe"
