@@ -237,7 +237,13 @@
       height: appHeight,
       ratio: appRatio
     };
-    storeViewportSize.set(appViewport);
+    let windowViewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      ratio: parseFloat((window.innerWidth / window.innerHeight).toFixed(2));
+    };
+    // storeViewportSize.set(appViewport);
+    storeViewportSize.set(windowViewport);
     placardFactor = 2.6;
     if (appWidth < 1500) {
       placardFactor = 2.4;
@@ -298,52 +304,52 @@
     left: 0;
     top: var(--position-top);
     margin: 0 1rem 1rem 1rem;
-    transition: all .45s;
+    transition: all 0.45s;
     // outline: 5px solid var(--theme-bg)
     min-width: max-content;
     transform-origin: top left;
     transform: scale(var(--scale-width));
     // margin-bottom: var(--custom-marginBottom);
-    transition: all .45s;
+    transition: all 0.45s;
     z-index: -1;
     & .player-name {
-      transition: all .45s;
+      transition: all 0.45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
     & input.player-mark {
-      transition: all .45s;
+      transition: all 0.45s;
       width: 3.5ch;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
     & .total-score-number {
-      transition: all .45s;
+      transition: all 0.45s;
       &.dark {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
       &.light {
         background: var(--theme-bg);
         color: var(--theme-fg);
-        transition: all .45s;
+        transition: all 0.45s;
       }
     }
   }
@@ -381,9 +387,9 @@
       position: relative;
       border-radius: 5px;
       margin: 0;
-      transition: all .45s;
+      transition: all 0.45s;
       min-width: max-content;
-      transition: all .45s;
+      transition: all 0.45s;
       z-index: -1;
       & .total-score {
         // flex-direction: column;
@@ -392,45 +398,45 @@
         // flex-direction: column;
       }
       & .player-name {
-        transition: all .45s;
+        transition: all 0.45s;
         display: none;
         margin: 0;
         &.dark {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
         &.light {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
       }
       & .player-mark {
-        transition: all .45s;
+        transition: all 0.45s;
         width: 3.5ch;
         &.dark {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
         &.light {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
       }
       & .total-score-number {
-        transition: all .45s;
+        transition: all 0.45s;
         &.dark {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
         &.light {
           background: var(--theme-bg);
           color: var(--theme-fg);
-          transition: all .45s;
+          transition: all 0.45s;
         }
       }
     }
@@ -513,7 +519,7 @@
     // outline: 5px solid var(--theme-fg);
     box-shadow: 0 0 9px 2px hsla(var(--player-color-hue), 70%, 70%, 0.55);
     position: relative;
-    transition: all .45s;
+    transition: all 0.45s;
     min-width: max-content;
     // transform: scale(1.025);
     transform: scale(calc(var(--scale-width) * 1.05));
@@ -597,67 +603,68 @@
   @media screen and (min-width: 1500px) {
   }
 </style>
+
 {#if players}
-{#await players then players}
-  <div class="scoreboard-container-inner">
-    {#each players as player}
-      <div
-        class="scoreboard-player"
-        style={`--viewport-width: ${appViewport.width}`}
-        class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
-        <h3 class="total-score">
-          <input
-            class="player-name"
-            type="text"
-            bind:value={player.name}
-            placeholder={`${player.name} ${player.mark}`}
-            on:click={highlight}
-            on:blur={() => updateStoredPlayers(player)} />
+  {#await players then players}
+    <div class="scoreboard-container-inner">
+      {#each players as player}
+        <div
+          class="scoreboard-player"
+          style={`--viewport-width: ${appViewport.width}`}
+          class:highlighted={currentPlayer.id == player.id ? gameUnderway : false}>
+          <h3 class="total-score">
+            <input
+              class="player-name"
+              type="text"
+              bind:value={player.name}
+              placeholder={`${player.name} ${player.mark}`}
+              on:click={highlight}
+              on:blur={() => updateStoredPlayers(player)} />
 
-          <div class="player-mark">{player.mark}</div>
+            <div class="player-mark">{player.mark}</div>
 
-          <div class="total-score-number">{player.totalScore}</div>
-        </h3>
-        <div class="scoreboard-totals">
-          <div class="scoreboard-points">
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div class="direction-score-section">
-                  <img
-                    class="direction-icon"
-                    src={direction.iconSrc}
-                    width="20"
-                    height="20"
-                    alt="Icon for direction {direction.name}" />
-                  <div class="direction-score">
-                    {player.dirPointsByIndex[i]}
+            <div class="total-score-number">{player.totalScore}</div>
+          </h3>
+          <div class="scoreboard-totals">
+            <div class="scoreboard-points">
+              {#each player.scores as direction, i}
+                <div class="scoreboard-direction">
+                  <div class="direction-score-section">
+                    <img
+                      class="direction-icon"
+                      src={direction.iconSrc}
+                      width="20"
+                      height="20"
+                      alt="Icon for direction {direction.name}" />
+                    <div class="direction-score">
+                      {player.dirPointsByIndex[i]}
+                    </div>
                   </div>
                 </div>
-              </div>
-            {/each}
-          </div>
-          <div class="scoreboard-bonuses">
-            {#each player.scores as direction, i}
-              <div class="scoreboard-direction">
-                <div class="direction-score-section">
-                  <img
-                    class="direction-icon"
-                    src={direction.iconSrc}
-                    width="20"
-                    height="20"
-                    alt="Icon for direction {direction.name}" />
-                  <div class="direction-score">
-                    {player.dirBonusesByIndex[i]}
+              {/each}
+            </div>
+            <div class="scoreboard-bonuses">
+              {#each player.scores as direction, i}
+                <div class="scoreboard-direction">
+                  <div class="direction-score-section">
+                    <img
+                      class="direction-icon"
+                      src={direction.iconSrc}
+                      width="20"
+                      height="20"
+                      alt="Icon for direction {direction.name}" />
+                    <div class="direction-score">
+                      {player.dirBonusesByIndex[i]}
+                    </div>
                   </div>
                 </div>
-              </div>
-            {/each}
+              {/each}
+            </div>
           </div>
         </div>
-      </div>
-    {/each}
-  </div>
-{/await}
+      {/each}
+    </div>
+  {/await}
 {:else}
-<h1>ScoreBoard awaiting loading players....</h1>
+  <h1>ScoreBoard awaiting loading players....</h1>
 {/if}

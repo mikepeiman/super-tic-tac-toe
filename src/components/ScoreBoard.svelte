@@ -54,6 +54,7 @@
   });
   storeCurrentPlayer.subscribe(value => {
     console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+
     currentPlayer = value;
     if (value === null) {
       currentPlayer = players[0];
@@ -398,7 +399,14 @@
       height: appHeight,
       ratio: appRatio
     };
-    storeViewportSize.set(appViewport);
+        let windowViewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      ratio: parseFloat((window.innerWidth / window.innerHeight).toFixed(2))
+    };
+    // storeViewportSize.set(appViewport);
+    storeViewportSize.set(windowViewport);
+    // storeViewportSize.set(appViewport);
     placardFactor = 2.6;
     if (appWidth < 1500) {
       placardFactor = 2.4;

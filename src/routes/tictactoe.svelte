@@ -209,9 +209,9 @@
 </script>
 
 <style lang="scss" global>
-  :global(:root) {
-    --input-blue: 50, 200, 255;
-  }
+  // :global(:root) {
+  //   --input-blue: 50, 200, 255;
+  // }
 
   body {
     color: var(--theme-fg);
@@ -287,7 +287,7 @@
     position: relative;
     top: 0;
     left: 0;
-    color: rgba(255,255,255,0.25);
+    color: rgba(255, 255, 255, 0.25);
     transition: all 0.25s;
     // grid-template-areas: "statusbar" "scoreboard" "menu" "gameboard";
     &.loaded {
@@ -302,11 +302,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: rgba(0,255,55,1);
+        color: rgba(0, 255, 55, 1);
         min-height: 2rem;
         min-width: 2rem;
         border-radius: 1rem;
-        background: rgba(0,255,55,.1);
+        background: rgba(0, 255, 55, 0.1);
         top: 0;
         right: -2rem;
       }
@@ -364,6 +364,11 @@
         right: 3rem;
         opacity: 1;
         transition: all 0.45s;
+        &.sun {
+          right: 1rem;
+        }
+        &.moon {
+        }
         &.hidden {
           opacity: 0;
           transition: all 0.45s;
@@ -473,20 +478,6 @@
       max-height: 2.5rem;
       width: 19vw;
       background: var(--player-color);
-      // outline: 2px solid var(--player-color);
-      // outline-offset: -4px;
-      // &::after {
-      // CSS rounded triangle
-      // content: "";
-      // position: absolute;
-      // left: 4rem;
-      // width: 3rem;
-      // height: 0;
-      // border-top: 1.5rem solid transparent;
-      // border-left: 2rem solid var(--player-color);
-      // border-bottom: 1.5rem solid transparent;
-      // border-radius: 2rem;
-      // }
       & h2.player-name {
         font-size: 1.25rem;
         margin: 0 1.5rem 0 0;
@@ -824,6 +815,7 @@
     .scoreboard-container {
       margin: 0;
       & .scoreboard-container-inner {
+        flex-wrap: wrap;
         & .add-or-remove-players {
           display: flex;
           flex-direction: column;
@@ -851,7 +843,9 @@
           // flex-direction: column;
         }
         & .direction-icon {
-          margin: 2px;
+          margin: 0.1rem;
+          width: 15px;
+          height: 15px;
         }
         & .total-score {
           margin: 0;
@@ -884,12 +878,16 @@
         padding: 0 1rem;
         min-width: 6rem;
         outline: none;
+        & span {
+          font-size: 1.5rem;
+        }
         & h2.player-name {
           color: var(--theme-fg);
           background: var(--player-color);
           min-width: auto;
           margin: 0 0.5rem 0 0;
           padding: 0;
+          font-size: 1rem;
         }
       }
       & #moves-wrapper {
@@ -1060,7 +1058,7 @@
             }
           }
           & .direction-icon {
-            margin: 0.15rem;
+            margin: 0.1rem;
             width: 16px !important;
             height: 16px !important;
           }
@@ -1119,9 +1117,7 @@
 
         </div>
       {:else}
-        <Loading
-          loadingMsg="StatusBar loading..."
-          thisId="statusbar" />
+        <Loading loadingMsg="StatusBar loading..." thisId="statusbar" />
       {/if}
 
       <div class="gameboard-container">
@@ -1143,16 +1139,10 @@
 {:else}
   <div class="loading-page-container">
     <div class="loading-container-inner">
-      <Loading
-        loadingMsg="ScoreBoard loading..."
-        thisId="scoreboard" />
-      <Loading
-        loadingMsg="GameBoard loading..."
-        thisId="gameboard" />
+      <Loading loadingMsg="ScoreBoard loading..." thisId="scoreboard" />
+      <Loading loadingMsg="GameBoard loading..." thisId="gameboard" />
       <Loading loadingMsg="Menu loading..." thisId="menu" />
-      <Loading
-        loadingMsg="Statusbar loading..."
-        thisId="statusbar" />
+      <Loading loadingMsg="Statusbar loading..." thisId="statusbar" />
     </div>
   </div>
 {/if}

@@ -329,7 +329,7 @@
   <div class="icon sun">
     <Fa
       icon={faSun}
-      color="var(--theme-fg)"
+      color="var(--theme-bg)"
       secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
   </div>
   <div class="icon moon hidden">
