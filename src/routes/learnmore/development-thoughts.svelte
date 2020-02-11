@@ -142,7 +142,7 @@
 
   </div>
   <div class="game-info">
-    <div class="text-content">
+    <section class="instructions-section">
 
       <div
         class="text-content"
@@ -154,8 +154,7 @@
           in:receive={{ key: 'development-thoughts' }}>
           DEVELOPMENT (tentative roadmap):
         </h2>
-        <div class="text-content">
-
+        <section class="instructions-section">
           <ul>
             <li>Incremental point bonuses and other scoring variations</li>
             <li>A range of gameplay features, too numerous to list here....</li>
@@ -168,8 +167,8 @@
             </li>
             <li>Publish in the app stores.</li>
           </ul>
-        </div>
+        </section>
       </div>
-    </div>
+    </section>
   </div>
 </div>

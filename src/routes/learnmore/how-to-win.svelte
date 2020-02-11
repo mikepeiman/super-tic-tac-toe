@@ -141,7 +141,7 @@
   </div>
   <div class="game-info">
 
-    <div class="text-content">
+    <section class="instructions-section">
       <h1
         out:send={{ key: 'how-to-win' }}
         in:receive={{ key: 'how-to-win' }}
@@ -156,7 +156,7 @@
           <span class="nice">Score the most points! Easy, right?</span>
         </h3>
       </div>
-    </div>
+    </section>
   </div>
 
 </div>

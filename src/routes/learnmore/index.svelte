@@ -65,11 +65,18 @@
     margin: 0;
     & .learnmore-topmenu-wrapper,
     .learnmore-sidemenu-wrapper {
-      z-index: 99;
-      display: flex;
-      justify-content: space-around;
-      -webkit-box-align: start;
-      align-items: flex-start;
+z-index: 99;
+    display: -webkit-box;
+    display: flex;
+    justify-content: space-around;
+    -webkit-box-align: start;
+    align-items: flex-start;
+    top: 0;
+    justify-self: center;
+    align-self: center;
+    left: 3px;
+    position: absolute;
+    width: 100%;
     }
   }
   .crossfade-item {
@@ -211,7 +218,7 @@
       min-width: $imageW;
       min-height: $imageH;
       width: $imageW;
-      height: $imageH;
+      height: 100%;
       justify-content: flex-start;
       align-items: center;
       flex-direction: column;
@@ -232,7 +239,7 @@
         min-width: $imageW;
         min-height: $imageH;
         width: $imageW;
-        height: $imageH;
+        height: 100%;
         background: rgba(0, 0, 0, 0.7);
         outline: 2px solid #32c8ff;
         outline-offset: -10px;
@@ -340,6 +347,16 @@
     }
   }
 
+  main.instructions {
+    display: flex;
+    flex-direction: column;
+    // position: absolute;
+    max-width: 60vw;
+    margin: 20vh 0 5vh 0;
+    z-index: 99;
+    background: #33aa;
+  }
+
   @media (max-width: 600px) {
   }
 
@@ -384,7 +401,168 @@
     </div>
 
     <InstructionsMenu />
-     <LearnMoreSideMenu />
+    <LearnMoreSideMenu />
+    <main class="instructions">
+      <section class="instructions-section">
+        <h1
+          out:send={{ key: 'how-to-win' }}
+          in:receive={{ key: 'how-to-win' }}
+          class="heading">
+          How To Win
+        </h1>
+        <div
+          class="text-content"
+          out:send={{ key: 'main-content' }}
+          in:receive={{ key: 'main-content' }}>
+          <h3>
+            <span class="nice">Score the most points! Easy, right?</span>
+          </h3>
+        </div>
+      </section>
+      <section class="instructions-section">
+
+        <h2
+          class="heading"
+          out:send={{ key: 'how-to-play' }}
+          in:receive={{ key: 'how-to-play' }}>
+          HOW TO PLAY:
+        </h2>
+        <div
+          class="text-content"
+          out:send={{ key: 'main-content' }}
+          in:receive={{ key: 'main-content' }}>
+          <ol>
+            <li>Set your game settings (# of players, cells to score, etc)</li>
+            <li>
+              Set your player names and chosen marks (single ASCII character)
+            </li>
+            <li>
+              Play! You'll get visual indications for turns remaining and turn
+              changeovers
+            </li>
+            <li>
+              See your current score anytime with the "Tally Scores" button, or
+              wait until the game is done to see who is the champion!
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="instructions-section">
+
+        <h2
+          out:send={{ key: 'ui-and-features' }}
+          in:receive={{ key: 'ui-and-features' }}
+          class="heading">
+          FEATURES:
+        </h2>
+        <div
+          class="text-content"
+          out:send={{ key: 'main-content' }}
+          in:receive={{ key: 'main-content' }}>
+          <ul>
+            <li>Play with (theoretically) any number of players</li>
+            <li>Set how many moves in a row to score</li>
+            <li>
+              Set a line bonus for scoring a complete line in any direction
+              <ul>
+                <li>
+                  <span class="note">
+                    NOTE: the full bonus only applies to the longer side if the
+                    board is asymmetrical.
+                  </span>
+                  Shorter side and diagonals receive (bonus / (long / short))
+                  points. For example, a line bonus of 15 on a 10x15 board means
+                  the longer line bonus = 15 while the shorter line bonus = 10.
+                </li>
+              </ul>
+            </li>
+            <li>Player names and move-marks selected by players</li>
+            <li>
+              Score the game at any point, as often as you like - you can even
+              change the moves-in-row or line bonus settings and see what the
+              scores would be!
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="instructions-section">
+
+        <h2
+          class="heading"
+          out:send={{ key: 'issues-and-gotchas' }}
+          in:receive={{ key: 'issues-and-gotchas' }}>
+          GOTCHA'S / ISSUES
+        </h2>
+
+        <div
+          class="text-content"
+          out:send={{ key: 'main-content' }}
+          in:receive={{ key: 'main-content' }}>
+          <p>Actually, it all works surprisingly well.</p>
+          <p>
+            <span class="note">
+              If you run into issues, reload, and if it breaks, clear
+              localStorage and reload.
+            </span>
+          </p>
+          <ul>
+            <li>
+              You can change number of players on-the-fly, but that obviously
+              messes with the scoring. Likewise with rows and columns. These
+              functions are surprisingly resilient though, and you can actually
+              maintain some semblence of continuity depending on your
+              adjustments.
+              <p>
+                <span class="note">
+                  TL;DR: Be careful not to change players, rows, columns on the
+                  fly!
+                </span>
+              </p>
+            </li>
+            <li>
+              <span class="cool">
+                Cool feature! ~ You
+                <span class="bold">CAN</span>
+                change the number-of-moves-in-a-row-to-score, and the line bonus
+                on the fly and recalculate scoring!
+              </span>
+              We've discovered that there definitely are different winning
+              strategies based on different settings.
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="instructions-section">
+        <div
+          class="text-content"
+          out:send={{ key: 'main-content' }}
+          in:receive={{ key: 'main-content' }}>
+          <h2
+            class="heading"
+            out:send={{ key: 'development-thoughts' }}
+            in:receive={{ key: 'development-thoughts' }}>
+            DEVELOPMENT (tentative roadmap):
+          </h2>
+          <section class="instructions-section">
+            <ul>
+              <li>Incremental point bonuses and other scoring variations</li>
+              <li>
+                A range of gameplay features, too numerous to list here....
+              </li>
+              <li>Save and load games via local file system</li>
+              <li>User authentication/login, save games and profile to DB</li>
+              <li>Make solid mobile layout (currently designed for desktop)</li>
+              <li>
+                MULTI-DEVICE PLAY! Yes, making this a real multiplayer game,
+                where you can set a lobby name and have friends join from their
+                devices.
+              </li>
+              <li>Publish in the app stores.</li>
+            </ul>
+          </section>
+        </div>
+      </section>
+    </main>
 
   </div>
   <div class="game-info" />

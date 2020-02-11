@@ -146,7 +146,7 @@
   </div>
   <div class="game-info">
 
-    <div class="text-content">
+    <section class="instructions-section">
 
       <h2
         class="heading"
@@ -173,7 +173,7 @@
           </li>
         </ol>
       </div>
-    </div>
+    </section>
 
   </div>
 

@@ -143,7 +143,7 @@
   </div>
   <div class="game-info">
 
-    <div class="text-content">
+    <section class="instructions-section">
 
       <h2
         out:send={{ key: 'ui-and-features' }}
@@ -180,7 +180,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </section>
   </div>
 
 </div>
