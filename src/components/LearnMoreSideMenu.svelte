@@ -26,6 +26,13 @@
     log1(`LandingPage onMount`);  
   });
 </script>
+
+<style lang="scss">
+html {
+  scroll-behavior: smooth;
+}
+</style>
+
 <div class="learnmore-sidemenu-wrapper">
       <a
         name="how-to-win"

@@ -3,6 +3,7 @@
   import * as animateScroll from "svelte-scrollto";
   import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
   import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
+  import InstructionsMenu from "./../../components/InstructionsMenu.svelte";
   // import Typewriter from "typewriter-effect/dist/core";
   // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../../crossfade.js";
@@ -382,7 +383,8 @@
       <h1>INSTRUCTIONS</h1>
     </div>
 
-    <LearnMoreSideMenu />
+    <InstructionsMenu />
+     <LearnMoreSideMenu />
 
   </div>
   <div class="game-info" />
