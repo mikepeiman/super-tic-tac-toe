@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import * as animateScroll from "svelte-scrollto";
   import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
   import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
   // import Typewriter from "typewriter-effect/dist/core";
@@ -13,6 +14,7 @@
   import { faSwords } from "@fortawesome/pro-solid-svg-icons";
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
+
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
