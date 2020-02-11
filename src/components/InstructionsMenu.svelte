@@ -11,13 +11,25 @@
   import { faSwords } from "@fortawesome/pro-solid-svg-icons";
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
-  let log1 = (console.todo = function(msg) {
+
+  let log1 = (console.todo = function(msg, obj) {
     console.log(
       ` %c%s%s%s`,
-      `color: white; background-color: rgba(55,75,155,1);`,
+      `color: black; background-color: rgba(55,75,155,.25); padding: 0.5rem;`,
       `–`,
       msg,
-      `–`
+      `–`,
+      obj
+    );
+  });
+  let log2 = (console.todo = function(msg, obj) {
+    console.log(
+      ` %c%s%s%s`,
+      `color: black; background-color: rgba(155,75,105,.25); padding: 0.5rem;`,
+      `–`,
+      msg,
+      `–`,
+      obj
     );
   });
   onMount(async () => {
@@ -55,71 +67,165 @@
       });
     });
   });
+
+  function enter(e) {
+    let svg = e.target.firstChild;
+    log1(`enter() e `, svg);
+    svg.classList.toggle("active");
+  }
+  function leave(e) {
+    let svg = e.target.firstChild;
+    log1(`leave() e `, svg);
+    svg.classList.toggle("active");
+  }
+  function findTargetByNodeName(el, soughtNodeName) {
+    let node = el.nodeName;
+    if (node !== soughtNodeName) {
+      log2(`This is not the node you are looking for`, node);
+      el = el.parentElement;
+      findTargetByNodeName(el, soughtNodeName);
+    }
+    node = el.nodeName;
+    log2(`returning from findTargetByNodeName(el, soughtNodeName) `, el);
+    if (node !== soughtNodeName) {
+      log2(`This is not the node you are looking for`, node);
+      el = el.parentElement;
+      findTargetByNodeName(el, soughtNodeName);
+      // el.parentElement.classList.toggle("active");
+    }
+    return el;
+  }
+
+  function setActive(e) {
+    let el = e.target;
+    let node = el.nodeName;
+    let soughtNodeName = "A";
+    // log1(`setActive() e.target nodeName ${node}`, svg);
+    el = findTargetByNodeName(el, soughtNodeName);
+    node = el.nodeName;
+    if (node !== "A") {
+      log1(`This is not the node you are looking for`, node);
+      el = findTargetByNodeName(el, soughtNodeName);
+      // el.parentElement.classList.toggle("active");
+    } else {
+      el.classList.toggle("active");
+    }
+    //
+    // }
+    // svg.classList.toggle("active");
+  }
 </script>
 
 <style lang="scss">
-  .instructions-menu-wrapper {
-    display: -webkit-box;
-    display: flex;
-    justify-content: space-around;
-    top: 16vh;
-    position: absolute;
+  :global(.learn-more-wrapper) {
+    & .instructions-menu-wrapper {
+      grid-area: menu;
+      display: -webkit-box;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      z-index: 101;
+      top: 0;
+      width: 100%;
+      background: black;
+      & a.button.instructions {
+        border-radius: 0;
+        margin-right: 1rem;
+        border: none;
+        border-bottom: 5px solid rgba(50, 200, 255, 1);
+        // border-right: 3px solid blue;
+        width: 12vw;
+        outline: 3px solid #1a1a1a;
+        outline-offset: -3px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        &:hover {
+          border-bottom: 5px solid orange;
+          box-shadow: none;
+          color: orange;
+          & svg {
+            color: orange;
+            transition: all 0.25s;
+          }
+          // outline: 3px solid #1a1a1a;
+        }
+        &.active {
+          color: white;
+        }
+      }
+    }
   }
+  .button.instructions {
+    & svg {
+      transition: all 0.25s;
+      color: blue;
+    }
 
-  .button.side-menu .icon {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 10rem;
-    & div {
-      margin-left: 1rem;
+    &:hover {
+      // color: greenyellow;
+      & svg {
+        transition: all 0.25s;
+        color: pink;
+      }
+    }
+    &:hover svg {
+      color: orange;
+    }
+    & .icon {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-radius: 0;
+      // width: 8rem;
+
+      & div {
+        margin-left: 1rem;
+      }
     }
   }
 </style>
 
-<div class="instructions-menu-wrapper">
+<div
+  class="instructions-menu-wrapper"
+  out:send={{ key: 'learn-more' }}
+  in:receive={{ key: 'learn-more' }}>
   <a
     name="how-to-win"
+    on:click={e => setActive(e)}
     out:send={{ key: 'how-to-win' }}
     in:receive={{ key: 'how-to-win' }}
-    class="button side-menu"
+    class="button instructions"
     id="how-to-win-button"
-    href="learnmore/how-to-win">
+    href="learnmore/#how-to-win">
     <div class="icon users-crown">
-      <Fa
-        icon={faUsersCrown}
-        color="white"
-        secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      <Fa size="lg" icon={faUsersCrown} color="currentColor" />
       <div>How To Win</div>
     </div>
   </a>
+
   <a
     name="how-to-play"
     out:send={{ key: 'how-to-play' }}
     in:receive={{ key: 'how-to-play' }}
-    class="button side-menu"
+    class="button instructions"
     id="how-to-play-button"
-    href="learnmore/how-to-play/">
+    href="learnmore/#how-to-play">
     <div class="icon swords">
-      <Fa
-        icon={faSwords}
-        color="white"
-        secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      <Fa size="lg" icon={faSwords} color="currentColor" />
       <div>How To Play</div>
     </div>
   </a>
+
   <a
     name="features"
     out:send={{ key: 'ui-and-features' }}
     in:receive={{ key: 'ui-and-features' }}
-    class="button side-menu"
+    class="button instructions"
     id="ui-and-features-button"
-    href="learnmore/ui-and-features/">
+    href="learnmore/#ui-and-features">
     <div class="icon lightbulb-on">
-      <Fa
-        icon={faLightbulbOn}
-        color="white"
-        secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
       <div>UI & Features</div>
     </div>
   </a>
@@ -127,14 +233,11 @@
     name="issues"
     out:send={{ key: 'issues-and-gotchas' }}
     in:receive={{ key: 'issues-and-gotchas' }}
-    class="button side-menu"
+    class="button instructions"
     id="issues-and-gotchas-button"
-    href="learnmore/issues-and-gotchas/">
+    href="learnmore/#issues-and-gotchas">
     <div class="icon exclamation-triangle">
-      <Fa
-        icon={faExclamationTriangle}
-        color="white"
-        secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
       <div>Issues</div>
     </div>
   </a>
@@ -142,14 +245,11 @@
     name="development"
     out:send={{ key: 'development-thoughts' }}
     in:receive={{ key: 'development-thoughts' }}
-    class="button side-menu"
+    class="button instructions"
     id="development-thoughts-button"
-    href="learnmore/development-thoughts/">
+    href="learnmore/#development-thoughts">
     <div class="icon construction">
-      <Fa
-        icon={faConstruction}
-        color="white"
-        secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      <Fa size="lg" icon={faConstruction} color="currentColor" />
       <div>Development</div>
     </div>
   </a>

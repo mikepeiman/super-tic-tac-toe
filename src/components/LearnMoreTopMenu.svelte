@@ -27,27 +27,45 @@
   });
 </script>
 
-    <div class="learnmore-topmenu-wrapper">
-      <h1
-        out:send={{ key: 'title' }}
-        in:receive={{ key: 'title' }}
-        class="crossfade-item page-title"
-        id="page-title">
+<style lang="scss">
+  .learnmore-topmenu-wrapper {
+    grid-area: topbar;
+    & #page-title {
+      // left: 1rem;
+      top: 1rem;
+      font-size: 1.75rem;
+      font-weight: 100;
+      border-bottom: 3px solid rgba(0,0,0,0);
+    }
+    & #play-now {
+      top: 1rem;
+      border: 3px solid #32c8ff;
 
-        <slot name="app-title" />
-        Super Tic-Tac-Toe
-      </h1>
-      <a
-        out:send={{ key: 'play-now' }}
-        in:receive={{ key: 'play-now' }}
-        rel="prefetch"
-        class="crossfade-item button"
-        id="play-now"
-        href="tictactoe/">
-        <slot name="play-now" />
-        PLAY NOW!
-      </a>
-      <a
+    }
+  }
+</style>
+
+<div class="learnmore-topmenu-wrapper">
+  <h1
+    out:send={{ key: 'title' }}
+    in:receive={{ key: 'title' }}
+    class="crossfade-item page-title"
+    id="page-title">
+
+    <slot name="app-title" />
+    Super Tic-Tac-Toe
+  </h1>
+  <a
+    out:send={{ key: 'play-now' }}
+    in:receive={{ key: 'play-now' }}
+    rel="prefetch"
+    class="crossfade-item button"
+    id="play-now"
+    href="tictactoe/">
+    <slot name="play-now" />
+    PLAY NOW!
+  </a>
+  <!-- <a
         out:send={{ key: 'learn-more' }}
         in:receive={{ key: 'learn-more' }}
         rel="prefetch"
@@ -55,6 +73,5 @@
         id="home"
         href="/">
         &#x21A4; Go back
-      </a>
-    </div>
-
+      </a> -->
+</div>

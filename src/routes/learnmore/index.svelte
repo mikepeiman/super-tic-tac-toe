@@ -57,26 +57,34 @@
     min-width: 100vw;
     min-height: 100vh;
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
     top: 0;
     left: 0;
     padding: 0;
     margin: 0;
+    display: grid;
+    grid-template-areas:
+      "header"
+      "menu"
+      "main";
+    // grid-template-columns: 20vw 80vw;
+    grid-template-rows: 10vh 10vh auto;
+    //     outline: 2px solid #32c8ff;
+    // outline-offset: -10px;
+    background: #1a1a1a;
     & .learnmore-topmenu-wrapper,
     .learnmore-sidemenu-wrapper {
-z-index: 99;
-    display: -webkit-box;
-    display: flex;
-    justify-content: space-around;
-    -webkit-box-align: start;
-    align-items: flex-start;
-    top: 0;
-    justify-self: center;
-    align-self: center;
-    left: 3px;
-    position: absolute;
-    width: 100%;
+      z-index: 99;
+      display: -webkit-box;
+      display: flex;
+      justify-content: space-around;
+      -webkit-box-align: start;
+      align-items: flex-start;
+      top: 0;
+      justify-self: center;
+      align-self: center;
+      // left: 3px;
+      position: absolute;
+      width: 100%;
     }
   }
   .crossfade-item {
@@ -131,13 +139,14 @@ z-index: 99;
     }
 
     & .button {
-      padding: 1rem 2rem;
-      background: #1a1a1a;
+      padding: 0.5rem 1rem;
+      // background: #1a1a9a9a;
       border-radius: 5px;
       width: auto;
       text-decoration: none;
       color: $input-blue;
-      border: 3px solid $input-blue;
+      border: 3px solid rgba(0, 0, 0, 0);
+      border-bottom: 3px solid $input-blue;
       z-index: 9;
       transition: all 0.25s;
       &:hover {
@@ -145,11 +154,16 @@ z-index: 99;
         border: 3px solid white;
         color: white;
         transition: all 0.25s;
+        & svg {
+          // color: pink;
+          // transition: all .25s;
+        }
       }
       &.side-menu {
+        grid-area: menu;
         position: static;
-        width: 15vw;
-        margin: 0.75rem 1rem 0 0;
+        width: 12vw;
+        // margin: 0.75rem 1rem 0 0;
         padding: 0.75rem 1rem;
       }
       & span {
@@ -348,13 +362,16 @@ z-index: 99;
   }
 
   main.instructions {
+    grid-area: main;
     display: flex;
     flex-direction: column;
-    // position: absolute;
-    max-width: 60vw;
-    margin: 20vh 0 5vh 0;
     z-index: 99;
-    background: #33aa;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    & section {
+      width: 80%;
+    }
   }
 
   @media (max-width: 600px) {
@@ -379,7 +396,7 @@ z-index: 99;
         src="game-dark-2pl.png" />
       <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
-    <figure
+    <!-- <figure
       id="bg-light-fade-in"
       out:send={{ key: 'bg-light-fade-in' }}
       in:receive={{ key: 'bg-light-fade-in' }}>
@@ -387,21 +404,21 @@ z-index: 99;
         id="tictactoe-game"
         alt="A screenshot of a completed game of Super Tic Tac Toe"
         src="game-light-2pl.png" />
-      <!-- <figcaption>A screenshot of a completed game</figcaption> -->
-    </figure>
+    </figure> -->
 
     <!-- <div in:fade="{{duration: 200}}" out:fade="{{duration: 200 }}" class="main-content">
       <p id="typewriter" />
     </div> -->
-    <div
+
+    <!-- <div
       in:fade={{ duration: 200 }}
       out:fade={{ duration: 200 }}
       class="main-content">
       <h1>INSTRUCTIONS</h1>
-    </div>
+    </div> -->
 
     <InstructionsMenu />
-    <LearnMoreSideMenu />
+    <!-- <LearnMoreSideMenu /> -->
     <main class="instructions">
       <section class="instructions-section">
         <h1
