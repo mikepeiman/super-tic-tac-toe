@@ -3,6 +3,7 @@
   // import Typewriter from "typewriter-effect/dist/core";
   // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../crossfade.js";
+  import { doScrolling } from "./../utils/smoothScroll.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
   import { faMedal } from "@fortawesome/pro-solid-svg-icons";
@@ -36,11 +37,12 @@
     // let body = document.getElementsByTagName("body");
     log1(`InstructionsMenu onMount`);
 
-    let mainNavLinks = document.querySelectorAll("nav ul li a");
+    let mainNavLinks = document.querySelectorAll("a.instructions");
     let mainSections = document.querySelectorAll("main section");
     let lastId;
     let cur = [];
-
+      log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
+      log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -98,6 +100,11 @@
 
   function setActive(e) {
     let el = e.target;
+    let navs = document.querySelectorAll(".button.instructions")
+    log1(`all instructions nav buttons `, navs)
+    navs.forEach(nav => {
+      nav.classList.remove("active")
+    })
     let node = el.nodeName;
     let soughtNodeName = "A";
     // log1(`setActive() e.target nodeName ${node}`, svg);
@@ -108,7 +115,12 @@
       el = findTargetByNodeName(el, soughtNodeName);
       // el.parentElement.classList.toggle("active");
     } else {
-      el.classList.toggle("active");
+      // el.classList.remove("active");
+      // let list = el.classList;
+      // log1(`classlist `, list);
+      // list.push = "active";
+      // log1(`classlist `, list);
+      el.classList.add("active")
     }
     //
     // }
@@ -152,6 +164,8 @@
         }
         &.active {
           color: white;
+          border-bottom: 5px solid orange;
+          outline: 3px solid orange;
         }
       }
     }
@@ -161,7 +175,6 @@
       transition: all 0.25s;
       color: blue;
     }
-
     &:hover {
       // color: greenyellow;
       & svg {
@@ -206,6 +219,7 @@
 
   <a
     name="how-to-play"
+    on:click={e => setActive(e)}
     out:send={{ key: 'how-to-play' }}
     in:receive={{ key: 'how-to-play' }}
     class="button instructions"
@@ -219,6 +233,7 @@
 
   <a
     name="features"
+    on:click={e => setActive(e)}
     out:send={{ key: 'ui-and-features' }}
     in:receive={{ key: 'ui-and-features' }}
     class="button instructions"
@@ -231,6 +246,7 @@
   </a>
   <a
     name="issues"
+    on:click={e => setActive(e)}
     out:send={{ key: 'issues-and-gotchas' }}
     in:receive={{ key: 'issues-and-gotchas' }}
     class="button instructions"
@@ -243,6 +259,7 @@
   </a>
   <a
     name="development"
+    on:click={e => setActive(e)}
     out:send={{ key: 'development-thoughts' }}
     in:receive={{ key: 'development-thoughts' }}
     class="button instructions"

@@ -1,6 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  import * as animateScroll from "svelte-scrollto";
   import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
   import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
   import InstructionsMenu from "./../../components/InstructionsMenu.svelte";
@@ -40,6 +39,7 @@
 
   #sapper {
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
   .homepage-wrapper {
     & h1#page-title {
@@ -362,6 +362,7 @@
   }
 
   main.instructions {
+    scroll-behavior: smooth;
     grid-area: main;
     display: flex;
     flex-direction: column;
@@ -420,7 +421,7 @@
     <InstructionsMenu />
     <!-- <LearnMoreSideMenu /> -->
     <main class="instructions">
-      <section class="instructions-section">
+      <section id="how-to-win" class="instructions-section">
         <h1
           out:send={{ key: 'how-to-win' }}
           in:receive={{ key: 'how-to-win' }}
@@ -436,7 +437,7 @@
           </h3>
         </div>
       </section>
-      <section class="instructions-section">
+      <section id="how-to-play" class="instructions-section">
 
         <h2
           class="heading"
@@ -464,7 +465,7 @@
           </ol>
         </div>
       </section>
-      <section class="instructions-section">
+      <section id="ui-and-features" class="instructions-section">
 
         <h2
           out:send={{ key: 'ui-and-features' }}
@@ -502,7 +503,7 @@
           </ul>
         </div>
       </section>
-      <section class="instructions-section">
+      <section id="issues-and-gotchas" class="instructions-section">
 
         <h2
           class="heading"
@@ -549,7 +550,7 @@
           </ul>
         </div>
       </section>
-      <section class="instructions-section">
+      <section id="development-thoughts" class="instructions-section">
         <div
           class="text-content"
           out:send={{ key: 'main-content' }}
@@ -560,7 +561,7 @@
             in:receive={{ key: 'development-thoughts' }}>
             DEVELOPMENT (tentative roadmap):
           </h2>
-          <section class="instructions-section">
+          <div class="text-content">
             <ul>
               <li>Incremental point bonuses and other scoring variations</li>
               <li>
@@ -576,7 +577,7 @@
               </li>
               <li>Publish in the app stores.</li>
             </ul>
-          </section>
+          </div>
         </div>
       </section>
     </main>
