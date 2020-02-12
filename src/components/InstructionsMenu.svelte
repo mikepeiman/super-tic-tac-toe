@@ -142,20 +142,21 @@
       background: black;
       & a {
         &.button {
-          border-bottom: 5px solid rgba(50, 200, 255, .1);
+          border-bottom: 5px solid rgba(50, 200, 255, 0);
           &.instructions {
             border-radius: 0;
             margin-right: 1rem;
-
+            border: 2px solid rgba(0, 0, 0, 0);
             width: 12vw;
-            outline: 3px solid #1a1a1a;
-            outline-offset: -3px;
+            outline: 2px solid #1a1a1a;
+            outline-offset: 0px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             &:hover {
-              border-bottom: 5px solid orange;
+              border: 2px solid orange;
               box-shadow: none;
+              outline: 9px solid #1a1a1a;
               color: orange;
               & svg {
                 color: orange;
@@ -163,14 +164,13 @@
               }
               // outline: 3px solid #1a1a1a;
             }
-            &.active {
-              color: white;
-              border-bottom: 5px solid orange;
-              outline: 3px solid orange;
-              background: #1a1a1a;
-            }
           }
         }
+      }
+      & a.button.instructions.active {
+        color: white;
+        border-bottom: 2px solid orange !important;
+        background: #1a1a1a;
       }
     }
   }
