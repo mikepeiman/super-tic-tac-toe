@@ -372,6 +372,12 @@
     align-items: center;
     & section {
       width: 80%;
+      padding: 15vh 15vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
     }
   }
 

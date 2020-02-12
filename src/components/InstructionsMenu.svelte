@@ -41,8 +41,8 @@
     let mainSections = document.querySelectorAll("main section");
     let lastId;
     let cur = [];
-      log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
-      log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
+    log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
+    log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -100,11 +100,11 @@
 
   function setActive(e) {
     let el = e.target;
-    let navs = document.querySelectorAll(".button.instructions")
-    log1(`all instructions nav buttons `, navs)
+    let navs = document.querySelectorAll(".button.instructions");
+    log1(`all instructions nav buttons `, navs);
     navs.forEach(nav => {
-      nav.classList.remove("active")
-    })
+      nav.classList.remove("active");
+    });
     let node = el.nodeName;
     let soughtNodeName = "A";
     // log1(`setActive() e.target nodeName ${node}`, svg);
@@ -120,7 +120,7 @@
       // log1(`classlist `, list);
       // list.push = "active";
       // log1(`classlist `, list);
-      el.classList.add("active")
+      el.classList.add("active");
     }
     //
     // }
@@ -140,32 +140,36 @@
       top: 0;
       width: 100%;
       background: black;
-      & a.button.instructions {
-        border-radius: 0;
-        margin-right: 1rem;
-        border: none;
-        border-bottom: 5px solid rgba(50, 200, 255, 1);
-        // border-right: 3px solid blue;
-        width: 12vw;
-        outline: 3px solid #1a1a1a;
-        outline-offset: -3px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        &:hover {
-          border-bottom: 5px solid orange;
-          box-shadow: none;
-          color: orange;
-          & svg {
-            color: orange;
-            transition: all 0.25s;
+      & a {
+        &.button {
+          border-bottom: 5px solid rgba(50, 200, 255, .1);
+          &.instructions {
+            border-radius: 0;
+            margin-right: 1rem;
+
+            width: 12vw;
+            outline: 3px solid #1a1a1a;
+            outline-offset: -3px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            &:hover {
+              border-bottom: 5px solid orange;
+              box-shadow: none;
+              color: orange;
+              & svg {
+                color: orange;
+                transition: all 0.25s;
+              }
+              // outline: 3px solid #1a1a1a;
+            }
+            &.active {
+              color: white;
+              border-bottom: 5px solid orange;
+              outline: 3px solid orange;
+              background: #1a1a1a;
+            }
           }
-          // outline: 3px solid #1a1a1a;
-        }
-        &.active {
-          color: white;
-          border-bottom: 5px solid orange;
-          outline: 3px solid orange;
         }
       }
     }
