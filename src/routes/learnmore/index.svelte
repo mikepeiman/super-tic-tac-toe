@@ -29,6 +29,47 @@
     console.log(`LandingPage onMount`);
     log1(`LandingPage onMount`);
   });
+
+  
+  function watchForScroll(e) {
+    console.log(`watchForScroll(e) `, e)
+    let mainNavLinks = document.querySelectorAll("a.instructions");
+    let mainSections = document.querySelectorAll("main section");
+    let lastId;
+    let cur = [];
+    log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
+    log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
+    // This should probably be throttled.
+    // Especially because it triggers during smooth scrolling.
+    // https://lodash.com/docs/4.17.10#throttle
+    // You could do like...
+    // window.addEventListener("scroll", () => {
+    //    _.throttle(doThatStuff, 100);
+    // });
+    // Only not doing it here to keep this Pen dependency-free.
+
+    // window.addEventListener("scroll", event => {
+      let fromTop = window.scrollY;
+
+      mainNavLinks.forEach(link => {
+        let section = document.querySelector(link.hash);
+      log2(`fromTop (window.scrollY): ${fromTop}`)
+      log2(`section.offsetTop: ${section.offsetTop}`)
+      log2(`section.offsetHeight: ${section.offsetHeight}`)
+        if (
+          section.offsetTop <= fromTop &&
+          section.offsetTop + section.offsetHeight > fromTop
+        ) {
+          
+          link.classList.add("active");
+          log1(`inside the scroll watched, we have a matching link  `, link)
+          log1(`inside the scroll watched, we have a matching section `, section)
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    // });
+  }
 </script>
 
 <style lang="scss" global>
@@ -387,7 +428,7 @@
   @media (min-width: 960px) {
   }
 </style>
-
+<svelte:window on:scroll={e => watchForScroll(e)} />
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">

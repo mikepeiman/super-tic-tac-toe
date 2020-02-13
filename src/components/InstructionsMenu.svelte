@@ -36,7 +36,11 @@
   onMount(async () => {
     // let body = document.getElementsByTagName("body");
     log1(`InstructionsMenu onMount`);
+    // watchForScroll("onMount")
+  });
 
+  function watchForScroll(e) {
+    console.log(`watchForScroll(e) `, e)
     let mainNavLinks = document.querySelectorAll("a.instructions");
     let mainSections = document.querySelectorAll("main section");
     let lastId;
@@ -52,23 +56,28 @@
     // });
     // Only not doing it here to keep this Pen dependency-free.
 
-    window.addEventListener("scroll", event => {
+    // window.addEventListener("scroll", event => {
       let fromTop = window.scrollY;
 
       mainNavLinks.forEach(link => {
         let section = document.querySelector(link.hash);
-
+      log2(`fromTop (window.scrollY): ${fromTop}`)
+      log2(`section.offsetTop: ${section.offsetTop}`)
+      log2(`section.offsetHeight: ${section.offsetHeight}`)
         if (
           section.offsetTop <= fromTop &&
           section.offsetTop + section.offsetHeight > fromTop
         ) {
-          link.classList.add("current");
+          
+          link.classList.add("active");
+          log1(`inside the scroll watched, we have a matching link  `, link)
+          log1(`inside the scroll watched, we have a matching section `, section)
         } else {
-          link.classList.remove("current");
+          link.classList.remove("active");
         }
       });
-    });
-  });
+    // });
+  }
 
   function enter(e) {
     let svg = e.target.firstChild;
@@ -202,7 +211,7 @@
     }
   }
 </style>
-
+<svelte:window on:scroll={watchForScroll} />
 <div
   class="instructions-menu-wrapper"
   out:send={{ key: 'learn-more' }}
