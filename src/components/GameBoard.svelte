@@ -1,6 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
-    import Loading from "./../components/Loading.svelte";
+  import Loading from "./../components/Loading.svelte";
 
   const dispatch = createEventDispatcher();
   import Cell from "./Cell.svelte";
@@ -314,6 +314,13 @@
         }
       }
     }
+
+  async function tickFinalTurnMoves() {
+    // loop through gameboard cells to build an array of those whose data-attribute data-ticked is false (!data-ticked)
+    // run the renderGameBoardReload with argument so it does not redraw, but only draws the final moves with the
+    // small animation delay (add transitions for smoother effect?)
+  }
+
     async function loopAndUnlockLastTurn(turnHistory, delayMS) {
       for (let i = 0; i < turnHistory.length; i++) {
         let move = turnHistory[i];
@@ -598,7 +605,7 @@
     } else {
       if (state.movesRemaining <= 1) {
         moveNumber++;
-        storeMoveNumber.set(moveNumber)
+        storeMoveNumber.set(moveNumber);
         // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
         setTurnHistory(cell);
         setGameHistoryTurns();
@@ -614,7 +621,7 @@
     // console.log(`GameBoard => playMove, state `, state);
     // localStorage.setItem("state", JSON.stringify(state));
     // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
-    storeMoveNumber.set(moveNumber)
+    storeMoveNumber.set(moveNumber);
     storeState.set(state);
     // console.log(`GameBoard => playMove, state `, state);
   }
@@ -881,6 +888,19 @@
     localStorage.setItem("state", JSON.stringify(state));
     localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
     statusBar.classList.add(`player-${currentPlayer.id}`);
+
+    // check if this is the last move
+    let movesPerGame =
+      (settings.rows * settings.columns) / settings.movesPerTurn;
+    let movesPlayed = moveNumber / settings.movesPerTurn;
+    let checkForLastMove = movesPerGame - movesPlayed;
+
+    console.log(
+      `checkForLastMove value (turns remaining): ${checkForLastMove}`
+    );
+    if (checkForLastMove === 1) {
+      console.log(`checkForLastMove says FINAL MOVE!!!!`);
+    }
   }
 </script>
 
@@ -922,6 +942,8 @@
       </div>
     {/each}
   </div>
-  {:else}
-  <Loading loadingMsg="GameBoard awaiting generate grid..." thisId="gameboard" />
+{:else}
+  <Loading
+    loadingMsg="GameBoard awaiting generate grid..."
+    thisId="gameboard" />
 {/if}
