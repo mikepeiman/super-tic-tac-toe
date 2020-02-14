@@ -364,11 +364,11 @@
     }
   }
 
-  async function tickFinalTurnMove() {
+  async function tickFinalTurnMoves() {
     // loop through gameboard cells to build an array of those whose data-attribute data-ticked is false (!data-ticked)
     // run the renderGameBoardReload with argument so it does not redraw, but only draws the final moves with the
     // small animation delay (add transitions for smoother effect?)
-    console.log(`tickFinalTurnMove rows ${rows} and columns ${columns}`);
+    console.log(`tickFinalTurnMoves rows ${rows} and columns ${columns}`);
     let unticked = [];
     let p = currentPlayer.id;
     let customColor = `--player-color: ${players[p].colorMain}`;
@@ -377,11 +377,11 @@
       for (let c = 0; c < columns; c++) {
         let id = `R${r}C${c}`;
         let cell = document.getElementById(id);
-        console.log(`tickFinalTurnMove cell id ${id}`, cell);
+        console.log(`tickFinalTurnMoves cell id ${id}`, cell);
         let ticked = cell.getAttribute("data-ticked");
         console.log(`data-ticked: ${ticked}`);
         if (ticked === "false") {
-          console.log(`!ticked! cell ${id}, calling tickThis(cell) `, cell)
+          console.log(`!ticked! cell ${id}, calling tickThis(cell) `, cell);
           // unticked = [...unticked, cell];
           // cell.style = `${customColor}; ${customMarkerSize}`;
           // cell.style.margin = settings.gutter + "px";
@@ -397,7 +397,23 @@
           if (delayMS > 0) {
             await delay(delayMS);
           }
-          tickThis(cell)
+          moveNumber++;
+          state.movesRemaining--;
+          storeState.set(state);
+          storeMoveNumber.set(moveNumber);
+          setTurnHistory(cell);
+          setGameHistoryTurns();
+          // tickThis(cell);
+          cell.style = `${customColor}; ${customMarkerSize}`;
+          cell.style.margin = settings.gutter + "px";
+          cell.style.width = cellSize + "px";
+          cell.style.height = cellSize + "px";
+          cell.setAttribute("data-mark", players[p].mark);
+          cell.setAttribute("data-ticked", true);
+          cell.classList.add("locked", "ticked");
+          cell.classList.remove("unticked");
+          cell.setAttribute("locked", true);
+          cell.style.border = "1px solid rgba(0,0,0,0.5)";
         }
       }
     }
@@ -639,7 +655,6 @@
       if (state.movesRemaining <= 1) {
         moveNumber++;
         storeMoveNumber.set(moveNumber);
-        // localStorage.setItem("moveNumber", JSON.stringify(moveNumber));
         setTurnHistory(cell);
         setGameHistoryTurns();
         tickThis(cell);
@@ -660,11 +675,7 @@
   }
 
   function tickThis(cell) {
-    console.log(
-      `tickThis(cell) BEFORE, cellSize ${cellSize} `,
-      settings,
-      cell
-    );
+    console.log(`tickThis(cell) BEFORE, cellSize ${cellSize} `, settings, cell);
     dispatch("moveNotification", cell);
     console.log(
       "tickThis(cell) players, currentPlayer",
@@ -931,10 +942,10 @@
     console.log(
       `checkForLastMove value (turns remaining): ${checkForLastMove}`
     );
-    // tickFinalTurnMove();
+    // tickFinalTurnMoves();
     if (checkForLastMove === 1) {
       console.log(`checkForLastMove says FINAL MOVE!!!!`);
-      tickFinalTurnMove()
+      tickFinalTurnMoves();
     }
   }
 </script>
