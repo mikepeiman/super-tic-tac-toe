@@ -40,7 +40,7 @@
   });
 
   function watchForScroll(e) {
-    console.log(`watchForScroll(e) `, e)
+    console.log(`watchForScroll(e) `, e);
     let mainNavLinks = document.querySelectorAll("a.instructions");
     let mainSections = document.querySelectorAll("main section");
     let lastId;
@@ -57,25 +57,24 @@
     // Only not doing it here to keep this Pen dependency-free.
 
     // window.addEventListener("scroll", event => {
-      let fromTop = window.scrollY;
+    let fromTop = window.scrollY;
 
-      mainNavLinks.forEach(link => {
-        let section = document.querySelector(link.hash);
-      log2(`fromTop (window.scrollY): ${fromTop}`)
-      log2(`section.offsetTop: ${section.offsetTop}`)
-      log2(`section.offsetHeight: ${section.offsetHeight}`)
-        if (
-          section.offsetTop <= fromTop &&
-          section.offsetTop + section.offsetHeight > fromTop
-        ) {
-          
-          link.classList.add("active");
-          log1(`inside the scroll watched, we have a matching link  `, link)
-          log1(`inside the scroll watched, we have a matching section `, section)
-        } else {
-          link.classList.remove("active");
-        }
-      });
+    mainNavLinks.forEach(link => {
+      let section = document.querySelector(link.hash);
+      log2(`fromTop (window.scrollY): ${fromTop}`);
+      log2(`section.offsetTop: ${section.offsetTop}`);
+      log2(`section.offsetHeight: ${section.offsetHeight}`);
+      if (
+        section.offsetTop <= fromTop &&
+        section.offsetTop + section.offsetHeight > fromTop
+      ) {
+        link.classList.add("active");
+        log1(`inside the scroll watched, we have a matching link  `, link);
+        log1(`inside the scroll watched, we have a matching section `, section);
+      } else {
+        link.classList.remove("active");
+      }
+    });
     // });
   }
 
@@ -108,32 +107,24 @@
   }
 
   function setActive(e) {
-    let el = e.target;
-    let navs = document.querySelectorAll(".button.instructions");
-    log1(`all instructions nav buttons `, navs);
-    navs.forEach(nav => {
-      nav.classList.remove("active");
-    });
-    let node = el.nodeName;
-    let soughtNodeName = "A";
-    // log1(`setActive() e.target nodeName ${node}`, svg);
-    el = findTargetByNodeName(el, soughtNodeName);
-    node = el.nodeName;
-    if (node !== "A") {
-      log1(`This is not the node you are looking for`, node);
-      el = findTargetByNodeName(el, soughtNodeName);
-      // el.parentElement.classList.toggle("active");
-    } else {
-      // el.classList.remove("active");
-      // let list = el.classList;
-      // log1(`classlist `, list);
-      // list.push = "active";
-      // log1(`classlist `, list);
-      el.classList.add("active");
-    }
-    //
-    // }
-    // svg.classList.toggle("active");
+    console.log(`setActive function deactivated`);
+
+    //   let el = e.target;
+    //   let navs = document.querySelectorAll(".button.instructions");
+    //   log1(`all instructions nav buttons `, navs);
+    //   navs.forEach(nav => {
+    //     nav.classList.remove("active");
+    //   });
+    //   let node = el.nodeName;
+    //   let soughtNodeName = "A";
+    //   el = findTargetByNodeName(el, soughtNodeName);
+    //   node = el.nodeName;
+    //   if (node !== "A") {
+    //     log1(`This is not the node you are looking for`, node);
+    //     el = findTargetByNodeName(el, soughtNodeName);
+    //   } else {
+    //     el.classList.add("active");
+    //   }
   }
 </script>
 
@@ -211,6 +202,7 @@
     }
   }
 </style>
+
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
   class="instructions-menu-wrapper"

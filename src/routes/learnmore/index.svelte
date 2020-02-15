@@ -29,19 +29,14 @@
     // console.log(`LandingPage onMount - window obj `, window);
     // window.onscroll = testOnscroll();
     let content = document.querySelector(".learn-more-wrapper");
-    // content.addEventListener("scroll", () => {
-    //   console.log(
-    //     `this is the learn-more-wrapper event listener speaking ${window.scrollY}`
-    //   );
+    let sapper = document.querySelector("#sapper");
+    // sapper.addEventListener("scroll", () => {
+    //   watchForScroll();
     // });
-    // window.addEventListener("scroll", () => {
-    //   console.log(`window scroll ${window.scrollY}`);
-    // });
-    // window.addEventListener("click", e => {
-    //   console.log(`window click e `, e.target);
-    // });
-    console.log(`LandingPage onMount - window obj `, window);
-    console.dir(`LandingPage onMount - content obj `, content);
+    window.addEventListener("scroll", () => {
+      watchForScroll();
+    });
+    console.log(`#sapper el `, sapper);
   });
 
   function watchForScroll() {
@@ -76,12 +71,18 @@
       // console.log(`section.offsetTop: ${section.offsetTop}`);
       // console.log(`section.offsetHeight: ${section.offsetHeight}`);
       if (
-        section.offsetTop <= (fromTop + 250)&&
-        section.offsetTop + section.offsetHeight > (fromTop + 250)
+        section.offsetTop <= fromTop + 250 &&
+        section.offsetTop + section.offsetHeight > fromTop + 250
       ) {
         link.classList.add("active");
-        console.log(`inside the scroll watched, we have a matching link  `, link);
-        console.log(`inside the scroll watched, we have a matching section `, section);
+        console.log(
+          `inside the scroll watcher, we have a matching link  `,
+          link
+        );
+        console.log(
+          `inside the scroll watcher, we have a matching section `,
+          section
+        );
       } else {
         link.classList.remove("active");
       }
@@ -90,23 +91,25 @@
   }
 
   function testOnscroll() {
-    if(typeof window !== "undefined") {
-    console.log(`test native onScroll ${window.scrollY}`);
+    if (typeof window !== "undefined") {
+      console.log(`test native onScroll ${window.scrollY}`);
     }
-
   }
 </script>
 
 <style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     overflow-x: hidden;
-    scroll-behavior: smooth;
+    // scroll-behavior: smooth;
   }
 
   #sapper {
-  //   overflow-x: hidden;
-    scroll-behavior: smooth;
+    // overflow-x: hidden;
+    // scroll-behavior: smooth;
   }
   .homepage-wrapper {
     & h1#page-title {
