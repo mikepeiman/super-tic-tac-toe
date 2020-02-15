@@ -31,6 +31,7 @@ let gameInProgress = writable(false);
 let playersScored = writable(false);
 let preservePlayerDetails = writable(false);
 let toggleConfiguration = writable(false);
+let toggleAutoFillFinalTurn = writable(false);
 let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
@@ -53,13 +54,22 @@ export const storePlayersScored = {
   }
 };
 
+export const storeToggleAutoFillFinalTurn = {
+  subscribe: toggleAutoFillFinalTurn.subscribe,
+  set: val => {
+    toggleAutoFillFinalTurn.set(val);
+    localStorage.setItem("toggleAutoFillFinalTurn", JSON.stringify(val));
+  }
+};
+
+
 export const storeToggleConfiguration = {
   subscribe: toggleConfiguration.subscribe,
   set: val => {
     toggleConfiguration.set(val);
     localStorage.setItem("toggleConfiguration", JSON.stringify(val));
   }
-};
+};``
 
 export const storePlayers = {
   subscribe: players.subscribe,

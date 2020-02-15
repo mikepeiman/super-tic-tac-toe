@@ -1,12 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
+  // import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
   import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
   import InstructionsMenu from "./../../components/InstructionsMenu.svelte";
   // import Typewriter from "typewriter-effect/dist/core";
   // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../../crossfade.js";
-  import { fade } from "svelte/transition";
+  // import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
   import { faMedal } from "@fortawesome/pro-solid-svg-icons";
   import { faLightbulbOn } from "@fortawesome/pro-solid-svg-icons";
@@ -15,30 +15,49 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
 
-  let log1 = (console.todo = function(msg) {
-    console.log(
-      ` %c%s%s%s`,
-      `color: darkorange; background-color: black;`,
-      `–`,
-      msg,
-      `–`
-    );
-  });
-  onMount(async () => {
-    let body = document.getElementsByTagName("body");
-    console.log(`LandingPage onMount`);
-    log1(`LandingPage onMount`);
+  // let log1 = (console.todo = function(msg, obj) {
+  //   console.log(
+  //     ` %c%s%s%s`,
+  //     `color: darkorange; background-color: black;`,
+  //     `–`,
+  //     msg,
+  //     `–`,
+  //     obj
+  //   );
+  // });
+  onMount(() => {
+    // console.log(`LandingPage onMount - window obj `, window);
+    // window.onscroll = testOnscroll();
+    let content = document.querySelector(".learn-more-wrapper");
+    // content.addEventListener("scroll", () => {
+    //   console.log(
+    //     `this is the learn-more-wrapper event listener speaking ${window.scrollY}`
+    //   );
+    // });
+    // window.addEventListener("scroll", () => {
+    //   console.log(`window scroll ${window.scrollY}`);
+    // });
+    // window.addEventListener("click", e => {
+    //   console.log(`window click e `, e.target);
+    // });
+    console.log(`LandingPage onMount - window obj `, window);
+    console.dir(`LandingPage onMount - content obj `, content);
   });
 
-  
-  function watchForScroll(e) {
-    console.log(`watchForScroll(e) `, e)
+  function watchForScroll() {
+    // console.log(`watchForScroll(e) `, e);
     let mainNavLinks = document.querySelectorAll("a.instructions");
     let mainSections = document.querySelectorAll("main section");
     let lastId;
     let cur = [];
-    log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
-    log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
+    console.log(
+      `InstructionsMenu onMount collections: mainNavLinks `,
+      mainNavLinks
+    );
+    console.log(
+      `InstructionsMenu onMount collections: mainSections `,
+      mainSections
+    );
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -49,37 +68,44 @@
     // Only not doing it here to keep this Pen dependency-free.
 
     // window.addEventListener("scroll", event => {
-      let fromTop = window.scrollY;
-
-      mainNavLinks.forEach(link => {
-        let section = document.querySelector(link.hash);
-      log2(`fromTop (window.scrollY): ${fromTop}`)
-      log2(`section.offsetTop: ${section.offsetTop}`)
-      log2(`section.offsetHeight: ${section.offsetHeight}`)
-        if (
-          section.offsetTop <= fromTop &&
-          section.offsetTop + section.offsetHeight > fromTop
-        ) {
-          
-          link.classList.add("active");
-          log1(`inside the scroll watched, we have a matching link  `, link)
-          log1(`inside the scroll watched, we have a matching section `, section)
-        } else {
-          link.classList.remove("active");
-        }
-      });
+    let fromTop = window.scrollY;
+    console.log(`fromTop (window.scrollY): ${fromTop}`);
+    mainNavLinks.forEach(link => {
+      let section = document.querySelector(link.hash);
+      // console.log(`fromTop (window.scrollY): ${fromTop}`);
+      // console.log(`section.offsetTop: ${section.offsetTop}`);
+      // console.log(`section.offsetHeight: ${section.offsetHeight}`);
+      if (
+        section.offsetTop <= (fromTop + 250)&&
+        section.offsetTop + section.offsetHeight > (fromTop + 250)
+      ) {
+        link.classList.add("active");
+        console.log(`inside the scroll watched, we have a matching link  `, link);
+        console.log(`inside the scroll watched, we have a matching section `, section);
+      } else {
+        link.classList.remove("active");
+      }
+    });
     // });
+  }
+
+  function testOnscroll() {
+    if(typeof window !== "undefined") {
+    console.log(`test native onScroll ${window.scrollY}`);
+    }
+
   }
 </script>
 
 <style lang="scss" global>
   $input-blue: rgba(50, 200, 255, 1);
   body {
-    // overflow: hidden;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   #sapper {
-    overflow-x: hidden;
+  //   overflow-x: hidden;
     scroll-behavior: smooth;
   }
   .homepage-wrapper {
@@ -428,7 +454,9 @@
   @media (min-width: 960px) {
   }
 </style>
-<svelte:window on:scroll={e => watchForScroll(e)} />
+
+<!-- <div id="showScroll" /> -->
+<!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">
@@ -467,6 +495,7 @@
 
     <InstructionsMenu />
     <!-- <LearnMoreSideMenu /> -->
+
     <main class="instructions">
       <section id="how-to-win" class="instructions-section">
         <h1

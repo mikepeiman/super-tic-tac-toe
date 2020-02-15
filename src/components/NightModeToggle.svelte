@@ -100,14 +100,6 @@
     });
   });
 
-  function removeUnusedCheckbox() {
-    let width = window.innerWidth;
-    let redundantToggle;
-    if (width >= 1080) {
-      redundantToggle = document.getElementsByClassName(".topmenu-wrapper");
-    }
-  }
-
   const toggleTheme = e => {
     const currentTheme = localStorage.getItem("theme");
     const toggleSwitch = document.querySelector("#night-mode-toggle");

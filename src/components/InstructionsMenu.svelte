@@ -211,7 +211,7 @@
     }
   }
 </style>
-<svelte:window on:scroll={watchForScroll} />
+<!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
   class="instructions-menu-wrapper"
   out:send={{ key: 'learn-more' }}
