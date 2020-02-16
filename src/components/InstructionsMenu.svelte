@@ -209,20 +209,6 @@
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <a
-    name="how-to-win"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'how-to-win' }}
-    in:receive={{ key: 'how-to-win' }}
-    class="button instructions"
-    id="how-to-win-button"
-    href="learnmore/#how-to-win">
-    <div class="icon users-crown">
-      <Fa size="lg" icon={faUsersCrown} color="currentColor" />
-      <div>How To Win</div>
-    </div>
-  </a>
-
-  <a
     name="how-to-play"
     on:click={e => setActive(e)}
     out:send={{ key: 'how-to-play' }}
@@ -233,6 +219,20 @@
     <div class="icon swords">
       <Fa size="lg" icon={faSwords} color="currentColor" />
       <div>How To Play</div>
+    </div>
+  </a>
+
+  <a
+    name="how-to-win"
+    on:click={e => setActive(e)}
+    out:send={{ key: 'how-to-win' }}
+    in:receive={{ key: 'how-to-win' }}
+    class="button instructions"
+    id="how-to-win-button"
+    href="learnmore/#how-to-win">
+    <div class="icon users-crown">
+      <Fa size="lg" icon={faUsersCrown} color="currentColor" />
+      <div>How To Win</div>
     </div>
   </a>
 
