@@ -446,16 +446,26 @@
     justify-content: center;
     align-items: center;
     & section {
-      width: 80%;
-      padding: 15vh 15vw;
+      // width: 80%;
+      // padding: 15vh 15vw;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      min-height: 100vh;
+
+      //  top: 25vh;
+      position: relative;
+      padding: 20vh 5vw 5vh 5vw;
+      width: 80%;
+      &:last-child {
+        min-height: 100vh;
+      }
     }
   }
 
+  .instructions-section {
+    background: rgba(55, 75, 155, 0.5);
+  }
   @media (max-width: 600px) {
   }
 
