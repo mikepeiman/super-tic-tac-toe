@@ -445,16 +445,19 @@
     width: 100vw;
     justify-content: center;
     align-items: center;
-    padding: 15vh 0 0 0;
     & section {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       width: 75vw;
-      min-height: 40vh;
+      min-height: 60vh;
+
       &:last-child {
         min-height: 80vh;
+        & .section-wrapper {
+          min-height: 80vh;
+        }
       }
 
       &::before {
@@ -477,6 +480,7 @@
     margin-bottom: 5vh;
     position: relative;
     padding: 5vh 5vw 5vh 5vw;
+    min-height: 60vh;
     width: 100%;
     height: auto;
   }

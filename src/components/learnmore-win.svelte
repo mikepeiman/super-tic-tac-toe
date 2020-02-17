@@ -1,3 +1,7 @@
+<script>
+  import { send, receive } from "./../crossfade.js";
+</script>
+
 <h1 class="heading">How To Win</h1>
 <div class="text-content">
   <h3>
