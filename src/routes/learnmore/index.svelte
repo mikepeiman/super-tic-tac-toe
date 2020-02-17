@@ -8,7 +8,6 @@
   import Section3 from "./../../components/learnmore-features.svelte";
   import Section4 from "./../../components/learnmore-issues.svelte";
   import Section5 from "./../../components/learnmore-development.svelte";
-  import {SO_smooth_scroll} from './../../utils/SO_smooth_scroll.js'
   // import Typewriter from "typewriter-effect/dist/core";
   // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../../crossfade.js";
@@ -43,7 +42,6 @@
       watchForScroll();
     });
     console.log(`#sapper el `, sapper);
- 
   });
 
   function watchForScroll() {
@@ -448,47 +446,44 @@
     justify-content: center;
     align-items: center;
     padding: 15vh 0 0 0;
-    & .scroll-wrapper {
-      position: relative;
-      top: 20vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-          width: 80vw;
-    min-height: 50vh;
-    }
     & section {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      margin-top: 5vh;
-      margin-bottom: 5vh;
-      position: absolute;
-      padding: 5vh 5vw 5vh 5vw;
-      width: 80vw;
-      min-height: 50vh;
+      width: 75vw;
+      min-height: 40vh;
       &:last-child {
         min-height: 80vh;
       }
+
       &::before {
         display: block;
-        content: " ";
-        margin-top: -285px;
-        height: 285px;
+        content: "";
+        margin-top: 0vh;
+        height: 10vh;
         visibility: hidden;
         pointer-events: none;
       }
     }
   }
 
-  .instructions-section {
+  .section-wrapper {
     // background: rgba(55, 75, 155, 0.5);
-
     background: rgba($input-blue, 0.05);
     outline: 5px solid $input-blue;
     outline-offset: -15px;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    position: relative;
+    padding: 5vh 5vw 5vh 5vw;
+    width: 100%;
+    height: auto;
+  }
+
+  hr {
+    margin: 5h;
+    padding: 5vh;
   }
   @media (max-width: 600px) {
   }
@@ -539,31 +534,37 @@
     <!-- <LearnMoreSideMenu /> -->
 
     <main class="instructions">
-      <div class="scroll-wrapper">
-        <section id="how-to-play" class="instructions-section">
+
+      <section id="how-to-play" class="instructions-section">
+        <div class="section-wrapper">
           <Section1 />
-        </section>
-      </div>
-      <div class="scroll-wrapper">
-        <section id="how-to-win" class="instructions-section">
+        </div>
+      </section>
+
+      <section id="how-to-win" class="instructions-section">
+        <div class="section-wrapper">
           <Section2 />
-        </section>
-      </div>
-      <div class="scroll-wrapper">
-        <section id="ui-and-features" class="instructions-section">
+        </div>
+      </section>
+
+      <section id="ui-and-features" class="instructions-section">
+        <div class="section-wrapper">
           <Section3 />
-        </section>
-      </div>
-      <div class="scroll-wrapper">
-        <section id="issues-and-gotchas" class="instructions-section">
+        </div>
+      </section>
+
+      <section id="issues-and-gotchas" class="instructions-section">
+        <div class="section-wrapper">
           <Section4 />
-        </section>
-      </div>
-      <div class="scroll-wrapper">
-        <section id="development-thoughts" class="instructions-section">
+        </div>
+      </section>
+
+      <section id="development-thoughts" class="instructions-section">
+        <div class="section-wrapper">
           <Section5 />
-        </section>
-      </div>
+        </div>
+      </section>
+
     </main>
 
   </div>
