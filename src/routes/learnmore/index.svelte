@@ -493,31 +493,18 @@
 
   @media screen and (max-height: 600px) {
     .learn-more-wrapper {
+      justify-content: space-between;
       & .crossfade-wrapper {
         grid-template-rows: 3rem 3rem auto;
-        & .instructions-menu-wrapper {
-          height: 100%;
-          & a.button.instructions {
-            font-size: 0.75rem;
-            outline: none;
-            margin: 0;
-            padding: 0.25rem;
-            // justify-content: center;
-            &:hover {
-              outline: 2px solid #1a1a1a;
-            }
-            & .icon div {
-              margin-left: 0.25rem;
-            }
-            & svg {
-              margin: 0.25rem;
-              font-size: 0.75rem;
-            }
+        & main section {
+          & .text-content {
+            font-size: 0.85rem;
           }
-          & #home,
-          #play-now {
-            top: 0.25rem;
-            padding: 0.25rem;
+          & h2 {
+            font-size: 1.5rem;
+          }
+          & p {
+            font-size: 0.85rem;
           }
         }
       }
@@ -548,29 +535,7 @@
         src="game-dark-2pl.png" />
       <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
-    <!-- <figure
-      id="bg-light-fade-in"
-      out:send={{ key: 'bg-light-fade-in' }}
-      in:receive={{ key: 'bg-light-fade-in' }}>
-      <img
-        id="tictactoe-game"
-        alt="A screenshot of a completed game of Super Tic Tac Toe"
-        src="game-light-2pl.png" />
-    </figure> -->
-
-    <!-- <div in:fade="{{duration: 200}}" out:fade="{{duration: 200 }}" class="main-content">
-      <p id="typewriter" />
-    </div> -->
-
-    <!-- <div
-      in:fade={{ duration: 200 }}
-      out:fade={{ duration: 200 }}
-      class="main-content">
-      <h1>INSTRUCTIONS</h1>
-    </div> -->
-
     <InstructionsMenu />
-    <!-- <LearnMoreSideMenu /> -->
 
     <main
       class="instructions"

@@ -193,26 +193,15 @@
 
   @media screen and (max-height: 600px) {
     .learn-more-wrapper {
-      justify-content: space-between;
       & .crossfade-wrapper {
-        grid-template-rows: 3rem 3rem auto;
-        // & .button {
-        //   padding: 0.25rem;
-        // }
-        & #home,
-        #play-now {
-          top: 0.25rem;
-          padding: 0.25rem;
-        }
         & .instructions-menu-wrapper {
           height: 100%;
           & a.button.instructions {
             font-size: 0.75rem;
             outline: none;
-            margin: 0;
+            margin: 0 1vw 0 0;
             padding: 0.25rem;
             width: auto;
-            // justify-content: center;
             &:hover {
               outline: 2px solid #1a1a1a;
             }
