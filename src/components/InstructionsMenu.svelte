@@ -13,7 +13,6 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
 
-
   let log1 = (console.todo = function(msg, obj) {
     console.log(
       ` %c%s%s%s`,
@@ -144,7 +143,6 @@
       border-bottom: 10px solid #1a1a1a;
       & a {
         &.button {
-          border-bottom: 5px solid rgba(50, 200, 255, 0);
           &.instructions {
             border-radius: 0;
             margin-right: 1rem;
@@ -177,17 +175,6 @@
     }
   }
   .button.instructions {
-    & svg {
-      transition: all 0.25s;
-      color: blue;
-    }
-    &:hover {
-      // color: greenyellow;
-      & svg {
-        transition: all 0.25s;
-        color: pink;
-      }
-    }
     &:hover svg {
       color: orange;
     }
@@ -200,6 +187,44 @@
 
       & div {
         margin-left: 1rem;
+      }
+    }
+  }
+
+  @media screen and (max-height: 600px) {
+    .learn-more-wrapper {
+      justify-content: space-between;
+      & .crossfade-wrapper {
+        grid-template-rows: 3rem 3rem auto;
+        // & .button {
+        //   padding: 0.25rem;
+        // }
+        & #home,
+        #play-now {
+          top: 0.25rem;
+          padding: 0.25rem;
+        }
+        & .instructions-menu-wrapper {
+          height: 100%;
+          & a.button.instructions {
+            font-size: 0.75rem;
+            outline: none;
+            margin: 0;
+            padding: 0.25rem;
+            width: auto;
+            // justify-content: center;
+            &:hover {
+              outline: 2px solid #1a1a1a;
+            }
+            & .icon div {
+              margin-left: 0.25rem;
+            }
+            & svg {
+              margin: 0.25rem;
+              font-size: 0.75rem;
+            }
+          }
+        }
       }
     }
   }

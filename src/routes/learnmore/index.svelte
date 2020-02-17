@@ -76,8 +76,8 @@
       // console.log(`section.offsetTop: ${section.offsetTop}`);
       // console.log(`section.offsetHeight: ${section.offsetHeight}`);
       if (
-        section.offsetTop <= fromTop + 200 &&
-        section.offsetTop + section.offsetHeight > fromTop + 200
+        section.offsetTop <= fromTop + 250 &&
+        section.offsetTop + section.offsetHeight > fromTop + 250
       ) {
         link.classList.add("active");
         console.log(
@@ -451,20 +451,21 @@
       justify-content: flex-start;
       align-items: center;
       width: 75vw;
-      min-height: 60vh;
+      min-height: 78vh;
+      margin-top: -10vh;
 
-      &:last-child {
-        min-height: 80vh;
-        & .section-wrapper {
-          min-height: 80vh;
-        }
-      }
+      // &:last-child {
+      //   min-height: 80vh;
+      //   & .section-wrapper {
+      //     min-height: 80vh;
+      //   }
+      // }
 
       &::before {
         display: block;
         content: "";
         margin-top: 0vh;
-        height: 10vh;
+        height: 5vh;
         visibility: hidden;
         pointer-events: none;
       }
@@ -480,7 +481,7 @@
     margin-bottom: 5vh;
     position: relative;
     padding: 5vh 5vw 5vh 5vw;
-    min-height: 60vh;
+    min-height: 78vh;
     width: 100%;
     height: auto;
   }
@@ -489,6 +490,40 @@
     margin: 5h;
     padding: 5vh;
   }
+
+  @media screen and (max-height: 600px) {
+    .learn-more-wrapper {
+      & .crossfade-wrapper {
+        grid-template-rows: 3rem 3rem auto;
+        & .instructions-menu-wrapper {
+          height: 100%;
+          & a.button.instructions {
+            font-size: 0.75rem;
+            outline: none;
+            margin: 0;
+            padding: 0.25rem;
+            // justify-content: center;
+            &:hover {
+              outline: 2px solid #1a1a1a;
+            }
+            & .icon div {
+              margin-left: 0.25rem;
+            }
+            & svg {
+              margin: 0.25rem;
+              font-size: 0.75rem;
+            }
+          }
+          & #home,
+          #play-now {
+            top: 0.25rem;
+            padding: 0.25rem;
+          }
+        }
+      }
+    }
+  }
+
   @media (max-width: 600px) {
   }
 
@@ -537,7 +572,10 @@
     <InstructionsMenu />
     <!-- <LearnMoreSideMenu /> -->
 
-    <main class="instructions">
+    <main
+      class="instructions"
+      out:send={{ key: 'learn-more' }}
+      in:receive={{ key: 'learn-more' }}>
 
       <section id="how-to-play" class="instructions-section">
         <div class="section-wrapper">
