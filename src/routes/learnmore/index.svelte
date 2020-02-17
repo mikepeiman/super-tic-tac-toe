@@ -8,6 +8,7 @@
   import Section3 from "./../../components/learnmore-features.svelte";
   import Section4 from "./../../components/learnmore-issues.svelte";
   import Section5 from "./../../components/learnmore-development.svelte";
+  import {SO_smooth_scroll} from './../../utils/SO_smooth_scroll.js'
   // import Typewriter from "typewriter-effect/dist/core";
   // import getRandomInteger from "./../../utils/get-random-integer.js";
   import { send, receive } from "./../../crossfade.js";
@@ -42,6 +43,7 @@
       watchForScroll();
     });
     console.log(`#sapper el `, sapper);
+ 
   });
 
   function watchForScroll() {
@@ -76,8 +78,8 @@
       // console.log(`section.offsetTop: ${section.offsetTop}`);
       // console.log(`section.offsetHeight: ${section.offsetHeight}`);
       if (
-        section.offsetTop <= fromTop + 250 &&
-        section.offsetTop + section.offsetHeight > fromTop + 250
+        section.offsetTop <= fromTop + 200 &&
+        section.offsetTop + section.offsetHeight > fromTop + 200
       ) {
         link.classList.add("active");
         console.log(
@@ -445,26 +447,48 @@
     width: 100vw;
     justify-content: center;
     align-items: center;
-    & section {
-      // width: 80%;
-      // padding: 15vh 15vw;
+    padding: 15vh 0 0 0;
+    & .scroll-wrapper {
+      position: relative;
+      top: 20vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-
-      //  top: 25vh;
-      position: relative;
-      padding: 20vh 5vw 5vh 5vw;
-      width: 80%;
+          width: 80vw;
+    min-height: 50vh;
+    }
+    & section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 5vh;
+      margin-bottom: 5vh;
+      position: absolute;
+      padding: 5vh 5vw 5vh 5vw;
+      width: 80vw;
+      min-height: 50vh;
       &:last-child {
-        min-height: 100vh;
+        min-height: 80vh;
+      }
+      &::before {
+        display: block;
+        content: " ";
+        margin-top: -285px;
+        height: 285px;
+        visibility: hidden;
+        pointer-events: none;
       }
     }
   }
 
   .instructions-section {
-    background: rgba(55, 75, 155, 0.5);
+    // background: rgba(55, 75, 155, 0.5);
+
+    background: rgba($input-blue, 0.05);
+    outline: 5px solid $input-blue;
+    outline-offset: -15px;
   }
   @media (max-width: 600px) {
   }
@@ -515,21 +539,31 @@
     <!-- <LearnMoreSideMenu /> -->
 
     <main class="instructions">
-      <section id="how-to-play" class="instructions-section">
-        <Section1 />
-      </section>
-      <section id="how-to-win" class="instructions-section">
-        <Section2 />
-      </section>
-      <section id="ui-and-features" class="instructions-section">
-        <Section3 />
-      </section>
-      <section id="issues-and-gotchas" class="instructions-section">
-        <Section4 />
-      </section>
-      <section id="development-thoughts" class="instructions-section">
-        <Section5 />
-      </section>
+      <div class="scroll-wrapper">
+        <section id="how-to-play" class="instructions-section">
+          <Section1 />
+        </section>
+      </div>
+      <div class="scroll-wrapper">
+        <section id="how-to-win" class="instructions-section">
+          <Section2 />
+        </section>
+      </div>
+      <div class="scroll-wrapper">
+        <section id="ui-and-features" class="instructions-section">
+          <Section3 />
+        </section>
+      </div>
+      <div class="scroll-wrapper">
+        <section id="issues-and-gotchas" class="instructions-section">
+          <Section4 />
+        </section>
+      </div>
+      <div class="scroll-wrapper">
+        <section id="development-thoughts" class="instructions-section">
+          <Section5 />
+        </section>
+      </div>
     </main>
 
   </div>

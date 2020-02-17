@@ -13,6 +13,7 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
 
+
   let log1 = (console.todo = function(msg, obj) {
     console.log(
       ` %c%s%s%s`,
@@ -140,6 +141,7 @@
       top: 0;
       width: 100%;
       background: black;
+      border-bottom: 10px solid #1a1a1a;
       & a {
         &.button {
           border-bottom: 5px solid rgba(50, 200, 255, 0);
