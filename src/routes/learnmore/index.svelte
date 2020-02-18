@@ -252,7 +252,8 @@
           color: rgba(255, 140, 140, 0.75);
         }
         &.cool {
-          color: rgba(140, 140, 255, 0.75);
+          color: rgba(50, 200, 255, 1);
+          font-weight: 700;
         }
         &.bold {
           font-weight: 700;
@@ -397,13 +398,12 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      & .content-block {
+      & .mixed-content-block,
+      & .text-content-block {
         display: grid;
         background: rgba(0, 0, 0, 0.5);
         border-radius: 1rem;
-        grid-template-columns: 1fr 1fr;
         grid-template-rows: 4rem auto;
-        grid-template-areas: "title title" "textcontent visual";
         margin: 2.5rem;
         & h4 {
           grid-area: title;
@@ -421,23 +421,99 @@
         }
         & img {
           grid-area: visual;
-          width: 40vw;
+          width: 35vw;
+          margin-top: 1rem;
           top: 0;
         }
-        & p {
+        & .text-sub-block {
           grid-area: textcontent;
-          text-align: right;
-          margin: 1rem;
-          padding: 0 0 2rem 0;
-        }
-        &:nth-child(odd) {
-          grid-template-areas: "title title" "visual textcontent";
+          & img.icon {
+            position: relative;
+            width: 1rem;
+            height: 1rem;
+            top: 2px;
+            filter: brightness(1) invert(1) opacity(0.9);
+            &.bordered {
+              border: 1px solid rgba(50, 200, 255, 1);
+              padding: 0.5rem;
+              margin: 0 0.5rem;
+            }
+          }
           & p {
-            // grid-area: textcontent;
-            text-align: left;
-            // margin: 1rem;
+            text-align: right;
+            font-weight: 300;
+            margin: 1rem;
+            padding: 0 0 2rem 0;
+            & span {
+              font-weight: 400;
+              padding: 0 1ch;
+              &.nice {
+                color: rgba(140, 255, 140, 0.75);
+              }
+              &.note {
+                color: rgba(255, 140, 140, 0.75);
+              }
+              &.cool {
+                color: rgba(50, 200, 255, 1);
+                &.bordered {
+                  border: 1px solid rgba(50, 200, 255, 1);
+                  padding: 0.5rem;
+                  margin: 0 0.5rem;
+                }
+              }
+              &.orange {
+                color: orange;
+                &.bordered {
+                  border: 1px solid orange;
+                  padding: 0.5rem;
+                  margin: 0 0.5rem;
+                }
+                &.underlined {
+                  border-bottom: 1px solid orange;
+                  padding: 0.5rem;
+                  margin: 0 0.5rem;
+                }
+              }
+              &.bold {
+                font-weight: 700;
+              }
+              &.underline {
+                border-bottom: 1px solidrgba(0, 0, 0, 0.75);
+              }
+            }
           }
         }
+
+        &:nth-child(odd) {
+          grid-template-areas: "title title" "visual textcontent";
+          & .text-sub-block {
+            grid-area: textcontent;
+            & p {
+              text-align: left;
+              margin: 1rem;
+              padding: 0 0 2rem 0;
+            }
+          }
+        }
+      }
+      & .text-content-block {
+        grid-template-areas: "title" "textcontent";
+        grid-template-columns: 1fr;
+        & h4 {
+          text-align: left;
+        }
+        & .text-sub-block {
+          grid-area: textcontent;
+          & p {
+            text-align: left;
+            margin: 1rem;
+            padding: 0;
+          }
+        }
+      }
+      & .mixed-content-block {
+        grid-template-areas: "title title" "textcontent visual";
+        grid-template-columns: 1fr 1fr;
       }
     }
     & h3 {

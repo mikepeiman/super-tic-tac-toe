@@ -2,9 +2,10 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
+<h2 class="heading">DEVELOPMENT - Tentative roadmap</h2>
 <div class="text-content">
-  <h2 class="heading">DEVELOPMENT (tentative roadmap):</h2>
-  <div class="content-block">
+
+  <div class="mixed-content-block">
     <ul>
       <li>Incremental point bonuses and other scoring variations</li>
       <li>A range of gameplay features, too numerous to list here....</li>
