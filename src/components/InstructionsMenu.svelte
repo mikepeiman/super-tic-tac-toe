@@ -156,7 +156,7 @@
             &:hover {
               border: 2px solid orange;
               box-shadow: none;
-              outline: 9px solid #1a1a1a;
+              // outline: 9px solid #1a1a1a;
               color: orange;
               & svg {
                 color: orange;

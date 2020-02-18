@@ -2,16 +2,8 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
-<h2
-  out:send={{ key: 'ui-and-features' }}
-  in:receive={{ key: 'ui-and-features' }}
-  class="heading">
-  FEATURES:
-</h2>
-<div
-  class="text-content"
-  out:send={{ key: 'main-content' }}
-  in:receive={{ key: 'main-content' }}>
+<h2 class="heading">FEATURES:</h2>
+<div class="text-content">
   <ul>
     <li>Play with (theoretically) any number of players</li>
     <li>Set how many moves in a row to score</li>

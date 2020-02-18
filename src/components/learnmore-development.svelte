@@ -2,17 +2,9 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
-<div
-  class="text-content"
-  out:send={{ key: 'main-content' }}
-  in:receive={{ key: 'main-content' }}>
-  <h2
-    class="heading"
-    out:send={{ key: 'development-thoughts' }}
-    in:receive={{ key: 'development-thoughts' }}>
-    DEVELOPMENT (tentative roadmap):
-  </h2>
-  <div class="text-content">
+<div class="text-content">
+  <h2 class="heading">DEVELOPMENT (tentative roadmap):</h2>
+  <div class="content-block">
     <ul>
       <li>Incremental point bonuses and other scoring variations</li>
       <li>A range of gameplay features, too numerous to list here....</li>

@@ -2,17 +2,9 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
-<h2
-  class="heading"
-  out:send={{ key: 'issues-and-gotchas' }}
-  in:receive={{ key: 'issues-and-gotchas' }}>
-  GOTCHA'S / ISSUES
-</h2>
+<h2 class="heading">GOTCHA'S / ISSUES</h2>
 
-<div
-  class="text-content"
-  out:send={{ key: 'main-content' }}
-  in:receive={{ key: 'main-content' }}>
+<div class="text-content">
   <p>Actually, it all works surprisingly well.</p>
   <p>
     <span class="note">
