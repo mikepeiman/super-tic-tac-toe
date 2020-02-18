@@ -238,7 +238,7 @@
     </div>
   </a>
 
-  <a
+  <!-- <a
     name="how-to-win"
     on:click={e => setActive(e)}
     out:send={{ key: 'how-to-win' }}
@@ -250,7 +250,7 @@
       <Fa size="lg" icon={faUsersCrown} color="currentColor" />
       <div>How To Win</div>
     </div>
-  </a>
+  </a> -->
 
   <a
     name="features"

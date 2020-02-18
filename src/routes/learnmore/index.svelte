@@ -390,8 +390,43 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    // border-radius: 10px;
-    // background: black;
+    & .subsection {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      & .content-block {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        & img {
+          width: 40vw;
+        }
+        & p {
+          text-align: right;
+          margin-right: 1rem;
+        }
+      }
+    }
+    & h3 {
+      border-bottom: 1px solid #efefef;
+      text-transform: uppercase;
+      margin: 1rem 0 0.5rem 0;
+      text-align: left;
+      color: orange;
+      font-size: 1.5rem;
+      width: 100%;
+      padding: .25rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 5px;
+      justify-self: center;
+    }
+    & li {
+      margin-left: 2rem;
+    }
   }
 
   .learnmore-sidemenu-wrapper a {
@@ -496,12 +531,32 @@
       justify-content: space-between;
       & .crossfade-wrapper {
         grid-template-rows: 3rem 3rem auto;
-        & main section {
+        & main.instructions section {
+          &:before {
+            height: 8vh;
+          }
+          & .section-wrapper {
+            background: none;
+            outline: none;
+            margin-top: 5vh;
+            margin-bottom: 5vh;
+            position: relative;
+            padding: 0;
+            min-height: 78vh;
+            width: 100%;
+            display: flex;
+            height: auto;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+          }
           & .text-content {
             font-size: 0.85rem;
           }
           & h2 {
             font-size: 1.5rem;
+            color: orange;
+            border-bottom: 2px solid #efefef;
           }
           & p {
             font-size: 0.85rem;
@@ -547,12 +602,12 @@
           <Section1 />
         </div>
       </section>
-
+      <!-- 
       <section id="how-to-win" class="instructions-section">
         <div class="section-wrapper">
           <Section2 />
         </div>
-      </section>
+      </section> -->
 
       <section id="ui-and-features" class="instructions-section">
         <div class="section-wrapper">
