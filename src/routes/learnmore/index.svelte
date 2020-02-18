@@ -421,7 +421,7 @@
         }
         & img {
           grid-area: visual;
-          width: 35vw;
+          width: 100%;
           margin-top: 1rem;
           top: 0;
         }
@@ -642,6 +642,7 @@
       & .crossfade-wrapper {
         grid-template-rows: 3rem 3rem auto;
         & main.instructions section {
+          width: 100%;
           &:before {
             height: 8vh;
           }
@@ -662,6 +663,7 @@
           }
           & .text-content {
             font-size: 0.85rem;
+            max-width: 100%;
             & .subsection .text-content-block .text-sub-block {
               & p {
                 font-size: 0.85rem;
