@@ -397,17 +397,40 @@
       align-items: center;
       width: 100%;
       & .content-block {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        // flex-direction: row;
+        // justify-content: center;
+        // align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 5vh auto;
+        grid-template-areas: "title title" "textcontent visual";
         width: 100%;
+        margin: 1rem;
+        & h4 {
+          grid-area: title;
+          width: auto;
+          text-align: center;
+          font-size: 1.25rem;
+          font-weight: 400;
+          // border-bottom: 1px solid #efefef;
+        }
         & img {
+          grid-area: visual;
           width: 40vw;
+          top: 0;
         }
         & p {
+          grid-area: textcontent;
           text-align: right;
           margin-right: 1rem;
+        }
+        &:nth-child(even) {
+          grid-template-areas: "title title" "visual textcontent";
+          & p {
+            grid-area: textcontent;
+            text-align: left;
+            margin-left: 1rem;
+          }
         }
       }
     }
@@ -419,8 +442,8 @@
       color: orange;
       font-size: 1.5rem;
       width: 100%;
-      padding: .25rem;
-      background: rgba(0,0,0,0.5);
+      padding: 0.25rem;
+      background: rgba(0, 0, 0, 0.5);
       border-radius: 5px;
       justify-self: center;
     }
