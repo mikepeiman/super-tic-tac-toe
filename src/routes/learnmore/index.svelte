@@ -662,14 +662,20 @@
           }
           & .text-content {
             font-size: 0.85rem;
+            & .subsection .text-content-block .text-sub-block {
+              & p {
+                font-size: 0.85rem;
+                & span {
+                  display: block;
+                  margin: 0.5rem 0;
+                }
+              }
+            }
           }
           & h2 {
             font-size: 1.5rem;
             color: white;
             border-bottom: 2px solid #efefef;
-          }
-          & p {
-            font-size: 0.85rem;
           }
         }
       }

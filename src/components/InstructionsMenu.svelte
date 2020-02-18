@@ -148,7 +148,6 @@
             margin-right: 1rem;
             border: 2px solid rgba(0, 0, 0, 0);
             width: 12vw;
-            outline: 2px solid #1a1a1a;
             outline-offset: 0px;
             display: flex;
             justify-content: flex-start;
