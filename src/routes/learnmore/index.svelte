@@ -480,7 +480,13 @@
                     rgba(50, 100, 255, 1) 20% 80%,
                     rgba(255, 165, 0, 1) 100%
                   );
-                  background-image: rgba(0, 0, 0, 0.5);
+                  background: repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 165, 0, 1) 0.25rem,
+                    rgba(255, 165, 0, 1) 0.5rem,
+                    rgba(50, 100, 255, 1) 0,
+                    rgba(50, 100, 255, 1) 1rem
+                  );
                   & span {
                     z-index: 99;
                     margin: 0;
@@ -495,7 +501,31 @@
                     width: 100%;
                     height: 100%;
                     background: rgba(0, 0, 0, 0.5);
-                    border-radius: .5rem;
+                    background: linear-gradient(
+                      45deg,
+                      rgba(255, 165, 0, .5) 0%,
+                      rgba(50, 100, 255, 1) 40% 60%,
+                      rgba(255, 165, 0, .5) 100%
+                    );
+                    border-radius: 0.5rem;
+                    z-index: -1;
+                  }
+                                    &::after {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    // background: linear-gradient(
+                    //   45deg,
+                    //   rgba(255, 165, 0, .5) 0%,
+                    //   rgba(50, 100, 255, 1) 40% 60%,
+                    //   rgba(255, 165, 0, .5) 100%
+                    // );
+                    border-radius: 0.5rem;
                     z-index: -1;
                   }
                 }
