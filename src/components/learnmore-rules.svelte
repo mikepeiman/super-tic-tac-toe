@@ -9,12 +9,10 @@
     <div class="text-content-block" id="two-setup-methods">
       <h4>Scoring Points</h4>
       <div class="text-sub-block">
-        <p>
-          Play a number of moves in a straight line to score points.
-          <span class="orange bordered">
-            The player with the most points at the end wins!
-          </span>
-        </p>
+        <span class="orange bordered">
+          The player with the most points at the end wins!
+        </span>
+        <p>Play a number of moves in a straight line to score points.</p>
         <p>
           Just like in tiny-tic-tac-toe, lines can be in any direction: vertical
           <img class="icon" src="tictactoe-vertical.png" alt="" />
@@ -30,6 +28,23 @@
           from one side to the opposite side of the board. This makes the
           strategy a bit more complex.
         </p>
+        <div class="text-image-block">
+          <p>
+            This line earns a full bonus because it spans the long dimension.
+            The bonus will be whatever was selected in settings.
+          </p>
+          <img src="sttt-linebonus-ex-full.png" alt="" />
+        </div>
+        <div class="text-image-block">
+          <p>
+            These lines are each partial line bonuses; they are calculated as
+            (linebonus * (larger / smaller)). So, in this example with a
+            linebonus set at 8, with 8 columns and 4 rows, that means the
+            partial bonus is 4 points for each of these lines (yes, I chose
+            these figures for eaasy math)
+          </p>
+          <img src="sttt-linebonus-ex-short.png" alt="" />
+        </div>
         <p>
           Unlike traditional (tiny) tic-tac-toe, in Super-Tic-Tac-Toe you play
           on an expanded gameboard of your choosing, up to hundreds of squares.

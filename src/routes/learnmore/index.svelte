@@ -449,92 +449,100 @@
             font-weight: 300;
             margin: 1rem;
             padding: 0 0 2rem 0;
-            & span {
-              font-weight: 400;
-              padding: 0 1ch;
-              display: block;
-              margin: 0.5rem 0.5rem 0 0.5rem;
-              &.nice {
-                color: rgba(140, 255, 140, 0.75);
-              }
-              &.note {
-                color: rgba(255, 140, 140, 0.75);
-              }
-              &.orange {
-                color: rgba(255, 165, 0, 1);
-                &.bordered {
-                  border: 1px solid orange;
-                  position: relative;
-                  padding: 0.75rem;
-                  margin: 2rem;
-                  // box-shadow: 0 0 4px 0px rgba(255, 255, 255, 0.5),
-                  //   inset 0 0 10px 1px rgba(0, 0, 0, 1);
-                  z-index: 0;
-                  border-radius: 0.5rem;
-                  display: block;
-                  font-weight: 400;
-                  font-size: 1.1rem;
-                  text-align: center;
-                  text-shadow: 1px 1px black;
-                  color: white;
-                  // background: linear-gradient(
-                  //   45deg,
-                  //   orange 0%,
-                  //   #3264ff 20% 80%,
-                  //   orange 100%
-                  // );
-                  background: repeating-linear-gradient(
+          }
+          & .text-image-block {
+            display: grid;
+            grid-template-areas: "textcontent imagecontent";
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            & img {
+              grid-area: imagecontent;
+              // width: 50%;
+            }
+            & p {
+              grid-area: textcontent;
+            }
+            &:nth-child(even) {
+              grid-template-areas: "imagecontent textcontent";
+            }
+          }
+          & span {
+            font-weight: 400;
+            padding: 0 1ch;
+            display: block;
+            margin: 0.5rem 0.5rem 0 0.5rem;
+            &.nice {
+              color: rgba(140, 255, 140, 0.75);
+            }
+            &.note {
+              color: rgba(255, 140, 140, 0.75);
+            }
+            &.orange {
+              color: rgba(255, 165, 0, 1);
+              &.bordered {
+                border: 1px solid orange;
+                position: relative;
+                padding: 0.75rem;
+                margin: 2rem;
+                z-index: 0;
+                border-radius: 0.5rem;
+                display: block;
+                font-weight: 400;
+                font-size: 1.1rem;
+                text-align: center;
+                text-shadow: 1px 1px black;
+                color: white;
+                background: repeating-linear-gradient(
+                  45deg,
+                  orange 0.25rem,
+                  orange 0.5rem,
+                  #3264ff 0,
+                  #3264ff 1rem
+                );
+                & span {
+                  z-index: 99;
+                  margin: 0;
+                  padding: 0;
+                }
+                &::before {
+                  content: "";
+                  position: absolute;
+                  z-index: 1;
+                  top: -1px;
+                  left: 0;
+                  width: 100%;
+                  height: 105%;
+                  background: rgba(0, 0, 0, 0.5);
+                  background: linear-gradient(
                     45deg,
-                    orange 0.25rem,
-                    orange 0.5rem,
-                    #3264ff 0,
-                    #3264ff 1rem
+                    rgba(255, 165, 0, 0.5) 0%,
+                    rgba(50, 100, 255, 1) 40% 60%,
+                    rgba(255, 165, 0, 0.5) 100%
                   );
-                  & span {
-                    z-index: 99;
-                    margin: 0;
-                    padding: 0;
-                  }
-                  &::before {
-                    content: "";
-                    position: absolute;
-                    z-index: 1;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.5);
-                    background: linear-gradient(
-                      45deg,
-                      rgba(255, 165, 0, 0.5) 0%,
-                      rgba(50, 100, 255, 1) 40% 60%,
-                      rgba(255, 165, 0, 0.5) 100%
-                    );
-                    border-radius: 0.5rem;
-                    z-index: -1;
-                  }
-                  &::after {
-                    content: "";
-                    position: absolute;
-                    z-index: 1;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.5);
-                    box-shadow: inset 0 0 10px -3px rgba(255, 255, 255, 0.5),
-                      0 0 10px -3px rgba(0, 0, 0, 0.5);
-                    border-radius: 0.5rem;
-                    z-index: -1;
-                  }
+                  border-radius: 0.5rem;
+                  z-index: -1;
+                }
+                &::after {
+                  content: "";
+                  position: absolute;
+                  z-index: 1;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.5);
+                  box-shadow: inset 0 0 10px -3px rgba(255, 255, 255, 0.5),
+                    0 0 10px -3px rgba(0, 0, 0, 0.5);
+                  border-radius: 0.5rem;
+                  z-index: -1;
                 }
               }
-              &.bold {
-                font-weight: 700;
-              }
-              &.underline {
-                border-bottom: 1px solidrgba(0, 0, 0, 0.75);
-              }
+            }
+            &.bold {
+              font-weight: 700;
+            }
+            &.underline {
+              border-bottom: 1px solidrgba(0, 0, 0, 0.75);
             }
           }
         }
