@@ -286,8 +286,13 @@
       font-size: 2.1rem;
       text-transform: uppercase;
       font-weight: 700;
-      margin: 1.5rem 0 0.5rem 0;
+      padding: 1.5rem 0 2rem 0;
       color: white;
+      margin: 0;
+      background: rgba(0, 0, 0, 0.5);
+      border-bottom: 3px solid orange;
+      border-radius: 1rem 1rem 0 0;
+      width: 100%;
     }
 
     & hr {
@@ -459,20 +464,40 @@
                 color: rgba(50, 200, 255, 1);
                 &.bordered {
                   border: 1px solid #32c8ff;
-                  // border: 1px solid black;
+                  position: relative;
                   padding: 0.75rem;
-                  margin: 0.5rem 0.5rem 0 0.5rem;
-                  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.25),  0 0 3px 1px rgba(0, 0, 0, 0.25);
-                  // box-shadow: ;
+                  margin: 2rem;
+                  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.25),
+                    0 0 3px 1px rgba(0, 0, 0, 0.25);
+                  z-index: 0;
                   border-radius: 0.5rem;
                   display: block;
                   text-align: center;
                   color: white;
                   background: linear-gradient(
                     45deg,
-                    rgba(255, 100, 55, 0.1),
-                    rgba(50, 100, 255, 0.75)
+                    rgba(255, 165, 0, 1) 0%,
+                    rgba(50, 100, 255, 1) 20% 80%,
+                    rgba(255, 165, 0, 1) 100%
                   );
+                  background-image: rgba(0, 0, 0, 0.5);
+                  & span {
+                    z-index: 99;
+                    margin: 0;
+                    padding: 0;
+                  }
+                  &::before {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    border-radius: .5rem;
+                    z-index: -1;
+                  }
                 }
               }
               &.orange {
@@ -534,12 +559,12 @@
       // border-top: 1px solid orange;
       border-bottom: 1px solid orange;
       text-transform: uppercase;
-      margin: 1rem 0 0.5rem 0;
+      margin: 0 0 1rem 0;
       text-align: center;
       color: orange;
       font-size: 1.5rem;
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.5rem 0;
       background: rgba(0, 0, 0, 0.5);
       // border-radius: 0 0 4px 4px;
       justify-self: center;
@@ -622,7 +647,7 @@
         display: block;
         content: "";
         margin-top: 0vh;
-        height: 5vh;
+        height: 10vh;
         visibility: hidden;
         pointer-events: none;
       }
@@ -631,15 +656,15 @@
 
   .section-wrapper {
     // background: rgba(55, 75, 155, 0.5);
-    background: rgba($input-blue, 0.4);
+    background: rgba(50, 100, 255, 1);
     border-radius: 1rem;
     // outline: 5px solid $input-blue;
     // outline-offset: -15px;
     margin-top: 5vh;
     margin-bottom: 5vh;
     position: relative;
-    // padding: 5vh 5vw 5vh 5vw;
-    padding: 0.5rem;
+    // border: 3px solid orange;
+    padding: 0;
     min-height: 78vh;
     width: 100%;
     height: auto;

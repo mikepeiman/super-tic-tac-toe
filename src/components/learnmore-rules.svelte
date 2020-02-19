@@ -12,7 +12,7 @@
         <p>
           Play a number of moves in a straight line to score points.
           <span class="cool bordered">
-            The player with the most points at the end, wins.
+            The player with the most points at the end wins!
           </span>
         </p>
         <p>
