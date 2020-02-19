@@ -458,9 +458,21 @@
               &.cool {
                 color: rgba(50, 200, 255, 1);
                 &.bordered {
-                  border: 1px solid rgba(50, 200, 255, 1);
-                  padding: 0.5rem;
+                  border: 1px solid #32c8ff;
+                  // border: 1px solid black;
+                  padding: 0.75rem;
                   margin: 0.5rem 0.5rem 0 0.5rem;
+                  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.25),  0 0 3px 1px rgba(0, 0, 0, 0.25);
+                  // box-shadow: ;
+                  border-radius: 0.5rem;
+                  display: block;
+                  text-align: center;
+                  color: white;
+                  background: linear-gradient(
+                    45deg,
+                    rgba(255, 100, 55, 0.1),
+                    rgba(50, 100, 255, 0.75)
+                  );
                 }
               }
               &.orange {
@@ -683,7 +695,7 @@
     .text-content .subsection .mixed-content-block {
       grid-template-areas:
         "title"
-        "visual" 
+        "visual"
         "textcontent";
       grid-template-columns: 1fr;
     }
