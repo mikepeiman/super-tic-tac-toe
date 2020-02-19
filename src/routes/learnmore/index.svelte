@@ -675,10 +675,17 @@
     }
     .text-content .subsection .mixed-content-block,
     .text-content .subsection .text-content-block {
-      margin: 1rem 2rem 1rem 1rem ;
+      margin: 1rem 2rem 1rem 1rem;
     }
     .learnmore-topmenu-wrapper #home {
       left: 1rem;
+    }
+    .text-content .subsection .mixed-content-block {
+      grid-template-areas:
+        "title"
+        "visual" 
+        "textcontent";
+      grid-template-columns: 1fr;
     }
   }
   // **********************************************************************************************************
