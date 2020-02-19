@@ -47,6 +47,14 @@
     }
   }
 
+  @media screen and (max-width: 600px) {
+    .crossfade-wrapper .learnmore-topmenu-wrapper #page-title {
+      top: 1.5rem;
+      font-size: 1.25rem;
+    }
+
+  }
+
   @media screen and (max-height: 600px) {
     .learn-more-wrapper {
       & .learnmore-topmenu-wrapper {
@@ -55,17 +63,16 @@
           top: 0.5rem;
           padding: 0.25rem;
           border: 1px solid #32c8ff;
-          font-size: .75rem;
+          font-size: 0.75rem;
         }
         & #home {
           left: 1rem;
-
         }
         & #play-now {
           right: 2rem;
         }
         & h1#page-title {
-          top: .35rem;
+          top: 0.35rem;
           font-size: 1.5rem;
         }
       }

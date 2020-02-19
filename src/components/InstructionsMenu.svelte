@@ -189,6 +189,28 @@
       }
     }
   }
+  @media screen and (max-width: 600px) {
+
+    .instructions-menu-wrapper {
+      & a.button.instructions {
+        margin-right: 0.5rem;
+        &:hover svg {
+          color: orange;
+        }
+        & .icon {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          border-radius: 0;
+          // width: 8rem;
+
+          & div {
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  }
 
   @media screen and (max-height: 600px) {
     .learn-more-wrapper {

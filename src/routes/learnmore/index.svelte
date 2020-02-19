@@ -387,7 +387,6 @@
   .text-content {
     grid-area: text;
     max-width: 80vw;
-    color: #abc;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -427,6 +426,7 @@
         }
         & .text-sub-block {
           grid-area: textcontent;
+
           & img.icon {
             position: relative;
             width: 1rem;
@@ -436,7 +436,7 @@
             &.bordered {
               border: 1px solid rgba(50, 200, 255, 1);
               padding: 0.5rem;
-              margin: 0 0.5rem;
+              margin: 0.5rem 0.5rem 0 0.5rem;
             }
           }
           & p {
@@ -447,6 +447,8 @@
             & span {
               font-weight: 400;
               padding: 0 1ch;
+              display: block;
+              margin: 0.5rem 0.5rem 0 0.5rem;
               &.nice {
                 color: rgba(140, 255, 140, 0.75);
               }
@@ -458,7 +460,7 @@
                 &.bordered {
                   border: 1px solid rgba(50, 200, 255, 1);
                   padding: 0.5rem;
-                  margin: 0 0.5rem;
+                  margin: 0.5rem 0.5rem 0 0.5rem;
                 }
               }
               &.orange {
@@ -466,12 +468,12 @@
                 &.bordered {
                   border: 1px solid orange;
                   padding: 0.5rem;
-                  margin: 0 0.5rem;
+                  margin: 0.5rem 0.5rem 0 0.5rem;
                 }
                 &.underlined {
                   border-bottom: 1px solid orange;
                   padding: 0.5rem;
-                  margin: 0 0.5rem;
+                  margin: 0.5rem 0.5rem 0 0.5rem;
                 }
               }
               &.bold {
@@ -635,6 +637,53 @@
     margin: 5h;
     padding: 5vh;
   }
+
+  // **********************************************************************************************************
+  // **********************************************************************************************************
+  // **********************************************************************************************************
+
+  @media screen and (max-width: 900px) {
+    body {
+      font-size: 90%;
+    }
+    main.instructions section {
+      width: 100vw;
+      background: none;
+      & .section-wrapper {
+        background: none;
+      }
+    }
+    .text-content {
+      max-width: 100vw;
+    }
+  }
+
+  // **********************************************************************************************************
+  // **********************************************************************************************************
+  // **********************************************************************************************************
+
+  @media screen and (max-width: 600px) {
+    body {
+      font-size: 80%;
+    }
+    .crossfade-wrapper
+      .learnmore-topmenu-wrapper
+      .learnmore-topmenu-wrapper
+      #page-title {
+      top: 1.5rem;
+      font-size: 1.25rem;
+    }
+    .text-content .subsection .mixed-content-block,
+    .text-content .subsection .text-content-block {
+      margin: 1rem 2rem 1rem 1rem ;
+    }
+    .learnmore-topmenu-wrapper #home {
+      left: 1rem;
+    }
+  }
+  // **********************************************************************************************************
+  // **********************************************************************************************************
+  // **********************************************************************************************************
 
   @media screen and (max-height: 600px) {
     .learn-more-wrapper {
