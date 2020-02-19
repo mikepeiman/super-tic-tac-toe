@@ -460,32 +460,35 @@
               &.note {
                 color: rgba(255, 140, 140, 0.75);
               }
-              &.cool {
-                color: rgba(50, 200, 255, 1);
+              &.orange {
+                color: rgba(255, 165, 0, 1);
                 &.bordered {
-                  border: 1px solid #32c8ff;
+                  border: 1px solid orange;
                   position: relative;
                   padding: 0.75rem;
                   margin: 2rem;
-                  box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.25),
-                    0 0 3px 1px rgba(0, 0, 0, 0.25);
+                  // box-shadow: 0 0 4px 0px rgba(255, 255, 255, 0.5),
+                  //   inset 0 0 10px 1px rgba(0, 0, 0, 1);
                   z-index: 0;
                   border-radius: 0.5rem;
                   display: block;
+                  font-weight: 400;
+                  font-size: 1.1rem;
                   text-align: center;
+                  text-shadow: 1px 1px black;
                   color: white;
-                  background: linear-gradient(
-                    45deg,
-                    rgba(255, 165, 0, 1) 0%,
-                    rgba(50, 100, 255, 1) 20% 80%,
-                    rgba(255, 165, 0, 1) 100%
-                  );
+                  // background: linear-gradient(
+                  //   45deg,
+                  //   orange 0%,
+                  //   #3264ff 20% 80%,
+                  //   orange 100%
+                  // );
                   background: repeating-linear-gradient(
                     45deg,
-                    rgba(255, 165, 0, 1) 0.25rem,
-                    rgba(255, 165, 0, 1) 0.5rem,
-                    rgba(50, 100, 255, 1) 0,
-                    rgba(50, 100, 255, 1) 1rem
+                    orange 0.25rem,
+                    orange 0.5rem,
+                    #3264ff 0,
+                    #3264ff 1rem
                   );
                   & span {
                     z-index: 99;
@@ -503,14 +506,14 @@
                     background: rgba(0, 0, 0, 0.5);
                     background: linear-gradient(
                       45deg,
-                      rgba(255, 165, 0, .5) 0%,
+                      rgba(255, 165, 0, 0.5) 0%,
                       rgba(50, 100, 255, 1) 40% 60%,
-                      rgba(255, 165, 0, .5) 100%
+                      rgba(255, 165, 0, 0.5) 100%
                     );
                     border-radius: 0.5rem;
                     z-index: -1;
                   }
-                                    &::after {
+                  &::after {
                     content: "";
                     position: absolute;
                     z-index: 1;
@@ -519,28 +522,11 @@
                     width: 100%;
                     height: 100%;
                     background: rgba(0, 0, 0, 0.5);
-                    // background: linear-gradient(
-                    //   45deg,
-                    //   rgba(255, 165, 0, .5) 0%,
-                    //   rgba(50, 100, 255, 1) 40% 60%,
-                    //   rgba(255, 165, 0, .5) 100%
-                    // );
+                    box-shadow: inset 0 0 10px -3px rgba(255, 255, 255, 0.5),
+                      0 0 10px -3px rgba(0, 0, 0, 0.5);
                     border-radius: 0.5rem;
                     z-index: -1;
                   }
-                }
-              }
-              &.orange {
-                color: orange;
-                &.bordered {
-                  border: 1px solid orange;
-                  padding: 0.5rem;
-                  margin: 0.5rem 0.5rem 0 0.5rem;
-                }
-                &.underlined {
-                  border-bottom: 1px solid orange;
-                  padding: 0.5rem;
-                  margin: 0.5rem 0.5rem 0 0.5rem;
                 }
               }
               &.bold {

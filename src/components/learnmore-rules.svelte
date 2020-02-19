@@ -11,7 +11,7 @@
       <div class="text-sub-block">
         <p>
           Play a number of moves in a straight line to score points.
-          <span class="cool bordered">
+          <span class="orange bordered">
             The player with the most points at the end wins!
           </span>
         </p>
