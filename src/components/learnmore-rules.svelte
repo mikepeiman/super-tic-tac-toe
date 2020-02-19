@@ -33,7 +33,7 @@
             This line earns a full bonus because it spans the long dimension.
             The bonus will be whatever was selected in settings.
           </p>
-          <img src="sttt-linebonus-ex-full.png" alt="" />
+          <img src="sttt-4x8-linebonus-long (1).png" alt="" />
         </div>
         <div class="text-image-block">
           <p>
@@ -41,9 +41,9 @@
             (linebonus * (larger / smaller)). So, in this example with a
             linebonus set at 8, with 8 columns and 4 rows, that means the
             partial bonus is 4 points for each of these lines (yes, I chose
-            these figures for eaasy math)
+            these figures for easy math)
           </p>
-          <img src="sttt-linebonus-ex-short.png" alt="" />
+          <img src="sttt-4x8-linebonus-short (1).png" alt="" />
         </div>
         <p>
           Unlike traditional (tiny) tic-tac-toe, in Super-Tic-Tac-Toe you play
