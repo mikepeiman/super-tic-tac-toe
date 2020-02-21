@@ -188,6 +188,10 @@
     display: flex;
     justify-content: center;
     align-content: center;
+    & div {
+      justify-self: center;
+      align-self: center;
+    }
     &:hover {
       background: rgba(0, 0, 0, 0.5);
       color: white;
@@ -235,25 +239,25 @@
 
   <div class="subgroup">
     <button class="control-button" id="save-game-button" on:click={saveGame}>
-      Save game
+      <div>Save game</div>
     </button>
     <button class="control-button" id="load-game-button" on:click={loadGame}>
-      Load game
+      <div>Load game</div>
     </button>
   </div>
   <div class="subgroup">
     <button class="control-button" id="new-game-button" on:click={resetGame}>
-      New Game
+      <div>New Game</div>
     </button>
     <div class="sub-subgroup">
       <button
         class="control-button"
         id="reset-players-button"
         on:click={resetPlayers}>
-        Reset players
+        <div>Reset players</div>
       </button>
       <button class="control-button" id="reset-all-button" on:click={resetAll}>
-        RESET ALL
+        <div>RESET ALL</div>
       </button>
     </div>
   </div>

@@ -30,6 +30,8 @@
 <style lang="scss">
   .learnmore-topmenu-wrapper {
     grid-area: topbar;
+    height: 10vh;
+    background: black;
     & #page-title {
       // left: 1rem;
       top: 1rem;
@@ -43,6 +45,7 @@
     }
     & #home {
       top: 1rem;
+      left: 1rem;
       border: 3px solid #32c8ff;
     }
   }
@@ -52,7 +55,6 @@
       top: 1.5rem;
       font-size: 1.25rem;
     }
-
   }
 
   @media screen and (max-height: 600px) {

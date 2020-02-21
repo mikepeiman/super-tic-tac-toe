@@ -264,5 +264,5 @@
     color={_color}
     secondaryColor={_secondaryColor}
     secondaryOpacity={_secondaryOpacity} />
-  <span class="button-text">Tally Scores</span>
+  <div class="button-text">Tally Scores</div>
 </button>

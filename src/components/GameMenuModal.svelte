@@ -108,5 +108,5 @@
     color={_color}
     secondaryColor={_secondaryColor}
     secondaryOpacity={_secondaryOpacity} />
-  Menu
+  <div>Menu</div>
 </button>

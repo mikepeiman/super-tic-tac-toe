@@ -395,6 +395,13 @@
       margin-right: 0.25rem;
       background: rgba(255, 255, 255, 0.15);
       border: 2px solid var(--input-blue);
+      &:text {
+        align-self: center;
+      }
+      & div {
+        align-self: center;
+        text-align: left;
+      }
       &:hover {
         background: var(--player-color-dark);
       }

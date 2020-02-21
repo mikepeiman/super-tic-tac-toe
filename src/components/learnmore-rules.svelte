@@ -12,7 +12,7 @@
         <span class="orange bordered">
           The player with the most points at the end wins!
         </span>
-        <p>Play a number of moves in a straight line to score points.</p>
+        <p>Play a number of moves in a straight line to score points. This number is determined in game settings.</p>
         <p>
           Just like in tiny-tic-tac-toe, lines can be in any direction: vertical
           <img class="icon" src="tictactoe-vertical.png" alt="" />
@@ -38,9 +38,9 @@
         <div class="text-image-block">
           <p>
             These lines are each partial line bonuses; they are calculated as
-            (linebonus * (larger / smaller)). So, in this example with a
+            (linebonus / (longer / shorter)). So, in this example with a
             linebonus set at 8, with 8 columns and 4 rows, that means the
-            partial bonus is 4 points for each of these lines (yes, I chose
+            partial bonus is (8 / (8 / 4)) === (8 / 2) === 4 for each of these lines (yes, I chose
             these figures for easy math)
           </p>
           <img src="sttt-4x8-linebonus-short (1).png" alt="" />

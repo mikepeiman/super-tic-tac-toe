@@ -125,5 +125,5 @@
     color={_color}
     secondaryColor={_secondaryColor}
     secondaryOpacity={_secondaryOpacity} />
-  Settings
+  <div>Settings</div>
 </button>

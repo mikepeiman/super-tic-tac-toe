@@ -169,7 +169,7 @@
 </script>
 
 <style lang="scss">
-  #buttons-wrapper {
+  :global(#buttons-wrapper) {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
