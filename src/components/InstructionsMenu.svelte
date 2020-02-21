@@ -190,7 +190,6 @@
     }
   }
   @media screen and (max-width: 600px) {
-
     .instructions-menu-wrapper {
       & a.button.instructions {
         margin-right: 0.5rem;

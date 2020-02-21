@@ -19,7 +19,7 @@
   import { faSwords } from "@fortawesome/pro-solid-svg-icons";
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
-
+  import { throttle } from "./../../utils/_throttle.js";
   // let log1 = (console.todo = function(msg, obj) {
   //   console.log(
   //     ` %c%s%s%s`,
@@ -31,15 +31,8 @@
   //   );
   // });
   onMount(() => {
-    // console.log(`LandingPage onMount - window obj `, window);
-    // window.onscroll = testOnscroll();
-    let content = document.querySelector(".learn-more-wrapper");
-    let sapper = document.querySelector("#sapper");
-    // sapper.addEventListener("scroll", () => {
-    //   watchForScroll();
-    // });
     window.addEventListener("scroll", () => {
-      watchForScroll();
+      throttle(watchForScroll(), 4);
     });
     console.log(`#sapper el `, sapper);
   });
