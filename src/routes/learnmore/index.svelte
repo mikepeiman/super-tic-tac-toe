@@ -3,6 +3,7 @@
   // import LearnMoreSideMenu from "./../../components/LearnMoreSideMenu.svelte";
   import LearnMoreTopMenu from "./../../components/LearnMoreTopMenu.svelte";
   import InstructionsMenu from "./../../components/InstructionsMenu.svelte";
+  import InstructionsSubMenu from "./../../components/InstructionsSubMenu.svelte";
   import Section1 from "./../../components/learnmore-rules.svelte";
   import Section2 from "./../../components/learnmore-win.svelte";
   import Section3 from "./../../components/learnmore-features.svelte";
@@ -839,6 +840,7 @@
       <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
     <InstructionsMenu />
+    <InstructionsSubMenu />
 
     <main
       class="instructions"

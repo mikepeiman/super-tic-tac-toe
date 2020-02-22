@@ -320,7 +320,7 @@
 
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
-  class="instructions-menu-wrapper"
+  class="instructions-submenu-wrapper"
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <a
