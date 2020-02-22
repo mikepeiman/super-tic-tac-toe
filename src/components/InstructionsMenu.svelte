@@ -161,7 +161,7 @@
             border: none;
             // border-bottom: 2px solid rgba(0, 0, 0, 0);
             border-bottom: 2px solid rgba(50, 100, 255, 1);
-            width: 16.6vw;
+            width: fill-available;
             outline-offset: 0px;
             display: flex;
             justify-content: flex-start;
