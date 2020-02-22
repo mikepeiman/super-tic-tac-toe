@@ -12,7 +12,7 @@
   import { faSwords } from "@fortawesome/pro-solid-svg-icons";
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
-    import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
+  import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
 
   let log1 = (console.todo = function(msg, obj) {
     console.log(
@@ -156,10 +156,11 @@
           &.instructions {
             box-sizing: border-box;
             border-radius: 0;
-            margin-right: 1rem;
+            margin-right: 0;
             border: none;
-            border-bottom: 2px solid rgba(0, 0, 0, 0);
-            width: 12vw;
+            // border-bottom: 2px solid rgba(0, 0, 0, 0);
+            border-bottom: 2px solid rgba(50, 100, 255, 1);
+            width: 16.6vw;
             outline-offset: 0px;
             display: flex;
             justify-content: flex-start;
@@ -172,7 +173,7 @@
               border: none;
               border-bottom: 2px solid orange;
               box-shadow: none;
-              background: rgba(0,0,0,0.25);
+              background: rgba(0, 0, 0, 0.25);
               color: orange;
               & svg {
                 color: orange;
@@ -185,11 +186,12 @@
       }
       & a.button.instructions.active {
         color: white;
-        border-bottom: 2px solid orange !important;
+        // border-bottom: 2px solid orange !important;
+        border-bottom: 2px solid rgba(0,0,0,0) !important;
         background: #1a1a1a;
       }
       & .icon-wrapper {
-        width: 10ch;
+        width: 16.6vw;
         height: auto;
         background: rgba(50, 100, 255, 1);
         position: static;
@@ -221,23 +223,27 @@
 
       & a#play-now {
         right: 2rem;
+        width: 16.6vw;
         color: white;
+        border-radius: 0;
         top: 0;
         position: static;
         justify-self: flex-end;
         height: 100%;
-        padding: 0 2rem 0 1rem;
+        padding: 0;
         margin: 0;
         box-sizing: border-box;
-        border-radius: 0;
         border: 2px solid rgba(0, 0, 0, 0);
         background: rgba(50, 100, 255, 1);
         & svg {
-          margin-right: 1rem;
+          width: 1.5rem;
+          height: 1.5rem;
+          margin: 0 1ch;
         }
         &:hover {
           border: 2px solid orange;
           box-shadow: none;
+          background: rgba(25, 50, 175, 1);
         }
       }
     }
@@ -261,7 +267,7 @@
   @media screen and (max-width: 600px) {
     .instructions-menu-wrapper {
       & a.button.instructions {
-        margin-right: 0.5rem;
+        margin-right: 0;
         &:hover svg {
           color: orange;
         }

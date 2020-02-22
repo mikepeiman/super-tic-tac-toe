@@ -88,7 +88,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10rem;
+    width: 12rem;
     text-decoration: none;
     color: $input-blue;
     border: 3px solid $input-blue;
