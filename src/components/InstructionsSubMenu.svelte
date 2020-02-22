@@ -152,11 +152,24 @@
             position: absolute;
             width: calc(100% - 20px);
             height: 0;
-            border-bottom: 10px solid #333;
+            border-bottom: 10px solid darkorange;
             border-left: 10px solid rgba(0, 0, 0, 0);
             border-right: 10px solid rgba(0, 0, 0, 0);
             border-top: 10px solid rgba(0, 0, 0, 0);
             top: -20px;
+            z-index: 1;
+          }
+          &:before {
+            content: "";
+            position: absolute;
+            width: calc(100% - 20px);
+            height: 0;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.5);
+            border-left: 10px solid rgba(0, 0, 0, 0);
+            border-right: 10px solid rgba(0, 0, 0, 0);
+            border-top: 10px solid rgba(0, 0, 0, 0);
+            top: -20px;
+            z-index: 2;
           }
         }
         // background: black;
@@ -183,8 +196,9 @@
               }
               &:hover {
                 border: none;
-                border-bottom: 2px solid orange;
+                outline: 2px solid orange;
                 box-shadow: none;
+                // outline-offset: -2px;
                 background: rgba(0, 0, 0, 0.25);
                 color: orange;
                 & svg {
