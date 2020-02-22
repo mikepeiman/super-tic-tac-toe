@@ -42,42 +42,18 @@
     let mainSections = document.querySelectorAll("main section");
     let lastId;
     let cur = [];
-
-    // This should probably be throttled.
-    // Especially because it triggers during smooth scrolling.
-    // https://lodash.com/docs/4.17.10#throttle
-    // You could do like...
-    // window.addEventListener("scroll", () => {
-    //    _.throttle(doThatStuff, 100);
-    // });
-    // Only not doing it here to keep this Pen dependency-free.
-
-    // window.addEventListener("scroll", event => {
     let fromTop = window.scrollY;
-    // console.log(`fromTop (window.scrollY): ${fromTop}`);
     mainNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
-      // console.log(`fromTop (window.scrollY): ${fromTop}`);
-      // console.log(`section.offsetTop: ${section.offsetTop}`);
-      // console.log(`section.offsetHeight: ${section.offsetHeight}`);
       if (
         section.offsetTop <= fromTop + 250 &&
         section.offsetTop + section.offsetHeight > fromTop + 250
       ) {
         link.classList.add("active");
-        // console.log(
-        //   `inside the scroll watcher, we have a matching link  `,
-        //   link
-        // );
-        // console.log(
-        //   `inside the scroll watcher, we have a matching section `,
-        //   section
-        // );
       } else {
         link.classList.remove("active");
       }
     });
-    // });
   }
 
   function testOnscroll() {
@@ -123,11 +99,10 @@
     margin: 0;
     display: grid;
     grid-template-areas:
-      "header"
       "menu"
       "main";
     // grid-template-columns: 20vw 80vw;
-    grid-template-rows: 10vh 10vh auto;
+    grid-template-rows: 10vh auto;
     //     outline: 2px solid #32c8ff;
     // outline-offset: -10px;
     background: #1a1a1a;
@@ -808,7 +783,7 @@
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">
-    <LearnMoreTopMenu />
+    <!-- <LearnMoreTopMenu /> -->
 
     <figure
       id="bg-from-landing-page"

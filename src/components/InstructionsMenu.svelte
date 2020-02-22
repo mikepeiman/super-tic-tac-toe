@@ -134,13 +134,22 @@
       grid-area: menu;
       display: -webkit-box;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       position: sticky;
       z-index: 101;
       top: 0;
       width: 100%;
-      background: black;
-      border-bottom: 10px solid #1a1a1a;
+      background: #333;
+      & .link-wrapper {
+        display: flex;
+        justify-content: center;
+        position: sticky;
+        z-index: 101;
+        top: 0;
+        width: inherit;
+      }
+      // background: black;
+      // border-bottom: 10px solid #1a1a1a;
       & a {
         &.button {
           &.instructions {
@@ -170,6 +179,59 @@
         color: white;
         border-bottom: 2px solid orange !important;
         background: #1a1a1a;
+      }
+      & .icon-wrapper {
+        width: 10ch;
+        height: auto;
+        background: rgba(50, 100, 255, 1);
+        position: static;
+        left: 0;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-self: flex-start;
+        transition: all 0.25s;
+        outline: 2px solid rgba(0, 0, 0, 0);
+        outline-offset: -2px;
+        &:hover {
+          background: rgba(25, 50, 175, 1);
+          outline: 2px solid orange;
+          outline-offset: -2px;
+          transition: all 0.25s;
+          & img {
+            // border: 2px solid orange;
+          }
+        }
+        & img#app-icon {
+          width: 2rem;
+          /* height: auto; */
+          /* position: absolute; */
+          /* top: 1rem; */
+          /* z-index: 0; */
+          /* left: 1rem; */
+          justify-content: center;
+          display: flex;
+          align-items: center;
+          position: static;
+        }
+      }
+
+      & a#play-now {
+        right: 2rem;
+        top: 0;
+        position: static;
+        justify-self: flex-end;
+        height: 100%;
+        padding: 0 2rem 0 1rem;
+        margin: 0;
+        box-sizing: border-box;
+        border-radius: 0;
+        border: 2px solid rgba(0, 0, 0, 0);
+        background: rgba(50, 100, 255, 1);
+        &:hover {
+          border: 2px solid orange;
+          box-shadow: none;
+        }
       }
     }
   }
@@ -245,70 +307,75 @@
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <a
-    name="how-to-play"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'how-to-play' }}
-    in:receive={{ key: 'how-to-play' }}
-    class="button instructions"
-    id="how-to-play-button"
-    href="learnmore/#how-to-play">
-    <div class="icon swords">
-      <Fa size="lg" icon={faSwords} color="currentColor" />
-      <div>How To Play</div>
-    </div>
+    out:send={{ key: 'title' }}
+    in:receive={{ key: 'title' }}
+    rel="prefetch"
+    class="icon-wrapper"
+    href="/">
+    <img id="app-icon" src="favicon.png" alt="" />
   </a>
-
-  <!-- <a
-    name="how-to-win"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'how-to-win' }}
-    in:receive={{ key: 'how-to-win' }}
-    class="button instructions"
-    id="how-to-win-button"
-    href="learnmore/#how-to-win">
-    <div class="icon users-crown">
-      <Fa size="lg" icon={faUsersCrown} color="currentColor" />
-      <div>How To Win</div>
-    </div>
-  </a> -->
-
+  <div class="link-wrapper">
+    <a
+      name="how-to-play"
+      on:click={e => setActive(e)}
+      out:send={{ key: 'how-to-play' }}
+      in:receive={{ key: 'how-to-play' }}
+      class="button instructions"
+      id="how-to-play-button"
+      href="learnmore/#how-to-play">
+      <div class="icon swords">
+        <Fa size="lg" icon={faSwords} color="currentColor" />
+        <div>How To Play</div>
+      </div>
+    </a>
+    <a
+      name="features"
+      on:click={e => setActive(e)}
+      out:send={{ key: 'ui-and-features' }}
+      in:receive={{ key: 'ui-and-features' }}
+      class="button instructions"
+      id="ui-and-features-button"
+      href="learnmore/#ui-and-features">
+      <div class="icon lightbulb-on">
+        <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
+        <div>UI & Features</div>
+      </div>
+    </a>
+    <a
+      name="issues"
+      on:click={e => setActive(e)}
+      out:send={{ key: 'issues-and-gotchas' }}
+      in:receive={{ key: 'issues-and-gotchas' }}
+      class="button instructions"
+      id="issues-and-gotchas-button"
+      href="learnmore/#issues-and-gotchas">
+      <div class="icon exclamation-triangle">
+        <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
+        <div>Issues</div>
+      </div>
+    </a>
+    <a
+      name="development"
+      on:click={e => setActive(e)}
+      out:send={{ key: 'development-thoughts' }}
+      in:receive={{ key: 'development-thoughts' }}
+      class="button instructions"
+      id="development-thoughts-button"
+      href="learnmore/#development-thoughts">
+      <div class="icon construction">
+        <Fa size="lg" icon={faConstruction} color="currentColor" />
+        <div>Development</div>
+      </div>
+    </a>
+  </div>
   <a
-    name="features"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'ui-and-features' }}
-    in:receive={{ key: 'ui-and-features' }}
-    class="button instructions"
-    id="ui-and-features-button"
-    href="learnmore/#ui-and-features">
-    <div class="icon lightbulb-on">
-      <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
-      <div>UI & Features</div>
-    </div>
-  </a>
-  <a
-    name="issues"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'issues-and-gotchas' }}
-    in:receive={{ key: 'issues-and-gotchas' }}
-    class="button instructions"
-    id="issues-and-gotchas-button"
-    href="learnmore/#issues-and-gotchas">
-    <div class="icon exclamation-triangle">
-      <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
-      <div>Issues</div>
-    </div>
-  </a>
-  <a
-    name="development"
-    on:click={e => setActive(e)}
-    out:send={{ key: 'development-thoughts' }}
-    in:receive={{ key: 'development-thoughts' }}
-    class="button instructions"
-    id="development-thoughts-button"
-    href="learnmore/#development-thoughts">
-    <div class="icon construction">
-      <Fa size="lg" icon={faConstruction} color="currentColor" />
-      <div>Development</div>
-    </div>
+    out:send={{ key: 'play-now' }}
+    in:receive={{ key: 'play-now' }}
+    rel="prefetch"
+    class="button"
+    id="play-now"
+    href="tictactoe/">
+    <slot name="play-now" />
+    PLAY NOW!
   </a>
 </div>
