@@ -32,9 +32,8 @@
   // });
   onMount(() => {
     window.addEventListener("scroll", () => {
-      throttle(watchForScroll(), 4);
+      throttle(watchForScroll(),25);
     });
-    console.log(`#sapper el `, sapper);
   });
 
   function watchForScroll() {
@@ -43,14 +42,7 @@
     let mainSections = document.querySelectorAll("main section");
     let lastId;
     let cur = [];
-    console.log(
-      `InstructionsMenu onMount collections: mainNavLinks `,
-      mainNavLinks
-    );
-    console.log(
-      `InstructionsMenu onMount collections: mainSections `,
-      mainSections
-    );
+
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -62,7 +54,7 @@
 
     // window.addEventListener("scroll", event => {
     let fromTop = window.scrollY;
-    console.log(`fromTop (window.scrollY): ${fromTop}`);
+    // console.log(`fromTop (window.scrollY): ${fromTop}`);
     mainNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
       // console.log(`fromTop (window.scrollY): ${fromTop}`);
@@ -73,14 +65,14 @@
         section.offsetTop + section.offsetHeight > fromTop + 250
       ) {
         link.classList.add("active");
-        console.log(
-          `inside the scroll watcher, we have a matching link  `,
-          link
-        );
-        console.log(
-          `inside the scroll watcher, we have a matching section `,
-          section
-        );
+        // console.log(
+        //   `inside the scroll watcher, we have a matching link  `,
+        //   link
+        // );
+        // console.log(
+        //   `inside the scroll watcher, we have a matching section `,
+        //   section
+        // );
       } else {
         link.classList.remove("active");
       }
