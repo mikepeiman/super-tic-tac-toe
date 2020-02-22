@@ -21,16 +21,7 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { throttle } from "./../../utils/_throttle.js";
-  // let log1 = (console.todo = function(msg, obj) {
-  //   console.log(
-  //     ` %c%s%s%s`,
-  //     `color: darkorange; background-color: black;`,
-  //     `–`,
-  //     msg,
-  //     `–`,
-  //     obj
-  //   );
-  // });
+
   onMount(() => {
     window.addEventListener("scroll", () => {
       throttle(watchForScroll(), 25);
@@ -101,9 +92,10 @@
     display: grid;
     grid-template-areas:
       "menu"
+      "submenu"
       "main";
     // grid-template-columns: 20vw 80vw;
-    grid-template-rows: 10vh auto;
+    grid-template-rows: 3rem 2rem auto;
     //     outline: 2px solid #32c8ff;
     // outline-offset: -10px;
     background: #1a1a1a;

@@ -142,6 +142,9 @@
       top: 0;
       width: 100%;
       background: #333;
+      &.submenu {
+        grid-area: submenu !important;
+      }
       & .link-wrapper {
         display: flex;
         justify-content: center;

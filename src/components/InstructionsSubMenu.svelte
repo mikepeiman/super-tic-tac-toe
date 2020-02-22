@@ -13,7 +13,7 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
-    import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
+  import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
   let log1 = (console.todo = function(msg, obj) {
     console.log(
@@ -133,121 +133,133 @@
 <style lang="scss">
   :global(.learn-more-wrapper) {
     & .instructions-menu-wrapper {
-      grid-area: menu;
-      display: -webkit-box;
-      display: flex;
-      justify-content: flex-end;
-      position: sticky;
-      z-index: 101;
-      top: 0;
-      width: 100%;
-      background: #333;
-      & .link-wrapper {
+      &.submenu {
         display: flex;
         justify-content: center;
-        position: sticky;
+        top: 3rem;
+        position: -webkit-sticky;
+        position: fixed;
+        width: 100%;
         z-index: 101;
-        top: 0;
-        width: inherit;
-      }
-      // background: black;
-      // border-bottom: 10px solid #1a1a1a;
-      & a {
-        &.button {
-          &.instructions {
-            box-sizing: border-box;
-            border-radius: 0;
-            margin-right: 0;
-            border: none;
-            // border-bottom: 2px solid rgba(0, 0, 0, 0);
-            border-bottom: 2px solid rgba(50, 100, 255, 1);
-            width: fill-available;
-            outline-offset: 0px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            color: white;
-            & svg {
-              color: orange;
-            }
-            &:hover {
+        & .link-wrapper {
+          display: flex;
+          position: relative;
+          z-index: 101;
+          top: 10px;
+          width: 66.4vw;
+          &:after {
+            content: "";
+            position: absolute;
+            width: calc(100% - 20px);
+            height: 0;
+            border-bottom: 10px solid #333;
+            border-left: 10px solid rgba(0, 0, 0, 0);
+            border-right: 10px solid rgba(0, 0, 0, 0);
+            border-top: 10px solid rgba(0, 0, 0, 0);
+            top: -20px;
+          }
+        }
+        // background: black;
+        // border-bottom: 10px solid #1a1a1a;
+        & a {
+          &.button {
+            &.instructions {
+              box-sizing: border-box;
+              border-radius: 0;
+              margin-right: 0;
               border: none;
-              border-bottom: 2px solid orange;
-              box-shadow: none;
-              background: rgba(0, 0, 0, 0.25);
-              color: orange;
+              background: #1a1a1a;
+              // border-bottom: 2px solid rgba(0, 0, 0, 0);
+              outline: 2px solid #333; //rgba(50, 100, 255, 1);
+              width: fill-available;
+              outline-offset: -2px;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              color: white;
               & svg {
                 color: orange;
-                transition: all 0.25s;
+                width: 1rem;
               }
-              // outline: 3px solid #1a1a1a;
+              &:hover {
+                border: none;
+                border-bottom: 2px solid orange;
+                box-shadow: none;
+                background: rgba(0, 0, 0, 0.25);
+                color: orange;
+                & svg {
+                  color: orange;
+                  transition: all 0.25s;
+                }
+                // outline: 3px solid #1a1a1a;
+              }
             }
           }
         }
-      }
-      & a.button.instructions.active {
-        color: white;
-        // border-bottom: 2px solid orange !important;
-        border-bottom: 2px solid rgba(0,0,0,0) !important;
-        background: #1a1a1a;
-      }
-      & .icon-wrapper {
-        width: 16.6vw;
-        height: auto;
-        background: rgba(50, 100, 255, 1);
-        position: static;
-        left: 0;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        justify-self: flex-start;
-        transition: all 0.25s;
-        outline: 2px solid rgba(0, 0, 0, 0);
-        outline-offset: -2px;
-        & .app-title {
-          display: none;
+        & a.button.instructions.active {
+          color: white;
+          // border-bottom: 2px solid orange !important;
+          border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
+          background: #1a1a1a;
         }
-        &:hover {
-          background: rgba(25, 50, 175, 1);
-          outline: 2px solid orange;
-          outline-offset: -2px;
-          transition: all 0.25s;
-          & img {
-            // border: 2px solid orange;
-          }
-        }
-        & img#app-icon {
-          width: 2rem;
+        & .icon-wrapper {
+          width: 16.6vw;
+          height: auto;
+          background: rgba(50, 100, 255, 1);
+          position: static;
+          left: 0;
           justify-content: center;
           display: flex;
           align-items: center;
-          position: static;
+          justify-self: flex-start;
+          transition: all 0.25s;
+          outline: 2px solid rgba(0, 0, 0, 0);
+          outline-offset: -2px;
+          & .app-title {
+            display: none;
+          }
+          &:hover {
+            background: rgba(25, 50, 175, 1);
+            outline: 2px solid orange;
+            outline-offset: -2px;
+            transition: all 0.25s;
+            & img {
+              // border: 2px solid orange;
+            }
+          }
+          & img#app-icon {
+            width: 2rem;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            position: static;
+          }
         }
-      }
 
-      & a#play-now {
-        right: 2rem;
-        width: 16.6vw;
-        color: white;
-        border-radius: 0;
-        top: 0;
-        position: static;
-        justify-self: flex-end;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        border: 2px solid rgba(0, 0, 0, 0);
-        background: rgba(50, 100, 255, 1);
-        & svg {
-          width: 1.5rem;
-          height: 1.5rem;
-          margin: 0 1ch;
-        }
-        &:hover {
-          border: 2px solid orange;
-          box-shadow: none;
-          background: rgba(25, 50, 175, 1);
+        & a#play-now {
+          right: 2rem;
+          width: 16.6vw;
+          color: white;
+          border-radius: 0;
+          top: 0;
+          position: static;
+          justify-self: flex-end;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          border: 2px solid rgba(0, 0, 0, 0);
+          background: rgba(50, 100, 255, 1);
+          & svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 0 1ch;
+          }
+          &:hover {
+            border: 2px solid orange;
+            box-shadow: none;
+            background: rgba(25, 50, 175, 1);
+          }
         }
       }
     }
@@ -320,18 +332,10 @@
 
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
-  class="instructions-submenu-wrapper"
+  class="instructions-menu-wrapper submenu"
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
-  <a
-    out:send={{ key: 'title' }}
-    in:receive={{ key: 'title' }}
-    rel="prefetch"
-    class="icon-wrapper"
-    href="/">
-    <img id="app-icon" src="favicon.png" alt="" />
-    <div class="app-title">Super Tic-Tac-Toe</div>
-  </a>
+
   <div class="link-wrapper">
     <a
       name="how-to-play"
@@ -386,15 +390,5 @@
       </div>
     </a>
   </div>
-  <a
-    out:send={{ key: 'play-now' }}
-    in:receive={{ key: 'play-now' }}
-    rel="prefetch"
-    class="button"
-    id="play-now"
-    href="tictactoe/">
-    <Fa size="lg" icon={faGameBoard} color="currentColor" />
-    <!-- <Fa size="lg" icon={faGamepadAlt} color="currentColor" /> -->
-    <div>PLAY NOW!</div>
-  </a>
+
 </div>
