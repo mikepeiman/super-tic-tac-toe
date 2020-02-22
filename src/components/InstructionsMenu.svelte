@@ -153,18 +153,25 @@
       & a {
         &.button {
           &.instructions {
+            box-sizing: border-box;
             border-radius: 0;
             margin-right: 1rem;
-            border: 2px solid rgba(0, 0, 0, 0);
+            border: none;
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
             width: 12vw;
             outline-offset: 0px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            color: white;
+            & svg {
+              color: orange;
+            }
             &:hover {
-              border: 2px solid orange;
+              border: none;
+              border-bottom: 2px solid orange;
               box-shadow: none;
-              // outline: 9px solid #1a1a1a;
+              background: rgba(0,0,0,0.25);
               color: orange;
               & svg {
                 color: orange;
