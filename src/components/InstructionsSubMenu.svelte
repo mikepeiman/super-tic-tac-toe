@@ -204,7 +204,6 @@
         transition: all 0.25s;
         outline: 2px solid rgba(0, 0, 0, 0);
         outline-offset: -2px;
-        border-bottom: 2px solid orange;
         & .app-title {
           display: none;
         }
@@ -239,7 +238,6 @@
         margin: 0;
         box-sizing: border-box;
         border: 2px solid rgba(0, 0, 0, 0);
-        border-bottom: 2px solid orange;
         background: rgba(50, 100, 255, 1);
         & svg {
           width: 1.5rem;
