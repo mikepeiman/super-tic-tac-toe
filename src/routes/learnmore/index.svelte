@@ -673,13 +673,18 @@
     #layout-main {
       & .learn-more-wrapper {
         & .crossfade-wrapper {
-          grid-template-rows: 12vh auto;
+          grid-template-rows: 12vh 6vh auto;
           & .instructions-menu-wrapper {
             display: grid;
             grid-template-areas: "icon playnow" "scrollmenu scrollmenu";
             grid-template-rows: 6vh 6vh;
             justify-content: space-around;
             // border-bottom: 2px solid rgba(50, 100, 255, 1);
+            &.submenu {
+              display: flex;
+              grid-area: submenu;
+              top: 12vh;
+            }
             & .icon-wrapper {
               grid-area: icon;
               width: 50vw;

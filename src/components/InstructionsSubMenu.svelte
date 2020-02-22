@@ -143,34 +143,35 @@
         z-index: 101;
         & .link-wrapper {
           display: flex;
+          justify-content: center;
           position: relative;
           z-index: 101;
-          top: 10px;
-          width: 66.4vw;
-          &:after {
-            content: "";
-            position: absolute;
-            width: calc(100% - 20px);
-            height: 0;
-            border-bottom: 10px solid darkorange;
-            border-left: 10px solid rgba(0, 0, 0, 0);
-            border-right: 10px solid rgba(0, 0, 0, 0);
-            border-top: 10px solid rgba(0, 0, 0, 0);
-            top: -20px;
-            z-index: 1;
-          }
-          &:before {
-            content: "";
-            position: absolute;
-            width: calc(100% - 20px);
-            height: 0;
-            border-bottom: 10px solid rgba(0, 0, 0, 0.5);
-            border-left: 10px solid rgba(0, 0, 0, 0);
-            border-right: 10px solid rgba(0, 0, 0, 0);
-            border-top: 10px solid rgba(0, 0, 0, 0);
-            top: -20px;
-            z-index: 2;
-          }
+          // top: 10px;
+          width: auto;
+          // &:after {
+          //   content: "";
+          //   position: absolute;
+          //   width: calc(100% - 20px);
+          //   height: 0;
+          //   border-bottom: 10px solid darkorange;
+          //   border-left: 10px solid rgba(0, 0, 0, 0);
+          //   border-right: 10px solid rgba(0, 0, 0, 0);
+          //   border-top: 10px solid rgba(0, 0, 0, 0);
+          //   top: -20px;
+          //   z-index: 1;
+          // }
+          // &:before {
+          //   content: "";
+          //   position: absolute;
+          //   width: calc(100% - 20px);
+          //   height: 0;
+          //   border-bottom: 10px solid rgba(0, 0, 0, 0.5);
+          //   border-left: 10px solid rgba(0, 0, 0, 0);
+          //   border-right: 10px solid rgba(0, 0, 0, 0);
+          //   border-top: 10px solid rgba(0, 0, 0, 0);
+          //   top: -20px;
+          //   z-index: 2;
+          // }
         }
         // background: black;
         // border-bottom: 10px solid #1a1a1a;
@@ -182,14 +183,15 @@
               margin-right: 0;
               border: none;
               background: #1a1a1a;
-              // border-bottom: 2px solid rgba(0, 0, 0, 0);
-              outline: 2px solid #333; //rgba(50, 100, 255, 1);
-              width: fill-available;
-              outline-offset: -2px;
+              outline: 2px solid rgba(25, 150, 155, 1);
+              width: auto;
+              outline-offset: -8px;
               display: flex;
               justify-content: flex-start;
               align-items: center;
               color: white;
+              font-size: .85rem;
+              text-transform: uppercase;
               & svg {
                 color: orange;
                 width: 1rem;
@@ -199,7 +201,7 @@
                 outline: 2px solid orange;
                 box-shadow: none;
                 // outline-offset: -2px;
-                background: rgba(0, 0, 0, 0.25);
+                background: #333;
                 color: orange;
                 & svg {
                   color: orange;
@@ -290,7 +292,7 @@
       // width: 8rem;
 
       & div {
-        margin-left: 1rem;
+        margin-left: 0;
       }
     }
   }
@@ -349,7 +351,6 @@
   class="instructions-menu-wrapper submenu"
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
-
   <div class="link-wrapper">
     <a
       name="how-to-play"
@@ -357,50 +358,50 @@
       out:send={{ key: 'how-to-play' }}
       in:receive={{ key: 'how-to-play' }}
       class="button instructions"
-      id="how-to-play-button"
+      id="how-to-play-winning"
       href="learnmore/#how-to-play">
       <div class="icon swords">
-        <Fa size="lg" icon={faSwords} color="currentColor" />
-        <div>How To Play</div>
+        <!-- <Fa size="lg" icon={faSwords} color="currentColor" /> -->
+        <div>Winning</div>
       </div>
     </a>
     <a
-      name="features"
+      name="gameplay"
       on:click={e => setActive(e)}
       out:send={{ key: 'ui-and-features' }}
       in:receive={{ key: 'ui-and-features' }}
       class="button instructions"
-      id="ui-and-features-button"
+      id="how-to-play-gameplay"
       href="learnmore/#ui-and-features">
       <div class="icon lightbulb-on">
-        <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
-        <div>UI & Features</div>
+        <!-- <Fa size="lg" icon={faLightbulbOn} color="currentColor" /> -->
+        <div>Gameplay</div>
       </div>
     </a>
     <a
-      name="issues"
+      name="settings"
       on:click={e => setActive(e)}
       out:send={{ key: 'issues-and-gotchas' }}
       in:receive={{ key: 'issues-and-gotchas' }}
       class="button instructions"
-      id="issues-and-gotchas-button"
+      id="how-to-play-settings"
       href="learnmore/#issues-and-gotchas">
       <div class="icon exclamation-triangle">
-        <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
-        <div>Issues</div>
+        <!-- <Fa size="lg" icon={faExclamationTriangle} color="currentColor" /> -->
+        <div>Settings</div>
       </div>
     </a>
     <a
-      name="development"
+      name="strategies"
       on:click={e => setActive(e)}
       out:send={{ key: 'development-thoughts' }}
       in:receive={{ key: 'development-thoughts' }}
       class="button instructions"
-      id="development-thoughts-button"
+      id="how-to-play-strategies"
       href="learnmore/#development-thoughts">
       <div class="icon construction">
-        <Fa size="lg" icon={faConstruction} color="currentColor" />
-        <div>Development</div>
+        <!-- <Fa size="lg" icon={faConstruction} color="currentColor" /> -->
+        <div>Strategies</div>
       </div>
     </a>
   </div>
