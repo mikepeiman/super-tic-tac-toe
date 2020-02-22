@@ -698,6 +698,9 @@
                 margin-left: 1rem;
                 text-transform: uppercase;
               }
+              & img#app-icon {
+                width: 1.5rem;
+              }
             }
             & .link-wrapper {
               grid-area: scrollmenu;
