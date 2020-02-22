@@ -12,6 +12,7 @@
   import { faSwords } from "@fortawesome/pro-solid-svg-icons";
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
+    import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
 
   let log1 = (console.todo = function(msg, obj) {
     console.log(
@@ -211,11 +212,6 @@
         }
         & img#app-icon {
           width: 2rem;
-          /* height: auto; */
-          /* position: absolute; */
-          /* top: 1rem; */
-          /* z-index: 0; */
-          /* left: 1rem; */
           justify-content: center;
           display: flex;
           align-items: center;
@@ -225,6 +221,7 @@
 
       & a#play-now {
         right: 2rem;
+        color: white;
         top: 0;
         position: static;
         justify-self: flex-end;
@@ -235,6 +232,9 @@
         border-radius: 0;
         border: 2px solid rgba(0, 0, 0, 0);
         background: rgba(50, 100, 255, 1);
+        & svg {
+          margin-right: 1rem;
+        }
         &:hover {
           border: 2px solid orange;
           box-shadow: none;
@@ -382,7 +382,7 @@
     class="button"
     id="play-now"
     href="tictactoe/">
-    <slot name="play-now" />
-    PLAY NOW!
+    <Fa size="lg" icon={faGamepadAlt} color="currentColor" />
+    <div>PLAY NOW!</div>
   </a>
 </div>
