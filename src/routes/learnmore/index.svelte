@@ -678,47 +678,54 @@
       font-size: 90%;
     }
     #layout-main {
-    & .learn-more-wrapper {
-      & .crossfade-wrapper {
-        grid-template-rows: 12vh auto;
-        & .instructions-menu-wrapper {
-          display: grid;
-          grid-template-areas: "icon playnow" "scrollmenu scrollmenu";
-          grid-template-rows: 6vh 6vh;
-          justify-content: space-around;
-          // border-bottom: 2px solid rgba(50, 100, 255, 1);
-          & .icon-wrapper {
-            grid-area: icon;
-            width: 50vw;
-            // border-radius: 0 0 1rem 0;
-          }
-          & .link-wrapper {
-            grid-area: scrollmenu;
-            width: 100vw;
-            justify-content: center;
+      & .learn-more-wrapper {
+        & .crossfade-wrapper {
+          grid-template-rows: 12vh auto;
+          & .instructions-menu-wrapper {
+            display: grid;
+            grid-template-areas: "icon playnow" "scrollmenu scrollmenu";
+            grid-template-rows: 6vh 6vh;
+            justify-content: space-around;
             // border-bottom: 2px solid rgba(50, 100, 255, 1);
-            & a.button.instructions {
-              width: 25vw;
+            & .icon-wrapper {
+              grid-area: icon;
+              width: 50vw;
+              text-decoration: none;
+              color: white;
+              // border-radius: 0 0 1rem 0;
+              & .app-title {
+                display: block;
+                margin-left: 1rem;
+                text-transform: uppercase;
+              }
             }
-          }
-          & a#play-now {
-            grid-area: playnow;
-            width: 50vw;
-            // border-radius: 0 0 0 1rem;
+            & .link-wrapper {
+              grid-area: scrollmenu;
+              width: 100vw;
+              justify-content: center;
+              // border-bottom: 2px solid rgba(50, 100, 255, 1);
+              & a.button.instructions {
+                width: 25vw;
+              }
+            }
+            & a#play-now {
+              grid-area: playnow;
+              width: 50vw;
+              // border-radius: 0 0 0 1rem;
+            }
           }
         }
       }
-    }
-    main.instructions section {
-      width: 100vw;
-      background: none;
-      & .section-wrapper {
+      main.instructions section {
+        width: 100vw;
         background: none;
+        & .section-wrapper {
+          background: none;
+        }
       }
-    }
-    .text-content {
-      max-width: 100vw;
-    }
+      .text-content {
+        max-width: 100vw;
+      }
     }
   }
 

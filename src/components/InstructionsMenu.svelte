@@ -13,6 +13,7 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
+    import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
   let log1 = (console.todo = function(msg, obj) {
     console.log(
@@ -203,6 +204,9 @@
         transition: all 0.25s;
         outline: 2px solid rgba(0, 0, 0, 0);
         outline-offset: -2px;
+        & .app-title {
+          display: none;
+        }
         &:hover {
           background: rgba(25, 50, 175, 1);
           outline: 2px solid orange;
@@ -326,6 +330,7 @@
     class="icon-wrapper"
     href="/">
     <img id="app-icon" src="favicon.png" alt="" />
+    <div class="app-title">Super Tic-Tac-Toe</div>
   </a>
   <div class="link-wrapper">
     <a
@@ -388,7 +393,8 @@
     class="button"
     id="play-now"
     href="tictactoe/">
-    <Fa size="lg" icon={faGamepadAlt} color="currentColor" />
+    <Fa size="lg" icon={faGameBoard} color="currentColor" />
+    <!-- <Fa size="lg" icon={faGamepadAlt} color="currentColor" /> -->
     <div>PLAY NOW!</div>
   </a>
 </div>
