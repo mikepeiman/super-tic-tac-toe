@@ -103,34 +103,34 @@
     }
   ];
 
-  $: {
-    if (typeof window !== "undefined") {
-      console.log(`reactive logging currentSection ${currentSection}`);
-      let submenuContainer = document.querySelector(".link-sub-wrapper");
-      console.log(`reactive logging submenuContainer `, submenuContainer);
-      if (currentSection === 0) {
-        console.log(
-          `reactive logging currentSection matches 0: ${currentSection}`
-        );
-        submenuContainer.style = "justify-content: flex-start;";
-      } else if (currentSection === 1) {
-        console.log(
-          `reactive logging currentSection matches 1: ${currentSection}`
-        );
-        submenuContainer.style = "justify-content: flex-end;";
-      } else if (currentSection === 2) {
-        console.log(
-          `reactive logging currentSection matches 2: ${currentSection}`
-        );
-        submenuContainer.style = "justify-content: center;";
-      } else if (currentSection === 3) {
-        console.log(
-          `reactive logging currentSection matches 3: ${currentSection}`
-        );
-        submenuContainer.style = "justify-content: space-between;";
-      }
-    }
-  }
+  // $: {
+  //   if (typeof window !== "undefined") {
+  //     console.log(`reactive logging currentSection ${currentSection}`);
+  //     let submenuContainer = document.querySelector(".link-sub-wrapper");
+  //     console.log(`reactive logging submenuContainer `, submenuContainer);
+  //     if (currentSection === 0) {
+  //       console.log(
+  //         `reactive logging currentSection matches 0: ${currentSection}`
+  //       );
+  //       submenuContainer.style = "justify-content: flex-start;";
+  //     } else if (currentSection === 1) {
+  //       console.log(
+  //         `reactive logging currentSection matches 1: ${currentSection}`
+  //       );
+  //       submenuContainer.style = "justify-content: flex-end;";
+  //     } else if (currentSection === 2) {
+  //       console.log(
+  //         `reactive logging currentSection matches 2: ${currentSection}`
+  //       );
+  //       submenuContainer.style = "justify-content: center;";
+  //     } else if (currentSection === 3) {
+  //       console.log(
+  //         `reactive logging currentSection matches 3: ${currentSection}`
+  //       );
+  //       submenuContainer.style = "justify-content: space-between;";
+  //     }
+  //   }
+  // }
 
   onMount(async () => {});
 
@@ -183,6 +183,18 @@
   function setActive(e) {
     console.log(`setActive function deactivated`);
   }
+
+  function setStyle() {
+    if (currentSection === 0) {
+      return "layout-start";
+    } else if (currentSection === 1) {
+      return "layout-space";
+    } else if (currentSection === 2) {
+      return "layout-center";
+    } else if (currentSection === 3) {
+      return "layout-end";
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -213,6 +225,18 @@
             width: 100%;
             justify-content: center;
             transition: all 0.25s;
+            &.layout-start {
+              justify-content: flex-start;
+            }
+            &.layout-end {
+              justify-content: flex-end;
+            }
+            &.layout-center {
+              justify-content: center;
+            }
+            &.layout-space {
+              justify-content: space-around;
+            }
           }
         }
         & a {
@@ -422,7 +446,7 @@
         </a>
       {/each} -->
       {#if m === currentSection}
-        <div class="link-sub-wrapper">
+        <div class="link-sub-wrapper {currentSection} {setStyle()}">
           {#each submenus[m].sections as item, i}
             <a
               name="{submenu.name}_{item.name}"
