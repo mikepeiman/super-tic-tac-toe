@@ -30,7 +30,6 @@
   });
 
   function watchForScroll() {
-    // console.log(`watchForScroll(e) `, e);
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
@@ -39,7 +38,6 @@
     let cur = [];
     let fromTop = window.scrollY;
     mainNavLinks.forEach((link, i) => {
-      // console.log(`mainNavLinks.forEach link, i ${i}  ${link.hash}`, link);
       let section = document.querySelector(link.hash);
       if (
         section.offsetTop <= fromTop + positionAdjustment1 &&
@@ -54,34 +52,12 @@
     positionAdjustment1 = 0;
     positionAdjustment2 = 150;
     subNavLinks.forEach((link, i) => {
-      // console.log(`subNavLinks.forEach link, i ${i} ${link.hash}`, link);
       let section = document.querySelector(link.hash);
       if (section) {
-        // console.log(`section `, section);
-        // console.log(`offsetParent `, section.offsetParent);
-
         if (
           section.offsetTop <= fromTop + positionAdjustment1 &&
           section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
         ) {
-          // console.log(
-          //   `section ID ${section.id}  >>>>>>>>> ACTIVE <<<<<<<<<<---------------------`
-          // );
-          // console.log(
-          //   `CONDITION: ${section.offsetTop <=
-          //     fromTop + positionAdjustment2} ||| section.offsetTop  ${
-          //     section.offsetTop
-          //   } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop +
-          //     positionAdjustment2}`
-          // );
-          // console.log(
-          //   `CONDITION: ${section.offsetTop + section.offsetHeight >
-          //     fromTop + positionAdjustment2} ||| section.offsetTop  ${
-          //     section.offsetTop
-          //   } + section.offsetHeight ${
-          //     section.offsetHeight
-          //   } > fromTop + positionAdjustment2 ${fromTop + positionAdjustment2}`
-          // );
           link.classList.add("active");
         } else {
           link.classList.remove("active");

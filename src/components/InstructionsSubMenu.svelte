@@ -228,7 +228,7 @@
             left: 0;
             transition: all 4.25s;
             position: relative;
-            transform: translateX(0vw);
+            transform: translateX(0);
             &.layout-0 {
               transform: translateX(12.5vw);
               // transition: all 0.25s;
@@ -473,23 +473,9 @@
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
   class="instructions-menu-wrapper submenu"
-  id="scrollmenu-sub"
-  out:send={{ key: 'learn-more' }}
-  in:receive={{ key: 'learn-more' }}>
+  id="scrollmenu-sub">
   <div class="link-wrapper">
-    <!-- {isHowToPlay} {isFeatures} {isIssues} {isRoadmap} -->
     {#each submenus as submenu, m}
-      <!-- {#each submenu.sections as item, i}
-        <a
-          name="{submenu.name}_{item.name}"
-          class="button instructions subsection"
-          id="{submenu.name}_{item.name}"
-          href={item.url}>
-          <div class="icon">
-            <div>{i + 1}: {item.name}</div>
-          </div>
-        </a>
-      {/each} -->
       {#if m === currentSection}
         <div class="link-sub-wrapper layout-{currentSection}">
           {#each submenus[m].sections as item, i}
@@ -506,54 +492,5 @@
         </div>
       {/if}
     {/each}
-    <!--  <a
-      name="how-to-play"
-      on:click={e => setActive(e)}
-      out:send={{ key: 'how-to-play' }}
-      in:receive={{ key: 'how-to-play' }}
-      class="button instructions subsection"
-      id="how-to-play-winning"
-      href="learnmore/#how-to-play_winning">
-      <div class="icon swords">
-        <div>Winning</div>
-      </div>
-    </a>
-    <a
-      name="gameplay"
-      on:click={e => setActive(e)}
-      out:send={{ key: 'ui-and-features' }}
-      in:receive={{ key: 'ui-and-features' }}
-      class="button instructions subsection"
-      id="how-to-play-gameplay"
-      href="learnmore/#how-to-play_gameplay">
-      <div class="icon lightbulb-on">
-        <div>Gameplay</div>
-      </div>
-    </a>
-    <a
-      name="settings"
-      on:click={e => setActive(e)}
-      out:send={{ key: 'issues-and-gotchas' }}
-      in:receive={{ key: 'issues-and-gotchas' }}
-      class="button instructions subsection"
-      id="how-to-play-settings"
-      href="learnmore/#how-to-play_settings">
-      <div class="icon exclamation-triangle">
-        <div>Settings</div>
-      </div>
-    </a>
-    <a
-      name="strategies"
-      on:click={e => setActive(e)}
-      out:send={{ key: 'development-thoughts' }}
-      in:receive={{ key: 'development-thoughts' }}
-      class="button instructions subsection"
-      id="how-to-play-strategies"
-      href="learnmore/#how-to-play_strategies">
-      <div class="icon construction">
-        <div>Strategies</div>
-      </div>
-    </a> -->
   </div>
-
 </div>
