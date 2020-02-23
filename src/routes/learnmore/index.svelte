@@ -33,14 +33,16 @@
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
-    let positionAdjustment = 250;
+    let positionAdjustment1 = 250;
+    let positionAdjustment2 = 0;
     let cur = [];
     let fromTop = window.scrollY;
     mainNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
+
       if (
-        section.offsetTop <= fromTop + positionAdjustment &&
-        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment
+        section.offsetTop <= fromTop + positionAdjustment1 &&
+        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment1
       ) {
         link.classList.add("active");
       } else {
@@ -49,10 +51,30 @@
     });
     subNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
+      console.log(`section `, section);
+      console.log(`offsetParent `, section.offsetParent);
+
       if (
-        section.offsetTop <= fromTop + positionAdjustment &&
-        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment
+        section.offsetTop <= fromTop + positionAdjustment2 &&
+        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
       ) {
+        console.log(
+          `section ID ${section.id}  >>>>>>>>> ACTIVE <<<<<<<<<<---------------------`
+        );
+        console.log(
+          `CONDITION: ${section.offsetTop <=
+            fromTop + positionAdjustment2} ||| section.offsetTop  ${
+            section.offsetTop
+          } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop + positionAdjustment2}`
+        );
+        console.log(
+          `CONDITION: ${section.offsetTop + section.offsetHeight >
+            fromTop + positionAdjustment2} ||| section.offsetTop  ${
+            section.offsetTop
+          } + section.offsetHeight ${
+            section.offsetHeight
+          } > fromTop + positionAdjustment2 ${fromTop + positionAdjustment2}`
+        );
         link.classList.add("active");
       } else {
         link.classList.remove("active");
