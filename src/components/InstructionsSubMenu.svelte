@@ -354,10 +354,19 @@
   in:receive={{ key: 'learn-more' }}>
   <div class="link-wrapper">
     {#each submenus as submenu}
-      {submenu.name}
-      {#each submenu.sections as item}{item.name}{/each}
+      {#each submenu.sections as item, i}
+        <a
+          name="{submenu.name}_{item.name}"
+          class="button instructions subsection"
+          id="{submenu.name}_{item.name}"
+          href={item.url}>
+          <div class="icon">
+            <div>{item.name}</div>
+          </div>
+        </a>
+      {/each}
     {/each}
-    <a
+    <!--  <a
       name="how-to-play"
       on:click={e => setActive(e)}
       out:send={{ key: 'how-to-play' }}
@@ -366,7 +375,6 @@
       id="how-to-play-winning"
       href="learnmore/#how-to-play_winning">
       <div class="icon swords">
-        <!-- <Fa size="lg" icon={faSwords} color="currentColor" /> -->
         <div>Winning</div>
       </div>
     </a>
@@ -379,7 +387,6 @@
       id="how-to-play-gameplay"
       href="learnmore/#how-to-play_gameplay">
       <div class="icon lightbulb-on">
-        <!-- <Fa size="lg" icon={faLightbulbOn} color="currentColor" /> -->
         <div>Gameplay</div>
       </div>
     </a>
@@ -392,7 +399,6 @@
       id="how-to-play-settings"
       href="learnmore/#how-to-play_settings">
       <div class="icon exclamation-triangle">
-        <!-- <Fa size="lg" icon={faExclamationTriangle} color="currentColor" /> -->
         <div>Settings</div>
       </div>
     </a>
@@ -405,10 +411,9 @@
       id="how-to-play-strategies"
       href="learnmore/#how-to-play_strategies">
       <div class="icon construction">
-        <!-- <Fa size="lg" icon={faConstruction} color="currentColor" /> -->
         <div>Strategies</div>
       </div>
-    </a>
+    </a> -->
   </div>
 
 </div>
