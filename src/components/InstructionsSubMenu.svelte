@@ -224,24 +224,28 @@
             display: flex;
             height: 2rem;
             width: 100%;
-            justify-content: center;
-            transition: all 0.25s;
+            justify-content: flex-start;
+            left: 0;
+            transition: all 4.25s;
             position: relative;
+            transform: translateX(0vw);
             &.layout-0 {
-              justify-content: flex-start;
-              left: 12.6vw;
+              transform: translateX(12.5vw);
+              // transition: all 0.25s;
             }
             &.layout-1 {
-              justify-content: flex-start;
-              left: 31.2vw;
+              transform: translateX(31.2vw);
+              // transition: all 0.25s;
             }
             &.layout-2 {
               justify-content: flex-end;
-              right: 30.2vw;
+              transform: translateX(-30.2vw);
+              // transition: all 0.25s;
             }
             &.layout-3 {
               justify-content: flex-end;
-              right: 10.6vw;
+              transform: translateX(-11.4vw);
+              // transition: all 0.25s;
             }
           }
         }
@@ -266,15 +270,17 @@
               opacity: 0;
 
               &.subsection {
+                font-weight: 300;
                 &.current-section {
                   opacity: 1;
                   left: 0;
                   transition: all 0.125s;
                 }
                 &.active {
-                  color: white;
+                  color: #1a1a1a;
                   // outline: 2px solid orange;
-                  background: darkorange;
+                  font-weight: 400;
+                  background: orange;
                   // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
                   // border-bottom: 2px solid rgba(25, 150, 155, 1);
                   transition: all 0.125s;
@@ -378,6 +384,39 @@
 
       & div {
         margin-left: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    #layout-main .learn-more-wrapper .instructions-menu-wrapper.submenu {
+      & .link-sub-wrapper {
+        display: flex;
+        height: 2rem;
+        width: 100%;
+        justify-content: center;
+        left: 0;
+        transition: all 0.25s;
+        position: relative;
+        transform: translateX(0vw);
+        &.layout-0 {
+          transform: translateX(0);
+          transition: all 0.25s;
+        }
+        &.layout-1 {
+          transform: translateX(0);
+          transition: all 0.25s;
+        }
+        &.layout-2 {
+          justify-content: flex-end;
+          transform: translateX(0);
+          transition: all 0.25s;
+        }
+        &.layout-3 {
+          justify-content: flex-end;
+          transform: translateX(0);
+          transition: all 0.25s;
+        }
       }
     }
   }

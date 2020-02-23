@@ -753,9 +753,9 @@
             }
             & .link-wrapper {
               grid-area: scrollmenu;
-              width: 97vw;
+              width: 98vw;
               justify-content: center;
-              // border-bottom: 2px solid rgba(50, 100, 255, 1);
+              border-bottom: 2px solid rgba(50, 100, 255, 0);
               & a.button.instructions {
                 width: 25vw;
               }
