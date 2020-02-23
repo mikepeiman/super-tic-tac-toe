@@ -217,6 +217,7 @@
 
 <div
   class="instructions-menu-wrapper"
+  id="scrollmenu-main"
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <a

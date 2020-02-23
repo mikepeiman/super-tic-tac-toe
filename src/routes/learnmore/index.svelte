@@ -22,6 +22,7 @@
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { throttle } from "./../../utils/_throttle.js";
 
+
   onMount(() => {
     window.addEventListener("scroll", () => {
       throttle(watchForScroll(), 25);
@@ -39,7 +40,6 @@
     let fromTop = window.scrollY;
     mainNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
-
       if (
         section.offsetTop <= fromTop + positionAdjustment1 &&
         section.offsetTop + section.offsetHeight > fromTop + positionAdjustment1
@@ -49,6 +49,7 @@
         link.classList.remove("active");
       }
     });
+
     subNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
       console.log(`section `, section);
@@ -745,7 +746,7 @@
             }
             & .link-wrapper {
               grid-area: scrollmenu;
-              width: 100vw;
+              width: 97vw;
               justify-content: center;
               // border-bottom: 2px solid rgba(50, 100, 255, 1);
               & a.button.instructions {

@@ -15,17 +15,104 @@
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
   import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
+  let submenus = [
+    {
+      name: "GamePlay",
+      sections: [
+        {
+          name: "winning",
+          url: "/learnmore#how-to-play_winning"
+        },
+        {
+          name: "gameplay",
+          url: "/learnmore#how-to-play_gameplay"
+        },
+        {
+          name: "settings",
+          url: "/learnmore#how-to-play_settings"
+        },
+        {
+          name: "strategies",
+          url: "/learnmore#how-to-play_strategies"
+        }
+      ]
+    },
+    {
+      name: "Features",
+      sections: [
+        {
+          name: "winning",
+          url: "/learnmore#features_winning"
+        },
+        {
+          name: "gameplay",
+          url: "/learnmore#features_gameplay"
+        },
+        {
+          name: "settings",
+          url: "/learnmore#features_settings"
+        },
+        {
+          name: "strategies",
+          url: "/learnmore#features_strategies"
+        }
+      ]
+    },
+    {
+      name: "Issues",
+      sections: [
+        {
+          name: "winning",
+          url: "/learnmore#issues_winning"
+        },
+        {
+          name: "gameplay",
+          url: "/learnmore#issues_gameplay"
+        },
+        {
+          name: "settings",
+          url: "/learnmore#issues_settings"
+        },
+        {
+          name: "strategies",
+          url: "/learnmore#issues_strategies"
+        }
+      ]
+    },
+    {
+      name: "Roadmap",
+      sections: [
+        {
+          name: "winning",
+          url: "/learnmore#roadmap_winning"
+        },
+        {
+          name: "gameplay",
+          url: "/learnmore#roadmap_gameplay"
+        },
+        {
+          name: "settings",
+          url: "/learnmore#roadmap_settings"
+        },
+        {
+          name: "strategies",
+          url: "/learnmore#roadmap_strategies"
+        }
+      ]
+    }
+  ];
 
-  onMount(async () => {
-
-  });
+  onMount(async () => {});
 
   function watchForScroll(e) {
     console.log(`watchForScroll(e) `, e);
     let subNavLinks = document.querySelectorAll("a.subsection");
     let lastId;
     let cur = [];
-    console.log(`InstructionsMenu onMount collections: subNavLinks `, subNavLinks);
+    console.log(
+      `InstructionsMenu onMount collections: subNavLinks `,
+      subNavLinks
+    );
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -48,8 +135,14 @@
         section.offsetTop + section.offsetHeight > fromTop
       ) {
         link.classList.add("active");
-        console.log(`inside the scroll watched, we have a matching link  `, link);
-        console.log(`inside the scroll watched, we have a matching section `, section);
+        console.log(
+          `inside the scroll watched, we have a matching link  `,
+          link
+        );
+        console.log(
+          `inside the scroll watched, we have a matching section `,
+          section
+        );
       } else {
         link.classList.remove("active");
       }
@@ -95,10 +188,9 @@
               justify-content: flex-start;
               align-items: center;
               color: white;
-              font-size: .85rem;
+              font-size: 0.85rem;
               text-transform: uppercase;
               &.active {
-
               }
               & svg {
                 color: orange;
@@ -257,9 +349,14 @@
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
   class="instructions-menu-wrapper submenu"
+  id="scrollmenu-sub"
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <div class="link-wrapper">
+    {#each submenus as submenu}
+      {submenu.name}
+      {#each submenu.sections as item}{item.name}{/each}
+    {/each}
     <a
       name="how-to-play"
       on:click={e => setActive(e)}
