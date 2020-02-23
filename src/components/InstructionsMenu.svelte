@@ -13,120 +13,12 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
-    import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
+  import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
-  let log1 = (console.todo = function(msg, obj) {
-    console.log(
-      ` %c%s%s%s`,
-      `color: black; background-color: rgba(55,75,155,.25); padding: 0.5rem;`,
-      `–`,
-      msg,
-      `–`,
-      obj
-    );
-  });
-  let log2 = (console.todo = function(msg, obj) {
-    console.log(
-      ` %c%s%s%s`,
-      `color: black; background-color: rgba(155,75,105,.25); padding: 0.5rem;`,
-      `–`,
-      msg,
-      `–`,
-      obj
-    );
-  });
-  onMount(async () => {
-    // let body = document.getElementsByTagName("body");
-    log1(`InstructionsMenu onMount`);
-    // watchForScroll("onMount")
-  });
-
-  function watchForScroll(e) {
-    console.log(`watchForScroll(e) `, e);
-    let mainNavLinks = document.querySelectorAll("a.instructions");
-    let mainSections = document.querySelectorAll("main section");
-    let lastId;
-    let cur = [];
-    log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
-    log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
-    // This should probably be throttled.
-    // Especially because it triggers during smooth scrolling.
-    // https://lodash.com/docs/4.17.10#throttle
-    // You could do like...
-    // window.addEventListener("scroll", () => {
-    //    _.throttle(doThatStuff, 100);
-    // });
-    // Only not doing it here to keep this Pen dependency-free.
-
-    // window.addEventListener("scroll", event => {
-    let fromTop = window.scrollY;
-
-    mainNavLinks.forEach(link => {
-      let section = document.querySelector(link.hash);
-      log2(`fromTop (window.scrollY): ${fromTop}`);
-      log2(`section.offsetTop: ${section.offsetTop}`);
-      log2(`section.offsetHeight: ${section.offsetHeight}`);
-      if (
-        section.offsetTop <= fromTop &&
-        section.offsetTop + section.offsetHeight > fromTop
-      ) {
-        link.classList.add("active");
-        log1(`inside the scroll watched, we have a matching link  `, link);
-        log1(`inside the scroll watched, we have a matching section `, section);
-      } else {
-        link.classList.remove("active");
-      }
-    });
-    // });
-  }
-
-  function enter(e) {
-    let svg = e.target.firstChild;
-    log1(`enter() e `, svg);
-    svg.classList.toggle("active");
-  }
-  function leave(e) {
-    let svg = e.target.firstChild;
-    log1(`leave() e `, svg);
-    svg.classList.toggle("active");
-  }
-  function findTargetByNodeName(el, soughtNodeName) {
-    let node = el.nodeName;
-    if (node !== soughtNodeName) {
-      log2(`This is not the node you are looking for`, node);
-      el = el.parentElement;
-      findTargetByNodeName(el, soughtNodeName);
-    }
-    node = el.nodeName;
-    log2(`returning from findTargetByNodeName(el, soughtNodeName) `, el);
-    if (node !== soughtNodeName) {
-      log2(`This is not the node you are looking for`, node);
-      el = el.parentElement;
-      findTargetByNodeName(el, soughtNodeName);
-      // el.parentElement.classList.toggle("active");
-    }
-    return el;
-  }
+  onMount(() => {});
 
   function setActive(e) {
     console.log(`setActive function deactivated`);
-
-    //   let el = e.target;
-    //   let navs = document.querySelectorAll(".button.instructions");
-    //   log1(`all instructions nav buttons `, navs);
-    //   navs.forEach(nav => {
-    //     nav.classList.remove("active");
-    //   });
-    //   let node = el.nodeName;
-    //   let soughtNodeName = "A";
-    //   el = findTargetByNodeName(el, soughtNodeName);
-    //   node = el.nodeName;
-    //   if (node !== "A") {
-    //     log1(`This is not the node you are looking for`, node);
-    //     el = findTargetByNodeName(el, soughtNodeName);
-    //   } else {
-    //     el.classList.add("active");
-    //   }
   }
 </script>
 
@@ -191,7 +83,7 @@
       & a.button.instructions.active {
         color: white;
         // border-bottom: 2px solid orange !important;
-        border-bottom: 2px solid rgba(0,0,0,0) !important;
+        border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
         background: #1a1a1a;
       }
       & .icon-wrapper {
@@ -323,7 +215,6 @@
   }
 </style>
 
-<!-- <svelte:window on:scroll={watchForScroll} /> -->
 <div
   class="instructions-menu-wrapper"
   out:send={{ key: 'learn-more' }}
@@ -343,7 +234,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'how-to-play' }}
       in:receive={{ key: 'how-to-play' }}
-      class="button instructions"
+      class="button instructions mainsection"
       id="how-to-play-button"
       href="learnmore/#how-to-play">
       <div class="icon swords">
@@ -356,7 +247,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'ui-and-features' }}
       in:receive={{ key: 'ui-and-features' }}
-      class="button instructions"
+      class="button instructions mainsection"
       id="ui-and-features-button"
       href="learnmore/#ui-and-features">
       <div class="icon lightbulb-on">
@@ -369,7 +260,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'issues-and-gotchas' }}
       in:receive={{ key: 'issues-and-gotchas' }}
-      class="button instructions"
+      class="button instructions mainsection"
       id="issues-and-gotchas-button"
       href="learnmore/#issues-and-gotchas">
       <div class="icon exclamation-triangle">
@@ -382,7 +273,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'development-thoughts' }}
       in:receive={{ key: 'development-thoughts' }}
-      class="button instructions"
+      class="button instructions mainsection"
       id="development-thoughts-button"
       href="learnmore/#development-thoughts">
       <div class="icon construction">

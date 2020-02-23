@@ -15,40 +15,17 @@
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
   import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
-  let log1 = (console.todo = function(msg, obj) {
-    console.log(
-      ` %c%s%s%s`,
-      `color: black; background-color: rgba(55,75,155,.25); padding: 0.5rem;`,
-      `–`,
-      msg,
-      `–`,
-      obj
-    );
-  });
-  let log2 = (console.todo = function(msg, obj) {
-    console.log(
-      ` %c%s%s%s`,
-      `color: black; background-color: rgba(155,75,105,.25); padding: 0.5rem;`,
-      `–`,
-      msg,
-      `–`,
-      obj
-    );
-  });
+
   onMount(async () => {
-    // let body = document.getElementsByTagName("body");
-    log1(`InstructionsMenu onMount`);
-    // watchForScroll("onMount")
+
   });
 
   function watchForScroll(e) {
     console.log(`watchForScroll(e) `, e);
-    let mainNavLinks = document.querySelectorAll("a.instructions");
-    let mainSections = document.querySelectorAll("main section");
+    let subNavLinks = document.querySelectorAll("a.subsection");
     let lastId;
     let cur = [];
-    log1(`InstructionsMenu onMount collections: mainNavLinks `, mainNavLinks);
-    log1(`InstructionsMenu onMount collections: mainSections `, mainSections);
+    console.log(`InstructionsMenu onMount collections: subNavLinks `, subNavLinks);
     // This should probably be throttled.
     // Especially because it triggers during smooth scrolling.
     // https://lodash.com/docs/4.17.10#throttle
@@ -61,18 +38,18 @@
     // window.addEventListener("scroll", event => {
     let fromTop = window.scrollY;
 
-    mainNavLinks.forEach(link => {
+    subNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
-      log2(`fromTop (window.scrollY): ${fromTop}`);
-      log2(`section.offsetTop: ${section.offsetTop}`);
-      log2(`section.offsetHeight: ${section.offsetHeight}`);
+      console.log(`fromTop (window.scrollY): ${fromTop}`);
+      console.log(`section.offsetTop: ${section.offsetTop}`);
+      console.log(`section.offsetHeight: ${section.offsetHeight}`);
       if (
         section.offsetTop <= fromTop &&
         section.offsetTop + section.offsetHeight > fromTop
       ) {
         link.classList.add("active");
-        log1(`inside the scroll watched, we have a matching link  `, link);
-        log1(`inside the scroll watched, we have a matching section `, section);
+        console.log(`inside the scroll watched, we have a matching link  `, link);
+        console.log(`inside the scroll watched, we have a matching section `, section);
       } else {
         link.classList.remove("active");
       }
@@ -80,53 +57,8 @@
     // });
   }
 
-  function enter(e) {
-    let svg = e.target.firstChild;
-    log1(`enter() e `, svg);
-    svg.classList.toggle("active");
-  }
-  function leave(e) {
-    let svg = e.target.firstChild;
-    log1(`leave() e `, svg);
-    svg.classList.toggle("active");
-  }
-  function findTargetByNodeName(el, soughtNodeName) {
-    let node = el.nodeName;
-    if (node !== soughtNodeName) {
-      log2(`This is not the node you are looking for`, node);
-      el = el.parentElement;
-      findTargetByNodeName(el, soughtNodeName);
-    }
-    node = el.nodeName;
-    log2(`returning from findTargetByNodeName(el, soughtNodeName) `, el);
-    if (node !== soughtNodeName) {
-      log2(`This is not the node you are looking for`, node);
-      el = el.parentElement;
-      findTargetByNodeName(el, soughtNodeName);
-      // el.parentElement.classList.toggle("active");
-    }
-    return el;
-  }
-
   function setActive(e) {
     console.log(`setActive function deactivated`);
-
-    //   let el = e.target;
-    //   let navs = document.querySelectorAll(".button.instructions");
-    //   log1(`all instructions nav buttons `, navs);
-    //   navs.forEach(nav => {
-    //     nav.classList.remove("active");
-    //   });
-    //   let node = el.nodeName;
-    //   let soughtNodeName = "A";
-    //   el = findTargetByNodeName(el, soughtNodeName);
-    //   node = el.nodeName;
-    //   if (node !== "A") {
-    //     log1(`This is not the node you are looking for`, node);
-    //     el = findTargetByNodeName(el, soughtNodeName);
-    //   } else {
-    //     el.classList.add("active");
-    //   }
   }
 </script>
 
@@ -146,35 +78,8 @@
           justify-content: center;
           position: relative;
           z-index: 101;
-          // top: 10px;
           width: auto;
-          // &:after {
-          //   content: "";
-          //   position: absolute;
-          //   width: calc(100% - 20px);
-          //   height: 0;
-          //   border-bottom: 10px solid darkorange;
-          //   border-left: 10px solid rgba(0, 0, 0, 0);
-          //   border-right: 10px solid rgba(0, 0, 0, 0);
-          //   border-top: 10px solid rgba(0, 0, 0, 0);
-          //   top: -20px;
-          //   z-index: 1;
-          // }
-          // &:before {
-          //   content: "";
-          //   position: absolute;
-          //   width: calc(100% - 20px);
-          //   height: 0;
-          //   border-bottom: 10px solid rgba(0, 0, 0, 0.5);
-          //   border-left: 10px solid rgba(0, 0, 0, 0);
-          //   border-right: 10px solid rgba(0, 0, 0, 0);
-          //   border-top: 10px solid rgba(0, 0, 0, 0);
-          //   top: -20px;
-          //   z-index: 2;
-          // }
         }
-        // background: black;
-        // border-bottom: 10px solid #1a1a1a;
         & a {
           &.button {
             &.instructions {
@@ -192,6 +97,9 @@
               color: white;
               font-size: .85rem;
               text-transform: uppercase;
+              &.active {
+
+              }
               & svg {
                 color: orange;
                 width: 1rem;
@@ -212,10 +120,10 @@
             }
           }
         }
-        & a.button.instructions.active {
+        & a.button.instructions.subsection.active {
           color: white;
-          // border-bottom: 2px solid orange !important;
-          border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
+          outline: 2px solid orange;
+          // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
           background: #1a1a1a;
         }
         & .icon-wrapper {
@@ -357,7 +265,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'how-to-play' }}
       in:receive={{ key: 'how-to-play' }}
-      class="button instructions"
+      class="button instructions subsection"
       id="how-to-play-winning"
       href="learnmore/#how-to-play_winning">
       <div class="icon swords">
@@ -370,7 +278,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'ui-and-features' }}
       in:receive={{ key: 'ui-and-features' }}
-      class="button instructions"
+      class="button instructions subsection"
       id="how-to-play-gameplay"
       href="learnmore/#how-to-play_gameplay">
       <div class="icon lightbulb-on">
@@ -383,7 +291,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'issues-and-gotchas' }}
       in:receive={{ key: 'issues-and-gotchas' }}
-      class="button instructions"
+      class="button instructions subsection"
       id="how-to-play-settings"
       href="learnmore/#how-to-play_settings">
       <div class="icon exclamation-triangle">
@@ -396,7 +304,7 @@
       on:click={e => setActive(e)}
       out:send={{ key: 'development-thoughts' }}
       in:receive={{ key: 'development-thoughts' }}
-      class="button instructions"
+      class="button instructions subsection"
       id="how-to-play-strategies"
       href="learnmore/#how-to-play_strategies">
       <div class="icon construction">

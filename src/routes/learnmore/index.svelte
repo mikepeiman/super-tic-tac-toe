@@ -30,16 +30,28 @@
 
   function watchForScroll() {
     // console.log(`watchForScroll(e) `, e);
-    let mainNavLinks = document.querySelectorAll("a.instructions");
-    let mainSections = document.querySelectorAll("main section");
+    let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
+    let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
+    let positionAdjustment = 250;
     let cur = [];
     let fromTop = window.scrollY;
     mainNavLinks.forEach(link => {
       let section = document.querySelector(link.hash);
       if (
-        section.offsetTop <= fromTop + 250 &&
-        section.offsetTop + section.offsetHeight > fromTop + 250
+        section.offsetTop <= fromTop + positionAdjustment &&
+        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment
+      ) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+    subNavLinks.forEach(link => {
+      let section = document.querySelector(link.hash);
+      if (
+        section.offsetTop <= fromTop + positionAdjustment &&
+        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment
       ) {
         link.classList.add("active");
       } else {
