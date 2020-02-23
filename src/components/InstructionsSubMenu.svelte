@@ -15,7 +15,7 @@
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
   import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
-  export let isHowToPlay, isFeatures, isIssues, isRoadmap;
+  export let currentSection;
   let submenus = [
     {
       name: "GamePlay",
@@ -42,20 +42,20 @@
       name: "Features",
       sections: [
         {
-          name: "winning",
-          url: "/learnmore#features_winning"
+          name: "features1",
+          url: "/learnmore#features_features1"
         },
         {
-          name: "gameplay",
-          url: "/learnmore#features_gameplay"
+          name: "features2",
+          url: "/learnmore#features_features2"
         },
         {
-          name: "settings",
-          url: "/learnmore#features_settings"
+          name: "features3",
+          url: "/learnmore#features_features3"
         },
         {
-          name: "strategies",
-          url: "/learnmore#features_strategies"
+          name: "features4",
+          url: "/learnmore#features_features4"
         }
       ]
     },
@@ -63,20 +63,20 @@
       name: "Issues",
       sections: [
         {
-          name: "winning",
-          url: "/learnmore#issues_winning"
+          name: "issues1",
+          url: "/learnmore#issues_issues1"
         },
         {
-          name: "gameplay",
-          url: "/learnmore#issues_gameplay"
+          name: "issues2",
+          url: "/learnmore#issues_issues2"
         },
         {
-          name: "settings",
-          url: "/learnmore#issues_settings"
+          name: "issues3",
+          url: "/learnmore#issues_issues3"
         },
         {
-          name: "strategies",
-          url: "/learnmore#issues_strategies"
+          name: "issues4",
+          url: "/learnmore#issues_issues4"
         }
       ]
     },
@@ -84,24 +84,45 @@
       name: "Roadmap",
       sections: [
         {
-          name: "winning",
-          url: "/learnmore#roadmap_winning"
+          name: "roadmap",
+          url: "/learnmore#roadmap_1"
         },
         {
-          name: "gameplay",
-          url: "/learnmore#roadmap_gameplay"
+          name: "Roadmap2",
+          url: "/learnmore#roadmap_2"
         },
         {
-          name: "settings",
-          url: "/learnmore#roadmap_settings"
+          name: "Roadmap3",
+          url: "/learnmore#roadmap_3"
         },
         {
-          name: "strategies",
-          url: "/learnmore#roadmap_strategies"
+          name: "Roadmap4",
+          url: "/learnmore#roadmap_4"
         }
       ]
     }
   ];
+
+  $: {
+    if(typeof window !== "undefined") {
+      console.log(`reactive logging currentSection ${currentSection}`)
+      let submenuContainer = document.querySelector(".link-sub-wrapper");
+      console.log(`reactive logging submenuContainer `, submenuContainer)
+      if (currentSection === 0) {
+        console.log(`reactive logging currentSection matches 0: ${currentSection}`)
+        submenuContainer.style = "justify-content: flex-start;";
+      } else if (currentSection === 1) {
+        console.log(`reactive logging currentSection matches 1: ${currentSection}`)
+        submenuContainer.style = "justify-content: flex-end;";
+      } else if (currentSection === 2) {
+        console.log(`reactive logging currentSection matches 2: ${currentSection}`)
+        submenuContainer.style = "justify-content: center;";
+      } else if (currentSection === 3) {
+        console.log(`reactive logging currentSection matches 3: ${currentSection}`)
+        submenuContainer.style = "justify-content: space-between;";
+      }
+    }
+  }
 
   onMount(async () => {});
 
@@ -160,19 +181,29 @@
   :global(.learn-more-wrapper) {
     & .instructions-menu-wrapper {
       &.submenu {
-        display: flex;
+        display: grid;
         justify-content: center;
         top: 3rem;
         position: -webkit-sticky;
         position: fixed;
         width: 100%;
         z-index: 101;
+        grid-template-columns: 16.6vw 1fr 15.6vw;
+        grid-template-areas: ". smenu .";
         & .link-wrapper {
+          grid-area: smenu;
           display: flex;
           justify-content: center;
           position: relative;
           z-index: 101;
-          width: auto;
+          width: 100%;
+          & .link-sub-wrapper {
+            display: flex;
+            height: 2rem;
+            width: 100%;
+            justify-content: center;
+            transition: all 0.25s;
+          }
         }
         & a {
           &.button {
@@ -182,24 +213,41 @@
               margin-right: 0;
               border: none;
               background: #1a1a1a;
-              outline: 2px solid rgba(25, 150, 155, 1);
+              // outline: 2px solid rgba(25, 150, 155, 1);
+              border-bottom: 2px solid orange;
               width: auto;
-              outline-offset: -8px;
+              outline-offset: -7px;
               display: flex;
               justify-content: flex-start;
               align-items: center;
               color: white;
               font-size: 0.85rem;
               text-transform: uppercase;
-              &.active {
+              opacity: 0;
+
+              &.subsection {
+                &.current-section {
+                  opacity: 1;
+                  left: 0;
+                  transition: all 0.125s;
+                }
+                &.active {
+                  color: white;
+                  // outline: 2px solid orange;
+                  background: darkorange;
+                  // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
+                  // border-bottom: 2px solid rgba(25, 150, 155, 1);
+                  transition: all 0.125s;
+                }
               }
+
               & svg {
                 color: orange;
                 width: 1rem;
               }
               &:hover {
-                border: none;
-                outline: 2px solid orange;
+                // border: none;
+                // outline: 2px solid white;
                 box-shadow: none;
                 // outline-offset: -2px;
                 background: #333;
@@ -213,12 +261,8 @@
             }
           }
         }
-        & a.button.instructions.subsection.active {
-          color: white;
-          outline: 2px solid orange;
-          // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
-          background: #1a1a1a;
-        }
+        // & a.button.instructions.subsection.active {
+        // }
         & .icon-wrapper {
           width: 16.6vw;
           height: auto;
@@ -354,20 +398,33 @@
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <div class="link-wrapper">
-    {isHowToPlay} {isFeatures} {isIssues} {isRoadmap}
+    <!-- {isHowToPlay} {isFeatures} {isIssues} {isRoadmap} -->
     {#each submenus as submenu, m}
-      {#if m === 0}
-        {#each submenu.sections as item, i}
-          <a
-            name="{submenu.name}_{item.name}"
-            class="button instructions subsection"
-            id="{submenu.name}_{item.name}"
-            href={item.url}>
-            <div class="icon">
-              <div>{i + 1}: {item.name}</div>
-            </div>
-          </a>
-        {/each}
+      <!-- {#each submenu.sections as item, i}
+        <a
+          name="{submenu.name}_{item.name}"
+          class="button instructions subsection"
+          id="{submenu.name}_{item.name}"
+          href={item.url}>
+          <div class="icon">
+            <div>{i + 1}: {item.name}</div>
+          </div>
+        </a>
+      {/each} -->
+      {#if m === currentSection}
+        <div class="link-sub-wrapper">
+          {#each submenus[m].sections as item, i}
+            <a
+              name="{submenu.name}_{item.name}"
+              class="button instructions subsection current-section"
+              id="{submenu.name}_{item.name}"
+              href={item.url}>
+              <div class="icon">
+                <div>{item.name}</div>
+              </div>
+            </a>
+          {/each}
+        </div>
       {/if}
     {/each}
     <!--  <a

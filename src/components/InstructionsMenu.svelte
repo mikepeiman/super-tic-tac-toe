@@ -17,8 +17,8 @@
 
   onMount(() => {});
 
-  function setActive(e) {
-    console.log(`setActive function deactivated`);
+  function clicked(e) {
+    console.log(`clicked main scrollmenu item ${e.target.id}`, e.target);
   }
 </script>
 
@@ -27,13 +27,15 @@
     & .instructions-menu-wrapper {
       grid-area: menu;
       display: -webkit-box;
-      display: flex;
+      display: grid;
       justify-content: flex-end;
       position: sticky;
       z-index: 101;
       top: 0;
       width: 100%;
       background: #333;
+      grid-template-columns: 16.6vw 1fr 16.6vw;
+      // grid-template-areas: ". smenu .";
       &.submenu {
         grid-area: submenu !important;
       }
@@ -54,8 +56,8 @@
             border-radius: 0;
             margin-right: 0;
             border: none;
-            // border-bottom: 2px solid rgba(0, 0, 0, 0);
-            border-bottom: 2px solid rgba(50, 100, 255, 1);
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
+            // border-bottom: 2px solid rgba(50, 100, 255, 1);
             width: fill-available;
             outline-offset: 0px;
             display: flex;
@@ -83,7 +85,7 @@
       & a.button.instructions.active {
         color: white;
         // border-bottom: 2px solid orange !important;
-        border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
+        // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
         background: #1a1a1a;
       }
       & .icon-wrapper {
@@ -223,6 +225,7 @@
   <a
     out:send={{ key: 'title' }}
     in:receive={{ key: 'title' }}
+    on:click={clicked}
     rel="prefetch"
     class="icon-wrapper"
     href="/">
@@ -232,7 +235,7 @@
   <div class="link-wrapper">
     <a
       name="how-to-play"
-      on:click={e => setActive(e)}
+      on:click={e => clicked(e)}
       out:send={{ key: 'how-to-play' }}
       in:receive={{ key: 'how-to-play' }}
       class="button instructions mainsection"
@@ -245,7 +248,7 @@
     </a>
     <a
       name="features"
-      on:click={e => setActive(e)}
+      on:click={e => clicked(e)}
       out:send={{ key: 'ui-and-features' }}
       in:receive={{ key: 'ui-and-features' }}
       class="button instructions mainsection"
@@ -258,7 +261,7 @@
     </a>
     <a
       name="issues"
-      on:click={e => setActive(e)}
+      on:click={e => clicked(e)}
       out:send={{ key: 'issues-and-gotchas' }}
       in:receive={{ key: 'issues-and-gotchas' }}
       class="button instructions mainsection"
@@ -271,7 +274,7 @@
     </a>
     <a
       name="development"
-      on:click={e => setActive(e)}
+      on:click={e => clicked(e)}
       out:send={{ key: 'development-thoughts' }}
       in:receive={{ key: 'development-thoughts' }}
       class="button instructions mainsection"

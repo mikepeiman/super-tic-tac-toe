@@ -21,11 +21,8 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { throttle } from "./../../utils/_throttle.js";
-  let isHowToPlay = true,
-    isFeatures = false,
-    isIssues = false,
-    isRoadmap = false;
 
+  let currentSection = 0;
   onMount(() => {
     window.addEventListener("scroll", () => {
       throttle(watchForScroll(), 25);
@@ -38,51 +35,57 @@
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
     let positionAdjustment1 = 250;
-    let positionAdjustment2 = 0;
+    let positionAdjustment2 = 300;
     let cur = [];
     let fromTop = window.scrollY;
-    mainNavLinks.forEach(link => {
+    mainNavLinks.forEach((link, i) => {
+      // console.log(`mainNavLinks.forEach link, i ${i}  ${link.hash}`, link);
       let section = document.querySelector(link.hash);
       if (
         section.offsetTop <= fromTop + positionAdjustment1 &&
-        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment1
+        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
       ) {
+        currentSection = i;
         link.classList.add("active");
       } else {
         link.classList.remove("active");
       }
     });
-
-    subNavLinks.forEach(link => {
+    positionAdjustment1 = 0;
+    positionAdjustment2 = 150;
+    subNavLinks.forEach((link, i) => {
+      // console.log(`subNavLinks.forEach link, i ${i} ${link.hash}`, link);
       let section = document.querySelector(link.hash);
-      console.log(`section `, section);
-      console.log(`offsetParent `, section.offsetParent);
+      if (section) {
+        // console.log(`section `, section);
+        // console.log(`offsetParent `, section.offsetParent);
 
-      if (
-        section.offsetTop <= fromTop + positionAdjustment2 &&
-        section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
-      ) {
-        console.log(
-          `section ID ${section.id}  >>>>>>>>> ACTIVE <<<<<<<<<<---------------------`
-        );
-        console.log(
-          `CONDITION: ${section.offsetTop <=
-            fromTop + positionAdjustment2} ||| section.offsetTop  ${
-            section.offsetTop
-          } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop +
-            positionAdjustment2}`
-        );
-        console.log(
-          `CONDITION: ${section.offsetTop + section.offsetHeight >
-            fromTop + positionAdjustment2} ||| section.offsetTop  ${
-            section.offsetTop
-          } + section.offsetHeight ${
-            section.offsetHeight
-          } > fromTop + positionAdjustment2 ${fromTop + positionAdjustment2}`
-        );
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
+        if (
+          section.offsetTop <= fromTop + positionAdjustment1 &&
+          section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
+        ) {
+          // console.log(
+          //   `section ID ${section.id}  >>>>>>>>> ACTIVE <<<<<<<<<<---------------------`
+          // );
+          // console.log(
+          //   `CONDITION: ${section.offsetTop <=
+          //     fromTop + positionAdjustment2} ||| section.offsetTop  ${
+          //     section.offsetTop
+          //   } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop +
+          //     positionAdjustment2}`
+          // );
+          // console.log(
+          //   `CONDITION: ${section.offsetTop + section.offsetHeight >
+          //     fromTop + positionAdjustment2} ||| section.offsetTop  ${
+          //     section.offsetTop
+          //   } + section.offsetHeight ${
+          //     section.offsetHeight
+          //   } > fromTop + positionAdjustment2 ${fromTop + positionAdjustment2}`
+          // );
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
       }
     });
   }
@@ -886,10 +889,7 @@
     </figure>
     <InstructionsMenu />
     <InstructionsSubMenu
-      {isHowToPlay}
-      {isFeatures}
-      {isIssues}
-      {isRoadmap} />
+      {currentSection} />
 
     <main
       class="instructions"
