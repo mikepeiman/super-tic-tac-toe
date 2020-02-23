@@ -27,7 +27,7 @@
     & .instructions-menu-wrapper {
       grid-area: menu;
       display: -webkit-box;
-      display: grid;
+      display: flex;
       justify-content: flex-end;
       position: sticky;
       z-index: 101;

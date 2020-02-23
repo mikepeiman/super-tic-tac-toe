@@ -104,21 +104,29 @@
   ];
 
   $: {
-    if(typeof window !== "undefined") {
-      console.log(`reactive logging currentSection ${currentSection}`)
+    if (typeof window !== "undefined") {
+      console.log(`reactive logging currentSection ${currentSection}`);
       let submenuContainer = document.querySelector(".link-sub-wrapper");
-      console.log(`reactive logging submenuContainer `, submenuContainer)
+      console.log(`reactive logging submenuContainer `, submenuContainer);
       if (currentSection === 0) {
-        console.log(`reactive logging currentSection matches 0: ${currentSection}`)
+        console.log(
+          `reactive logging currentSection matches 0: ${currentSection}`
+        );
         submenuContainer.style = "justify-content: flex-start;";
       } else if (currentSection === 1) {
-        console.log(`reactive logging currentSection matches 1: ${currentSection}`)
+        console.log(
+          `reactive logging currentSection matches 1: ${currentSection}`
+        );
         submenuContainer.style = "justify-content: flex-end;";
       } else if (currentSection === 2) {
-        console.log(`reactive logging currentSection matches 2: ${currentSection}`)
+        console.log(
+          `reactive logging currentSection matches 2: ${currentSection}`
+        );
         submenuContainer.style = "justify-content: center;";
       } else if (currentSection === 3) {
-        console.log(`reactive logging currentSection matches 3: ${currentSection}`)
+        console.log(
+          `reactive logging currentSection matches 3: ${currentSection}`
+        );
         submenuContainer.style = "justify-content: space-between;";
       }
     }
@@ -190,6 +198,8 @@
         z-index: 101;
         grid-template-columns: 16.6vw 1fr 15.6vw;
         grid-template-areas: ". smenu .";
+        background: #1a1a1a;
+        border-bottom: 2px solid orange;
         & .link-wrapper {
           grid-area: smenu;
           display: flex;
@@ -214,7 +224,7 @@
               border: none;
               background: #1a1a1a;
               // outline: 2px solid rgba(25, 150, 155, 1);
-              border-bottom: 2px solid orange;
+              // border-bottom: 2px solid orange;
               width: auto;
               outline-offset: -7px;
               display: flex;
