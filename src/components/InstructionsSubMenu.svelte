@@ -221,14 +221,22 @@
           width: 100%;
 
           & .link-sub-wrapper {
+            opacity: 0;
+            width: 0;
+            pointer-events: none;
             display: flex;
-            height: 2rem;
-            width: 100%;
+            // height: 2rem;
+
             justify-content: flex-start;
             left: 0;
-            transition: all 4.25s;
+            transition: opacity .25s, transform .1s;
             position: relative;
             transform: translateX(0);
+            &.active {
+              opacity: 1;
+              width: 100%;
+              pointer-events: all;
+            }
             &.layout-0 {
               transform: translateX(12.5vw);
               // transition: all 0.25s;
@@ -238,13 +246,15 @@
               // transition: all 0.25s;
             }
             &.layout-2 {
-              justify-content: flex-end;
-              transform: translateX(-30.2vw);
+              // justify-content: flex-end;
+              // transform: translateX(-30.2vw);
+              transform: translateX(48.5vw);
               // transition: all 0.25s;
             }
             &.layout-3 {
-              justify-content: flex-end;
-              transform: translateX(-11.4vw);
+              // justify-content: flex-end;
+              // transform: translateX(-11.4vw);
+              transform: translateX(61.4vw);
               // transition: all 0.25s;
             }
           }
@@ -471,26 +481,26 @@
 </style>
 
 <!-- <svelte:window on:scroll={watchForScroll} /> -->
-<div
-  class="instructions-menu-wrapper submenu"
-  id="scrollmenu-sub">
+<div class="instructions-menu-wrapper submenu" id="scrollmenu-sub">
   <div class="link-wrapper">
     {#each submenus as submenu, m}
-      {#if m === currentSection}
-        <div class="link-sub-wrapper layout-{currentSection}">
-          {#each submenus[m].sections as item, i}
-            <a
-              name="{submenu.name}_{item.name}"
-              class="button instructions subsection current-section"
-              id="{submenu.name}_{item.name}"
-              href={item.url}>
-              <div class="icon">
-                <div>{item.name}</div>
-              </div>
-            </a>
-          {/each}
-        </div>
-      {/if}
+      <!-- {#if m === currentSection} -->
+      <div
+        class:active={m === currentSection}
+        class="link-sub-wrapper layout-{m}">
+        {#each submenus[m].sections as item, i}
+          <a
+            name="{submenu.name}_{item.name}"
+            class="button instructions subsection current-section"
+            id="{submenu.name}_{item.name}"
+            href={item.url}>
+            <div class="icon">
+              <div>{item.name}</div>
+            </div>
+          </a>
+        {/each}
+      </div>
+      <!-- {/if} -->
     {/each}
   </div>
 </div>
