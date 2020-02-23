@@ -21,7 +21,10 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { throttle } from "./../../utils/_throttle.js";
-
+  let isHowToPlay = true,
+    isFeatures = false,
+    isIssues = false,
+    isRoadmap = false;
 
   onMount(() => {
     window.addEventListener("scroll", () => {
@@ -66,7 +69,8 @@
           `CONDITION: ${section.offsetTop <=
             fromTop + positionAdjustment2} ||| section.offsetTop  ${
             section.offsetTop
-          } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop + positionAdjustment2}`
+          } <= fromTop ${fromTop} + positionAdjustment2 ${positionAdjustment2} = ${fromTop +
+            positionAdjustment2}`
         );
         console.log(
           `CONDITION: ${section.offsetTop + section.offsetHeight >
@@ -881,7 +885,11 @@
       <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
     <InstructionsMenu />
-    <InstructionsSubMenu />
+    <InstructionsSubMenu
+      {isHowToPlay}
+      {isFeatures}
+      {isIssues}
+      {isRoadmap} />
 
     <main
       class="instructions"

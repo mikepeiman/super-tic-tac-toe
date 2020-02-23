@@ -15,6 +15,7 @@
   import { faGamepadAlt } from "@fortawesome/pro-solid-svg-icons";
   import { faGameBoard } from "@fortawesome/pro-solid-svg-icons";
 
+  export let isHowToPlay, isFeatures, isIssues, isRoadmap;
   let submenus = [
     {
       name: "GamePlay",
@@ -353,18 +354,21 @@
   out:send={{ key: 'learn-more' }}
   in:receive={{ key: 'learn-more' }}>
   <div class="link-wrapper">
-    {#each submenus as submenu}
-      {#each submenu.sections as item, i}
-        <a
-          name="{submenu.name}_{item.name}"
-          class="button instructions subsection"
-          id="{submenu.name}_{item.name}"
-          href={item.url}>
-          <div class="icon">
-            <div>{item.name}</div>
-          </div>
-        </a>
-      {/each}
+    {isHowToPlay} {isFeatures} {isIssues} {isRoadmap}
+    {#each submenus as submenu, m}
+      {#if m === 0}
+        {#each submenu.sections as item, i}
+          <a
+            name="{submenu.name}_{item.name}"
+            class="button instructions subsection"
+            id="{submenu.name}_{item.name}"
+            href={item.url}>
+            <div class="icon">
+              <div>{i + 1}: {item.name}</div>
+            </div>
+          </a>
+        {/each}
+      {/if}
     {/each}
     <!--  <a
       name="how-to-play"
