@@ -356,6 +356,15 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      margin-top: -16vh;
+      &::before {
+        display: block;
+        content: "";
+        margin-top: 0vh;
+        height: 16vh;
+        visibility: hidden;
+        pointer-events: none;
+      }
       & .mixed-content-block,
       & .text-content-block {
         display: grid;

@@ -359,7 +359,7 @@
       in:receive={{ key: 'how-to-play' }}
       class="button instructions"
       id="how-to-play-winning"
-      href="learnmore/#how-to-play">
+      href="learnmore/#how-to-play_winning">
       <div class="icon swords">
         <!-- <Fa size="lg" icon={faSwords} color="currentColor" /> -->
         <div>Winning</div>
@@ -372,7 +372,7 @@
       in:receive={{ key: 'ui-and-features' }}
       class="button instructions"
       id="how-to-play-gameplay"
-      href="learnmore/#ui-and-features">
+      href="learnmore/#how-to-play_gameplay">
       <div class="icon lightbulb-on">
         <!-- <Fa size="lg" icon={faLightbulbOn} color="currentColor" /> -->
         <div>Gameplay</div>
@@ -385,7 +385,7 @@
       in:receive={{ key: 'issues-and-gotchas' }}
       class="button instructions"
       id="how-to-play-settings"
-      href="learnmore/#issues-and-gotchas">
+      href="learnmore/#how-to-play_settings">
       <div class="icon exclamation-triangle">
         <!-- <Fa size="lg" icon={faExclamationTriangle} color="currentColor" /> -->
         <div>Settings</div>
@@ -398,7 +398,7 @@
       in:receive={{ key: 'development-thoughts' }}
       class="button instructions"
       id="how-to-play-strategies"
-      href="learnmore/#development-thoughts">
+      href="learnmore/#how-to-play_strategies">
       <div class="icon construction">
         <!-- <Fa size="lg" icon={faConstruction} color="currentColor" /> -->
         <div>Strategies</div>

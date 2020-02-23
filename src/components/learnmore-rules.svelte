@@ -4,15 +4,27 @@
 
 <h2 class="heading">HOW TO PLAY</h2>
 <div class="text-content">
-  <div class="subsection">
-    <h3>How It Works</h3>
+  <div class="subsection" id="how-to-play_winning">
+    <h3>Winning The Game</h3>
     <div class="text-content-block" id="two-setup-methods">
       <h4>Scoring Points</h4>
       <div class="text-sub-block">
         <span class="orange bordered">
           The player with the most points at the end wins!
         </span>
-        <p>Play a number of moves in a straight line to score points. This number is determined in game settings.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection" id="how-to-play_gameplay">
+    <h3>Gameplay Mechanics</h3>
+    <div class="text-content-block" id="two-setup-methods">
+      <h4>Playing Moves</h4>
+      <div class="text-sub-block">
+        <p>
+          Play a number of moves in a straight line to score points. This number
+          is determined in game settings.
+        </p>
         <p>
           Just like in tiny-tic-tac-toe, lines can be in any direction: vertical
           <img class="icon" src="tictactoe-vertical.png" alt="" />
@@ -40,8 +52,8 @@
             These lines are each partial line bonuses; they are calculated as
             (linebonus / (longer / shorter)). So, in this example with a
             linebonus set at 8, with 8 columns and 4 rows, that means the
-            partial bonus is (8 / (8 / 4)) === (8 / 2) === 4 for each of these lines (yes, I chose
-            these figures for easy math)
+            partial bonus is (8 / (8 / 4)) === (8 / 2) === 4 for each of these
+            lines (yes, I chose these figures for easy math)
           </p>
           <img src="sttt-4x8-linebonus-short (1).png" alt="" />
         </div>
@@ -74,10 +86,7 @@
       <img src="game-settings-config-choice.png" alt="" />
     </div>
   </div>
-  <div class="subsection">
-    <h3>How To Win</h3>
-  </div>
-  <div class="subsection">
+  <div class="subsection"  id="how-to-play_settings">
     <h3>Game Setup</h3>
     <div class="text-content-block" id="two-setup-methods">
       <h4>Choose between two setup methods</h4>
@@ -143,8 +152,8 @@
       <img src="game-settings-config-choice.png" alt="" />
     </div>
   </div>
-  <div class="subsection">
-    <h3>Gameplay Mechanics</h3>
+  <div class="subsection" id="how-to-play_strategies">
+    <h3>Strategies</h3>
     <div class="mixed-content-block">
       <h4>Choose Which Method To Setup Your Game</h4>
       <p>
