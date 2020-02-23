@@ -201,15 +201,15 @@
   :global(.learn-more-wrapper) {
     & .instructions-menu-wrapper {
       &.submenu {
-        display: grid;
+        display: flex;
         justify-content: center;
         top: 3rem;
         position: -webkit-sticky;
         position: fixed;
         width: 100%;
         z-index: 101;
-        grid-template-columns: 16.6vw 1fr 15.6vw;
-        grid-template-areas: ". smenu .";
+        // grid-template-columns: 16.6vw 1fr 15.6vw;
+        // grid-template-areas: ". smenu .";
         background: #1a1a1a;
         border-bottom: 2px solid orange;
         & .link-wrapper {
@@ -219,23 +219,29 @@
           position: relative;
           z-index: 101;
           width: 100%;
+
           & .link-sub-wrapper {
             display: flex;
             height: 2rem;
             width: 100%;
             justify-content: center;
             transition: all 0.25s;
-            &.layout-start {
+            position: relative;
+            &.layout-0 {
               justify-content: flex-start;
+              left: 12.6vw;
             }
-            &.layout-end {
+            &.layout-1 {
+              justify-content: flex-start;
+              left: 31.2vw;
+            }
+            &.layout-2 {
               justify-content: flex-end;
+              right: 30.2vw;
             }
-            &.layout-center {
-              justify-content: center;
-            }
-            &.layout-space {
-              justify-content: space-around;
+            &.layout-3 {
+              justify-content: flex-end;
+              right: 10.6vw;
             }
           }
         }
@@ -446,7 +452,7 @@
         </a>
       {/each} -->
       {#if m === currentSection}
-        <div class="link-sub-wrapper {currentSection} {setStyle()}">
+        <div class="link-sub-wrapper layout-{currentSection}">
           {#each submenus[m].sections as item, i}
             <a
               name="{submenu.name}_{item.name}"

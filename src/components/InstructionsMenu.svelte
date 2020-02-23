@@ -34,7 +34,7 @@
       top: 0;
       width: 100%;
       background: #333;
-      grid-template-columns: 16.6vw 1fr 16.6vw;
+      // grid-template-columns: 16.6vw 1fr 16.6vw;
       // grid-template-areas: ". smenu .";
       &.submenu {
         grid-area: submenu !important;
