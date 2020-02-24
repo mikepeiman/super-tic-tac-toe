@@ -226,35 +226,39 @@
             pointer-events: none;
             display: flex;
             // height: 2rem;
-
-            justify-content: flex-start;
+            
+            justify-content: center;
             left: 0;
-            transition: opacity .25s, transform .1s;
+            transition: all .5s;
             position: relative;
             transform: translateX(0);
+            // transform: matrix(0, -1, 0, 0, 1, 0);
+            transform: matrix(1, 0, 0, -1, 0, 0);
+            backface-visibility: hidden;
             &.active {
               opacity: 1;
               width: 100%;
               pointer-events: all;
+              transform: matrix(1, 0, 0, 1, 0, 0);
             }
             &.layout-0 {
-              transform: translateX(12.5vw);
+              // transform: translateX(12.5vw);
               // transition: all 0.25s;
             }
             &.layout-1 {
-              transform: translateX(31.2vw);
+              // transform: translateX(31.2vw);
               // transition: all 0.25s;
             }
             &.layout-2 {
               // justify-content: flex-end;
               // transform: translateX(-30.2vw);
-              transform: translateX(48.5vw);
+              // transform: translateX(48.5vw);
               // transition: all 0.25s;
             }
             &.layout-3 {
               // justify-content: flex-end;
               // transform: translateX(-11.4vw);
-              transform: translateX(61.4vw);
+              // transform: translateX(61.4vw);
               // transition: all 0.25s;
             }
           }
