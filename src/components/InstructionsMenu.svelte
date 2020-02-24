@@ -253,7 +253,7 @@
       in:receive={{ key: 'ui-and-features' }}
       class="button instructions mainsection"
       id="ui-and-features-button"
-      href="learnmore/#ui-and-features">
+      href="learnmore/#features">
       <div class="icon lightbulb-on">
         <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
         <div>UI & Features</div>
@@ -266,7 +266,7 @@
       in:receive={{ key: 'issues-and-gotchas' }}
       class="button instructions mainsection"
       id="issues-and-gotchas-button"
-      href="learnmore/#issues-and-gotchas">
+      href="learnmore/#issues">
       <div class="icon exclamation-triangle">
         <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
         <div>Issues</div>
@@ -279,7 +279,7 @@
       in:receive={{ key: 'development-thoughts' }}
       class="button instructions mainsection"
       id="development-thoughts-button"
-      href="learnmore/#development-thoughts">
+      href="learnmore/#development">
       <div class="icon construction">
         <Fa size="lg" icon={faConstruction} color="currentColor" />
         <div>Development</div>

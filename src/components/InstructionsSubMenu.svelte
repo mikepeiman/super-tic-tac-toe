@@ -81,23 +81,23 @@
       ]
     },
     {
-      name: "Roadmap",
+      name: "development",
       sections: [
         {
-          name: "roadmap",
-          url: "/learnmore#roadmap_1"
+          name: "development",
+          url: "/learnmore#development_1"
         },
         {
-          name: "Roadmap2",
-          url: "/learnmore#roadmap_2"
+          name: "development2",
+          url: "/learnmore#development_2"
         },
         {
-          name: "Roadmap3",
-          url: "/learnmore#roadmap_3"
+          name: "development3",
+          url: "/learnmore#development_3"
         },
         {
-          name: "Roadmap4",
-          url: "/learnmore#roadmap_4"
+          name: "development4",
+          url: "/learnmore#development_4"
         }
       ]
     }

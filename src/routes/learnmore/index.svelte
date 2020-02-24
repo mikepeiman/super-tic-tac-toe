@@ -21,22 +21,54 @@
   import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
   import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
   import { throttle } from "./../../utils/_throttle.js";
-
+  let sectionTops = [],
+    sum;
   let currentSection = 0;
   onMount(() => {
     window.addEventListener("scroll", () => {
       throttle(watchForScroll(), 25);
     });
+    initSectionHeightsArray();
   });
 
+  function initSectionHeightsArray() {
+    let subNavLinks = document.querySelectorAll("a.instructions.subsection");
+    let fromTop = window.scrollY;
+    let sectionHeights = [];
+
+    let positionAdjustment1 = 0;
+    let positionAdjustment2 = 150;
+    subNavLinks.forEach((link, i) => {
+      let section = document.querySelector(link.hash);
+      if (section) {
+        sectionHeights.push(section.offsetHeight);
+        // console.table('each link', link.href, 'i', i, 'section', section.id)
+        // console.table(section.offsetTop, ' <=', fromTop + positionAdjustment1, ' --- (section.offsetTop',section.offsetTop,' fromTop', fromTop, '+', positionAdjustment1, ')')
+        // console.table(section.offsetTop + section.offsetHeight, ' > ', fromTop + positionAdjustment2, ' --- (section.offsetTop', section.offsetTop, '+ section.offsetHeight ', section.offsetHeight, ' > fromTop', fromTop, '+', positionAdjustment2, ')')
+        if (
+          section.offsetTop <= fromTop + positionAdjustment1 &&
+          section.offsetTop + section.offsetHeight >
+            fromTop + positionAdjustment2
+        ) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      }
+    });
+    console.log(`sectionHeights array `, sectionHeights);
+
+    sectionTops = sectionHeights.map(val => (sum = (sum || 0) + val));
+    console.log(`sectionTops array `, sectionTops);
+  }
   function watchForScroll() {
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
     let positionAdjustment1 = 250;
     let positionAdjustment2 = 300;
-    let cur = [];
     let fromTop = window.scrollY;
+    let sectionHeights = [];
     mainNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
       if (
@@ -49,7 +81,7 @@
         link.classList.remove("active");
       }
     });
-    positionAdjustment1 = 0;
+     positionAdjustment1 = 0;
     positionAdjustment2 = 150;
     subNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
@@ -62,8 +94,51 @@
         } else {
           link.classList.remove("active");
         }
+    //   }
+    // });
+        //  ***************************************
+        // if (
+        //   section.offsetTop <= fromTop + positionAdjustment1 &&
+        //   section.offsetTop + section.offsetHeight >
+        //     fromTop + positionAdjustment2
+        // ) {
+        //           console.table("each link", link.href, "i", i, "section", section.id);
+        // console.table(
+        //   section.offsetTop,
+        //   " <=",
+        //   fromTop + positionAdjustment1,
+        //   " --- (section.offsetTop",
+        //   section.offsetTop,
+        //   " fromTop",
+        //   fromTop,
+        //   "+",
+        //   positionAdjustment1,
+        //   ")"
+        // );
+        // console.table(
+        //   section.offsetTop + section.offsetHeight,
+        //   " > ",
+        //   fromTop + positionAdjustment2,
+        //   " --- (section.offsetTop",
+        //   section.offsetTop,
+        //   "+ section.offsetHeight ",
+        //   section.offsetHeight,
+        //   " > fromTop",
+        //   fromTop,
+        //   "+",
+        //   positionAdjustment2,
+        //   ")"
+        // );
+        //   link.classList.add("active");
+        // } else {
+        //   link.classList.remove("active");
+        // }
       }
     });
+    // console.log(`sectionHeights array `, sectionHeights)
+    // let sectionTops = [], sum;
+    // sectionTops = sectionHeights.map(val =>  sum = (sum || 0) + val )
+    // console.log(`sectionTops array `, sectionTops)
   }
 
   function testOnscroll() {
@@ -864,8 +939,7 @@
       <!-- <figcaption>A screenshot of a completed game</figcaption> -->
     </figure>
     <InstructionsMenu />
-    <InstructionsSubMenu
-      {currentSection} />
+    <InstructionsSubMenu {currentSection} />
 
     <main
       class="instructions"
@@ -884,19 +958,19 @@
         </div>
       </section> -->
 
-      <section id="ui-and-features" class="instructions-section">
+      <section id="features" class="instructions-section">
         <div class="section-wrapper">
           <Section3 />
         </div>
       </section>
 
-      <section id="issues-and-gotchas" class="instructions-section">
+      <section id="issues" class="instructions-section">
         <div class="section-wrapper">
           <Section4 />
         </div>
       </section>
 
-      <section id="development-thoughts" class="instructions-section">
+      <section id="development" class="instructions-section">
         <div class="section-wrapper">
           <Section5 />
         </div>
