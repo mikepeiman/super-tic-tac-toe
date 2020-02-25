@@ -22,19 +22,19 @@
       sections: [
         {
           name: "winning",
-          url: "/learnmore#how-to-play_winning"
+          url: "learnmore#how-to-play_winning"
         },
         {
           name: "gameplay",
-          url: "/learnmore#how-to-play_gameplay"
+          url: "learnmore#how-to-play_gameplay"
         },
         {
           name: "settings",
-          url: "/learnmore#how-to-play_settings"
+          url: "learnmore#how-to-play_settings"
         },
         {
           name: "strategies",
-          url: "/learnmore#how-to-play_strategies"
+          url: "learnmore#how-to-play_strategies"
         }
       ]
     },
@@ -43,19 +43,19 @@
       sections: [
         {
           name: "features1",
-          url: "/learnmore#features_features1"
+          url: "learnmore#features_features1"
         },
         {
           name: "features2",
-          url: "/learnmore#features_features2"
+          url: "learnmore#features_features2"
         },
         {
           name: "features3",
-          url: "/learnmore#features_features3"
+          url: "learnmore#features_features3"
         },
         {
           name: "features4",
-          url: "/learnmore#features_features4"
+          url: "learnmore#features_features4"
         }
       ]
     },
@@ -64,19 +64,19 @@
       sections: [
         {
           name: "issues1",
-          url: "/learnmore#issues_issues1"
+          url: "learnmore#issues_issues1"
         },
         {
           name: "issues2",
-          url: "/learnmore#issues_issues2"
+          url: "learnmore#issues_issues2"
         },
         {
           name: "issues3",
-          url: "/learnmore#issues_issues3"
+          url: "learnmore#issues_issues3"
         },
         {
           name: "issues4",
-          url: "/learnmore#issues_issues4"
+          url: "learnmore#issues_issues4"
         }
       ]
     },
@@ -85,19 +85,19 @@
       sections: [
         {
           name: "development",
-          url: "/learnmore#development_1"
+          url: "learnmore#development_1"
         },
         {
           name: "development2",
-          url: "/learnmore#development_2"
+          url: "learnmore#development_2"
         },
         {
           name: "development3",
-          url: "/learnmore#development_3"
+          url: "learnmore#development_3"
         },
         {
           name: "development4",
-          url: "/learnmore#development_4"
+          url: "learnmore#development_4"
         }
       ]
     }
@@ -226,10 +226,10 @@
             pointer-events: none;
             display: flex;
             // height: 2rem;
-            
+
             justify-content: center;
             left: 0;
-            transition: all .5s;
+            transition: all 0.5s;
             position: relative;
             transform: translateX(0);
             // transform: matrix(0, -1, 0, 0, 1, 0);
@@ -495,7 +495,8 @@
         {#each submenus[m].sections as item, i}
           <a
             name="{submenu.name}_{item.name}"
-            class="button instructions subsection current-section"
+            data-id={i}
+            class="scroll button instructions subsection current-section"
             id="{submenu.name}_{item.name}"
             href={item.url}>
             <div class="icon">

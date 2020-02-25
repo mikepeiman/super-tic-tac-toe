@@ -235,10 +235,9 @@
   <div class="link-wrapper">
     <a
       name="how-to-play"
-      on:click={e => clicked(e)}
       out:send={{ key: 'how-to-play' }}
       in:receive={{ key: 'how-to-play' }}
-      class="button instructions mainsection"
+      class="scroll button instructions mainsection"
       id="how-to-play-button"
       href="learnmore/#how-to-play">
       <div class="icon swords">
@@ -248,10 +247,9 @@
     </a>
     <a
       name="features"
-      on:click={e => clicked(e)}
       out:send={{ key: 'ui-and-features' }}
       in:receive={{ key: 'ui-and-features' }}
-      class="button instructions mainsection"
+      class="scroll button instructions mainsection"
       id="ui-and-features-button"
       href="learnmore/#features">
       <div class="icon lightbulb-on">
@@ -261,10 +259,9 @@
     </a>
     <a
       name="issues"
-      on:click={e => clicked(e)}
       out:send={{ key: 'issues-and-gotchas' }}
       in:receive={{ key: 'issues-and-gotchas' }}
-      class="button instructions mainsection"
+      class="scroll button instructions mainsection"
       id="issues-and-gotchas-button"
       href="learnmore/#issues">
       <div class="icon exclamation-triangle">
@@ -274,10 +271,9 @@
     </a>
     <a
       name="development"
-      on:click={e => clicked(e)}
       out:send={{ key: 'development-thoughts' }}
       in:receive={{ key: 'development-thoughts' }}
-      class="button instructions mainsection"
+      class="scroll button instructions mainsection"
       id="development-thoughts-button"
       href="learnmore/#development">
       <div class="icon construction">
@@ -290,7 +286,7 @@
     out:send={{ key: 'play-now' }}
     in:receive={{ key: 'play-now' }}
     rel="prefetch"
-    class="button"
+    class="scroll button"
     id="play-now"
     href="tictactoe/">
     <Fa size="lg" icon={faGameBoard} color="currentColor" />

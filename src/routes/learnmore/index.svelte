@@ -23,43 +23,124 @@
   import { throttle } from "./../../utils/_throttle.js";
   let sectionTops = [],
     sum;
+
+  let mainSectionTops = [],
+    subSectionTops = [];
   let currentSection = 0;
   onMount(() => {
+    if (window.location.hash) {
+      var hash = window.location.hash;
+      hash = hash.slice(1);
+      let body = document.getElementsByTagName("body");
+      let el = document.getElementById(`${hash}`);
+      let elTop = el.offsetTop;
+      console.log(`WINDOW LOCATION HASH ${hash} top: ${elTop}`, el, body);
+
+      window.scroll({
+        top: elTop,
+        behavior: "auto"
+      });
+      // window.scrollY = elTop
+    }
+
     window.addEventListener("scroll", () => {
-      throttle(watchForScroll(), 25);
+      // throttle(watchForScroll(), 25);
+      scrollThrottle(watchForScroll(), 10);
     });
     initSectionHeightsArray();
+    scrollTo();
   });
+
+  function simpleScroll(e) {
+    console.log(`simpleScroll(e) target top  ${e.target.offsetTop}`, e.target);
+    // window.scroll({
+    //   top: elTop,
+    //   behavior: "smooth"
+    // });
+  }
+
+  function scrollTo() {
+    const links = document.querySelectorAll(".scroll");
+    console.log(`scrollTo .scroll anchors: `, links);
+    links.forEach(each => (each.onclick = simpleScroll));
+  }
+
+  function scrollAnchors(e, respond = null) {
+    const distanceToTop = el => Math.floor(el.getBoundingClientRect().top);
+    e.preventDefault();
+    var targetID = respond
+      ? respond.getAttribute("href")
+      : this.getAttribute("href");
+    const targetAnchor = document.querySelector(targetID);
+    if (!targetAnchor) return;
+    const originalTop = distanceToTop(targetAnchor);
+    window.scrollBy({ top: originalTop, left: 0, behavior: "smooth" });
+    const checkIfDone = setInterval(function() {
+      const atBottom =
+        window.innerHeight + window.pageYOffset >=
+        document.body.offsetHeight - 2;
+      if (distanceToTop(targetAnchor) === 0 || atBottom) {
+        targetAnchor.tabIndex = "-1";
+        targetAnchor.focus();
+        window.history.pushState("", "", targetID);
+        clearInterval(checkIfDone);
+      }
+    }, 100);
+  }
+
+function getSectionFromHref(str, a, b) {
+  let mySubString = str.substring(
+    str.lastIndexOf(a) + 1, 
+    str.lastIndexOf(b)
+);
+return mySubString
+}
 
   function initSectionHeightsArray() {
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let fromTop = window.scrollY;
     let sectionHeights = [];
+    let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
 
-    let positionAdjustment1 = 0;
-    let positionAdjustment2 = 150;
-    subNavLinks.forEach((link, i) => {
+    mainNavLinks.forEach((link, i) => {
+      let href = link.href;
+      let str = getSectionFromHref(href, "#", "")
       let section = document.querySelector(link.hash);
       if (section) {
+        let top = section.offsetTop;
+        let id = section.id;
+        mainSectionTops = [
+          ...mainSectionTops,
+          { top: top, id: id, href: href, str: str }
+        ];
+      }
+    });
+    subNavLinks.forEach((link, i) => {
+      let section = document.querySelector(link.hash);
+      let href = link.getAttribute("href");
+      let str = getSectionFromHref(href, "#", "_")
+      let main = mainSectionTops.find(x => x.str === str)
+      if(mainSectionTops.some(x => x.str === str)) {
+        console.log(`found a match for sublink ${href} with parent, main `, main)
+      }
+      if (section) {
         sectionHeights.push(section.offsetHeight);
+        let top = section.offsetTop + main.top;
+        let id = section.id;
+        console.log(`subsection el ${section.id} `, section);
+        console.log(section);
+        console.dir(section);
+        subSectionTops = [...subSectionTops, { top: top, id: id, href: href, str: str }];
         // console.table('each link', link.href, 'i', i, 'section', section.id)
         // console.table(section.offsetTop, ' <=', fromTop + positionAdjustment1, ' --- (section.offsetTop',section.offsetTop,' fromTop', fromTop, '+', positionAdjustment1, ')')
         // console.table(section.offsetTop + section.offsetHeight, ' > ', fromTop + positionAdjustment2, ' --- (section.offsetTop', section.offsetTop, '+ section.offsetHeight ', section.offsetHeight, ' > fromTop', fromTop, '+', positionAdjustment2, ')')
-        if (
-          section.offsetTop <= fromTop + positionAdjustment1 &&
-          section.offsetTop + section.offsetHeight >
-            fromTop + positionAdjustment2
-        ) {
-          link.classList.add("active");
-        } else {
-          link.classList.remove("active");
-        }
       }
     });
     console.log(`sectionHeights array `, sectionHeights);
-
     sectionTops = sectionHeights.map(val => (sum = (sum || 0) + val));
     console.log(`sectionTops array `, sectionTops);
+    console.log(`mainSectionTops array `, mainSectionTops);
+    console.log(`subSectionTops array `, subSectionTops);
   }
   function watchForScroll() {
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
@@ -81,55 +162,57 @@
         link.classList.remove("active");
       }
     });
-     positionAdjustment1 = 0;
+    positionAdjustment1 = 0;
     positionAdjustment2 = 150;
     subNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
       if (section) {
         if (
           section.offsetTop <= fromTop + positionAdjustment1 &&
-          section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2
+          section.offsetTop + section.offsetHeight >
+            fromTop + positionAdjustment2
         ) {
+          console.table("each link", link.href, "i", i, "section", section.id);
+          console.table(
+            section.offsetTop,
+            " <=",
+            fromTop + positionAdjustment1,
+            " --- (section.offsetTop",
+            section.offsetTop,
+            " fromTop",
+            fromTop,
+            "+",
+            positionAdjustment1,
+            ")"
+          );
+          console.table(
+            section.offsetTop + section.offsetHeight,
+            " > ",
+            fromTop + positionAdjustment2,
+            " --- (section.offsetTop",
+            section.offsetTop,
+            "+ section.offsetHeight ",
+            section.offsetHeight,
+            " > fromTop",
+            fromTop,
+            "+",
+            positionAdjustment2,
+            ")"
+          );
           link.classList.add("active");
         } else {
           link.classList.remove("active");
         }
-    //   }
-    // });
+        //   }
+        // });
         //  ***************************************
         // if (
         //   section.offsetTop <= fromTop + positionAdjustment1 &&
         //   section.offsetTop + section.offsetHeight >
         //     fromTop + positionAdjustment2
         // ) {
-        //           console.table("each link", link.href, "i", i, "section", section.id);
-        // console.table(
-        //   section.offsetTop,
-        //   " <=",
-        //   fromTop + positionAdjustment1,
-        //   " --- (section.offsetTop",
-        //   section.offsetTop,
-        //   " fromTop",
-        //   fromTop,
-        //   "+",
-        //   positionAdjustment1,
-        //   ")"
-        // );
-        // console.table(
-        //   section.offsetTop + section.offsetHeight,
-        //   " > ",
-        //   fromTop + positionAdjustment2,
-        //   " --- (section.offsetTop",
-        //   section.offsetTop,
-        //   "+ section.offsetHeight ",
-        //   section.offsetHeight,
-        //   " > fromTop",
-        //   fromTop,
-        //   "+",
-        //   positionAdjustment2,
-        //   ")"
-        // );
-        //   link.classList.add("active");
+
+        // link.classList.add("active");
         // } else {
         //   link.classList.remove("active");
         // }
@@ -139,6 +222,17 @@
     // let sectionTops = [], sum;
     // sectionTops = sectionHeights.map(val =>  sum = (sum || 0) + val )
     // console.log(`sectionTops array `, sectionTops)
+  }
+
+  function scrollThrottle(func, interval) {
+    let lastY = 0;
+    return function() {
+      let here = window.scrollY;
+      if (lastY + interval < here) {
+        lastY = here;
+        return func.apply(this, arguments);
+      }
+    };
   }
 
   function testOnscroll() {
