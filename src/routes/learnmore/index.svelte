@@ -179,6 +179,7 @@
       }
       if (section) {
         sectionHeights.push(section.offsetHeight);
+        console.log(`section.offsetTop ${section.offsetTop} + main.top ${main.top}`)
         let top = section.offsetTop + main.top;
         let id = section.id;
         console.log(`subsection el ${section.id} `, section);

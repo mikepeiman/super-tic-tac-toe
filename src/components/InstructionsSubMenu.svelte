@@ -503,7 +503,6 @@
             name="{submenu.name}_{item.name}"
             data-id={i}
             class="scroll button instructions subsection current-section"
-            id="{submenu.name}_{item.name}"
             href={item.url}>
             <div class="icon">
               <div>{item.name}</div>
