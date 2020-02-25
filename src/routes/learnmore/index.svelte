@@ -213,7 +213,7 @@
       }
     });
     positionAdjustment1 = 0;
-    positionAdjustment2 = 150;
+    positionAdjustment2 = 100;
 
     subNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
@@ -232,23 +232,36 @@
         );
 
         if (thisTop <= fromTop + positionAdjustment1) {
-          console.log(`CONDITION #1 ||| TRUE!!!! thisTop <= fromTop + positionAdjustment1`);
+          console.log(
+            `CONDITION #1 ||| TRUE!!!! thisTop <= fromTop + positionAdjustment1`
+          );
         } else {
-          console.log(`CONDITION #1 ||| FALSE!!!! thisTop <= fromTop + positionAdjustment1`);
+          console.log(
+            `CONDITION #1 ||| FALSE!!!! thisTop <= fromTop + positionAdjustment1`
+          );
         }
-        console.log(`CONDITION #1 ||| ${thisTop} <= ${fromTop} + ${positionAdjustment1}`);
+        console.log(
+          `CONDITION #1 ||| ${thisTop} <= ${fromTop} + ${positionAdjustment1}`
+        );
 
-        if (thisTop > fromTop + positionAdjustment2) {
-          console.log(`CONDITION #2 ||| TRUE!!!! thisTop > fromTop + positionAdjustment2`);
+        if (
+thisTop > fromTop - section.offsetHeight + positionAdjustment2
+        ) {
+          console.log(
+            `CONDITION #2 ||| TRUE!!!! thisTop > fromTop - section.offsetHeight + positionAdjustment2`
+          );
         } else {
-          console.log(`CONDITION #2 ||| FALSE!!!! thisTop > fromTop + positionAdjustment2`);
+          console.log(
+            `CONDITION #2 ||| FALSE!!!! section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2`
+          );
         }
-        console.log(`CONDITION #2 ||| ${thisTop} > ${fromTop} + ${positionAdjustment2}`);
+        console.log(
+          `CONDITION #2 ||| ${section.offsetTop} + ${section.offsetHeight} > ${fromTop} + ${positionAdjustment2}`
+        );
 
         if (
           thisTop <= fromTop + positionAdjustment1 &&
-          section.offsetTop + section.offsetHeight >
-            fromTop + positionAdjustment2
+          thisTop > fromTop - section.offsetHeight + positionAdjustment2
         ) {
           console.log(
             `\nDOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!!\n `
