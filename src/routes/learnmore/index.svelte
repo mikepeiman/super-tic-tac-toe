@@ -44,26 +44,57 @@
     }
 
     window.addEventListener("scroll", () => {
-      // throttle(watchForScroll(), 25);
-      scrollThrottle(watchForScroll(), 10);
+      // throttle(reactToScrollEvent(), 25);
+      scrollThrottle(reactToScrollEvent(), 10);
     });
     initSectionHeightsArray();
-    scrollTo();
+    setScrollClickEvents();
   });
 
-  function simpleScroll(e) {
-    console.log(`simpleScroll(e) target top  ${e.target.offsetTop}`, e.target);
-    // window.scroll({
-    //   top: elTop,
-    //   behavior: "smooth"
-    // });
-  }
-
-  function scrollTo() {
+  function setScrollClickEvents() {
     const links = document.querySelectorAll(".scroll");
-    console.log(`scrollTo .scroll anchors: `, links);
+    console.log(`setScrollClickEvents .scroll anchors: `, links);
     links.forEach(each => (each.onclick = simpleScroll));
   }
+
+  function simpleScroll(e) {
+    console.log(
+      `simpleScroll(e) target href  ${e.target.href} id ${e.target.id}`,
+      e.target
+    );
+    let href = e.target.href;
+    let mainStr;
+    if (href.includes("_")) {
+      mainStr = getSectionFromHref(href, "#", "_");
+    } else {
+      mainStr = getSectionFromHref(href, "#", "");
+    }
+
+    let main = mainSectionTops.find(x => x.str === mainStr);
+    let subStr = "not found",
+      sub;
+
+    console.log(`str from href ${mainStr}`);
+    if (e.target.classList.contains("subsection")) {
+      subStr = getSectionFromHref(href, "_", "");
+      sub = subSectionTops.find(x => x.subStr === subStr);
+      console.log(`sub: top ${sub.top}`, sub);
+      window.scroll({
+        top: sub.top,
+        behavior: "smooth"
+      });
+    } else {
+      console.log(`main: top ${main.top}`, main);
+      window.scroll({
+        top: main.top,
+        behavior: "smooth"
+      });
+    }
+
+    console.log(`str from href sub ${subStr}`);
+  }
+
+
 
   function scrollAnchors(e, respond = null) {
     const distanceToTop = el => Math.floor(el.getBoundingClientRect().top);
@@ -88,13 +119,10 @@
     }, 100);
   }
 
-function getSectionFromHref(str, a, b) {
-  let mySubString = str.substring(
-    str.lastIndexOf(a) + 1, 
-    str.lastIndexOf(b)
-);
-return mySubString
-}
+  function getSectionFromHref(str, a, b) {
+    let mySubString = str.substring(str.lastIndexOf(a) + 1, str.lastIndexOf(b));
+    return mySubString;
+  }
 
   function initSectionHeightsArray() {
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
@@ -104,7 +132,7 @@ return mySubString
 
     mainNavLinks.forEach((link, i) => {
       let href = link.href;
-      let str = getSectionFromHref(href, "#", "")
+      let str = getSectionFromHref(href, "#", "");
       let section = document.querySelector(link.hash);
       if (section) {
         let top = section.offsetTop;
@@ -118,10 +146,15 @@ return mySubString
     subNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
       let href = link.getAttribute("href");
-      let str = getSectionFromHref(href, "#", "_")
-      let main = mainSectionTops.find(x => x.str === str)
-      if(mainSectionTops.some(x => x.str === str)) {
-        console.log(`found a match for sublink ${href} with parent, main `, main)
+      let mainStr = getSectionFromHref(href, "#", "_");
+      let subStr = getSectionFromHref(href, "_", "");
+      let main = mainSectionTops.find(x => x.str === mainStr);
+      let sub = mainSectionTops.find(x => x.str === subStr);
+      if (mainSectionTops.some(x => x.str === mainStr)) {
+        console.log(
+          `found a match for sublink ${href} with parent, main `,
+          main
+        );
       }
       if (section) {
         sectionHeights.push(section.offsetHeight);
@@ -130,10 +163,20 @@ return mySubString
         console.log(`subsection el ${section.id} `, section);
         console.log(section);
         console.dir(section);
-        subSectionTops = [...subSectionTops, { top: top, id: id, href: href, str: str }];
+        subSectionTops = [
+          ...subSectionTops,
+          { top: top, id: id, href: href, mainStr: mainStr, subStr: subStr }
+        ];
         // console.table('each link', link.href, 'i', i, 'section', section.id)
         // console.table(section.offsetTop, ' <=', fromTop + positionAdjustment1, ' --- (section.offsetTop',section.offsetTop,' fromTop', fromTop, '+', positionAdjustment1, ')')
         // console.table(section.offsetTop + section.offsetHeight, ' > ', fromTop + positionAdjustment2, ' --- (section.offsetTop', section.offsetTop, '+ section.offsetHeight ', section.offsetHeight, ' > fromTop', fromTop, '+', positionAdjustment2, ')')
+
+        // link.onclick = function() {
+        //   window.scroll({
+        //     top: top,
+        //     behavior: "smooth"
+        //   });
+        // };
       }
     });
     console.log(`sectionHeights array `, sectionHeights);
@@ -142,7 +185,7 @@ return mySubString
     console.log(`mainSectionTops array `, mainSectionTops);
     console.log(`subSectionTops array `, subSectionTops);
   }
-  function watchForScroll() {
+  function reactToScrollEvent() {
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
     let subNavLinks = document.querySelectorAll("a.instructions.subsection");
     let lastId;
@@ -172,33 +215,33 @@ return mySubString
           section.offsetTop + section.offsetHeight >
             fromTop + positionAdjustment2
         ) {
-          console.table("each link", link.href, "i", i, "section", section.id);
-          console.table(
-            section.offsetTop,
-            " <=",
-            fromTop + positionAdjustment1,
-            " --- (section.offsetTop",
-            section.offsetTop,
-            " fromTop",
-            fromTop,
-            "+",
-            positionAdjustment1,
-            ")"
-          );
-          console.table(
-            section.offsetTop + section.offsetHeight,
-            " > ",
-            fromTop + positionAdjustment2,
-            " --- (section.offsetTop",
-            section.offsetTop,
-            "+ section.offsetHeight ",
-            section.offsetHeight,
-            " > fromTop",
-            fromTop,
-            "+",
-            positionAdjustment2,
-            ")"
-          );
+          // console.table("each link", link.href, "i", i, "section", section.id);
+          // console.table(
+          //   section.offsetTop,
+          //   " <=",
+          //   fromTop + positionAdjustment1,
+          //   " --- (section.offsetTop",
+          //   section.offsetTop,
+          //   " fromTop",
+          //   fromTop,
+          //   "+",
+          //   positionAdjustment1,
+          //   ")"
+          // );
+          // console.table(
+          //   section.offsetTop + section.offsetHeight,
+          //   " > ",
+          //   fromTop + positionAdjustment2,
+          //   " --- (section.offsetTop",
+          //   section.offsetTop,
+          //   "+ section.offsetHeight ",
+          //   section.offsetHeight,
+          //   " > fromTop",
+          //   fromTop,
+          //   "+",
+          //   positionAdjustment2,
+          //   ")"
+          // );
           link.classList.add("active");
         } else {
           link.classList.remove("active");
@@ -235,11 +278,6 @@ return mySubString
     };
   }
 
-  function testOnscroll() {
-    if (typeof window !== "undefined") {
-      console.log(`test native onScroll ${window.scrollY}`);
-    }
-  }
 </script>
 
 <style lang="scss" global>
@@ -1016,7 +1054,7 @@ return mySubString
 </style>
 
 <!-- <div id="showScroll" /> -->
-<!-- <svelte:window on:scroll={watchForScroll} /> -->
+<!-- <svelte:window on:scroll={reactToScrollEvent} /> -->
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">

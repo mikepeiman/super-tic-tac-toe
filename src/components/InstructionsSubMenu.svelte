@@ -85,19 +85,19 @@
       sections: [
         {
           name: "development",
-          url: "learnmore#development_1"
+          url: "learnmore#development_development1"
         },
         {
           name: "development2",
-          url: "learnmore#development_2"
+          url: "learnmore#development_development2"
         },
         {
           name: "development3",
-          url: "learnmore#development_3"
+          url: "learnmore#development_development3"
         },
         {
           name: "development4",
-          url: "learnmore#development_4"
+          url: "learnmore#development_development4"
         }
       ]
     }
@@ -285,6 +285,12 @@
 
               &.subsection {
                 font-weight: 300;
+                & * {
+                  pointer-events: none;
+                  // & div {
+                  //   pointer-events: none;
+                  // }
+                }
                 &.current-section {
                   opacity: 1;
                   left: 0;

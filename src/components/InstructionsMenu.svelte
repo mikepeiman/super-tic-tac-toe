@@ -64,6 +64,11 @@
             justify-content: flex-start;
             align-items: center;
             color: white;
+            &.mainsection {
+              & * {
+                pointer-events: none;
+              }
+            }
             & svg {
               color: orange;
             }

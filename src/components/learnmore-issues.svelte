@@ -2,37 +2,67 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
-<h2 class="heading">GOTCHA'S / ISSUES</h2>
+<h2 class="heading">ISSUES TO BE AWARE OF</h2>
 
 <div class="text-content">
-  <p>Actually, it all works surprisingly well.</p>
-  <p>
-    <span class="note">
-      If you run into issues, reload, and if it breaks, clear localStorage and
-      reload.
-    </span>
-  </p>
-  <ul>
-    <li>
-      You can change number of players on-the-fly, but that obviously messes
-      with the scoring. Likewise with rows and columns. These functions are
-      surprisingly resilient though, and you can actually maintain some
-      semblence of continuity depending on your adjustments.
-      <p>
-        <span class="note">
-          TL;DR: Be careful not to change players, rows, columns on the fly!
+  <div class="subsection" id="issues_issues1">
+    <h3>Database</h3>
+    <div class="text-content-block" id="two-setup-methods">
+      <h4>Utilizes localStorage to preserve state between page reloads</h4>
+      <div class="text-sub-block">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
+        accusantium laboriosam ea pariatur totam debitis provident nemo vero
+        vel.
+        <span class="orange bordered">
+          If you encounter a bug or the game freezes, your best bet is to clear
+          localStorage via your browser's devtools!
         </span>
-      </p>
-    </li>
-    <li>
-      <span class="cool">
-        Cool feature! ~ You
-        <span class="bold">CAN</span>
-        change the number-of-moves-in-a-row-to-score, and the line bonus on the
-        fly and recalculate scoring!
-      </span>
-      We've discovered that there definitely are different winning strategies
-      based on different settings.
-    </li>
-  </ul>
+      </div>
+    </div>
+  </div>
+  <div class="subsection" id="issues_issues2">
+    <h3>Database</h3>
+    <div class="text-content-block" id="two-setup-methods">
+      <h4>Utilizes localStorage to preserve state between page reloads</h4>
+      <div class="text-sub-block">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
+        accusantium laboriosam ea pariatur totam debitis provident nemo vero
+        vel.
+        <span class="orange bordered">
+          If you encounter a bug or the game freezes, your best bet is to clear
+          localStorage via your browser's devtools!
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="subsection" id="issues_issues3">
+    <h3>Database</h3>
+    <div class="text-content-block" id="two-setup-methods">
+      <h4>Utilizes localStorage to preserve state between page reloads</h4>
+      <div class="text-sub-block">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
+        accusantium laboriosam ea pariatur totam debitis provident nemo vero
+        vel.
+        <span class="orange bordered">
+          If you encounter a bug or the game freezes, your best bet is to clear
+          localStorage via your browser's devtools!
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="subsection" id="issues_issues4">
+    <h3>Database</h3>
+    <div class="text-content-block" id="two-setup-methods">
+      <h4>Utilizes localStorage to preserve state between page reloads</h4>
+      <div class="text-sub-block">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
+        accusantium laboriosam ea pariatur totam debitis provident nemo vero
+        vel.
+        <span class="orange bordered">
+          If you encounter a bug or the game freezes, your best bet is to clear
+          localStorage via your browser's devtools!
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
