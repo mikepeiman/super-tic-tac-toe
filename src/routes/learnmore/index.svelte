@@ -28,22 +28,37 @@
     subSectionTops = [];
   let currentSection = 0;
   onMount(() => {
-    [...document.querySelectorAll('a[href^="#"]')].map(
-      x => (x.href = document.location + new URL(x.href).hash)
-    );
+    // [...document.querySelectorAll('a[href^="#"]')].map(
+    //   x => (x.href = document.location + new URL(x.href).hash)
+    // );
+
+    document.querySelectorAll("a").forEach(a => {
+      if (!a.hash || !document.querySelectorAll(a.hash).length) return;
+      let loc = JSON.stringify(window.location.href)
+      let sw = loc.split('#')
+      // let sw2 = sw.split(",")
+      console.log(`window object for .location ${window.location} etc, and a.hash ${a.hash}`, )
+      console.dir(window)
+      console.log(`window object split on # ${sw} ||| sw2 `)
+      console.log(`window object length ${sw.length} `)
+      console.log(`window object root ${sw[0]} `)
+      console.log(`window.origin ${window.origin } + window.pathname ${window.pathname} + a.hash ${a.hash};`)
+      // if(){}
+      a.href = window.location.origin + window.location.pathname + a.hash
+      // a.href = window.location + a.hash;
+    });
+
     if (window.location.hash) {
       var hash = window.location.hash;
       hash = hash.slice(1);
-      let body = document.getElementsByTagName("body");
       let el = document.getElementById(`${hash}`);
       let elTop = el.offsetTop;
-      console.log(`WINDOW LOCATION HASH ${hash} top: ${elTop}`, el, body);
+      console.log(`WINDOW LOCATION HASH ${hash} top: ${elTop}`, el);
 
-      window.scroll({
-        top: elTop,
-        behavior: "auto"
-      });
-      // window.scrollY = elTop
+      // window.scroll({
+      //   top: elTop,
+      //   behavior: "auto"
+      // });
     }
 
     window.addEventListener("scroll", () => {
@@ -62,7 +77,7 @@
 
   function simpleScroll(e) {
     console.log(
-      `simpleScroll(e) target href  ${e.target.href} id ${e.target.id}`,
+      `simpleScroll(e) window.scrollY ${window.scrollY} target href ${e.target.href} id ${e.target.id}`,
       e.target
     );
     let href = e.target.href;
@@ -220,44 +235,42 @@
 
       if (section) {
         let thisTop = link.getAttribute("data-top");
-        console.log(
-          `link href ${
-            link.href
-          } data-top attribute of link anchor ${link.getAttribute(
-            "data-top"
-          )} section.offsetTop ${
-            section.offsetTop
-          } window.scrollY ${fromTop} section.offsetTop + section.offsetHeight ${section.offsetTop +
-            section.offsetHeight}`
-        );
+        // console.log(
+        //   `link href ${
+        //     link.href
+        //   } data-top attribute of link anchor ${link.getAttribute(
+        //     "data-top"
+        //   )} section.offsetTop ${
+        //     section.offsetTop
+        //   } window.scrollY ${fromTop} section.offsetTop + section.offsetHeight ${section.offsetTop +
+        //     section.offsetHeight}`
+        // );
 
         if (thisTop <= fromTop + positionAdjustment1) {
-          console.log(
-            `CONDITION #1 ||| TRUE!!!! thisTop <= fromTop + positionAdjustment1`
-          );
+          // console.log(
+          //   `CONDITION #1 ||| TRUE!!!! thisTop <= fromTop + positionAdjustment1`
+          // );
         } else {
-          console.log(
-            `CONDITION #1 ||| FALSE!!!! thisTop <= fromTop + positionAdjustment1`
-          );
+          // console.log(
+          //   `CONDITION #1 ||| FALSE!!!! thisTop <= fromTop + positionAdjustment1`
+          // );
         }
-        console.log(
-          `CONDITION #1 ||| ${thisTop} <= ${fromTop} + ${positionAdjustment1}`
-        );
+        // console.log(
+        //   `CONDITION #1 ||| ${thisTop} <= ${fromTop} + ${positionAdjustment1}`
+        // );
 
-        if (
-thisTop > fromTop - section.offsetHeight + positionAdjustment2
-        ) {
-          console.log(
-            `CONDITION #2 ||| TRUE!!!! thisTop > fromTop - section.offsetHeight + positionAdjustment2`
-          );
+        if (thisTop > fromTop - section.offsetHeight + positionAdjustment2) {
+          // console.log(
+          //   `CONDITION #2 ||| TRUE!!!! thisTop > fromTop - section.offsetHeight + positionAdjustment2`
+          // );
         } else {
-          console.log(
-            `CONDITION #2 ||| FALSE!!!! section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2`
-          );
+          // console.log(
+          //   `CONDITION #2 ||| FALSE!!!! section.offsetTop + section.offsetHeight > fromTop + positionAdjustment2`
+          // );
         }
-        console.log(
-          `CONDITION #2 ||| ${section.offsetTop} + ${section.offsetHeight} > ${fromTop} + ${positionAdjustment2}`
-        );
+        // console.log(
+        //   `CONDITION #2 ||| ${section.offsetTop} + ${section.offsetHeight} > ${fromTop} + ${positionAdjustment2}`
+        // );
 
         if (
           thisTop <= fromTop + positionAdjustment1 &&
