@@ -28,6 +28,9 @@
     subSectionTops = [];
   let currentSection = 0;
   onMount(() => {
+    [...document.querySelectorAll('a[href^="#"]')].map(
+      x => (x.href = document.location + new URL(x.href).hash)
+    );
     if (window.location.hash) {
       var hash = window.location.hash;
       hash = hash.slice(1);
@@ -80,6 +83,10 @@
       sub = subSectionTops.find(x => x.subStr === subStr);
       console.log(`sub: top ${sub.top}`, sub);
       window.scroll({
+        top: main.top,
+        behavior: "smooth"
+      });
+      window.scroll({
         top: sub.top,
         behavior: "smooth"
       });
@@ -93,8 +100,6 @@
 
     console.log(`str from href sub ${subStr}`);
   }
-
-
 
   function scrollAnchors(e, respond = null) {
     const distanceToTop = el => Math.floor(el.getBoundingClientRect().top);
@@ -136,6 +141,7 @@
       let section = document.querySelector(link.hash);
       if (section) {
         let top = section.offsetTop;
+        link.setAttribute("data-top", top);
         let id = section.id;
         mainSectionTops = [
           ...mainSectionTops,
@@ -163,6 +169,7 @@
         console.log(`subsection el ${section.id} `, section);
         console.log(section);
         console.dir(section);
+        link.setAttribute("data-top", top);
         subSectionTops = [
           ...subSectionTops,
           { top: top, id: id, href: href, mainStr: mainStr, subStr: subStr }
@@ -207,60 +214,109 @@
     });
     positionAdjustment1 = 0;
     positionAdjustment2 = 150;
+
     subNavLinks.forEach((link, i) => {
       let section = document.querySelector(link.hash);
+
       if (section) {
+        let thisTop = link.getAttribute("data-top");
+        console.log(
+          `link href ${
+            link.href
+          } data-top attribute of link anchor ${link.getAttribute(
+            "data-top"
+          )} section.offsetTop ${
+            section.offsetTop
+          } window.scrollY ${fromTop} section.offsetTop + section.offsetHeight ${section.offsetTop +
+            section.offsetHeight}`
+        );
+
+        if (thisTop <= fromTop + positionAdjustment1) {
+          console.log(`CONDITION #1 ||| TRUE!!!! thisTop <= fromTop + positionAdjustment1`);
+        } else {
+          console.log(`CONDITION #1 ||| FALSE!!!! thisTop <= fromTop + positionAdjustment1`);
+        }
+        console.log(`CONDITION #1 ||| ${thisTop} <= ${fromTop} + ${positionAdjustment1}`);
+
+        if (thisTop > fromTop + positionAdjustment2) {
+          console.log(`CONDITION #2 ||| TRUE!!!! thisTop > fromTop + positionAdjustment2`);
+        } else {
+          console.log(`CONDITION #2 ||| FALSE!!!! thisTop > fromTop + positionAdjustment2`);
+        }
+        console.log(`CONDITION #2 ||| ${thisTop} > ${fromTop} + ${positionAdjustment2}`);
+
         if (
-          section.offsetTop <= fromTop + positionAdjustment1 &&
+          thisTop <= fromTop + positionAdjustment1 &&
           section.offsetTop + section.offsetHeight >
             fromTop + positionAdjustment2
         ) {
-          // console.table("each link", link.href, "i", i, "section", section.id);
-          // console.table(
-          //   section.offsetTop,
-          //   " <=",
-          //   fromTop + positionAdjustment1,
-          //   " --- (section.offsetTop",
-          //   section.offsetTop,
-          //   " fromTop",
-          //   fromTop,
-          //   "+",
-          //   positionAdjustment1,
-          //   ")"
-          // );
-          // console.table(
-          //   section.offsetTop + section.offsetHeight,
-          //   " > ",
-          //   fromTop + positionAdjustment2,
-          //   " --- (section.offsetTop",
-          //   section.offsetTop,
-          //   "+ section.offsetHeight ",
-          //   section.offsetHeight,
-          //   " > fromTop",
-          //   fromTop,
-          //   "+",
-          //   positionAdjustment2,
-          //   ")"
-          // );
+          console.log(
+            `\nDOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!! DOUBLE TRUE!!!!\n `
+          );
           link.classList.add("active");
         } else {
           link.classList.remove("active");
         }
-        //   }
-        // });
-        //  ***************************************
-        // if (
-        //   section.offsetTop <= fromTop + positionAdjustment1 &&
-        //   section.offsetTop + section.offsetHeight >
-        //     fromTop + positionAdjustment2
-        // ) {
-
-        // link.classList.add("active");
-        // } else {
-        //   link.classList.remove("active");
-        // }
       }
     });
+
+    // subNavLinks.forEach((link, i) => {
+    //   let section = document.querySelector(link.hash);
+    //   if (section) {
+    //     if (
+    //       section.offsetTop <= fromTop + positionAdjustment1 &&
+    //       section.offsetTop + section.offsetHeight >
+    //         fromTop + positionAdjustment2
+    //     ) {
+    //       link.classList.add("active");
+    //     } else {
+    //       link.classList.remove("active");
+    //     }
+    //   }
+    // });
+
+    // console.table("each link", link.href, "i", i, "section", section.id);
+    // console.table(
+    //   section.offsetTop,
+    //   " <=",
+    //   fromTop + positionAdjustment1,
+    //   " --- (section.offsetTop",
+    //   section.offsetTop,
+    //   " fromTop",
+    //   fromTop,
+    //   "+",
+    //   positionAdjustment1,
+    //   ")"
+    // );
+    // console.table(
+    //   section.offsetTop + section.offsetHeight,
+    //   " > ",
+    //   fromTop + positionAdjustment2,
+    //   " --- (section.offsetTop",
+    //   section.offsetTop,
+    //   "+ section.offsetHeight ",
+    //   section.offsetHeight,
+    //   " > fromTop",
+    //   fromTop,
+    //   "+",
+    //   positionAdjustment2,
+    //   ")"
+    // );
+
+    //   }
+    // });
+    //  ***************************************
+    // if (
+    //   section.offsetTop <= fromTop + positionAdjustment1 &&
+    //   section.offsetTop + section.offsetHeight >
+    //     fromTop + positionAdjustment2
+    // ) {
+
+    // link.classList.add("active");
+    // } else {
+    //   link.classList.remove("active");
+    // }
+
     // console.log(`sectionHeights array `, sectionHeights)
     // let sectionTops = [], sum;
     // sectionTops = sectionHeights.map(val =>  sum = (sum || 0) + val )
@@ -277,7 +333,6 @@
       }
     };
   }
-
 </script>
 
 <style lang="scss" global>
