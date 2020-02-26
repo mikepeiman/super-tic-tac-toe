@@ -23,7 +23,7 @@
   import { throttle } from "./../../utils/_throttle.js";
   let sectionTops = [],
     sum;
-
+  let scrollCompleted = false;
   let mainSectionTops = [],
     subSectionTops = [];
   let currentSection = 0;
@@ -34,32 +34,36 @@
 
     document.querySelectorAll("a").forEach(a => {
       if (!a.hash || !document.querySelectorAll(a.hash).length) return;
-      let loc = JSON.stringify(window.location.href)
-      let sw = loc.split('#')
+      let loc = JSON.stringify(window.location.href);
+      let sw = loc.split("#");
       // let sw2 = sw.split(",")
-      console.log(`window object for .location ${window.location} etc, and a.hash ${a.hash}`, )
-      console.dir(window)
-      console.log(`window object split on # ${sw} ||| sw2 `)
-      console.log(`window object length ${sw.length} `)
-      console.log(`window object root ${sw[0]} `)
-      console.log(`window.origin ${window.origin } + window.pathname ${window.pathname} + a.hash ${a.hash};`)
+      console.log(
+        `window object for .location ${window.location} etc, and a.hash ${a.hash}`
+      );
+      console.dir(window);
+      console.log(`window object split on # ${sw} ||| sw2 `);
+      console.log(`window object length ${sw.length} `);
+      console.log(`window object root ${sw[0]} `);
+      console.log(
+        `window.origin ${window.origin} + window.pathname ${window.pathname} + a.hash ${a.hash};`
+      );
       // if(){}
-      a.href = window.location.origin + window.location.pathname + a.hash
+      a.href = window.location.origin + window.location.pathname + a.hash;
       // a.href = window.location + a.hash;
     });
 
-    if (window.location.hash) {
-      var hash = window.location.hash;
-      hash = hash.slice(1);
-      let el = document.getElementById(`${hash}`);
-      let elTop = el.offsetTop;
-      console.log(`WINDOW LOCATION HASH ${hash} top: ${elTop}`, el);
+    // if (window.location.hash) {
+    //   var hash = window.location.hash;
+    //   hash = hash.slice(1);
+    //   let el = document.getElementById(`${hash}`);
+    //   let elTop = el.offsetTop;
+    //   console.log(`WINDOW LOCATION HASH ${hash} top: ${elTop}`, el);
 
-      // window.scroll({
-      //   top: elTop,
-      //   behavior: "auto"
-      // });
-    }
+    //   window.scroll({
+    //     top: elTop,
+    //     behavior: "auto"
+    //   });
+    // }
 
     window.addEventListener("scroll", () => {
       // throttle(reactToScrollEvent(), 25);
@@ -67,12 +71,59 @@
     });
     initSectionHeightsArray();
     setScrollClickEvents();
+    if (window.location.hash) {
+      simpleScrollOnLoad();
+
+    }
+          scrollCompleted = true
   });
 
   function setScrollClickEvents() {
     const links = document.querySelectorAll(".scroll");
     console.log(`setScrollClickEvents .scroll anchors: `, links);
     links.forEach(each => (each.onclick = simpleScroll));
+  }
+
+  function simpleScrollOnLoad() {
+    console.log(`simpleScroll(e) window.location ${window.location}`, window);
+    document.documentElement.style = "scroll-behavior: auto;";
+    let href = window.location.hash;
+    href = href.slice(1);
+    let el = document.getElementById(href);
+    console.log(`looking for ${href} element `, el);
+    let mainStr;
+    if (href.includes("_")) {
+      mainStr = getSectionFromHref(href, "#", "_");
+    } else {
+      mainStr = getSectionFromHref(href, "#", "");
+    }
+
+    let main = mainSectionTops.find(x => x.str === mainStr);
+    let subStr = "not found",
+      sub;
+
+    console.log(`str from href ${mainStr}`);
+    if (el.classList.contains("subsection")) {
+      subStr = getSectionFromHref(href, "_", "");
+      sub = subSectionTops.find(x => x.subStr === subStr);
+      console.log(`sub: top ${sub.top}`, sub);
+      // window.scroll({
+      //   top: main.top,
+      //   behavior: "auto"
+      // });
+      window.scroll({
+        top: sub.top + 110,
+        behavior: "auto"
+      });
+    } else {
+      console.log(`main: top ${main.top}`, main);
+      window.scroll({
+        top: main.top,
+        behavior: "auto"
+      });
+    }
+    document.documentElement.style = "scroll-behavior: smooth;";
+    console.log(`str from href sub ${subStr}`);
   }
 
   function simpleScroll(e) {
@@ -97,10 +148,10 @@
       subStr = getSectionFromHref(href, "_", "");
       sub = subSectionTops.find(x => x.subStr === subStr);
       console.log(`sub: top ${sub.top}`, sub);
-      window.scroll({
-        top: main.top,
-        behavior: "smooth"
-      });
+      // window.scroll({
+      //   top: main.top,
+      //   behavior: "smooth"
+      // });
       window.scroll({
         top: sub.top,
         behavior: "smooth"
@@ -114,29 +165,6 @@
     }
 
     console.log(`str from href sub ${subStr}`);
-  }
-
-  function scrollAnchors(e, respond = null) {
-    const distanceToTop = el => Math.floor(el.getBoundingClientRect().top);
-    e.preventDefault();
-    var targetID = respond
-      ? respond.getAttribute("href")
-      : this.getAttribute("href");
-    const targetAnchor = document.querySelector(targetID);
-    if (!targetAnchor) return;
-    const originalTop = distanceToTop(targetAnchor);
-    window.scrollBy({ top: originalTop, left: 0, behavior: "smooth" });
-    const checkIfDone = setInterval(function() {
-      const atBottom =
-        window.innerHeight + window.pageYOffset >=
-        document.body.offsetHeight - 2;
-      if (distanceToTop(targetAnchor) === 0 || atBottom) {
-        targetAnchor.tabIndex = "-1";
-        targetAnchor.focus();
-        window.history.pushState("", "", targetID);
-        clearInterval(checkIfDone);
-      }
-    }, 100);
   }
 
   function getSectionFromHref(str, a, b) {
@@ -172,17 +200,19 @@
       let main = mainSectionTops.find(x => x.str === mainStr);
       let sub = mainSectionTops.find(x => x.str === subStr);
       if (mainSectionTops.some(x => x.str === mainStr)) {
-        console.log(
-          `found a match for sublink ${href} with parent, main `,
-          main
-        );
+        // console.log(
+        //   `found a match for sublink ${href} with parent, main `,
+        //   main
+        // );
       }
       if (section) {
         sectionHeights.push(section.offsetHeight);
-        console.log(`section.offsetTop ${section.offsetTop} + main.top ${main.top}`)
+        // console.log(
+        //   `section.offsetTop ${section.offsetTop} + main.top ${main.top}`
+        // );
         let top = section.offsetTop + main.top;
         let id = section.id;
-        console.log(`subsection el ${section.id} `, section);
+        // console.log(`subsection el ${section.id} `, section);
         console.log(section);
         console.dir(section);
         link.setAttribute("data-top", top);
@@ -202,11 +232,11 @@
         // };
       }
     });
-    console.log(`sectionHeights array `, sectionHeights);
-    sectionTops = sectionHeights.map(val => (sum = (sum || 0) + val));
-    console.log(`sectionTops array `, sectionTops);
-    console.log(`mainSectionTops array `, mainSectionTops);
-    console.log(`subSectionTops array `, subSectionTops);
+    // console.log(`sectionHeights array `, sectionHeights);
+    // sectionTops = sectionHeights.map(val => (sum = (sum || 0) + val));
+    // console.log(`sectionTops array `, sectionTops);
+    // console.log(`mainSectionTops array `, mainSectionTops);
+    // console.log(`subSectionTops array `, subSectionTops);
   }
   function reactToScrollEvent() {
     let mainNavLinks = document.querySelectorAll("a.instructions.mainsection");
@@ -1139,8 +1169,7 @@
   }
 </style>
 
-<!-- <div id="showScroll" /> -->
-<!-- <svelte:window on:scroll={reactToScrollEvent} /> -->
+
 <div class="learn-more-wrapper">
 
   <div class="crossfade-wrapper">
