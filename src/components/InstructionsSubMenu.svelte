@@ -413,30 +413,33 @@
       & .link-sub-wrapper {
         display: flex;
         height: 2rem;
-        width: 100%;
+        width: 0%;
         justify-content: center;
         left: 0;
         transition: all 0.25s;
         position: relative;
         transform: translateX(0vw);
-        &.layout-0 {
-          transform: translateX(0);
-          transition: all 0.25s;
+        &.active {
+          width: 100%;
         }
-        &.layout-1 {
-          transform: translateX(0);
-          transition: all 0.25s;
-        }
-        &.layout-2 {
-          justify-content: flex-end;
-          transform: translateX(0);
-          transition: all 0.25s;
-        }
-        &.layout-3 {
-          justify-content: flex-end;
-          transform: translateX(0);
-          transition: all 0.25s;
-        }
+        // &.layout-0 {
+        //   transform: translateX(0);
+        //   transition: all 0.25s;
+        // }
+        // &.layout-1 {
+        //   transform: translateX(0);
+        //   transition: all 0.25s;
+        // }
+        // &.layout-2 {
+        //   justify-content: flex-end;
+        //   transform: translateX(0);
+        //   transition: all 0.25s;
+        // }
+        // &.layout-3 {
+        //   justify-content: flex-end;
+        //   transform: translateX(0);
+        //   transition: all 0.25s;
+        // }
       }
     }
   }

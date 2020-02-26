@@ -664,6 +664,9 @@
       align-items: center;
       width: 100%;
       margin-top: -16vh;
+      &:last-child {
+        min-height: 80vh;
+      }
       &::before {
         display: block;
         content: "";
@@ -930,6 +933,7 @@
     width: 100vw;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40vh;
     & section {
       display: flex;
       flex-direction: column;
