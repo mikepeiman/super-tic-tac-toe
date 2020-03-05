@@ -19,73 +19,15 @@
       <div class="text-sub-block">
         <p>
           Responsive design is
-          <em>hard</em>
-          ! Especially when you're designing from scratch without a CSS library.
+          <em>hard</em>! Especially when you're designing from scratch without a CSS library.
           I've poured a lot of time into this already, but not all viewport
           sizes work well; some may be dysfunctional due to poor placement and
           sizing of elements obscuring gameplay or game controls. This is a
-          Work-In-Progress, and I do intend to ensure a solid mobile experience.
+          Work-In-Progress, and I do intend to ensure a solid mobile experience - but it may have to await a complete re-write, which I am planning.
         </p>
         <p>
           <span class="orange bordered">
             This app is optimized for desktop (large landscape-mode screens)!
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="subsection" id="issues_issues2">
-    <h3>Database</h3>
-    <div class="text-content-block" id="two-setup-methods">
-      <h4>Utilizes localStorage to preserve state between page reloads</h4>
-      <div class="text-sub-block">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
-          accusantium laboriosam ea pariatur totam debitis provident nemo vero
-          vel.
-        </p>
-        <p>
-          <span class="orange bordered">
-            If you encounter a bug or the game freezes, your best bet is to
-            clear localStorage via your browser's devtools!
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="subsection" id="issues_issues3">
-    <h3>Database</h3>
-    <div class="text-content-block" id="two-setup-methods">
-      <h4>Utilizes localStorage to preserve state between page reloads</h4>
-      <div class="text-sub-block">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
-          accusantium laboriosam ea pariatur totam debitis provident nemo vero
-          vel.
-        </p>
-        <p>
-          <span class="orange bordered">
-            If you encounter a bug or the game freezes, your best bet is to
-            clear localStorage via your browser's devtools!
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="subsection" id="issues_issues4">
-    <h3>Database</h3>
-    <div class="text-content-block" id="two-setup-methods">
-      <h4>Utilizes localStorage to preserve state between page reloads</h4>
-      <div class="text-sub-block">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nobis
-          accusantium laboriosam ea pariatur totam debitis provident nemo vero
-          vel.
-        </p>
-        <p>
-          <span class="orange bordered">
-            If you encounter a bug or the game freezes, your best bet is to
-            clear localStorage via your browser's devtools!
           </span>
         </p>
       </div>

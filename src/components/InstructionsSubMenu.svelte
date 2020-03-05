@@ -42,61 +42,41 @@
       name: "Features",
       sections: [
         {
-          name: "features1",
+          name: "Emojis",
           url: "learnmore#features_features1"
         },
         {
-          name: "features2",
+          name: "LocalStorage",
           url: "learnmore#features_features2"
         },
-        {
-          name: "features3",
-          url: "learnmore#features_features3"
-        },
-        {
-          name: "features4",
-          url: "learnmore#features_features4"
-        }
       ]
     },
     {
       name: "Issues",
       sections: [
         {
-          name: "issues1",
+          name: "Responsive Design",
           url: "learnmore#issues_issues1"
         },
-        {
-          name: "issues2",
-          url: "learnmore#issues_issues2"
-        },
-        {
-          name: "issues3",
-          url: "learnmore#issues_issues3"
-        },
-        {
-          name: "issues4",
-          url: "learnmore#issues_issues4"
-        }
       ]
     },
     {
       name: "development",
       sections: [
         {
-          name: "development",
+          name: "User Accounts",
           url: "learnmore#development_development1"
         },
         {
-          name: "development2",
+          name: "Multiplayer",
           url: "learnmore#development_development2"
         },
         {
-          name: "development3",
+          name: "Advanced Gameplay",
           url: "learnmore#development_development3"
         },
         {
-          name: "development4",
+          name: "Developer Course",
           url: "learnmore#development_development4"
         }
       ]
