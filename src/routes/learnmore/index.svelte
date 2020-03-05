@@ -73,9 +73,8 @@
     setScrollClickEvents();
     if (window.location.hash) {
       simpleScrollOnLoad();
-
     }
-          scrollCompleted = true
+    scrollCompleted = true;
   });
 
   function setScrollClickEvents() {
@@ -1005,6 +1004,16 @@
     min-height: 78vh;
     width: 100%;
     height: auto;
+    & .heading {  
+      color: darkorange;
+    }
+    & .subtext {
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin: 2.5rem;
+      background: 2px solid rgba(0,0,0,0.5);
+      // background: rgba(36, 33, 197, 0.75);
+    }
   }
 
   hr {
@@ -1168,7 +1177,6 @@
   @media (min-width: 960px) {
   }
 </style>
-
 
 <div class="learn-more-wrapper">
 

@@ -2,7 +2,8 @@
   import { send, receive } from "./../crossfade.js";
 </script>
 
-<h2 class="heading">DEVELOPMENT - Tentative roadmap</h2>
+<h2 class="heading">DEVELOPMENT THOUGHTS</h2>
+<p class="subtext">This is some subtext. Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magni incidunt deserunt esse ut, rerum modi ipsa harum ipsam, est sit, nisi tempora a commodi quo obcaecati possimus repellat ullam quis voluptate nostrum culpa blanditiis voluptas! Optio, reiciendis expedita laboriosam sint totam beatae sit vero, ad nobis nisi iusto autem. </p>
 <div class="text-content">
 
   <div class="subsection" id="development_development1">

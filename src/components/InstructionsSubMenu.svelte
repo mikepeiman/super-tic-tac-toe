@@ -233,33 +233,14 @@
             position: relative;
             transform: translateX(0);
             // transform: matrix(0, -1, 0, 0, 1, 0);
-            transform: matrix(1, 0, 0, -1, 0, 0);
+            // transform: matrix(1, 0, 0, -1, 0, 0);
             backface-visibility: hidden;
             &.active {
               opacity: 1;
               width: 100%;
               pointer-events: all;
-              transform: matrix(1, 0, 0, 1, 0, 0);
-            }
-            &.layout-0 {
-              // transform: translateX(12.5vw);
-              // transition: all 0.25s;
-            }
-            &.layout-1 {
-              // transform: translateX(31.2vw);
-              // transition: all 0.25s;
-            }
-            &.layout-2 {
-              // justify-content: flex-end;
-              // transform: translateX(-30.2vw);
-              // transform: translateX(48.5vw);
-              // transition: all 0.25s;
-            }
-            &.layout-3 {
-              // justify-content: flex-end;
-              // transform: translateX(-11.4vw);
-              // transform: translateX(61.4vw);
-              // transition: all 0.25s;
+              // transform: matrix(1, 0, 0, 1, 0, 0);
+              animation: .5s submenu;
             }
           }
         }
@@ -418,28 +399,10 @@
         left: 0;
         transition: all 0.25s;
         position: relative;
-        transform: translateX(0vw);
+        // transform: translateX(0vw);
         &.active {
           width: 100%;
         }
-        // &.layout-0 {
-        //   transform: translateX(0);
-        //   transition: all 0.25s;
-        // }
-        // &.layout-1 {
-        //   transform: translateX(0);
-        //   transition: all 0.25s;
-        // }
-        // &.layout-2 {
-        //   justify-content: flex-end;
-        //   transform: translateX(0);
-        //   transition: all 0.25s;
-        // }
-        // &.layout-3 {
-        //   justify-content: flex-end;
-        //   transform: translateX(0);
-        //   transition: all 0.25s;
-        // }
       }
     }
   }
@@ -462,6 +425,24 @@
           }
         }
       }
+    }
+  }
+
+  @keyframes submenu {
+    0% {
+      transform: matrix(1, 0, 0, -1, 0, 0);
+      color: red;
+      opacity: 1;
+    }
+    20% {
+      transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      color: green;
+      opacity: 1;
     }
   }
 
