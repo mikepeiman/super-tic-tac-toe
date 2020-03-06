@@ -505,17 +505,17 @@
     & .button {
       padding: 0.5rem 1rem;
       // background: #1a1a9a9a;
-      border-radius: 5px;
+      // border-radius: 5px;
       width: auto;
       text-decoration: none;
       color: $input-blue;
-      border: 3px solid rgba(0, 0, 0, 0);
-      border-bottom: 3px solid $input-blue;
+      // border: 3px solid rgba(0, 0, 0, 0);
+      // border-bottom: 3px solid $input-blue;
       z-index: 9;
       transition: all 0.25s;
       &:hover {
-        box-shadow: 0 0 1px 2px rgba(50, 200, 255, 0.5);
-        border: 3px solid white;
+        // box-shadow: 0 0 1px 2px rgba(50, 200, 255, 0.5);
+        // border: 3px solid white;
         color: white;
         transition: all 0.25s;
         & svg {
@@ -1068,7 +1068,7 @@
               grid-area: scrollmenu;
               width: 98vw;
               justify-content: center;
-              border-bottom: 2px solid rgba(50, 100, 255, 0);
+              // border-bottom: 2px solid rgba(50, 100, 255, 0);
               & a.button.instructions {
                 width: 25vw;
               }

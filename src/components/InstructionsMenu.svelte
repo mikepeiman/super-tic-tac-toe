@@ -56,7 +56,7 @@
             border-radius: 0;
             margin-right: 0;
             border: none;
-            border-bottom: 2px solid rgba(0, 0, 0, 0);
+            // border: 2px solid rgba(0, 0, 0, 0);
             // border-bottom: 2px solid rgba(50, 100, 255, 1);
             width: fill-available;
             outline-offset: 0px;
@@ -65,8 +65,21 @@
             align-items: center;
             color: white;
             &.mainsection {
+              border-bottom: 2px solid orange;
               & * {
                 pointer-events: none;
+              }
+            }
+            &.mainsection[class*=" svelte-"].active {
+              color: white;
+              border-bottom: 2px solid rgba(0, 0, 0, 0);
+              background: #1a1a1a;
+              border-left: 2px solid orange;
+              border-right: 2px solid orange;
+              &:hover {
+                border-bottom: 2px solid rgba(0, 0, 0, 0);
+                border-left: 2px solid orange;
+                border-right: 2px solid orange;
               }
             }
             & svg {
@@ -87,12 +100,13 @@
           }
         }
       }
-      & a.button.instructions.active {
-        color: white;
-        // border-bottom: 2px solid orange !important;
-        // border-bottom: 2px solid rgba(0, 0, 0, 0) !important;
-        background: #1a1a1a;
-      }
+      // & a.button.instructions.mainsection.active {
+      //   color: white;
+      //   border-bottom: 2px solid rgba(0, 0, 0, 0);
+      //   background: #1a1a1a;
+      //   border-left: 2px solid orange;
+      //   border-right: 2px solid orange;
+      // }
       & .icon-wrapper {
         width: 16.6vw;
         height: auto;
@@ -104,16 +118,25 @@
         align-items: center;
         justify-self: flex-start;
         transition: all 0.25s;
-        outline: 2px solid rgba(0, 0, 0, 0);
-        outline-offset: -2px;
+        // outline: 2px solid rgba(0, 0, 0, 0);
+        // outline-offset: -2px;
+        border-radius: 0;
         border-bottom: 2px solid orange;
+        &#landing-page {
+          // border-right: 2px solid orange;
+          // border-radius: 0 0 5px 0;
+        }
+        &#play-now {
+          // border-left: 2px solid orange;
+          // border-radius: 0 0 0 5px;
+        }
         & .app-title {
           display: none;
         }
         &:hover {
-          background: rgba(25, 50, 175, 1);
-          outline: 2px solid orange;
-          outline-offset: -2px;
+          background:#1932af;
+          // outline: 2px solid orange;
+          // outline-offset: -2px;
           transition: all 0.25s;
           & img {
             // border: 2px solid orange;
@@ -125,6 +148,10 @@
           display: flex;
           align-items: center;
           position: static;
+        }
+        & svg {
+          color: darkorange;
+          fill: darkorange;
         }
       }
 
@@ -140,7 +167,7 @@
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        border: 2px solid rgba(0, 0, 0, 0);
+        // border: 2px solid rgba(0, 0, 0, 0);
         border-bottom: 2px solid orange;
         background: rgba(50, 100, 255, 1);
         & svg {
@@ -149,8 +176,6 @@
           margin: 0 1ch;
         }
         &:hover {
-          border: 2px solid orange;
-          box-shadow: none;
           background: rgba(25, 50, 175, 1);
         }
       }
@@ -232,7 +257,8 @@
     in:receive={{ key: 'title' }}
     on:click={clicked}
     rel="prefetch"
-    class="icon-wrapper"
+    class="icon-wrapper button"
+    id="landing-page"
     href="/">
     <img id="app-icon" src="favicon.png" alt="" />
     <div class="app-title">Super Tic-Tac-Toe</div>
@@ -291,7 +317,7 @@
     out:send={{ key: 'play-now' }}
     in:receive={{ key: 'play-now' }}
     rel="prefetch"
-    class="scroll button"
+    class="icon-wrapper button"
     id="play-now"
     href="tictactoe/">
     <Fa size="lg" icon={faGameBoard} color="currentColor" />

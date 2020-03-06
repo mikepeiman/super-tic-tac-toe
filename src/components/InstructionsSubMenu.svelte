@@ -240,7 +240,7 @@
               border-radius: 0;
               margin-right: 0;
               border: none;
-              background: #333;
+              background: #1a1a1a;
               // outline: 2px solid rgba(25, 150, 155, 1);
               // border-bottom: 2px solid orange;
               width: auto;
@@ -383,6 +383,8 @@
       & .link-sub-wrapper {
         display: flex;
         height: 2rem;
+        line-height: 0.8rem;
+        font-size: 0.8rem;
         width: 0%;
         justify-content: center;
         left: 0;
@@ -391,6 +393,8 @@
         // transform: translateX(0vw);
         &.active {
           width: 100%;
+          background: #1a1a1a;
+          z-index: 99;
         }
       }
     }
