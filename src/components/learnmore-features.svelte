@@ -16,8 +16,9 @@
   <div class="subsection" id="features_features2">
     <h3>LocalStorage</h3>
     <div class="text-content-block" id="two-setup-methods">
-      <h4>This game utilizes localStorage to preserve state between page reloads - meaning, you can reload the page as often as you want, you can leave the game and come back to it next year, as long as you haven't cleared localStorage.</h4>
+    <h4>Stores game state between page reloads</h4>
       <div class="text-sub-block">
+      <p>This game utilizes localStorage to preserve state between page reloads - meaning, you can reload the page as often as you want. You could even leave the game and come back to it next year, as long as you haven't cleared localStorage.</p>
         <span class="orange bordered">
           If you encounter a bug or the game freezes, your best bet is to clear
           localStorage via your browser's devtools!

@@ -48,7 +48,7 @@
         {
           name: "LocalStorage",
           url: "learnmore#features_features2"
-        },
+        }
       ]
     },
     {
@@ -57,7 +57,7 @@
         {
           name: "Responsive Design",
           url: "learnmore#issues_issues1"
-        },
+        }
       ]
     },
     {
@@ -201,26 +201,35 @@
           width: 100%;
 
           & .link-sub-wrapper {
-            opacity: 0;
-            width: 0;
-            pointer-events: none;
+            // opacity: 0;
+            // width: 0;
+            // pointer-events: none;
             display: flex;
             // height: 2rem;
 
             justify-content: center;
-            left: 0;
+            // left: 0;
             transition: all 0.5s;
-            position: relative;
-            transform: translateX(0);
+            // position: relative;
+            // transform: translateX(0);
             // transform: matrix(0, -1, 0, 0, 1, 0);
             // transform: matrix(1, 0, 0, -1, 0, 0);
-            backface-visibility: hidden;
+            // backface-visibility: hidden;
             &.active {
               opacity: 1;
-              width: 100%;
+              // width: 100%;
               pointer-events: all;
               // transform: matrix(1, 0, 0, 1, 0, 0);
-              animation: .5s submenu;
+              // animation: .5s submenu;
+              & a {
+                &.button {
+                  &.instructions {
+                    &.active {
+                      background: darkorange;
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -231,7 +240,7 @@
               border-radius: 0;
               margin-right: 0;
               border: none;
-              background: #1a1a1a;
+              background: #333;
               // outline: 2px solid rgba(25, 150, 155, 1);
               // border-bottom: 2px solid orange;
               width: auto;
