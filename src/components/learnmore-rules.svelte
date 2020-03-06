@@ -86,7 +86,7 @@
       <img src="game-settings-config-choice.png" alt="" />
     </div>
   </div>
-  <div class="subsection"  id="how-to-play_settings">
+  <div class="subsection" id="how-to-play_settings">
     <h3>Game Setup</h3>
     <div class="text-content-block" id="two-setup-methods">
       <h4>Choose between two setup methods</h4>
@@ -136,39 +136,33 @@
     </div>
     <div class="mixed-content-block">
       <h4>Choose Which Method To Setup Your Game</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsum
-        blanditiis omnis quos illum, error eum debitis porro voluptates,
-        incidunt modi nam laboriosam nemo nobis facilis asperiores dolore
-        laudantium eveniet ullam veritatis? Dolore ipsam quas consequuntur,
-        deleniti, totam quasi beatae eligendi, repellat ex culpa expedita quia
-        mollitia. Enim, odit quisquam molestias minima laboriosam eum accusamus
-        illum architecto. Tenetur id minus quasi vero in dicta suscipit quam ab
-        rem sequi porro qui, odio quod molestias natus dolor doloremque
-        veritatis culpa sint aspernatur. Veritatis in modi atque nulla illo
-        rerum itaque eligendi, quaerat ullam vel doloremque ab. Rem labore ut
-        officia doloremque!
-      </p>
+      <div class="text-sub-block">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsum
+          blanditiis omnis quos illum, error eum debitis porro voluptates,
+          incidunt modi nam laboriosam nemo nobis facilis asperiores dolore
+          laudantium eveniet ullam veritatis? Dolore ipsam quas consequuntur,
+          deleniti, totam quasi beatae eligendi, repellat ex culpa expedita quia
+          mollitia. Enim, odit quisquam molestias minima laboriosam eum
+          accusamus illum architecto. Tenetur id minus quasi vero in dicta
+          suscipit quam ab rem sequi porro qui, odio quod molestias natus dolor
+          doloremque veritatis culpa sint aspernatur. Veritatis in modi atque
+          nulla illo rerum itaque eligendi, quaerat ullam vel doloremque ab. Rem
+          labore ut officia doloremque!
+        </p>
+      </div>
       <img src="game-settings-config-choice.png" alt="" />
     </div>
   </div>
   <div class="subsection" id="how-to-play_strategies">
     <h3>Strategies</h3>
     <div class="mixed-content-block">
-      <h4>Choose Which Method To Setup Your Game</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsum
-        blanditiis omnis quos illum, error eum debitis porro voluptates,
-        incidunt modi nam laboriosam nemo nobis facilis asperiores dolore
-        laudantium eveniet ullam veritatis? Dolore ipsam quas consequuntur,
-        deleniti, totam quasi beatae eligendi, repellat ex culpa expedita quia
-        mollitia. Enim, odit quisquam molestias minima laboriosam eum accusamus
-        illum architecto. Tenetur id minus quasi vero in dicta suscipit quam ab
-        rem sequi porro qui, odio quod molestias natus dolor doloremque
-        veritatis culpa sint aspernatur. Veritatis in modi atque nulla illo
-        rerum itaque eligendi, quaerat ullam vel doloremque ab. Rem labore ut
-        officia doloremque!
-      </p>
+      <h4>Blocks and Lines</h4>
+      <div class="text-sub-block">
+        <p>
+          The lower to cells-in-a-row to score, the more powerful blocks are, because you get points in all four directions. The higher the cells-in-a-row to score (the longer the line), the stronger the strategy of getting long lines.
+        </p>
+      </div>
       <img src="game-settings-config-choice.png" alt="" />
     </div>
   </div>

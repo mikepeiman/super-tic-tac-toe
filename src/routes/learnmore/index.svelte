@@ -5,7 +5,7 @@
   import InstructionsMenu from "./../../components/InstructionsMenu.svelte";
   import InstructionsSubMenu from "./../../components/InstructionsSubMenu.svelte";
   import Section1 from "./../../components/learnmore-rules.svelte";
-  import Section2 from "./../../components/learnmore-win.svelte";
+  // import Section2 from "./../../components/learnmore-win.svelte";
   import Section3 from "./../../components/learnmore-features.svelte";
   import Section4 from "./../../components/learnmore-issues.svelte";
   import Section5 from "./../../components/learnmore-development.svelte";
@@ -1215,12 +1215,6 @@
           <Section1 />
         </div>
       </section>
-      <!-- 
-      <section id="how-to-win" class="instructions-section">
-        <div class="section-wrapper">
-          <Section2 />
-        </div>
-      </section> -->
 
       <section id="features" class="instructions-section">
         <div class="section-wrapper">
