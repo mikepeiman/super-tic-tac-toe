@@ -160,7 +160,7 @@
       <h4>Blocks and Lines</h4>
       <div class="text-sub-block">
         <p>
-          The lower to cells-in-a-row to score, the more powerful blocks are, because you get points in all four directions. The higher the cells-in-a-row to score (the longer the line), the stronger the strategy of getting long lines.
+          The lower the cells-in-a-row to score the more powerful blocks are, because you score points in all four directions. The higher the cells-in-a-row to score (the longer the line required to score), the stronger the strategy of building long lines.
         </p>
       </div>
       <img src="game-settings-config-choice.png" alt="" />
