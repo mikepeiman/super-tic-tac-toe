@@ -656,6 +656,9 @@
     align-items: center;
     transition: all 0.45s;
     z-index: 10;
+    & svg {
+      fill: darkorange;
+    }
   }
   #home {
     left: 2rem;
@@ -1005,13 +1008,15 @@
     width: 100%;
     height: auto;
     & .heading {  
-      color: darkorange;
+      color: white;
     }
     & .subtext {
       padding: 1.5rem;
       border-radius: 1rem;
-      margin: 2.5rem;
-      background: 2px solid rgba(0,0,0,0.5);
+      margin: 2.5rem auto;
+      background: rgba(0,0,0,0.5);
+      font-weight: 300;
+      max-width: 80%;
       // background: rgba(36, 33, 197, 0.75);
     }
   }
@@ -1081,6 +1086,10 @@
         background: none;
         & .section-wrapper {
           background: none;
+          & .subtext {
+            max-width: 100%;
+            margin: 2.5rem;
+          }
         }
       }
       .text-content {

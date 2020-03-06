@@ -4,11 +4,7 @@
 
 <h2 class="heading">DEVELOPMENT THOUGHTS</h2>
 <p class="subtext">
-  This is some subtext. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-  Minima magni incidunt deserunt esse ut, rerum modi ipsa harum ipsam, est sit,
-  nisi tempora a commodi quo obcaecati possimus repellat ullam quis voluptate
-  nostrum culpa blanditiis voluptas! Optio, reiciendis expedita laboriosam sint
-  totam beatae sit vero, ad nobis nisi iusto autem.
+This is where I'll share a bit of a rough roadmap, a few features I want to add. I also want to share a bit of the technical basis of the app, and the work that went into it.
 </p>
 <div class="text-content">
 
