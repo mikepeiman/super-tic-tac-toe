@@ -139,6 +139,7 @@
   }
 
   function clearScores() {
+    socket.emit('clearscores', 'This is the clearscores message')
     console.log(`clear scores`);
     players.forEach(player => {
       console.log(`clear scores player ${player.name}`);
