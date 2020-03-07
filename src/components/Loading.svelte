@@ -16,8 +16,8 @@
   const light = "#efefefef";
   const dark = "#1a1a1a";
   onMount(async () => {
-    console.log(`LOADING onMount`);
-    console.todo(`LOADING onMount() => console.todo`);
+    // console.log(`LOADING onMount`);
+    // console.todo(`LOADING onMount() => console.todo`);
     document.documentElement.style.setProperty("--theme-bg", dark);
     document.documentElement.style.setProperty("--theme-dark", dark);
     document.documentElement.style.setProperty("--theme-fg", light);

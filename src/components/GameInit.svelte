@@ -95,17 +95,17 @@
           LSplayers = JSON.parse(LSplayers);
         }
         let len = LSplayers.length;
-        console.log(` LS players length: ${len}`);
+        // console.log(` LS players length: ${len}`);
         let len2 = players.length;
-        console.log(` var players length: ${len2}`);
+        // console.log(` var players length: ${len2}`);
         let num2 = settings.numberOfPlayers;
-        console.log(` settings.numberOfPlayers: ${settings.numberOfPlayers}`);
+        // console.log(` settings.numberOfPlayers: ${settings.numberOfPlayers}`);
         if (num2 > len) {
           modifyPlayers("add");
         } else if (num2 < len) {
           modifyPlayers("remove");
         } else {
-          console.log(`I see no change in players needed`);
+          // console.log(`I see no change in players needed`);
         }
 
         // numberOfPlayers && modifyPlayers();
@@ -114,7 +114,7 @@
   }
 
   onMount(() => {
-    console.log(`GameInit => onMount()`);
+    // console.log(`GameInit => onMount()`);
     storeSettings.subscribe(value => {
       settings = value;
       ({ numberOfPlayers } = settings);
@@ -123,34 +123,34 @@
       gameboardWidth = val;
     });
     state = $storeState;
-    console.log(`GameInit => onMount() settings = `, settings);
+    // console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");
     let playerDetails = localStorage.getItem("preservePlayerDetails");
-    console.log(`GameInit => onMount() playerDetails = `, playerDetails);
+    // console.log(`GameInit => onMount() playerDetails = `, playerDetails);
     if (gameInProgress) {
       let turnHistory = JSON.parse(localStorage.getItem("turnHistory"));
 
       state = JSON.parse(localStorage.getItem("state"));
       state.movesRemaining = settings.movesPerTurn - turnHistory.length;
-      console.log(`GameInit => onMount(), gameInProgress true`);
+      // console.log(`GameInit => onMount(), gameInProgress true`);
     } else {
       state.movesRemaining = settings.movesPerTurn;
-      console.log(`GameInit => onMount(), state `, state);
+      // console.log(`GameInit => onMount(), state `, state);
     }
     storeState.set(state);
     localStorage.setItem("state", JSON.stringify(state));
     if (playerDetails) {
       players = JSON.parse(localStorage.getItem("players"));
-      console.log(
-        `GameInit => onMount() playerDetails, players `,
-        playerDetails,
-        players
-      );
+      // console.log(
+      //   `GameInit => onMount() playerDetails, players `,
+      //   playerDetails,
+      //   players
+      // );
       storePlayers.set(players);
       if (!gameInProgress) {
-        console.log(
-          `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
-        );
+        // console.log(
+        //   `GameInit,       if (!gameInProgress) { state.currentPlayer = players[0];`
+        // );
         setCurrentPlayerZero();
         storePlayers.set(players);
       }
@@ -160,7 +160,7 @@
   });
 
   function initializePlayers() {
-    console.log(`initializePlayers()`);
+    // console.log(`initializePlayers()`);
     let hueOffset = 180;
     let hueInterval = 360 / settings.numberOfPlayers;
     players = [];
@@ -195,12 +195,12 @@
       setCurrentPlayerZero();
     }
     dispatch("playersInitialized", players);
-    console.log(`GameInit => initialized players done`, players);
+    // console.log(`GameInit => initialized players done`, players);
     storePlayers.set(players);
   }
 
   function modifyPlayers(increment) {
-    console.log(`|||   MODIFY PLAYERS  ${increment}  |||`);
+    // console.log(`|||   MODIFY PLAYERS  ${increment}  |||`);
     if (increment === "remove") {
       players.pop();
       players = players;

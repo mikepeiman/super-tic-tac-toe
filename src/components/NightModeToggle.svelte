@@ -23,7 +23,7 @@
 
   storeMovesRemaining.subscribe(val => {
     movesRemaining = val;
-    console.log(`nightmodetoggle storeMovesRemaining ${movesRemaining}`);
+    // console.log(`nightmodetoggle storeMovesRemaining ${movesRemaining}`);
     if (typeof window !== "undefined") {
       movesRemainingEl = document.getElementById("movesRemaining");
       let od = new Odometer({
@@ -32,9 +32,9 @@
         duration: 10 * 1000
       });
       if (typeof od !== "undefined") {
-        console.log(
-          `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
-        );
+        // console.log(
+        //   `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+        // );
         od.update(movesRemaining);
       }
     }
@@ -42,7 +42,7 @@
 
   storeMoveNumber.subscribe(val => {
     movesPlayed = val;
-    console.log(`nightmodetoggle storeMoveNumber ${movesPlayed}`);
+    // console.log(`nightmodetoggle storeMoveNumber ${movesPlayed}`);
     if (typeof window !== "undefined") {
       movesPlayedEl = document.getElementById("movesPlayed");
       let od = new Odometer({
@@ -51,9 +51,9 @@
         duration: 10 * 1000
       });
       if (typeof od !== "undefined") {
-        console.log(
-          `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
-        );
+        // console.log(
+        //   `storeMovesRemaining.subscribe => supposed to be rolling odometer now with .update()....`
+        // );
         od.update(movesPlayed);
       }
     }

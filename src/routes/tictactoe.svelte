@@ -64,10 +64,10 @@
     }
   });
   storeState.subscribe(value => {
-    console.log(
-      `storeState subscribed value, movesRemaining from state ${value.movesRemaining}`,
-      value
-    );
+    // console.log(
+    //   `storeState subscribed value, movesRemaining from state ${value.movesRemaining}`,
+    //   value
+    // );
     state = value;
     if (typeof window !== "undefined") {
       movesRemaining = state.movesRemaining;
@@ -80,7 +80,7 @@
     }
   });
   storeSettings.subscribe(value => {
-    console.log(`TicTacToe => storeSettings.subscribe value => `, value);
+    // console.log(`TicTacToe => storeSettings.subscribe value => `, value);
     settings = value;
     if (typeof window !== "undefined") {
       let lsMovesFromTurnHistory = JSON.parse(
@@ -96,9 +96,9 @@
     }
   });
   storeViewportSize.subscribe(val => {
-    console.log(
-      `tictactoe => storeViewportSize W:${val.width} H:${val.height}`
-    );
+    // console.log(
+    //   `tictactoe => storeViewportSize W:${val.width} H:${val.height}`
+    // );
     viewportSize = val;
     if (val.width > val.height) {
       landscape = true;
@@ -120,9 +120,9 @@
   });
 
   onMount(async () => {
-    console.log(
-      `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
-    );
+    // console.log(
+    //   `TicTacToe.svelte onMount $storeViewportSize.width ${$storeViewportSize.width}`
+    // );
     if (viewportSize.width < smallScreenMaxWidth) {
       smallScreenWidth = true;
     } else {

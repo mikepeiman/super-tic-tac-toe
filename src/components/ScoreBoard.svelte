@@ -53,7 +53,7 @@
     // addStyles();
   });
   storeCurrentPlayer.subscribe(value => {
-    console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
+    // console.log(`ScoreBoard => storeCurrentPlayer subscribed`, value);
 
     currentPlayer = value;
     if (value === null) {
@@ -62,9 +62,9 @@
   });
 
   storePlayersScored.subscribe(val => {
-    console.log(
-      `playersScored() receiving an update, running odometerScores() `
-    );
+    // console.log(
+    //   `playersScored() receiving an update, running odometerScores() `
+    // );
     odometerScores();
     storePlayersScored.set(false);
   });
@@ -77,7 +77,7 @@
     }
   });
   storeViewportSize.subscribe(val => {
-    console.log(`ScoreBoard subscribed to app viewport size: `, val);
+    // console.log(`ScoreBoard subscribed to app viewport size: `, val);
     appViewport = val;
   });
 
@@ -130,12 +130,12 @@
 
         for (let d = 0; d < 4; d++) {
           let dirScoreEl = document.getElementById(`direction-score-${i}-${d}`);
-          console.log(
-            `dirScoreEl for odometer: ${typeof dirScoreEl} ${Boolean(
-              dirScoreEl
-            )}`,
-            dirScoreEl
-          );
+          // console.log(
+          //   `dirScoreEl for odometer: ${typeof dirScoreEl} ${Boolean(
+          //     dirScoreEl
+          //   )}`,
+          //   dirScoreEl
+          // );
           if (dirScoreEl) {
             let od = new Odometer({
               el: dirScoreEl,
@@ -143,9 +143,9 @@
               duration: 10 * 1000
             });
             if (typeof od !== "undefined") {
-              console.log(
-                `players[${i}].dirScoresByIndex[${d}] for odometer: ${players[i].dirScoresByIndex[d]}`
-              );
+              // console.log(
+              //   `players[${i}].dirScoresByIndex[${d}] for odometer: ${players[i].dirScoresByIndex[d]}`
+              // );
               od.update(players[i].dirScoresByIndex[d]);
             }
           }
@@ -163,7 +163,7 @@
 
   async function editPlayerDetails(e, player) {
     let cname = "player-details-icon";
-    console.log(`editPlayerDetails() clicked ${player.name}, e `, e);
+    console.log(`editPlayerDetails()   clicked ${player.name}, e `, e);
     let editPlayerIcon = await findParentElementWithClassName(e.target, cname);
     if (!editPlayerIcon.classList.contains(cname)) {
       editPlayerIcon = editPlayerIcon.parentElement;
