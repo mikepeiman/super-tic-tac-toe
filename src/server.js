@@ -20,12 +20,13 @@ app
   });
 
 // var http = require("http").createServer(app);
-var io = require("socket.io")(server);
+const io = require("socket.io")(server);
 
 let sequenceNumberByClient = new Map();
 let clientInstance = 1
 // event fired every time a new client connects:
 io.on("connection", socket => {
+  
   console.info(`From server.js: Client connected [id=${socket.id}]`);
   // initialize this client's sequence number
   sequenceNumberByClient.set(socket, clientInstance);

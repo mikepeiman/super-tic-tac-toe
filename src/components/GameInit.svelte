@@ -1,9 +1,12 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
   import SettingsInit from "./SettingsInit.svelte";
+  import ClientSockets from "./ClientSockets.svelte";
   import emojis from "emojis-list";
   const dispatch = createEventDispatcher();
   import { writable } from "svelte/store";
+  import io from "socket.io-client";
+  const socket = io();
   import {
     storeSettings,
     storeState,
@@ -123,9 +126,9 @@
     storeGameboardWidth.subscribe(val => {
       gameboardWidth = val;
     });
-    if(localStorage.getItem("finalTurnCompleted")) {
-      console.info(`from GameInit, about to flag storeFinalTurnCompleted`)
-      storeFinalTurnCompleted.set(true)
+    if (localStorage.getItem("finalTurnCompleted")) {
+      console.info(`from GameInit, about to flag storeFinalTurnCompleted`);
+      storeFinalTurnCompleted.set(true);
     }
     state = $storeState;
     // console.log(`GameInit => onMount() settings = `, settings);
@@ -330,4 +333,5 @@
 
 </style>
 
+<ClientSockets {socket} />
 <SettingsInit on:updateGameSettings={updateGameSettings} />
