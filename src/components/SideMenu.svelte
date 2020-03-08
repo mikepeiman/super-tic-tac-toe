@@ -1,7 +1,7 @@
 <script>
   import MenuModal from "./GameMenuModal.svelte";
   import SettingsModal from "./SettingsModal.svelte";
-    import Loading from "./../components/Loading.svelte";
+  import Loading from "./../components/Loading.svelte";
   import NightModeToggle from "./NightModeToggle.svelte";
   import Modal from "svelte-simple-modal";
   import { getContext } from "svelte";
@@ -28,7 +28,7 @@
     storePreservePlayerDetails,
     storeGameHistoryFlat
   } from "../stores.js";
-
+  let users;
   let gameboardWidth = "500px";
   let containerWidth = "1000px";
   $: {
@@ -82,25 +82,12 @@
 
   onMount(() => {
     storeSettings.subscribe(value => {
-      // console.log(`StatusBar => storeSettings.subscribe value => `, value);
       settings = value;
-      // let lsMovesFromTurnHistory = JSON.parse(
-      //   localStorage.getItem("turnHistory")
-      // );
-      // if (lsMovesFromTurnHistory) {
-      //   lsMovesFromTurnHistory = JSON.parse(localStorage.getItem("turnHistory"))
-      //     .length;
-      // }
-
-      // console.log(`lsMoveFromTurnHistory: `, lsMovesFromTurnHistory);
-      // movesRemaining = settings.movesPerTurn - lsMovesFromTurnHistory;
-      // state.movesRemaining = movesRemaining;
     });
     storeCurrentPlayer.subscribe(value => {
       currentPlayer = value;
     });
     storeGameboardWidth.subscribe(val => {
-      // console.log(`from statusBar => gameboard el width: `, val);
       gameboardWidth = val;
     });
 
@@ -132,6 +119,7 @@
     setAllInputWidths();
   });
 
+
   function playersScored(e) {
     players = e.detail;
     storeState.set(state);
@@ -139,7 +127,11 @@
   }
 
   function clearScores() {
-    socket.emit('clearscores', 'This is the clearscores message')
+    socket.emit(
+      "clearscores",
+      `This is the clearscores message with current player name ${currentPlayer.name}`
+    );
+
     console.log(`clear scores`);
     players.forEach(player => {
       console.log(`clear scores player ${player.name}`);
@@ -148,9 +140,14 @@
     });
     players = players;
     storePlayers.set(players);
-    storePlayersScored.set(true)
-    storePlayersScored.set(false)
+    storePlayersScored.set(true);
+    storePlayersScored.set(false);
   }
+  
+  socket.on("clearscores", function({ msg, numUsers }) {
+    users++;
+    console.log(`Number of current users/instances: ${numUsers}`);
+  }); 
 
   function setSingleInputWidth(input) {
     // console.log(`setSingleInputWidth value ${input.value.toString()} `, input);
@@ -210,9 +207,7 @@
 
 {#await currentPlayer then currentPlayer}
   {#if !currentPlayer.name}
-      <Loading
-    loadingMsg="SideMenu loading via COMPONENT..."
-    thisId="menu" />
+    <Loading loadingMsg="SideMenu loading via COMPONENT..." thisId="menu" />
   {:else}
     <!-- <div class="buttons-wrapper" id="buttons-wrapper"> -->
     <div class="modal-wrapper options-control-wrapper">
@@ -243,6 +238,11 @@
       <Modal>
         <SettingsModal />
       </Modal>
+    </div>
+    <div
+      class="modal-wrapper options-control-wrapper"
+      id="sockets-test-wrapper">
+      <p>Sockets: users {users}</p>
     </div>
     <div
       class="modal-wrapper options-control-wrapper"

@@ -56,7 +56,6 @@
 
   onMount(() => {
     storeViewportSize.subscribe(val => {
-      console.log(`storeViewportSize from GameMenuModal: `, val);
       vWidth = val.width;
     });
 
@@ -71,7 +70,7 @@
 
   const showModal = () => {
     open(GameSettingsModalContent, { message: "Game Settings:" }, styling);
-    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
+    // console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
     // storeToggleConfiguration.set(false);
   };
 </script>

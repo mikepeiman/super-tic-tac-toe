@@ -41,7 +41,7 @@
 
   onMount(() => {
     storeViewportSize.subscribe(val => {
-      console.log(`storeViewportSize from GameMenuModal: `, val);
+      // console.log(`storeViewportSize from GameMenuModal: `, val);
       vWidth = val.width;
     });
 
@@ -83,7 +83,7 @@
 
   const showModal = () => {
     open(GameMenuModalContent, { message: "Game Controls:" }, styling);
-    console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
+    // console.log(`showModal ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`);
   };
 </script>
 
