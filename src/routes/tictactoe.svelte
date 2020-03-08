@@ -179,19 +179,10 @@
     console.log(`TicTacToe.svelte moveNotification for `, cell.detail);
     // countUp.update(movesRemaining);
   }
-
-  // function setViewportSize() {
-  //   let app = document.querySelector("#sapper");
-  //   console.log(`setViewportSize for app: `, app);
-  //   let appWidth = app.offsetWidth;
-  //   let appHeight = app.offsetHeight;
-  //   let appRatio = (appWidth / appHeight).toFixed(2);
-  //   storeViewportSize.set({
-  //     width: appWidth,
-  //     height: appHeight,
-  //     ratio: appRatio
-  //   });
-  // }
+  
+  function finalTurnTally() {
+    console.log(`finalTurnTally fired in tictactoe from GameBoard dispatch`);
+  }
 
   function playersScored(e) {
     players = e.detail;
@@ -1128,7 +1119,9 @@
       {/if}
 
       <div class="gameboard-container">
-        <GameBoard on:moveNotification={moveNotification} />
+        <GameBoard
+          on:moveNotification={moveNotification}
+          on:finalturn={finalTurnTally} />
       </div>
 
       {#if smallScreenWidth}

@@ -36,6 +36,7 @@ let gameHistoryFlat = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
 let gameHistoryTurns = writable([]);
+let turnHistory = writable([]);
 let buttonStyles = writable({
   _color: "var(--input-blue)",
   _secondaryColor: "var(--input-blue)",
@@ -177,6 +178,16 @@ export const storeGameHistoryTurns = {
     localStorage.setItem("gameHistoryTurns", JSON.stringify(val));
   }
 };
+
+export const storeTurnHistory = {
+  subscribe: turnHistory.subscribe,
+  set: val => {
+    console.log(`storeTurnHistory.set val => `, val);
+    turnHistory.set(val);
+    localStorage.setItem("turnHistory", JSON.stringify(val));
+  }
+};
+
 export const storeGameHistoryFlat = {
   subscribe: gameHistoryFlat.subscribe,
   set: val => {

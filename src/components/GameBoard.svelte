@@ -15,6 +15,7 @@
     storeCurrentPlayer,
     storeDirectionArrays,
     storeGameInProgress,
+    storeTurnHistory,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
     storeGameHistoryFlat
@@ -304,6 +305,7 @@
           cell.style.height = cellSize + "px";
           cell.setAttribute("data-mark", players[p].mark);
           cell.setAttribute("data-ticked", true);
+          // cell.setAttribute("data-locked", true);
           cell.classList.add("locked", "ticked");
           cell.classList.remove("unticked");
           cell.setAttribute("locked", true);
@@ -372,28 +374,16 @@
     let unticked = [];
     let p = currentPlayer.id;
     let customColor = `--player-color: ${players[p].colorMain}`;
-    customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 2)}px`;
+    let customMarkerSize = `--cell-mark-size: ${Math.floor(cellSize / 2)}px`;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         let id = `R${r}C${c}`;
         let cell = document.getElementById(id);
-        console.log(`tickFinalTurnMoves cell id ${id}`, cell);
+        // console.log(`tickFinalTurnMoves cell id ${id}`, cell);
         let ticked = cell.getAttribute("data-ticked");
-        console.log(`data-ticked: ${ticked}`);
+        // console.log(`data-ticked: ${ticked}`);
         if (ticked === "false") {
-          console.log(`!ticked! cell ${id}, calling tickThis(cell) `, cell);
-          // unticked = [...unticked, cell];
-          // cell.style = `${customColor}; ${customMarkerSize}`;
-          // cell.style.margin = settings.gutter + "px";
-          // cell.style.width = cellSize + "px";
-          // cell.style.height = cellSize + "px";
-          // cell.setAttribute("data-mark", players[p].mark);
-          // cell.setAttribute("data-ticked", true);
-          // cell.classList.add("locked", "ticked");
-          // cell.classList.remove("unticked");
-          // cell.setAttribute("locked", true);
-          // cell.style.border = "1px solid rgba(0,0,0,0.5)";
-          let delayMS = 250;
+          let delayMS = 67;
           if (delayMS > 0) {
             await delay(delayMS);
           }
@@ -402,7 +392,6 @@
           storeState.set(state);
           storeMoveNumber.set(moveNumber);
           setTurnHistory(cell);
-          setGameHistoryTurns();
           // tickThis(cell);
           cell.style = `${customColor}; ${customMarkerSize}`;
           cell.style.margin = settings.gutter + "px";
@@ -417,6 +406,10 @@
         }
       }
     }
+    console.log(`tickFinalTurnMoves just completed, turnHistory from store = `, $storeGameHistoryTurns)
+    console.log(`tickFinalTurnMoves just completed, turnHistory from store = `, $storeGameHistoryTurns)
+    setGameHistoryTurns();
+    storeTurnHistory.set([])
   }
 
   async function createDirectionArrays() {
@@ -820,7 +813,7 @@
     }
 
     storeGameHistoryTurns.set(turnHistory);
-    localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
+    storeTurnHistory.set(turnHistory);
   }
 
   function setTurnHistory(cell) {
@@ -848,7 +841,7 @@
       gameHistoryFlat = [...gameHistoryFlat, move];
       storeGameHistoryFlat.set(gameHistoryFlat);
       localStorage.setItem("gameHistoryFlat", JSON.stringify(gameHistoryFlat));
-      localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
+      storeTurnHistory.set(turnHistory);
     }
   }
 
@@ -874,29 +867,29 @@
       move.classList.add("locked");
       move.style.border = "1px solid rgba(0,0,0,0.5)";
     });
-    console.log(
-      `\n\n about to set gameHistoryTurns, is it good or null? `,
-      gameHistoryTurns,
-      `\n\n`
-    );
+    // console.log(
+    //   `\n\n about to set gameHistoryTurns, is it good or null? `,
+    //   gameHistoryTurns,
+    //   `\n\n`
+    // );
     // if(!gameHistoryTurns) {}
-    console.log(
-      `Bool of gameHistoryTurns: ${Boolean(
-        gameHistoryTurns
-      )} and type of: ${typeof gameHistoryTurns}`
-    );
+    // console.log(
+    //   `Bool of gameHistoryTurns: ${Boolean(
+    //     gameHistoryTurns
+    //   )} and type of: ${typeof gameHistoryTurns}`
+    // );
     // gameHistoryTurns ? (gameHistoryTurns = []) : gameHistoryTurns;
     if (!gameHistoryTurns) {
       gameHistoryTurns = [];
     }
-    console.log(
-      `Bool of gameHistoryTurns: ${Boolean(
-        gameHistoryTurns
-      )} and type of: ${typeof gameHistoryTurns}`
-    );
+    // console.log(
+    //   `Bool of gameHistoryTurns: ${Boolean(
+    //     gameHistoryTurns
+    //   )} and type of: ${typeof gameHistoryTurns}`
+    // );
     gameHistoryTurns = [...gameHistoryTurns, turnHistory];
     storeGameHistoryTurns.set(gameHistoryTurns);
-    localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
+    // localStorage.setItem("gameHistoryTurns", JSON.stringify(gameHistoryTurns));
     storeGameInProgress.set(true);
     // storePreservePlayerDetails.set(true);
     turnHistory = [];
@@ -930,22 +923,23 @@
     storeCurrentPlayer.set(currentPlayer);
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
     localStorage.setItem("state", JSON.stringify(state));
-    localStorage.setItem("turnHistory", JSON.stringify(turnHistory));
+    storeTurnHistory.set(turnHistory);
     statusBar.classList.add(`player-${currentPlayer.id}`);
 
     // check if this is the last move
     let movesPerGame =
       (settings.rows * settings.columns) / settings.movesPerTurn;
     let movesPlayed = moveNumber / settings.movesPerTurn;
-    let checkForLastMove = movesPerGame - movesPlayed;
+    let checkForLastTurn = movesPerGame - movesPlayed;
 
     console.log(
-      `checkForLastMove value (turns remaining): ${checkForLastMove}`
+      `checkForLastTurn value (turns remaining): ${checkForLastTurn}`
     );
-    // tickFinalTurnMoves();
-    if (checkForLastMove === 1) {
-      console.log(`checkForLastMove says FINAL MOVE!!!!`);
+
+    if (checkForLastTurn === 1) {
+      console.log(`checkForLastTurn says FINAL TURN!!!!`);
       tickFinalTurnMoves();
+      dispatch("finalturn", true);
     }
   }
 </script>
