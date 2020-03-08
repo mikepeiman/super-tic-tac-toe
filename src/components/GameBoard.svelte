@@ -17,7 +17,8 @@
     storeGameInProgress,
     storeTurnHistory,
     storeGameHistoryTurns,
-    storePreservePlayerDetails,
+    storeFinalTurnCompleted,
+    storePreservePlayerDetails,    
     storeGameHistoryFlat
   } from "../stores.js";
 
@@ -940,6 +941,7 @@
       console.log(`checkForLastTurn says FINAL TURN!!!!`);
       tickFinalTurnMoves();
       dispatch("finalturn", true);
+      storeFinalTurnCompleted.set(true)
     }
   }
 </script>

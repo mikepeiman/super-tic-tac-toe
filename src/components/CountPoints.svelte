@@ -12,7 +12,8 @@
     storeGameHistoryTurns,
     storePreservePlayerDetails,
     storeGameHistoryFlat,
-    storeButtonStyles
+    storeButtonStyles,
+    storeFinalTurnCompleted
   } from "../stores.js";
 
   import Fa from "sveltejs-fontawesome";
@@ -36,8 +37,11 @@
     storePlayers.subscribe(val => {
       players = val;
       // console.log(`CountPoints => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
-    })
+    });
     let gameInProgress = localStorage.getItem("gameInProgress");
+    if ($storeFinalTurnCompleted == true) {
+      countPoints();
+    }
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
     }
@@ -109,9 +113,9 @@
     players = players;
     storePlayers.set(players);
     // setTimeout(() => {
-      storePlayersScored.set(true)
+    storePlayersScored.set(true);
     // }, 10);
-    
+
     // localStorage.setItem(`players`, JSON.stringify(players));
     dispatch("playersScored", players);
   }
@@ -224,7 +228,7 @@
     //   `DIRECTION ${direction.name} score closing with direction score ${dirScore} | player: `,
     //   player
     // );
-    
+
     directionScores = { points: dirPoints, bonus: dirBonus };
     return directionScores;
   }

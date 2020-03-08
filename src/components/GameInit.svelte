@@ -14,7 +14,8 @@
     storeGameboardWidth,
     storeGameHistoryTurns,
     storePreservePlayerDetails,
-    storeGameHistoryFlat
+    storeGameHistoryFlat,
+    storeFinalTurnCompleted
   } from "../stores.js";
 
   $: currentPlayer = {};
@@ -122,6 +123,10 @@
     storeGameboardWidth.subscribe(val => {
       gameboardWidth = val;
     });
+    if(localStorage.getItem("finalTurnCompleted")) {
+      console.info(`from GameInit, about to flag storeFinalTurnCompleted`)
+      storeFinalTurnCompleted.set(true)
+    }
     state = $storeState;
     // console.log(`GameInit => onMount() settings = `, settings);
     let gameInProgress = localStorage.getItem("gameInProgress");

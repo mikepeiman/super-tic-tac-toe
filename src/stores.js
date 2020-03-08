@@ -33,6 +33,7 @@ let preservePlayerDetails = writable(false);
 let toggleConfiguration = writable(false);
 let toggleAutoFillFinalTurn = writable(false);
 let gameHistoryFlat = writable(false);
+let finalTurnCompleted = writable(false);
 // let players = writable(JSON.parse(localStorage.getItem('settings')) || false);
 let players = writable(false);
 let gameHistoryTurns = writable([]);
@@ -77,6 +78,15 @@ export const storePlayers = {
   set: val => {
     players.set(val);
     localStorage.setItem("players", JSON.stringify(val));
+  }
+};
+
+export const storeFinalTurnCompleted = {
+  subscribe: finalTurnCompleted.subscribe,
+  set: val => {
+    finalTurnCompleted.set(val);
+    console.info(`storeFinalTurnCompleted called ${val}`)
+    localStorage.setItem("finalTurnCompleted", JSON.stringify(val));
   }
 };
 
