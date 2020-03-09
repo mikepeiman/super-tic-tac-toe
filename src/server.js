@@ -26,7 +26,15 @@ let sequenceNumberByClient = new Map();
 let clientInstance = 1
 // event fired every time a new client connects:
 io.on("connection", socket => {
-  
+
+
+      socket.on('add user',  function addUser(username) { // user chooses a username
+        socket.emit('get user id', socket.id) // return socket id to client
+        // socket.join('lobby'); // join the main chat channel
+        // socket.emit('refresh lobby rooms', roomServer.getLobbyRooms()); // get the state of the lobby, not refreshing for everyone though
+        // socket.emit('refresh lobby messages', roomServer.getLobbyMessages());
+        socket.username = username; // set the socket instance (per user) to their chosen username
+    });
   console.info(`From server.js: Client connected [id=${socket.id}]`);
   // initialize this client's sequence number
   sequenceNumberByClient.set(socket, clientInstance);

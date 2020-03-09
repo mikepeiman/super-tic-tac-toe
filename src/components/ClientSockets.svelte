@@ -7,24 +7,27 @@
   // then when you declare the component on this document:
   // <Component {socket}>
   // this is how you keep the same socket connection per component.
-
-onMount(() => {
+export let myUserId
+onMount(async () => {
   console.log(`ClientSockets mounted`)
+  await submitUsername("Mike")
+  console.info(`myUserId (socket) `, myUserId)
 })
 
   // Outgoing functions
   // socket.emit = to server
-  function submitUsername() {
+  function submitUsername(username) {
     if (!username) {
       return;
     }
     socket.emit("add user", username);
-    isLoggedIn = true;
+    // isLoggedIn = true;
   }
 
   // Incoming function
   //socket.on = from server
   socket.on("get user id", userId => {
     myUserId = userId;
+    console.log(`inside socket.on "get user id" event: `, userId)
   });
 </script>
