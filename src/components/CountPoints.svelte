@@ -45,14 +45,14 @@
     if (gameInProgress) {
       lines = JSON.parse(localStorage.getItem("lines"));
     }
-    console.log(`CountPoints onMount(), players, settings`, players, settings);
+    // console.log(`CountPoints onMount(), players, settings`, players, settings);
     storeButtonStyles.subscribe(val => {
       buttonStyles = val;
       ({ _color, _secondaryColor, _secondaryOpacity } = buttonStyles);
-      console.log(
-        `countpoints, buttonstyles from store, color ${_color} secondaryColor ${_secondaryColor} length ${val.length}`,
-        val
-      );
+      // console.log(
+      //   `countpoints, buttonstyles from store, color ${_color} secondaryColor ${_secondaryColor} length ${val.length}`,
+      //   val
+      // );
     });
   });
 

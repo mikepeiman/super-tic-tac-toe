@@ -32,7 +32,7 @@
   // let settings = Object.assign({}, initialSettings);
 
   onMount(() => {
-    console.log(`SettingsMenu onMount(), settings`, settings);
+    // console.log(`SettingsInit onMount(), settings`, settings);
     storeCurrentPlayer.subscribe(val => {
       currentPlayer = val;
     });

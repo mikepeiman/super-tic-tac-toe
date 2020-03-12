@@ -107,7 +107,7 @@
       // console.log(`GameBoard => storePlayers.subscribe ||| YES assigned! length: ${players.length}`)
     });
     storeCurrentPlayer.subscribe(async value => {
-      console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
+      // console.log(`GameBoard => storeCurrentPlayer subscribed`, value);
       currentPlayer = value;
       // await grid.length;
       resetGameBoard();

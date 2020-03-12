@@ -8,10 +8,9 @@
   // <Component {socket}>
   // this is how you keep the same socket connection per component.
 export let myUserId
-onMount(async () => {
+onMount(() => {
   console.log(`ClientSockets mounted`)
-  await submitUsername("Mike")
-  console.info(`myUserId (socket) `, myUserId)
+  submitUsername("Mike")
 })
 
   // Outgoing functions

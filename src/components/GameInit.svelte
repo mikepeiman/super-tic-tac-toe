@@ -333,5 +333,6 @@
 
 </style>
 
-<ClientSockets {socket} />
+
 <SettingsInit on:updateGameSettings={updateGameSettings} />
+<ClientSockets {socket} />

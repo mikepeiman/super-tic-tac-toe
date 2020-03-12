@@ -90,10 +90,10 @@
     }
 
     movesRemainingEl = document.getElementById("movesRemaining");
-    console.log(
-      `let movesRemainingEl = document.getElementById('movesRemaining') `,
-      movesRemainingEl
-    );
+    // console.log(
+    //   `let movesRemainingEl = document.getElementById('movesRemaining') `,
+    //   movesRemainingEl
+    // );
     let od = new Odometer({
       el: movesRemainingEl,
       value: movesRemaining

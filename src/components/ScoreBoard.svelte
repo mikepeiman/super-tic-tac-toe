@@ -4,7 +4,8 @@
   import { send, receive } from "./../crossfade.js";
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
-
+  import io from "socket.io-client";
+  const socket = io();
   // Following are the imports for modals, Font Awesome icons and FA component
   import Modal from "svelte-simple-modal";
   import Fa from "sveltejs-fontawesome";
@@ -47,7 +48,7 @@
   let numberOfPlayers;
   ({ numberOfPlayers } = settings);
   storeSettings.subscribe(value => {
-    console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
+    // console.log(`ScoreBoard => storeSettings.subscribe value => `, value);
     settings = value;
     ({ numberOfPlayers } = settings);
     // addStyles();
@@ -266,7 +267,13 @@
     if (emoji) {
       // removeDeactivatePlacardsSoEmojiCanPick();
       player.mark = emoji.detail;
+      socket.emit("add user emoji", emoji.detail);
     }
+    socket.emit("add user name", player.name);
+    socket.on("get user id", userId => {
+      myUserId = userId;
+      console.log(`inside socket.on "get user id" event: `, userId);
+    });
     let placards = document.querySelectorAll(".scoreboard-player");
     placards.forEach(placard => {
       console.log(
@@ -399,7 +406,7 @@
       height: appHeight,
       ratio: appRatio
     };
-        let windowViewport = {
+    let windowViewport = {
       width: window.innerWidth,
       height: window.innerHeight,
       ratio: parseFloat((window.innerWidth / window.innerHeight).toFixed(2))
