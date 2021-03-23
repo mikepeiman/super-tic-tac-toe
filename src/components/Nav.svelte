@@ -2,11 +2,14 @@
 	export let segment;
 </script>
 
-<style>
+<style lang="scss">
+  $border-size: 1px;
 	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
+		border-bottom: $border-size solid rgba(255,62,0,0.1);
 		font-weight: 300;
 		padding: 0 1em;
+    height: calc(10vh - 1px);
+    background-color: #eeeeee;
 	}
 
 	ul {
@@ -26,12 +29,12 @@
 		float: left;
 	}
 
-	[aria-current] {
+	.selected {
 		position: relative;
 		display: inline-block;
 	}
 
-	[aria-current]::after {
+	.selected::after {
 		position: absolute;
 		content: '';
 		width: calc(100% - 1em);
@@ -48,13 +51,14 @@
 	}
 </style>
 
-<nav>
+<nav class="topnav" id="topnav">
 	<ul>
-		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
-		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="about">about</a></li>
+		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
+		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
+    <li><a class:selected='{segment === "tictactoe"}' href='tictactoe'>tictactoe</a></li>
 
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
-		<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>
+		<li><a rel=prefetch class:selected='{segment === "blog"}' href='blog'>blog</a></li>
 	</ul>
 </nav>

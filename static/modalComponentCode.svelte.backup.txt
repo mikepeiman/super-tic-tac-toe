@@ -1,0 +1,102 @@
+
+
+  function modal() {
+    const modalTriggers = document.querySelectorAll(".popup-trigger");
+    const modalCloseTrigger = document.querySelector(".popup-modal__close");
+    const bodyBlackout = document.querySelector(".body-blackout");
+    modalTriggers.forEach(trigger => {
+      trigger.addEventListener("click", () => {
+        const { popupTrigger } = trigger.dataset;
+        const popupModal = document.querySelector(
+          `[data-popup-modal="${popupTrigger}"]`
+        );
+        popupModal.classList.add("is--visible");
+        bodyBlackout.classList.add("is-blacked-out");
+
+        popupModal
+          .querySelector(".popup-modal__close")
+          .addEventListener("click", () => {
+            popupModal.classList.remove("is--visible");
+            bodyBlackout.classList.remove("is-blacked-out");
+          });
+      });
+    });
+  }
+
+
+  // ## Page styles
+  // -------------------
+  .body-blackout {
+    position: absolute;
+    z-index: 1010;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: none;
+
+    &.is-blacked-out {
+      display: block;
+    }
+  }
+
+  .popup-trigger {
+    display: inline-block;
+  }
+
+  .popup-modal {
+    height: 365px;
+    width: 650px;
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 45px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 300ms ease-in-out;
+    z-index: 1011;
+
+    &.is--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &__close {
+      position: absolute;
+      font-size: 1.2rem;
+      right: -10px;
+      top: -10px;
+      cursor: pointer;
+    }
+  }
+
+
+  
+
+      <div class="popup-modal shadow" data-popup-modal="one">
+      <i
+        class="fas fa-2x fa-times text-#eeeee bg-primary p-3 popup-modal__close" />
+      <h1 class="font-weight-bold">Modal One Title</h1>
+      <div>
+        <div>Filename to Save As:</div>
+        <div>
+          <input id="inputFileNameToSaveAs" />
+        </div>
+        <div>
+          <button on:click={saveTextAsFile}>Save Text to File</button>
+        </div>
+      </div>
+      <div>
+        <div>Select a File to Load:</div>
+        <div>
+          <input type="file" id="fileToLoad" />
+        </div>
+        <div>
+          <button on:click={loadFileAsText}>Load Selected File</button>
+        </div>
+        <div />
+      </div>
+    </div>

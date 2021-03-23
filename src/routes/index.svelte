@@ -1,50 +1,44 @@
 <script>
-	import successkid from 'images/successkid.jpg';
+  import LandingPage from "./../components/LandingPage.svelte";
+  // import { fade } from 'svelte/transitions'
+  // const emojis = require("emojis-list");
+  // console.log(emojis);
 </script>
 
-<style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
-
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
-
-	figure {
-		margin: 0 0 1em 0;
-	}
-
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	}
-
-	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
+<style lang="scss">
+  .homepage-wrapper {
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    & #play-now {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.45s;
+    z-index: 10;
+    }
+    & #learn-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.45s;
+    z-index: 10;
+    }
+    & figure {
+      opacity: 1;
+    }
+  }
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+  <title>TicTacToe - Supercharged Tic Tac Toe!</title>
 </svelte:head>
+<div class="homepage-wrapper">
+  <LandingPage>
+    <div slot="app-title">SUPER Tic Tac Toe!</div>
+    <div slot="play-now">PLAY NOW!</div>
 
-<h1>Great success!</h1>
-
-<figure>
-	<img alt="Success Kid" src="{successkid}">
-	<figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+  </LandingPage>
+</div>
