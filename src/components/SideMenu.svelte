@@ -239,11 +239,11 @@
         <SettingsModal />
       </Modal>
     </div>
-    <div
+    <!-- <div
       class="modal-wrapper options-control-wrapper"
       id="sockets-test-wrapper">
       <p>Sockets: users {users}</p>
-    </div>
+    </div> -->
     <div
       class="modal-wrapper options-control-wrapper"
       id="theme-switch-wrapper">
