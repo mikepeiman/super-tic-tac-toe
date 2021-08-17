@@ -272,7 +272,7 @@
       id="how-to-play-button"
       href="learnmore/#how-to-play">
       <div class="icon swords">
-        <Fa size="lg" icon={faSwords} color="currentColor" />
+        <!-- <Fa size="lg" icon={faSwords} color="currentColor" /> -->
         <div>How To Play</div>
       </div>
     </a>
@@ -284,7 +284,7 @@
       id="ui-and-features-button"
       href="learnmore/#features">
       <div class="icon lightbulb-on">
-        <Fa size="lg" icon={faLightbulbOn} color="currentColor" />
+        <!-- <Fa size="lg" icon={faLightbulbOn} color="currentColor" /> -->
         <div>UI & Features</div>
       </div>
     </a>
@@ -296,7 +296,7 @@
       id="issues-and-gotchas-button"
       href="learnmore/#issues">
       <div class="icon exclamation-triangle">
-        <Fa size="lg" icon={faExclamationTriangle} color="currentColor" />
+        <!-- <Fa size="lg" icon={faExclamationTriangle} color="currentColor" /> -->
         <div>Issues</div>
       </div>
     </a>
@@ -308,7 +308,7 @@
       id="development-thoughts-button"
       href="learnmore/#development">
       <div class="icon construction">
-        <Fa size="lg" icon={faConstruction} color="currentColor" />
+        <!-- <Fa size="lg" icon={faConstruction} color="currentColor" /> -->
         <div>Development</div>
       </div>
     </a>
@@ -320,7 +320,7 @@
     class="icon-wrapper button"
     id="play-now"
     href="tictactoe/">
-    <Fa size="lg" icon={faGameBoard} color="currentColor" />
+    <!-- <Fa size="lg" icon={faGameBoard} color="currentColor" /> -->
     <!-- <Fa size="lg" icon={faGamepadAlt} color="currentColor" /> -->
     <div>PLAY NOW!</div>
   </a>
