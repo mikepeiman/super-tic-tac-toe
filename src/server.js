@@ -8,6 +8,7 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
 const server = http.createServer();
 const app = polka({ server });
+let port = 3049
 // You can also use Express
 app
   .use(
@@ -15,8 +16,9 @@ app
     sirv("static", { dev }),
     sapper.middleware()
   )
-  .listen(PORT, err => {
-    if (err) console.log("error", err);
+  .listen(port, err => {
+    if (err) { console.log("error", err);}
+    else {console.log(`Server running on http://localhost:${port}`)}
   });
 
 // var http = require("http").createServer(app);

@@ -7,15 +7,16 @@
 
   // Following are the imports for modals, Font Awesome icons and FA component
   import Modal from "svelte-simple-modal";
-  import Fa from "sveltejs-fontawesome";
-  import { faEdit } from "@fortawesome/pro-duotone-svg-icons";
-  import { faPlus } from "@fortawesome/pro-solid-svg-icons";
-  import { faMinus } from "@fortawesome/pro-solid-svg-icons";
+  // import Fa from "sveltejs-fontawesome";
+  // import { faEdit } from "js/all.js"
+  // import { faPlus } from "/static/js/all.js"
+  // import { fa-plus } as faPlus from "/static/js/all.js"
+  // import { faPlus } from "/static/css/all.css"
+  // import { faMinus } from "js/all.js"
   export let state, players, highlighted;
   import { storeButtonStyles } from "../stores.js";
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
   // end FA/modal imports
-
   import {
     storeSettings,
     storeViewportSize,
@@ -873,21 +874,22 @@
           class="add-or-remove-player-button"
           id="add-player"
           on:click={addPlayer}>
-          <Fa
-            icon={faPlus}
+          <span class="iconify" data-icon="fa:plus"></span>
+          <!-- <Fa
             color={`var(--theme-light)`}
             secondaryColor={`var(--theme-light)`}
-            secondaryOpacity={_secondaryOpacity} />
+            secondaryOpacity={_secondaryOpacity} /> -->
         </div>
         <div
           class="add-or-remove-player-button"
           id="remove-player"
           on:click={removePlayer}>
-          <Fa
+          <span class="iconify" data-icon="fa:minus" color={`var(--theme-light)`}></span>
+          <!-- <Fa
             icon={faMinus}
             color={`var(--theme-light)`}
             secondaryColor={`var(--theme-light)`}
-            secondaryOpacity={_secondaryOpacity} />
+            secondaryOpacity={_secondaryOpacity} /> -->
         </div>
       </div>
       {#each players as player, i}
@@ -928,11 +930,11 @@
             <button
               class="player-details-icon"
               on:click={e => editPlayerDetails(e, player)}>
-              <Fa
+              <!-- <Fa
                 icon={faEdit}
                 color={`var(--theme-bg)`}
                 secondaryColor={player.colorDark}
-                secondaryOpacity={_secondaryOpacity} />
+                secondaryOpacity={_secondaryOpacity} /> -->
               <!-- <div class="button-text"></div> -->
             </button>
           </h3>

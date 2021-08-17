@@ -8,8 +8,8 @@
   const dispatch = createEventDispatcher();
   import CountPoints from "./CountPoints.svelte";
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
-  import { faEraser } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faEmptySet } from "js/all.js"
+  // import { faEraser } from "js/all.js"
   import { storeButtonStyles } from "../stores.js";
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
@@ -210,11 +210,11 @@
         class="control-button"
         id="clear-game-button"
         on:click={clearScores}>
-        <Fa
+        <!-- <Fa
           icon={faEraser}
           color={_color}
           secondaryColor={_secondaryColor}
-          secondaryOpacity={_secondaryOpacity} />
+          secondaryOpacity={_secondaryOpacity} /> -->
         Clear Scores
       </button>
     </div>

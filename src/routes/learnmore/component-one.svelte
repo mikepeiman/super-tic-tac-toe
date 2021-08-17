@@ -3,12 +3,12 @@
   import { fade } from "svelte/transition";
   import { send, receive } from "./../../crossfade.js";
   import Fa from "sveltejs-fontawesome";
-  import { faMedal } from "@fortawesome/pro-solid-svg-icons";
-  import { faLightbulbOn } from "@fortawesome/pro-solid-svg-icons";
-  import { faUsersCrown } from "@fortawesome/pro-solid-svg-icons";
-  import { faSwords } from "@fortawesome/pro-solid-svg-icons";
-  import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
-  import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
+  // import { faMedal } from "js/all.js"
+  // import { faLightbulbOn } from "js/all.js"
+  // import { faUsersCrown } from "js/all.js"
+  // import { faSwords } from "js/all.js"
+  // import { faExclamationTriangle } from "js/all.js"
+  // import { faConstruction } from "js/all.js"
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,

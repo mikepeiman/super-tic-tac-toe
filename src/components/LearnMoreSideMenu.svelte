@@ -5,12 +5,12 @@
   import { send, receive } from "./../crossfade.js";
   import { fade } from "svelte/transition";
   import Fa from "sveltejs-fontawesome";
-  import { faMedal } from "@fortawesome/pro-solid-svg-icons";
-  import { faLightbulbOn } from "@fortawesome/pro-solid-svg-icons";
-  import { faUsersCrown } from "@fortawesome/pro-solid-svg-icons";
-  import { faSwords } from "@fortawesome/pro-solid-svg-icons";
-  import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons";
-  import { faConstruction } from "@fortawesome/pro-solid-svg-icons";
+  // import { faMedal } from "js/all.js"
+  // import { faLightbulbOn } from "js/all.js"
+  // import { faUsersCrown } from "js/all.js"
+  // import { faSwords } from "js/all.js"
+  // import { faExclamationTriangle } from "js/all.js"
+  // import { faConstruction } from "js/all.js"
   let log1 = (console.todo = function(msg) {
     console.log(
       ` %c%s%s%s`,
@@ -42,11 +42,11 @@ html {
         id="how-to-win-button"
         href="learnmore/how-to-win">
         <div class="icon users-crown">
-          <Fa
+          <!-- <Fa
             icon={faUsersCrown}
             color="white"
             secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
+            1)" /> -->
           <div>How To Win</div>
         </div>
       </a>
@@ -58,11 +58,11 @@ html {
         id="how-to-play-button"
         href="learnmore/how-to-play/">
         <div class="icon swords">
-          <Fa
+          <!-- <Fa
             icon={faSwords}
             color="white"
             secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
+            1)" /> -->
           <div>How To Play</div>
         </div>
       </a>
@@ -74,11 +74,11 @@ html {
         id="ui-and-features-button"
         href="learnmore/ui-and-features/">
         <div class="icon lightbulb-on">
-          <Fa
+          <!-- <Fa
             icon={faLightbulbOn}
             color="white"
             secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
+            1)" /> -->
           <div>UI & Features</div>
         </div>
       </a>
@@ -90,11 +90,11 @@ html {
         id="issues-and-gotchas-button"
         href="learnmore/issues-and-gotchas/">
         <div class="icon exclamation-triangle">
-          <Fa
+          <!-- <Fa
             icon={faExclamationTriangle}
             color="white"
             secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
+            1)" /> -->
           <div>Issues</div>
         </div>
       </a>
@@ -106,11 +106,11 @@ html {
         id="development-thoughts-button"
         href="learnmore/development-thoughts/">
         <div class="icon construction">
-          <Fa
+          <!-- <Fa
             icon={faConstruction}
             color="white"
             secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%,
-            1)" />
+            1)" /> -->
           <div>Development</div>
         </div>
       </a>

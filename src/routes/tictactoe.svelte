@@ -52,7 +52,7 @@
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
   import Fa from "sveltejs-fontawesome";
-  import { faEmptySet } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faEmptySet } from "js/all.js"
 
   storeCurrentPlayer.subscribe(val => {
     currentPlayer = val;

@@ -17,7 +17,7 @@
   } from "../stores.js";
 
   import Fa from "sveltejs-fontawesome";
-  import { faAbacus } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faAbacus } from "js/all.js"
 
   let players,
     lines,
@@ -263,10 +263,10 @@
 </style>
 
 <button class="control-button" id="tally-game-button" on:click={countPoints}>
-  <Fa
+  <!-- <Fa
     icon={faAbacus}
     color={_color}
     secondaryColor={_secondaryColor}
-    secondaryOpacity={_secondaryOpacity} />
+    secondaryOpacity={_secondaryOpacity} /> -->
   <div class="button-text">Tally Scores</div>
 </button>

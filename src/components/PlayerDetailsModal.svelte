@@ -3,7 +3,7 @@
   import PlayerDetailsModalContent from "./PlayerDetailsModalContent.svelte";
   import { storeViewportSize } from "./../stores.js";
   import Fa from "sveltejs-fontawesome";
-  import { faSlidersH } from "@fortawesome/pro-duotone-svg-icons";
+  // import { faSlidersH } from "js/all.js"
   import { storeButtonStyles } from "../stores.js";
   let { _color, _secondaryColor, _secondaryOpacity } = $storeButtonStyles;
 
@@ -89,10 +89,10 @@
 </style>
 
 <button class="control-button" id="settings-menu-button" on:click={showModal}>
-  <Fa
+  <!-- <Fa
     icon={faSlidersH}
     color={_color}
     secondaryColor={_secondaryColor}
-    secondaryOpacity={_secondaryOpacity} />
+    secondaryOpacity={_secondaryOpacity} /> -->
   Settings
 </button>

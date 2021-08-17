@@ -2,10 +2,10 @@
   import { onMount, createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import Fa from "sveltejs-fontawesome";
-  // import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
-  // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
-  import { faSun } from "@fortawesome/pro-solid-svg-icons";
-  import { faMoon } from "@fortawesome/pro-solid-svg-icons";
+  // import { faSunrise } from "js/all.js"
+  // import { faSunset } from "js/all.js"
+  // import { faSun } from "js/all.js"
+  // import { faMoon } from "js/all.js"
   import { storeToggleConfiguration } from "../stores.js";
 
   const light = "#edededed";

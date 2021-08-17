@@ -1,10 +1,10 @@
 <script>
   import { onMount } from "svelte";
   import Fa from "sveltejs-fontawesome";
-  // import { faSunrise } from "@fortawesome/pro-duotone-svg-icons";
-  // import { faSunset } from "@fortawesome/pro-duotone-svg-icons";
-  import { faSun } from "@fortawesome/pro-solid-svg-icons";
-  import { faMoon } from "@fortawesome/pro-solid-svg-icons";
+  // import { faSunrise } from "js/all.js"
+  // import { faSunset } from "js/all.js"
+  // import { faSun } from "js/all.js"
+  // import { faMoon } from "js/all.js"
   import {
     storeState,
     storeMoveNumber,
@@ -319,15 +319,15 @@
     on:click={toggleTheme} />
   <div class="slider round" />
   <div class="icon sun">
-    <Fa
+    <!-- <Fa
       icon={faSun}
       color="var(--theme-bg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" /> -->
   </div>
   <div class="icon moon hidden">
-    <Fa
+    <!-- <Fa
       icon={faMoon}
       color="var(--theme-fg)"
-      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" />
+      secondaryColor="hsla(calc(var(--player-color-hue) + 60), 60%, 60%, 1)" /> -->
   </div>
 </label>
