@@ -1,0 +1,239 @@
+/*
+ * Design tokens. Every colour role names what it means (docs/ui-design-guidance.md):
+ * surfaces and text are neutral; --accent marks interactive controls (the legacy input blue);
+ * --primary marks the one action that moves the game on; --danger marks actions that discard
+ * progress; --bonus marks line bonuses; --dir-* identify the four scoring directions.
+ * Player identity colours live in src/lib/palette.ts and are never reused for anything else.
+ */
+:root {
+	color-scheme: light dark;
+
+	&:has(> head > meta[name='color-scheme'][content='dark']) {
+		color-scheme: dark;
+	}
+	&:has(> head > meta[name='color-scheme'][content='light']) {
+		color-scheme: light;
+	}
+
+	--bg: light-dark(#f4f4f7, #16171d);
+	--surface: light-dark(#ffffff, #1f2029);
+	--surface-2: light-dark(#ebecf1, #292b36);
+	--fg: light-dark(#1b1c22, #ececf1);
+	--fg-muted: light-dark(#5b5e6b, #a3a6b5);
+	--border: light-dark(#d4d6de, #3a3c4a);
+	--accent: light-dark(#0b78a8, #32c8ff);
+	--accent-soft: light-dark(#0b78a81f, #32c8ff26);
+	--primary: light-dark(#1f7a3a, #3ccf6a);
+	--primary-fg: light-dark(#ffffff, #0d1f13);
+	--danger: light-dark(#b42318, #ff7a6e);
+	--bonus: light-dark(#a86a00, #ffc53d);
+	--dir-h: light-dark(#b25a00, #ffa940);
+	--dir-v: light-dark(#0a7d8c, #36cfc9);
+	--dir-dl: light-dark(#4d7c0f, #a0d911);
+	--dir-dr: light-dark(#a1259a, #f759ab);
+	--cell-gap: light-dark(#c9cbd4, #0f1015);
+	--shadow: 0 1px 2px #0000001f, 0 4px 16px #0000001a;
+
+	--radius: 6px;
+	--radius-lg: 10px;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--control-h: 40px;
+
+	--font: 'Mulish Variable', system-ui, sans-serif;
+	--emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+
+	/* Set from the active player by the game screen. */
+	--player: var(--accent);
+	--player-fg: #fff;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100%;
+}
+
+body {
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--font);
+	font-size: 15px;
+	line-height: 1.45;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	line-height: 1.2;
+	margin: 0;
+}
+
+a {
+	color: var(--accent);
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.num {
+	font-variant-numeric: tabular-nums;
+}
+
+/* Buttons: neutral by default; .primary moves the game on; .danger discards progress. */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-height: var(--control-h);
+	padding: 0 var(--space-4);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--fg);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		background-color 0.15s,
+		border-color 0.15s;
+
+	&:hover:not(:disabled) {
+		border-color: var(--accent);
+		background: var(--accent-soft);
+	}
+	&:disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+	&.primary {
+		background: var(--primary);
+		border-color: var(--primary);
+		color: var(--primary-fg);
+		&:hover:not(:disabled) {
+			filter: brightness(1.08);
+			background: var(--primary);
+		}
+	}
+	&.danger {
+		color: var(--danger);
+		&:hover:not(:disabled) {
+			border-color: var(--danger);
+			background: color-mix(in srgb, var(--danger) 12%, transparent);
+		}
+	}
+	&.ghost {
+		border-color: transparent;
+		background: transparent;
+	}
+	&.icon {
+		padding: 0;
+		width: var(--control-h);
+	}
+	&.small {
+		min-height: 32px;
+		padding: 0 var(--space-3);
+		font-size: 13px;
+	}
+}
+
+input[type='text'],
+input[type='number'],
+select {
+	min-height: var(--control-h);
+	padding: 0 var(--space-3);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--fg);
+	font: inherit;
+}
+
+input[type='number'] {
+	width: 5.5ch;
+	text-align: center;
+	font-variant-numeric: tabular-nums;
+}
+
+label {
+	cursor: pointer;
+}
+
+/* Shared modal dialog. */
+dialog.sheet {
+	max-width: min(560px, calc(100vw - 32px));
+	max-height: calc(100dvh - 32px);
+	padding: 0;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	background: var(--surface);
+	color: var(--fg);
+	box-shadow: var(--shadow);
+
+	&::backdrop {
+		background: #0008;
+	}
+	& > header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+		padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+		border-bottom: 1px solid var(--border);
+	}
+	& > .body {
+		padding: var(--space-4) var(--space-5);
+		overflow: auto;
+	}
+	& > footer {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: var(--space-2);
+		padding: var(--space-3) var(--space-5) var(--space-4);
+	}
+}
+
+* {
+	scrollbar-color: var(--border) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+:root[data-motion='reduce'] *,
+:root[data-motion='reduce'] *::before,
+:root[data-motion='reduce'] *::after {
+	animation-duration: 0.01ms !important;
+	transition-duration: 0.01ms !important;
+}
