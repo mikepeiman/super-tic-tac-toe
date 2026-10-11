@@ -8,3 +8,4 @@ pnpm-lock.yaml
 **/playwright-report/
 *.md
 .claude/
+package-lock.json
