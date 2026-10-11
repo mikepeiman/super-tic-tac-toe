@@ -203,7 +203,9 @@ export function adaptPreset(preset: Preset, players: number): Preset['config'] {
 		for (let c = LIMITS.minSide; c <= LIMITS.maxSide; c++) {
 			if (!isFair(r, c, players, movesPerTurn)) continue;
 			if (Math.max(r, c) / Math.min(r, c) > LIMITS.maxAspect) continue;
-			const cost = Math.abs(r * c - target) / target + Math.abs(c / r - aspect);
+			// Log ratios make "twice as big" and "half as big" equally far, and keep landscape
+			// and portrait versions of a shape apart only by the preset's own aspect.
+			const cost = Math.abs(Math.log((r * c) / target)) + Math.abs(Math.log(c / r / aspect));
 			if (cost < bestCost) {
 				bestCost = cost;
 				best = { rows: r, cols: c };

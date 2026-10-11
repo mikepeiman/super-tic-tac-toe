@@ -31,3 +31,5 @@ Accepted domain terms for Super Tic-Tac-Toe. Definitions follow
 | Room | An online game instance with a join code. | |
 | Topology | Cells plus scoring lines; rectangles, hexes, tori and Tiers are topologies. | |
 | Tiers | Variant with three linked flat levels, like 3D chess. | |
+| Phase (game screen) | play → cascade (forced final turn filling in) → tally (directions revealed one by one) → done. | |
+| Rematch | A new game with the same settings and seats rotated by one. | |

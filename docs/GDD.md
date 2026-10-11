@@ -1,6 +1,6 @@
 # Super Tic-Tac-Toe — Game Design Document
 
-Sep 23, 2026 · Mike Peiman · Exported from the [living doc](https://claude.ai/code/artifact/d72fe939-63a3-4f00-91dd-cd0cb7417f1a) at revision 14.
+Sep 23, 2026 · Mike Peiman · Exported from the [living doc](https://claude.ai/code/artifact/d72fe939-63a3-4f00-91dd-cd0cb7417f1a) at revision 18.
 
 ## 1. Overview
 
@@ -149,7 +149,7 @@ For each player the scoreboard shows the total and the four direction subtotals,
 
 A room setting, **Live score**, decides when players see scores:
 
-- **Off (default):** scores are hidden until the board is full, then revealed with the tally animation. This keeps the original's end-of-game suspense.
+- **Off (default):** scores are hidden until a player presses Tally scores, which shows them as they stand (the original's Tally button), and are revealed with the tally animation when the board is full. This keeps the original's end-of-game suspense.
 - **On:** scores update after every locked turn, and a preview shows what pending marks would add.
 
 ### Tie-breaks
@@ -202,7 +202,7 @@ Most players should never need the maths. Presets are the default entry point, w
 | Party | 4 | 10 × 12 | 5 | 6 | 3 | 10 |
 | Marathon | 3 | 12 × 18 | 6 | 12 | 4 | 18 |
 
-Presets adapt to the player count where they can: when a player joins or leaves the lobby, the game suggests the nearest fair variant, such as Classic for 3 becoming 9 × 12 with 4 moves.
+Presets adapt to the player count where they can: when a player joins or leaves the lobby, the game suggests the nearest fair variant, such as Warm-up for 4 players becoming 6 × 8. The board stays as close to the preset's size and shape as fairness allows; moves per turn, N and the bonus never change.
 
 ### Validation rules
 
@@ -493,7 +493,7 @@ One framework-free TypeScript rules engine is shared by the browser, the game se
 | Layer | Choice | Why |
 | --- | --- | --- |
 | Language | TypeScript, strict | One language for client, server and engine. |
-| Web app | SvelteKit 2 + Svelte 5 (runes), Vite | Continuity with the original; small, fast bundles. |
+| Web app | SvelteKit 3 + Svelte 5 (runes), Vite 8 | Continuity with the original; small, fast bundles. |
 | Styling | Plain modern CSS: nesting, custom properties, container queries | Replaces SCSS and the JavaScript cell sizing. |
 | Rules engine | `packages/engine`, pure TypeScript, no dependencies | Same code on client, server and in bots. |
 | Realtime server | Cloudflare Workers + Durable Objects via PartyServer, one object per room | A room is naturally a single stateful object; WebSocket hibernation keeps idle rooms cheap. |
@@ -639,6 +639,10 @@ The rules and scoring are settled; most open questions are about defaults and pl
 | 2026-09-23 | All variant ideas stay on the roadmap; Tiers uses three linked flat levels, not solid 3D. | Confirmed by Mike. |
 | 2026-09-23 | Players cannot be added or removed after the first move; bots take over abandoned online seats. | Proposed; follows from fairness. |
 | 2026-09-23 | No free-text chat; fixed emoji reactions only. | Proposed; the game is for families. |
+| 2026-10-11 | Phase 1 targets SvelteKit 3.0, released on 2026-10-01, rather than 2.x. | Agent decision: the owner asked for current SvelteKit; a fresh port has nothing to migrate. |
+| 2026-10-11 | Local play keeps the original's Tally scores button while Live score is off. | Agent decision for a faithful port; online rooms may hide it. |
+| 2026-10-11 | Marks are chosen from a curated set of 56 plus a paste-any-emoji field, not a full emoji library. | Agent decision: works offline with no extra download. A searchable full picker can follow. |
+| 2026-10-11 | Big boards scroll when cells would fall below 28 px; pinch-zoom and the minimap are deferred. | Phase 1 limit. Only boards over about 13 columns on a phone are affected. |
 
 ### Open questions
 

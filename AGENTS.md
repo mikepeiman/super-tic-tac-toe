@@ -151,9 +151,16 @@ Online multiplayer is the core mode; local pass-and-play and bots are supporting
 - Terminology: [docs/LEXICON.md](docs/LEXICON.md), including legacy code names.
 - Setup and tracker reference: [docs/new-project-setup.md](docs/new-project-setup.md),
   [docs/beads.md](docs/beads.md). Interface work: [docs/ui-design-guidance.md](docs/ui-design-guidance.md).
-- Current code is the legacy Sapper 0.27 app in `src/`. It does not build on
-  Node 24 (node-sass 4, Rollup 1). Phase 1 replaces it with SvelteKit 2 and
-  Svelte 5; scoring must match the legacy `score()` in
-  `src/components/CountPoints.svelte` exactly (GDD section 3).
+- Code: a pnpm workspace. `packages/engine` holds every rule (pure TypeScript,
+  shared later by the room server and bots); `apps/web` is the SvelteKit 3 /
+  Svelte 5 static app. UI components never call the engine directly: they go
+  through the `Game` class in `apps/web/src/lib/game.svelte.ts`.
+- `legacy/` is the original Sapper app, kept only as the scoring reference. Its
+  `score()` lives on verbatim in `packages/engine/test/legacy-oracle.js`; any
+  scoring change must keep those oracle tests passing or record an owner decision.
+- Commands come from the root `package.json`: `pnpm lint`, `pnpm check`,
+  `pnpm test`, `pnpm test:e2e` (Playwright builds and serves the app itself).
+  CI runs all four on every push. In `apps/web`, imports use `#lib/...` with
+  file extensions (SvelteKit 3).
 - Delivery: work on `master`, push to `origin/master`
   (https://github.com/mikepeiman/super-tic-tac-toe). Beads prefix `sttt`.
