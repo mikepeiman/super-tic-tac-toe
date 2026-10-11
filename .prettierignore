@@ -1,0 +1,8 @@
+legacy/
+.beads/
+docs/
+pnpm-lock.yaml
+**/.svelte-kit/
+**/build/
+**/test-results/
+**/playwright-report/

@@ -1,0 +1,19 @@
+{
+	"name": "@sttt/engine",
+	"private": true,
+	"version": "0.1.0",
+	"description": "Rules engine for Super Tic-Tac-Toe: board, lines, scoring, fair configuration, game record.",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"check": "tsc --noEmit",
+		"test": "vitest --run"
+	},
+	"devDependencies": {
+		"fast-check": "^4.10.2",
+		"typescript": "^6.0.3",
+		"vitest": "^4.1.8"
+	}
+}

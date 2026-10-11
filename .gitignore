@@ -1,10 +1,25 @@
 .DS_Store
-/node_modules/
-/src/node_modules/@sapper/
+Thumbs.db
+node_modules/
 yarn-error.log
-/cypress/screenshots/
-/__sapper__/
 
+# Legacy Sapper app
+/legacy/cypress/screenshots/
+/legacy/__sapper__/
+/legacy/src/node_modules/@sapper/
+
+# SvelteKit / Vite
+.svelte-kit/
+/apps/web/build/
+vite.config.ts.timestamp-*
+.env
+.env.*
+!.env.example
+
+# Tests
+test-results/
+playwright-report/
+coverage/
 
 # Beads / Dolt files (added by bd init)
 .dolt/
